@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from '../../shared/material.module';
-import { EditBooleanDialogComponent } from '../edit-boolean-dialog-component/edit-boolean-dialog-component.component';
+import { MapBooleanEditDialogComponent } from '../map-boolean-edit-dialog-component/map-boolean-edit-dialog-component.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-map-boolean-component',
   standalone: true,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule, EditBooleanDialogComponent],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, MapBooleanEditDialogComponent],
   templateUrl: './map-boolean-component.component.html',
   styleUrls: ['./map-boolean-component.component.css'],
 })
@@ -80,7 +80,7 @@ export class MapBooleanComponent implements OnInit, OnChanges {
     const key = keyControl.value;
     const currentValue = valueControl.value;
 
-    const dialogRef = this.dialog.open(EditBooleanDialogComponent, {
+    const dialogRef = this.dialog.open(MapBooleanEditDialogComponent, {
       width: '500px',
       height: '300px',
       maxHeight: '90vh',

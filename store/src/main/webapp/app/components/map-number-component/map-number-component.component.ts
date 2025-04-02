@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from '../../shared/material.module';
-import { EditNumberDialogComponent } from '../edit-number-dialog-component/edit-number-dialog-component.component';
+import { MapNumberEditDialogComponent } from '../map-number-edit-dialog-component/map-number-edit-dialog-component.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-map-number-component',
   standalone: true,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule, EditNumberDialogComponent],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, MapNumberEditDialogComponent],
   templateUrl: './map-number-component.component.html',
   styleUrls: ['./map-number-component.component.css'],
 })
@@ -39,7 +39,7 @@ export class MapNumberComponent implements OnChanges {
   }
 
   openEditNumberDialog(key: string, value: number): void {
-    const dialogRef = this.dialog.open(EditNumberDialogComponent, {
+    const dialogRef = this.dialog.open(MapNumberEditDialogComponent, {
       width: '500px',
       height: '300px',
       maxHeight: '90vh',

@@ -9,7 +9,7 @@ import SharedModule from 'app/shared/shared.module';
 import { MaterialModule } from 'app/shared/material.module';
 
 import dayjs from 'dayjs/esm';
-import { SetComponent } from 'app/components/set-component/set-component.component';
+import { SetStringComponent } from 'app/components/set-string-component/set-string-component.component';
 import { v1 as uuidv1 } from 'uuid'; // Import TimeUUID (UUID v1)
 
 import { ISaathratriEntity3 } from '../saathratri-entity-3.model';
@@ -20,7 +20,7 @@ import { SaathratriEntity3FormGroup, SaathratriEntity3FormService } from './saat
   standalone: true,
   selector: 'jhi-saathratri-entity-3-update',
   templateUrl: './saathratri-entity-3-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, MaterialModule, SetComponent],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, MaterialModule, SetStringComponent],
 })
 export class SaathratriEntity3UpdateComponent implements OnInit {
   isSaving = false;

@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from '../../shared/material.module';
-import { EditStringDialogComponent } from '../edit-string-dialog-component/edit-string-dialog-component.component';
+import { MapStringEditDialogComponent } from '../map-string-edit-dialog-component/map-string-edit-dialog-component.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-map-string-component',
   standalone: true,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule, EditStringDialogComponent],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, MapStringEditDialogComponent],
   templateUrl: './map-string-component.component.html',
   styleUrls: ['./map-string-component.component.css'],
 })
@@ -39,7 +39,7 @@ export class MapStringComponent implements OnChanges {
   }
 
   openEditStringDialog(key: string, value: string): void {
-    const dialogRef = this.dialog.open(EditStringDialogComponent, {
+    const dialogRef = this.dialog.open(MapStringEditDialogComponent, {
       width: '500px',
       height: '300px',
       maxHeight: '90vh',

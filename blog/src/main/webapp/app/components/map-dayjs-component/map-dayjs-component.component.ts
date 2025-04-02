@@ -4,14 +4,14 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import dayjs from 'dayjs/esm';
 import { MaterialModule } from '../../shared/material.module';
-import { EditDayjsDialogComponent } from '../edit-dayjs-dialog-component/edit-dayjs-dialog-component.component';
+import { MapDayjsEditDialogComponent } from '../map-dayjs-edit-dialog-component/map-dayjs-edit-dialog-component.component';
 import { DateTimeComponent } from '../date-time/date-time.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-map-dayjs-component',
   standalone: true,
-  imports: [MaterialModule, CommonModule, ReactiveFormsModule, EditDayjsDialogComponent, DateTimeComponent],
+  imports: [MaterialModule, CommonModule, ReactiveFormsModule, MapDayjsEditDialogComponent, DateTimeComponent],
   templateUrl: './map-dayjs-component.component.html',
   styleUrls: ['./map-dayjs-component.component.css'],
 })
@@ -47,7 +47,7 @@ export class MapDayjsComponent implements OnChanges {
   }
 
   openEditDayjsDialog(key: string, value: dayjs.Dayjs): void {
-    const dialogRef = this.dialog.open(EditDayjsDialogComponent, {
+    const dialogRef = this.dialog.open(MapDayjsEditDialogComponent, {
       width: '500px',
       height: '300px',
       maxHeight: '90vh',
