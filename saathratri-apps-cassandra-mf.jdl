@@ -118,13 +118,6 @@ entity SaathratriEntity5 {
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") addOnDetailsDecimal BigDecimal
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") addOnDetailsBoolean Boolean
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") addOnDetailsBigInt Long
-  // @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnName String
-  // @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnDescription String
-  // @customAnnotation("") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") addOnCost BigDecimal
-  // @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnCurrencyCode String
-  // @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnCurrencySymbol String
-  // @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnTime String
-  // @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnTimeIncludingFrame String
 }
 
 entity SaathratriEntity6 {
@@ -144,17 +137,6 @@ entity SaathratriEntity6 {
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") addOnDetailsDecimal BigDecimal
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") addOnDetailsBoolean Boolean
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") addOnDetailsBigInt Long
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnName String
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnDescription String
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") addOnCost BigDecimal
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnCurrencyCode String
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnCurrencySymbol String
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnTime String
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnTimeIncludingFrame String
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") addOnSelected Boolean
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnStatus String
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") addOnStatusUpdatedDateTime Long
-  // @customAnnotation("TYPE_AddOnDetails") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") addOnStatusUpdatedByUserId String
 }
 
 // Single-value Primary Key Example:
