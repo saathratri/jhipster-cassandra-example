@@ -17,7 +17,6 @@ class SaathratriEntityTest {
 
         saathratriEntity2.setEntityId(saathratriEntity1.getEntityId());
         assertThat(saathratriEntity1).isEqualTo(saathratriEntity2);
-
         saathratriEntity2 = getSaathratriEntitySample2();
         assertThat(saathratriEntity1).isNotEqualTo(saathratriEntity2);
     }

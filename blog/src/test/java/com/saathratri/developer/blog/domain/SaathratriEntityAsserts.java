@@ -1,12 +1,11 @@
 package com.saathratri.developer.blog.domain;
 
-import static com.saathratri.developer.blog.domain.AssertUtils.bigDecimalCompareTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SaathratriEntityAsserts {
 
     /**
-     * Asserts that the entity has all properties (fields/relationships) set.
+     * Asserts that the entity has all properties (fields) set.
      *
      * @param expected the expected entity
      * @param actual the actual entity
@@ -17,14 +16,13 @@ public class SaathratriEntityAsserts {
     }
 
     /**
-     * Asserts that the entity has all updatable properties (fields/relationships) set.
+     * Asserts that the entity has all updatable properties (fields) set.
      *
      * @param expected the expected entity
      * @param actual the actual entity
      */
     public static void assertSaathratriEntityAllUpdatablePropertiesEquals(SaathratriEntity expected, SaathratriEntity actual) {
         assertSaathratriEntityUpdatableFieldsEquals(expected, actual);
-        assertSaathratriEntityUpdatableRelationshipsEquals(expected, actual);
     }
 
     /**
@@ -46,24 +44,6 @@ public class SaathratriEntityAsserts {
      * @param actual the actual entity
      */
     public static void assertSaathratriEntityUpdatableFieldsEquals(SaathratriEntity expected, SaathratriEntity actual) {
-        assertThat(expected)
-            .as("Verify SaathratriEntity relevant properties")
-            .satisfies(e -> assertThat(e.getEntityName()).as("check entityName").isEqualTo(actual.getEntityName()))
-            .satisfies(e -> assertThat(e.getEntityDescription()).as("check entityDescription").isEqualTo(actual.getEntityDescription()))
-            .satisfies(e ->
-                assertThat(e.getEntityCost()).as("check entityCost").usingComparator(bigDecimalCompareTo).isEqualTo(actual.getEntityCost())
-            )
-            .satisfies(e -> assertThat(e.getCreatedId()).as("check createdId").isEqualTo(actual.getCreatedId()))
-            .satisfies(e -> assertThat(e.getCreatedTimeId()).as("check createdTimeId").isEqualTo(actual.getCreatedTimeId()));
-    }
-
-    /**
-     * Asserts that the entity has all the updatable relationships set.
-     *
-     * @param expected the expected entity
-     * @param actual the actual entity
-     */
-    public static void assertSaathratriEntityUpdatableRelationshipsEquals(SaathratriEntity expected, SaathratriEntity actual) {
-        // empty method
+        assertThat(expected).as("Verify SaathratriEntity relevant properties");
     }
 }

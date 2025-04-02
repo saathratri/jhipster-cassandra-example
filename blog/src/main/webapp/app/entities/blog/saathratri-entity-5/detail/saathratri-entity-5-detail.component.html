@@ -35,19 +35,47 @@
           </dd>
           <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsText">Add On Details Text</span></dt>
           <dd>
-            <span>{{ saathratriEntity5Ref.addOnDetailsText }}</span>
+            <dl *ngIf="saathratriEntity5Ref.addOnDetailsText">
+              <div *ngFor="let item of saathratriEntity5Ref.addOnDetailsText | keyvalue">
+                <dt>{{ item.key }}</dt>
+                <dd>
+                  <td>{{ item.value }}</td>
+                </dd>
+              </div>
+            </dl>
           </dd>
           <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsDecimal">Add On Details Decimal</span></dt>
           <dd>
-            <span>{{ saathratriEntity5Ref.addOnDetailsDecimal }}</span>
+            <dl *ngIf="saathratriEntity5Ref.addOnDetailsDecimal">
+              <div *ngFor="let item of saathratriEntity5Ref.addOnDetailsDecimal | keyvalue">
+                <dt>{{ item.key }}</dt>
+                <dd>
+                  <td>{{ item.value }}</td>
+                </dd>
+              </div>
+            </dl>
           </dd>
           <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsBoolean">Add On Details Boolean</span></dt>
           <dd>
-            <span>{{ saathratriEntity5Ref.addOnDetailsBoolean }}</span>
+            <dl *ngIf="saathratriEntity5Ref.addOnDetailsBoolean">
+              <div *ngFor="let item of saathratriEntity5Ref.addOnDetailsBoolean | keyvalue">
+                <dt>{{ item.key }}</dt>
+                <dd>
+                  <td>{{ item.value }}</td>
+                </dd>
+              </div>
+            </dl>
           </dd>
           <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsBigInt">Add On Details Big Int</span></dt>
           <dd>
-            <td>{{ saathratriEntity5Ref.addOnDetailsBigInt | formatMediumDatetime }}</td>
+            <dl *ngIf="saathratriEntity5Ref.addOnDetailsBigInt">
+              <div *ngFor="let item of saathratriEntity5Ref.addOnDetailsBigInt | keyvalue">
+                <dt>{{ item.key }}</dt>
+                <dd>
+                  <td>{{ item.value | formatMediumDatetime }}</td>
+                </dd>
+              </div>
+            </dl>
           </dd>
         </dl>
 

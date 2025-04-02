@@ -121,7 +121,7 @@ export class PostService {
       },
       publishedDateTime: post.publishedDateTime ? post.publishedDateTime.valueOf() : null,
       sentDate: post.sentDate ? post.sentDate.valueOf() : null,
-    };
+    } as RestOf<T>;
   }
 
   protected convertDateFromServer(restPost: RestPost): IPost {

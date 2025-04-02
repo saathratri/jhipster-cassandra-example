@@ -25,6 +25,18 @@
               data-cy="organizationId"
               formControlName="organizationId"
             />
+            <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateUUID('compositeId.organizationId')">
+              Generate
+            </button>
+            <button
+              *ngIf="isNew"
+              type="button"
+              class="btn btn-danger"
+              (click)="reset('compositeId.organizationId')"
+              [disabled]="isResetDisabled['compositeId.organizationId']"
+            >
+              Reset
+            </button>
           </div>
 
           <div class="mb-3">

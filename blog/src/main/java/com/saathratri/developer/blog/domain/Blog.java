@@ -2,7 +2,7 @@ package com.saathratri.developer.blog.domain;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.util.UUID;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -18,9 +18,8 @@ public class Blog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String category;
-
-    private UUID blogId;
+    @Id
+    private BlogId compositeId;
 
     @NotNull
     @Size(min = 3)
@@ -33,33 +32,20 @@ public class Blog implements Serializable {
     @CassandraType(type = CassandraType.Name.TEXT)
     private String content;
 
+    public BlogId getCompositeId() {
+        return this.compositeId;
+    }
+
+    public void setCompositeId(BlogId compositeId) {
+        this.compositeId = compositeId;
+    }
+
+    public Blog compositeId(BlogId compositeId) {
+        this.compositeId = compositeId;
+        return this;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
-    public String getCategory() {
-        return this.category;
-    }
-
-    public Blog category(String category) {
-        this.setCategory(category);
-        return this;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public UUID getBlogId() {
-        return this.blogId;
-    }
-
-    public Blog blogId(UUID blogId) {
-        this.setBlogId(blogId);
-        return this;
-    }
-
-    public void setBlogId(UUID blogId) {
-        this.blogId = blogId;
-    }
 
     public String getHandle() {
         return this.handle;
@@ -97,7 +83,7 @@ public class Blog implements Serializable {
         if (!(o instanceof Blog)) {
             return false;
         }
-        return getCategory() != null && getCategory().equals(((Blog) o).getCategory());
+        return getCompositeId() != null && getCompositeId().equals(((Blog) o).getCompositeId());
     }
 
     @Override
@@ -110,8 +96,7 @@ public class Blog implements Serializable {
     @Override
     public String toString() {
         return "Blog{" +
-            "category=" + getCategory() +
-            ", blogId='" + getBlogId() + "'" +
+            "compositeId=" + getCompositeId() +
             ", handle='" + getHandle() + "'" +
             ", content='" + getContent() + "'" +
             "}";

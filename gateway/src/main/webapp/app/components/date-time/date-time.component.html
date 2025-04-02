@@ -19,16 +19,7 @@
       <!-- Hours -->
       <mat-form-field appearance="outline" class="wide-box">
         <mat-label>Hours (01-12)</mat-label>
-        <input
-          matInput
-          type="number"
-          formControlName="hours"
-          placeholder="hh"
-          min="01"
-          max="12"
-          [value]="editForm.get('hours')?.value | number: '2.0'"
-          (input)="onInput($event, 'hours')"
-        />
+        <input matInput type="number" formControlName="hours" placeholder="hh" min="01" max="12" (input)="onInput($event, 'hours')" />
         <mat-error *ngIf="editForm.get('hours')?.hasError('required')"> Hours are required </mat-error>
         <mat-error *ngIf="editForm.get('hours')?.hasError('min')"> Hours must be at least 1 </mat-error>
         <mat-error *ngIf="editForm.get('hours')?.hasError('max')"> Hours cannot exceed 12 </mat-error>
@@ -37,16 +28,7 @@
       <!-- Minutes -->
       <mat-form-field appearance="outline" class="wide-box">
         <mat-label>Minutes (00-59)</mat-label>
-        <input
-          matInput
-          type="number"
-          formControlName="minutes"
-          placeholder="mm"
-          min="00"
-          max="59"
-          [value]="editForm.get('minutes')?.value | number: '2.0'"
-          (input)="onInput($event, 'minutes')"
-        />
+        <input matInput type="number" formControlName="minutes" placeholder="mm" min="00" max="59" (input)="onInput($event, 'minutes')" />
         <mat-error *ngIf="editForm.get('minutes')?.hasError('required')"> Minutes are required </mat-error>
         <mat-error *ngIf="editForm.get('minutes')?.hasError('min')"> Minutes must be at least 0 </mat-error>
         <mat-error *ngIf="editForm.get('minutes')?.hasError('max')"> Minutes cannot exceed 59 </mat-error>

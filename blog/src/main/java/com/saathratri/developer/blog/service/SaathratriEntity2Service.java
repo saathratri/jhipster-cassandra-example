@@ -5,7 +5,6 @@ import com.saathratri.developer.blog.service.dto.SaathratriEntity2DTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.UUID;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.blog.domain.SaathratriEntity2}.
@@ -58,25 +57,48 @@ public interface SaathratriEntity2Service {
     void delete(SaathratriEntity2Id id);
 
     List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeId(final UUID entityTypeId);
-
     List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAdded(
         final UUID entityTypeId,
         final Long yearOfDateAdded
     );
-
     List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDate(
         final UUID entityTypeId,
         final Long yearOfDateAdded,
         final Long arrivalDate
     );
-
     List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThan(
         final UUID entityTypeId,
         final Long yearOfDateAdded,
         final Long arrivalDate
     );
-
     List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThan(
+        final UUID entityTypeId,
+        final Long yearOfDateAdded,
+        final Long arrivalDate
+    );
+    Optional<SaathratriEntity2DTO> findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(
+        final UUID entityTypeId,
+        final Long yearOfDateAdded,
+        final Long arrivalDate,
+        final UUID blogId
+    );
+    List<
+        SaathratriEntity2DTO
+    > findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThan(
+        final UUID entityTypeId,
+        final Long yearOfDateAdded,
+        final Long arrivalDate,
+        final UUID blogId
+    );
+    List<
+        SaathratriEntity2DTO
+    > findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThan(
+        final UUID entityTypeId,
+        final Long yearOfDateAdded,
+        final Long arrivalDate,
+        final UUID blogId
+    );
+    SaathratriEntity2DTO findLatestByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDate(
         final UUID entityTypeId,
         final Long yearOfDateAdded,
         final Long arrivalDate

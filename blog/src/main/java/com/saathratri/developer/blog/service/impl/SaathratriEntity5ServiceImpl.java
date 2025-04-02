@@ -137,4 +137,26 @@ public class SaathratriEntity5ServiceImpl implements SaathratriEntity5Service {
             .map(saathratriEntity5Mapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
+    @Override
+    public Optional<
+        SaathratriEntity5DTO
+    > findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId(
+        final UUID organizationId,
+        final String entityType,
+        final UUID entityId,
+        final UUID addOnId
+    ) {
+        LOG.debug(
+            "Request to findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId(final UUID organizationId, final String entityType, final UUID entityId, final UUID addOnId) service in SaathratriEntity5ServiceImpl."
+        );
+        return saathratriEntity5Repository
+            .findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId(
+                organizationId,
+                entityType,
+                entityId,
+                addOnId
+            )
+            .map(saathratriEntity5Mapper::toDto);
+    }
 }

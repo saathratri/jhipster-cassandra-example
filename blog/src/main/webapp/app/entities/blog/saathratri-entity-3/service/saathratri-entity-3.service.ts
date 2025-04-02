@@ -13,7 +13,7 @@ export type PartialUpdateSaathratriEntity3 = Partial<ISaathratriEntity3> & Pick<
 type RestOf<T extends ISaathratriEntity3 | NewSaathratriEntity3> = Omit<T, 'departureDate' | 'tags'> & {
   compositeId: {};
   departureDate?: number | null;
-  tags?: string | null;
+  tags?: Set<string> | null;
 };
 
 export type RestSaathratriEntity3 = RestOf<ISaathratriEntity3>;
@@ -123,7 +123,7 @@ export class SaathratriEntity3Service {
         ...saathratriEntity3.compositeId,
       },
       departureDate: saathratriEntity3.departureDate ? saathratriEntity3.departureDate.valueOf() : null,
-    };
+    } as RestOf<T>;
   }
 
   protected convertDateFromServer(restSaathratriEntity3: RestSaathratriEntity3): ISaathratriEntity3 {

@@ -15,7 +15,10 @@ type RestOf<T extends ISaathratriEntity6 | NewSaathratriEntity6> = Omit<T, 'arri
     arrivalDate?: number | null;
   };
   departureDate?: number | null;
-  addOnDetailsBigInt?: number | null;
+  addOnDetailsText?: Record<string, string> | null;
+  addOnDetailsDecimal?: Record<string, number> | null;
+  addOnDetailsBoolean?: Record<string, boolean> | null;
+  addOnDetailsBigInt?: Record<string, dayjs.Dayjs> | null;
 };
 
 export type RestSaathratriEntity6 = RestOf<ISaathratriEntity6>;
@@ -127,8 +130,12 @@ export class SaathratriEntity6Service {
         arrivalDate: saathratriEntity6.compositeId.arrivalDate ? saathratriEntity6.compositeId.arrivalDate.valueOf() : null,
       },
       departureDate: saathratriEntity6.departureDate ? saathratriEntity6.departureDate.valueOf() : null,
-      addOnDetailsBigInt: saathratriEntity6.addOnDetailsBigInt ? saathratriEntity6.addOnDetailsBigInt.valueOf() : null,
-    };
+
+      addOnDetailsBigInt: saathratriEntity6.addOnDetailsBigInt
+        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          Object.fromEntries(Object.entries(saathratriEntity6.addOnDetailsBigInt).map(([k, v]) => [k, v?.valueOf()]))
+        : {},
+    } as RestOf<T>;
   }
 
   protected convertDateFromServer(restSaathratriEntity6: RestSaathratriEntity6): ISaathratriEntity6 {
@@ -143,7 +150,10 @@ export class SaathratriEntity6Service {
         createdTimeId: restSaathratriEntity6.compositeId.createdTimeId,
       },
       departureDate: restSaathratriEntity6.departureDate ? dayjs(restSaathratriEntity6.departureDate) : null,
-      addOnDetailsBigInt: restSaathratriEntity6.addOnDetailsBigInt ? dayjs(restSaathratriEntity6.addOnDetailsBigInt) : null,
+      addOnDetailsBigInt: restSaathratriEntity6.addOnDetailsBigInt
+        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          Object.fromEntries(Object.entries(restSaathratriEntity6.addOnDetailsBigInt).map(([k, v]) => [k, dayjs(v)]))
+        : {},
     };
   }
 

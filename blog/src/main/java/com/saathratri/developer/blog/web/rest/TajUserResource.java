@@ -55,6 +55,7 @@ public class TajUserResource {
     @PostMapping("")
     public ResponseEntity<TajUserDTO> createTajUser(@Valid @RequestBody TajUserDTO tajUserDTO) throws URISyntaxException {
         LOG.debug("REST request to save TajUser : {}", tajUserDTO);
+
         // Single-value Primary Key Code
         if (tajUserDTO.getId() == null) {
             throw new BadRequestAlertException("A new tajUser must have an ID", ENTITY_NAME, "idinvalid");

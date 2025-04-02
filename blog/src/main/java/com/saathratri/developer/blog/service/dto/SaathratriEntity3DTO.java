@@ -3,6 +3,7 @@ package com.saathratri.developer.blog.service.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link com.saathratri.developer.blog.domain.SaathratriEntity3} entity.
@@ -15,7 +16,7 @@ public class SaathratriEntity3DTO implements Serializable {
     private String entityDescription;
     private BigDecimal entityCost;
     private Long departureDate;
-    private String tags;
+    private Set<String> tags;
 
     public SaathratriEntity3DTO() {
         // Empty constructor needed for Jackson.
@@ -86,15 +87,15 @@ public class SaathratriEntity3DTO implements Serializable {
         return this;
     }
 
-    public String getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
-    public SaathratriEntity3DTO tags(String tags) {
+    public SaathratriEntity3DTO tags(Set<String> tags) {
         this.tags = tags;
         return this;
     }

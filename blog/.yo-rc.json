@@ -6,7 +6,7 @@
     "baseName": "blog",
     "blueprints": [
       {
-        "name": "generator-jhipster-cassandra-composite-primary-key",
+        "name": "generator-jhipster-cassandra",
         "version": "1.0.8"
       }
     ],
@@ -29,9 +29,9 @@
       "SaathratriEntity6"
     ],
     "jhipsterVersion": "8.7.3",
-    "jwtSecretKey": "MjI1MGQ5MjAyNmU1YTQzNTVkMzlmYmJiNTg4ZTA5MjY4MDhiYjk2OTYyZGZjZWNlYjNiOTg0YjMzNGQwOGM3ODQxNTk3NmJkZGMxNjRjNDYxZWQ0MWI0ODhjZTlhYTY0YzZlYTg4ODYyNzViMWYzMjNlZjQxY2JmNzljMTQ0OTc=",
+    "jwtSecretKey": "YWU0MGU3ZjFjZmZhNjk5ODg3ZGRhYWJhYTI4OTYyN2NhODkzMDQ0ZmZlMGVjYjFiZTYzNzU2MWI3NWE4ODM0MzRjYjRiM2E1NzEzYjRiNjg2ZjBjNWVmN2NkZmJhMmI3MWQ0NjJlYmNhZmIwM2IyNTljM2UwMDAzOTllZGQwOWI=",
     "languages": ["en"],
-    "lastLiquibaseTimestamp": 1743599976000,
+    "lastLiquibaseTimestamp": 1743602298000,
     "monorepository": true,
     "nativeLanguage": "en",
     "packageName": "com.saathratri.developer.blog",

@@ -169,10 +169,38 @@
               <td>{{ saathratriEntity6.customerUpdatedPhoneNumber }}</td>
               <td>{{ saathratriEntity6.customerEstimatedArrivalTime }}</td>
               <td>{{ saathratriEntity6.tinyUrlShortCode }}</td>
-              <td>{{ saathratriEntity6.addOnDetailsText }}</td>
-              <td>{{ saathratriEntity6.addOnDetailsDecimal }}</td>
-              <td>{{ saathratriEntity6.addOnDetailsBoolean }}</td>
-              <td>{{ saathratriEntity6.addOnDetailsBigInt | formatMediumDatetime }}</td>
+              <td>
+                <div *ngFor="let item of saathratriEntity6.addOnDetailsText | keyvalue">
+                  <dt>{{ item.key }}</dt>
+                  <dd>
+                    <td>{{ item.value }}</td>
+                  </dd>
+                </div>
+              </td>
+              <td>
+                <div *ngFor="let item of saathratriEntity6.addOnDetailsDecimal | keyvalue">
+                  <dt>{{ item.key }}</dt>
+                  <dd>
+                    <td>{{ item.value }}</td>
+                  </dd>
+                </div>
+              </td>
+              <td>
+                <div *ngFor="let item of saathratriEntity6.addOnDetailsBoolean | keyvalue">
+                  <dt>{{ item.key }}</dt>
+                  <dd>
+                    <td>{{ item.value }}</td>
+                  </dd>
+                </div>
+              </td>
+              <td>
+                <div *ngFor="let item of saathratriEntity6.addOnDetailsBigInt | keyvalue">
+                  <dt>{{ item.key }}</dt>
+                  <dd>
+                    <td>{{ item.value | formatMediumDatetime }}</td>
+                  </dd>
+                </div>
+              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a

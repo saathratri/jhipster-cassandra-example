@@ -5,7 +5,6 @@ import com.saathratri.developer.blog.service.dto.SaathratriEntity5DTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.UUID;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.blog.domain.SaathratriEntity5}.
@@ -58,15 +57,19 @@ public interface SaathratriEntity5Service {
     void delete(SaathratriEntity5Id id);
 
     List<SaathratriEntity5DTO> findAllByCompositeIdOrganizationId(final UUID organizationId);
-
     List<SaathratriEntity5DTO> findAllByCompositeIdOrganizationIdAndCompositeIdEntityType(
         final UUID organizationId,
         final String entityType
     );
-
     List<SaathratriEntity5DTO> findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityId(
         final UUID organizationId,
         final String entityType,
         final UUID entityId
+    );
+    Optional<SaathratriEntity5DTO> findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId(
+        final UUID organizationId,
+        final String entityType,
+        final UUID entityId,
+        final UUID addOnId
     );
 }

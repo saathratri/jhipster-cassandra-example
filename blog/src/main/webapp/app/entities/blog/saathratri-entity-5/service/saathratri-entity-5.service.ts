@@ -12,7 +12,10 @@ export type PartialUpdateSaathratriEntity5 = Partial<ISaathratriEntity5> & Pick<
 
 type RestOf<T extends ISaathratriEntity5 | NewSaathratriEntity5> = Omit<T, 'addOnDetailsBigInt'> & {
   compositeId: {};
-  addOnDetailsBigInt?: number | null;
+  addOnDetailsText?: Record<string, string> | null;
+  addOnDetailsDecimal?: Record<string, number> | null;
+  addOnDetailsBoolean?: Record<string, boolean> | null;
+  addOnDetailsBigInt?: Record<string, dayjs.Dayjs> | null;
 };
 
 export type RestSaathratriEntity5 = RestOf<ISaathratriEntity5>;
@@ -121,8 +124,12 @@ export class SaathratriEntity5Service {
       compositeId: {
         ...saathratriEntity5.compositeId,
       },
-      addOnDetailsBigInt: saathratriEntity5.addOnDetailsBigInt ? saathratriEntity5.addOnDetailsBigInt.valueOf() : null,
-    };
+
+      addOnDetailsBigInt: saathratriEntity5.addOnDetailsBigInt
+        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          Object.fromEntries(Object.entries(saathratriEntity5.addOnDetailsBigInt).map(([k, v]) => [k, v?.valueOf()]))
+        : {},
+    } as RestOf<T>;
   }
 
   protected convertDateFromServer(restSaathratriEntity5: RestSaathratriEntity5): ISaathratriEntity5 {
@@ -137,7 +144,10 @@ export class SaathratriEntity5Service {
 
         addOnId: restSaathratriEntity5.compositeId.addOnId,
       },
-      addOnDetailsBigInt: restSaathratriEntity5.addOnDetailsBigInt ? dayjs(restSaathratriEntity5.addOnDetailsBigInt) : null,
+      addOnDetailsBigInt: restSaathratriEntity5.addOnDetailsBigInt
+        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          Object.fromEntries(Object.entries(restSaathratriEntity5.addOnDetailsBigInt).map(([k, v]) => [k, dayjs(v)]))
+        : {},
     };
   }
 

@@ -3,6 +3,7 @@ package com.saathratri.developer.blog.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -18,6 +19,9 @@ public class SaathratriEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @Column("entity_id")
+    @CassandraType(type = CassandraType.Name.UUID)
     private UUID entityId;
 
     @Column("entity_name")
@@ -40,20 +44,20 @@ public class SaathratriEntity implements Serializable {
     @CassandraType(type = CassandraType.Name.TIMEUUID)
     private UUID createdTimeId;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public UUID getEntityId() {
         return this.entityId;
-    }
-
-    public SaathratriEntity entityId(UUID entityId) {
-        this.setEntityId(entityId);
-        return this;
     }
 
     public void setEntityId(UUID entityId) {
         this.entityId = entityId;
     }
+
+    public SaathratriEntity entityId(UUID entityId) {
+        this.entityId = entityId;
+        return this;
+    }
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public String getEntityName() {
         return this.entityName;

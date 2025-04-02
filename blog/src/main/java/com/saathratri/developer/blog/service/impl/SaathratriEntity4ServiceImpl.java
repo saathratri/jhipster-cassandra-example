@@ -104,4 +104,17 @@ public class SaathratriEntity4ServiceImpl implements SaathratriEntity4Service {
             .map(saathratriEntity4Mapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
+    @Override
+    public Optional<SaathratriEntity4DTO> findByCompositeIdOrganizationIdAndCompositeIdAttributeKey(
+        final UUID organizationId,
+        final String attributeKey
+    ) {
+        LOG.debug(
+            "Request to findByCompositeIdOrganizationIdAndCompositeIdAttributeKey(final UUID organizationId, final String attributeKey) service in SaathratriEntity4ServiceImpl."
+        );
+        return saathratriEntity4Repository
+            .findByCompositeIdOrganizationIdAndCompositeIdAttributeKey(organizationId, attributeKey)
+            .map(saathratriEntity4Mapper::toDto);
+    }
 }

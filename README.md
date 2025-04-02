@@ -3,8 +3,8 @@
 
 ### About this JHipster Example
 
-This code was generated using the JHipster blueprint `generator-jhipster-cassandra-composite-primary-key`. 
-The source code for the underlying JHipster blueprint is available at: https://github.com/amarpatel-xx/generator-jhipster-cassandra-composite-primary-key.
+This code was generated using the JHipster blueprint `generator-jhipster-cassandra`. 
+The source code for the underlying JHipster blueprint is available at: https://github.com/amarpatel-xx/generator-jhipster-cassandra.
 
 The blueprint for generating the composite primary key with Cassandra entities is open source software made with love by `Amar Premsaran Patel`.
 
@@ -66,7 +66,7 @@ Build Java Microservices using the Cassandra Composite Primary Key Blueprint
 
 1. To generate a microservices architecture with Cassandra composite primary key support, run the following command:
 ```console
-npm install -g generator-jhipster-cassandra-composite-primary-key
+npm install -g generator-jhipster-cassandra
 
 git clone https://github.com/amarpatel-xx/jhipster-cassandra-example.git
 
@@ -140,7 +140,7 @@ Notice the Blog and Post entities show the required composite primary key fields
 
 I hope you enjoyed this demo, and it helped you understand how to build better microservice architectures with composite primary keys.
 
-☕️ Find the code for the underlying blueprint for this example on GitHub: https://github.com/amarpatel-xx/generator-jhipster-cassandra-composite-primary-key
+☕️ Find the code for the underlying blueprint for this example on GitHub: https://github.com/amarpatel-xx/generator-jhipster-cassandra
 
 ☕️ Find the example code that uses the blueprint to generate a JHipster application on GitHub: https://github.com/amarpatel-xx/jhipster-cassandra-example
 

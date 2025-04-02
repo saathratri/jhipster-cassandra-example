@@ -58,6 +58,7 @@ public class SaathratriEntity5Resource {
     public ResponseEntity<SaathratriEntity5DTO> createSaathratriEntity5(@RequestBody SaathratriEntity5DTO saathratriEntity5DTO)
         throws URISyntaxException {
         LOG.debug("REST request to save SaathratriEntity5 : {}", saathratriEntity5DTO);
+
         // Composite Primary Key Code
         if (
             saathratriEntity5DTO.getCompositeId().getOrganizationId() == null ||
@@ -339,8 +340,9 @@ public class SaathratriEntity5Resource {
      * {@code GET /find-all-by-composite-id-organization-id/:organizationId}
      *
      *
-     * @param organizationId the Organization Id of the saathratriEntity5 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity5, or with status {@code 404 (Not Found)}.
+     * @param organizationId the Organization Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity5, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-organization-id")
     public List<SaathratriEntity5DTO> findAllByCompositeIdOrganizationId(
@@ -359,9 +361,10 @@ public class SaathratriEntity5Resource {
      * {@code GET /find-all-by-composite-id-organization-id-and-composite-id-entity-type/:organizationId/:entityType}
      *
      *
-     * @param organizationId the Organization Id of the saathratriEntity5 to retrieve.
-     * @param entityType the Entity Type of the saathratriEntity5 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity5, or with status {@code 404 (Not Found)}.
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param entityType the Entity Type of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity5, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-organization-id-and-composite-id-entity-type")
     public List<SaathratriEntity5DTO> findAllByCompositeIdOrganizationIdAndCompositeIdEntityType(
@@ -382,10 +385,11 @@ public class SaathratriEntity5Resource {
      * {@code GET /find-all-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id/:organizationId/:entityType/:entityId}
      *
      *
-     * @param organizationId the Organization Id of the saathratriEntity5 to retrieve.
-     * @param entityType the Entity Type of the saathratriEntity5 to retrieve.
-     * @param entityId the Entity Id of the saathratriEntity5 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity5, or with status {@code 404 (Not Found)}.
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param entityType the Entity Type of the entity to retrieve.
+     * @param entityId the Entity Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity5, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id")
     public List<SaathratriEntity5DTO> findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityId(
@@ -404,6 +408,43 @@ public class SaathratriEntity5Resource {
             organizationId,
             entityType,
             entityId
+        );
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id-and-composite-id-add-on-id/:organizationId/:entityType/:entityId/:addOnId}
+     *
+     *
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param entityType the Entity Type of the entity to retrieve.
+     * @param entityId the Entity Id of the entity to retrieve.
+     * @param addOnId the Add On Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity5, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/find-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id-and-composite-id-add-on-id")
+    public Optional<
+        SaathratriEntity5DTO
+    > findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId(
+        @RequestParam(name = "organizationId", required = true) final UUID organizationId,
+        @RequestParam(name = "entityType", required = true) final String entityType,
+        @RequestParam(name = "entityId", required = true) final UUID entityId,
+        @RequestParam(name = "addOnId", required = true) final UUID addOnId
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId method for SaathratriEntity5s with parameteres organizationId: {}, entityType: {}, entityId: {}, addOnId: {}",
+            organizationId,
+            entityType,
+            entityId,
+            addOnId
+        );
+        return saathratriEntity5Service.findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId(
+            organizationId,
+            entityType,
+            entityId,
+            addOnId
         );
     }
 

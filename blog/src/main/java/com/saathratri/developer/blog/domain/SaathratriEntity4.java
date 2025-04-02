@@ -1,7 +1,7 @@
 package com.saathratri.developer.blog.domain;
 
 import java.io.Serializable;
-import java.util.UUID;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -17,41 +17,27 @@ public class SaathratriEntity4 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private UUID organizationId;
-
-    private String attributeKey;
+    @Id
+    private SaathratriEntity4Id compositeId;
 
     @Column("attribute_value")
     @CassandraType(type = CassandraType.Name.TEXT)
     private String attributeValue;
 
+    public SaathratriEntity4Id getCompositeId() {
+        return this.compositeId;
+    }
+
+    public void setCompositeId(SaathratriEntity4Id compositeId) {
+        this.compositeId = compositeId;
+    }
+
+    public SaathratriEntity4 compositeId(SaathratriEntity4Id compositeId) {
+        this.compositeId = compositeId;
+        return this;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
-    public UUID getOrganizationId() {
-        return this.organizationId;
-    }
-
-    public SaathratriEntity4 organizationId(UUID organizationId) {
-        this.setOrganizationId(organizationId);
-        return this;
-    }
-
-    public void setOrganizationId(UUID organizationId) {
-        this.organizationId = organizationId;
-    }
-
-    public String getAttributeKey() {
-        return this.attributeKey;
-    }
-
-    public SaathratriEntity4 attributeKey(String attributeKey) {
-        this.setAttributeKey(attributeKey);
-        return this;
-    }
-
-    public void setAttributeKey(String attributeKey) {
-        this.attributeKey = attributeKey;
-    }
 
     public String getAttributeValue() {
         return this.attributeValue;
@@ -76,7 +62,7 @@ public class SaathratriEntity4 implements Serializable {
         if (!(o instanceof SaathratriEntity4)) {
             return false;
         }
-        return getOrganizationId() != null && getOrganizationId().equals(((SaathratriEntity4) o).getOrganizationId());
+        return getCompositeId() != null && getCompositeId().equals(((SaathratriEntity4) o).getCompositeId());
     }
 
     @Override
@@ -89,8 +75,7 @@ public class SaathratriEntity4 implements Serializable {
     @Override
     public String toString() {
         return "SaathratriEntity4{" +
-            "organizationId=" + getOrganizationId() +
-            ", attributeKey='" + getAttributeKey() + "'" +
+            "compositeId=" + getCompositeId() +
             ", attributeValue='" + getAttributeValue() + "'" +
             "}";
     }

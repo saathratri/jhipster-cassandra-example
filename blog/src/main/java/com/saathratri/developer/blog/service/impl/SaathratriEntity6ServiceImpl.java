@@ -171,4 +171,93 @@ public class SaathratriEntity6ServiceImpl implements SaathratriEntity6Service {
             .map(saathratriEntity6Mapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
+    @Override
+    public Optional<
+        SaathratriEntity6DTO
+    > findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId(
+        final UUID organizationId,
+        final Long arrivalDate,
+        final String accountNumber,
+        final UUID createdTimeId
+    ) {
+        LOG.debug(
+            "Request to findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId(final UUID organizationId, final Long arrivalDate, final String accountNumber, final UUID createdTimeId) service in SaathratriEntity6ServiceImpl."
+        );
+        return saathratriEntity6Repository
+            .findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId(
+                organizationId,
+                arrivalDate,
+                accountNumber,
+                createdTimeId
+            )
+            .map(saathratriEntity6Mapper::toDto);
+    }
+
+    @Override
+    public List<
+        SaathratriEntity6DTO
+    > findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThan(
+        final UUID organizationId,
+        final Long arrivalDate,
+        final String accountNumber,
+        final UUID createdTimeId
+    ) {
+        LOG.debug(
+            "Request to findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThan(final UUID organizationId, final Long arrivalDate, final String accountNumber, final UUID createdTimeId) service in SaathratriEntity6ServiceImpl."
+        );
+        return saathratriEntity6Repository
+            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThan(
+                organizationId,
+                arrivalDate,
+                accountNumber,
+                createdTimeId
+            )
+            .stream()
+            .map(saathratriEntity6Mapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public List<
+        SaathratriEntity6DTO
+    > findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThan(
+        final UUID organizationId,
+        final Long arrivalDate,
+        final String accountNumber,
+        final UUID createdTimeId
+    ) {
+        LOG.debug(
+            "Request to findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThan(final UUID organizationId, final Long arrivalDate, final String accountNumber, final UUID createdTimeId) service in SaathratriEntity6ServiceImpl."
+        );
+        return saathratriEntity6Repository
+            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThan(
+                organizationId,
+                arrivalDate,
+                accountNumber,
+                createdTimeId
+            )
+            .stream()
+            .map(saathratriEntity6Mapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public SaathratriEntity6DTO findLatestByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumber(
+        final UUID organizationId,
+        final Long arrivalDate,
+        final String accountNumber
+    ) {
+        LOG.debug(
+            "Request to findLatestByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumber(final UUID organizationId, final Long arrivalDate, final String accountNumber) service in SaathratriEntity6ServiceImpl."
+        );
+        return saathratriEntity6Repository
+            .findLatestByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumber(
+                organizationId,
+                arrivalDate,
+                accountNumber
+            )
+            .map(saathratriEntity6Mapper::toDto)
+            .orElse(null); // Return null if no record found
+    }
 }

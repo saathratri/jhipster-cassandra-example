@@ -12,10 +12,10 @@ CREATE TABLE IF NOT EXISTS saathratri_entity_6 (
     customer_updated_phone_number text,
     customer_estimated_arrival_time text,
     tiny_url_short_code text,
-    add_on_details_text text,
-    add_on_details_decimal decimal,
-    add_on_details_boolean boolean,
-    add_on_details_big_int bigint,
+      add_on_details_text map<text, text>,
+      add_on_details_decimal map<text, decimal>,
+      add_on_details_boolean map<text, boolean>,
+          add_on_details_big_int map<text, bigint>,  
   primary key (
     (organization_id),
  arrival_date, account_number, created_time_id  ))

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.UUID;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Column;
@@ -21,6 +22,9 @@ public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @Column("id")
+    @CassandraType(type = CassandraType.Name.UUID)
     private UUID id;
 
     @NotNull
@@ -42,28 +46,25 @@ public class Product implements Serializable {
     @CassandraType(type = CassandraType.Name.BLOB)
     private ByteBuffer image;
 
-    @Column("image_content_type")
-    private String imageContentType;
-
     @NotNull
     @Column("added_date")
     @CassandraType(type = CassandraType.Name.BIGINT)
     private Long addedDate;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public UUID getId() {
         return this.id;
-    }
-
-    public Product id(UUID id) {
-        this.setId(id);
-        return this;
     }
 
     public void setId(UUID id) {
         this.id = id;
     }
+
+    public Product id(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public String getTitle() {
         return this.title;

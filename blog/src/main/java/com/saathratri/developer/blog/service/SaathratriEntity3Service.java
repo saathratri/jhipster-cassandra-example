@@ -4,6 +4,7 @@ import com.saathratri.developer.blog.domain.SaathratriEntity3Id;
 import com.saathratri.developer.blog.service.dto.SaathratriEntity3DTO;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.blog.domain.SaathratriEntity3}.
@@ -56,4 +57,17 @@ public interface SaathratriEntity3Service {
     void delete(SaathratriEntity3Id id);
 
     List<SaathratriEntity3DTO> findAllByCompositeIdEntityType(final String entityType);
+    Optional<SaathratriEntity3DTO> findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(
+        final String entityType,
+        final UUID createdTimeId
+    );
+    List<SaathratriEntity3DTO> findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThan(
+        final String entityType,
+        final UUID createdTimeId
+    );
+    List<SaathratriEntity3DTO> findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThan(
+        final String entityType,
+        final UUID createdTimeId
+    );
+    SaathratriEntity3DTO findLatestByCompositeIdEntityType(final String entityType);
 }

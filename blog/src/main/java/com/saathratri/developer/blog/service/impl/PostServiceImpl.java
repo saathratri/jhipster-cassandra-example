@@ -9,6 +9,7 @@ import com.saathratri.developer.blog.service.mapper.PostMapper;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,5 +139,19 @@ public class PostServiceImpl implements PostService {
             .stream()
             .map(postMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public Optional<PostDTO> findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId(
+        final Long createdDate,
+        final Long addedDateTime,
+        final UUID postId
+    ) {
+        LOG.debug(
+            "Request to findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId(final Long createdDate, final Long addedDateTime, final UUID postId) service in PostServiceImpl."
+        );
+        return postRepository
+            .findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId(createdDate, addedDateTime, postId)
+            .map(postMapper::toDto);
     }
 }

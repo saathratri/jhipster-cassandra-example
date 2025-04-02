@@ -2,7 +2,7 @@ package com.saathratri.developer.blog.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -18,13 +18,8 @@ public class SaathratriEntity2 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private UUID entityTypeId;
-
-    private Long yearOfDateAdded;
-
-    private Long arrivalDate;
-
-    private UUID blogId;
+    @Id
+    private SaathratriEntity2Id compositeId;
 
     @Column("entity_name")
     @CassandraType(type = CassandraType.Name.TEXT)
@@ -42,59 +37,20 @@ public class SaathratriEntity2 implements Serializable {
     @CassandraType(type = CassandraType.Name.BIGINT)
     private Long departureDate;
 
+    public SaathratriEntity2Id getCompositeId() {
+        return this.compositeId;
+    }
+
+    public void setCompositeId(SaathratriEntity2Id compositeId) {
+        this.compositeId = compositeId;
+    }
+
+    public SaathratriEntity2 compositeId(SaathratriEntity2Id compositeId) {
+        this.compositeId = compositeId;
+        return this;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
-    public UUID getEntityTypeId() {
-        return this.entityTypeId;
-    }
-
-    public SaathratriEntity2 entityTypeId(UUID entityTypeId) {
-        this.setEntityTypeId(entityTypeId);
-        return this;
-    }
-
-    public void setEntityTypeId(UUID entityTypeId) {
-        this.entityTypeId = entityTypeId;
-    }
-
-    public Long getYearOfDateAdded() {
-        return this.yearOfDateAdded;
-    }
-
-    public SaathratriEntity2 yearOfDateAdded(Long yearOfDateAdded) {
-        this.setYearOfDateAdded(yearOfDateAdded);
-        return this;
-    }
-
-    public void setYearOfDateAdded(Long yearOfDateAdded) {
-        this.yearOfDateAdded = yearOfDateAdded;
-    }
-
-    public Long getArrivalDate() {
-        return this.arrivalDate;
-    }
-
-    public SaathratriEntity2 arrivalDate(Long arrivalDate) {
-        this.setArrivalDate(arrivalDate);
-        return this;
-    }
-
-    public void setArrivalDate(Long arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
-    public UUID getBlogId() {
-        return this.blogId;
-    }
-
-    public SaathratriEntity2 blogId(UUID blogId) {
-        this.setBlogId(blogId);
-        return this;
-    }
-
-    public void setBlogId(UUID blogId) {
-        this.blogId = blogId;
-    }
 
     public String getEntityName() {
         return this.entityName;
@@ -158,7 +114,7 @@ public class SaathratriEntity2 implements Serializable {
         if (!(o instanceof SaathratriEntity2)) {
             return false;
         }
-        return getEntityTypeId() != null && getEntityTypeId().equals(((SaathratriEntity2) o).getEntityTypeId());
+        return getCompositeId() != null && getCompositeId().equals(((SaathratriEntity2) o).getCompositeId());
     }
 
     @Override
@@ -171,10 +127,7 @@ public class SaathratriEntity2 implements Serializable {
     @Override
     public String toString() {
         return "SaathratriEntity2{" +
-            "entityTypeId=" + getEntityTypeId() +
-            ", yearOfDateAdded=" + getYearOfDateAdded() +
-            ", arrivalDate=" + getArrivalDate() +
-            ", blogId='" + getBlogId() + "'" +
+            "compositeId=" + getCompositeId() +
             ", entityName='" + getEntityName() + "'" +
             ", entityDescription='" + getEntityDescription() + "'" +
             ", entityCost=" + getEntityCost() +

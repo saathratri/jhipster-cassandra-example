@@ -37,6 +37,18 @@
               data-cy="createdTimeId"
               formControlName="createdTimeId"
             />
+            <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateTimeUUID('compositeId.createdTimeId')">
+              Generate
+            </button>
+            <button
+              *ngIf="isNew"
+              type="button"
+              class="btn btn-danger"
+              (click)="reset('compositeId.createdTimeId')"
+              [disabled]="isResetDisabled['compositeId.createdTimeId']"
+            >
+              Reset
+            </button>
           </div>
         </div>
 
@@ -96,7 +108,7 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_tags" jhiTranslate="blogApp.blogSaathratriEntity3.tags">Tags</label>
-          <input type="text" class="form-control" name="tags" id="field_tags" data-cy="tags" formControlName="tags" />
+          <app-set-component [inputFields]="inputFieldsTags" (dataChange)="handleTagsInputChange($event)"> </app-set-component>
         </div>
       </div>
 

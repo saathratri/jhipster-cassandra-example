@@ -4,7 +4,6 @@ import com.saathratri.developer.blog.service.dto.SaathratriEntityDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.UUID;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.blog.domain.SaathratriEntity}.

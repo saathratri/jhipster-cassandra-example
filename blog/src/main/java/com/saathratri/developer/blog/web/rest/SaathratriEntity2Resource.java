@@ -1,5 +1,6 @@
 package com.saathratri.developer.blog.web.rest;
 
+import com.datastax.oss.driver.api.core.uuid.Uuids;
 import com.saathratri.developer.blog.domain.SaathratriEntity2Id;
 import com.saathratri.developer.blog.repository.SaathratriEntity2Repository;
 import com.saathratri.developer.blog.service.SaathratriEntity2Service;
@@ -58,7 +59,13 @@ public class SaathratriEntity2Resource {
     public ResponseEntity<SaathratriEntity2DTO> createSaathratriEntity2(@RequestBody SaathratriEntity2DTO saathratriEntity2DTO)
         throws URISyntaxException {
         LOG.debug("REST request to save SaathratriEntity2 : {}", saathratriEntity2DTO);
+
         // Composite Primary Key Code
+
+        // Generate a TimeUUID for the Primary Key composite fields.
+
+        saathratriEntity2DTO.getCompositeId().setBlogId(Uuids.timeBased());
+
         if (
             saathratriEntity2DTO.getCompositeId().getEntityTypeId() == null ||
             saathratriEntity2DTO.getCompositeId().getYearOfDateAdded() == null ||
@@ -339,8 +346,9 @@ public class SaathratriEntity2Resource {
      * {@code GET /find-all-by-composite-id-entity-type-id/:entityTypeId}
      *
      *
-     * @param entityTypeId the Entity Type Id of the saathratriEntity2 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity2, or with status {@code 404 (Not Found)}.
+     * @param entityTypeId the Entity Type Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity2, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-entity-type-id")
     public List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeId(
@@ -359,9 +367,10 @@ public class SaathratriEntity2Resource {
      * {@code GET /find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added/:entityTypeId/:yearOfDateAdded}
      *
      *
-     * @param entityTypeId the Entity Type Id of the saathratriEntity2 to retrieve.
-     * @param yearOfDateAdded the Year Of Date Added of the saathratriEntity2 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity2, or with status {@code 404 (Not Found)}.
+     * @param entityTypeId the Entity Type Id of the entity to retrieve.
+     * @param yearOfDateAdded the Year Of Date Added of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity2, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added")
     public List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAdded(
@@ -382,10 +391,11 @@ public class SaathratriEntity2Resource {
      * {@code GET /find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date/:entityTypeId/:yearOfDateAdded/:arrivalDate}
      *
      *
-     * @param entityTypeId the Entity Type Id of the saathratriEntity2 to retrieve.
-     * @param yearOfDateAdded the Year Of Date Added of the saathratriEntity2 to retrieve.
-     * @param arrivalDate the Arrival Date of the saathratriEntity2 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity2, or with status {@code 404 (Not Found)}.
+     * @param entityTypeId the Entity Type Id of the entity to retrieve.
+     * @param yearOfDateAdded the Year Of Date Added of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity2, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date")
     public List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDate(
@@ -412,10 +422,11 @@ public class SaathratriEntity2Resource {
      * {@code GET /find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-less-than/:entityTypeId/:yearOfDateAdded/:arrivalDate}
      *
      *
-     * @param entityTypeId the Entity Type Id of the saathratriEntity2 to retrieve.
-     * @param yearOfDateAdded the Year Of Date Added of the saathratriEntity2 to retrieve.
-     * @param arrivalDate the Arrival Date of the saathratriEntity2 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity2, or with status {@code 404 (Not Found)}.
+     * @param entityTypeId the Entity Type Id of the entity to retrieve.
+     * @param yearOfDateAdded the Year Of Date Added of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity2, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-less-than")
     public List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThan(
@@ -442,10 +453,11 @@ public class SaathratriEntity2Resource {
      * {@code GET /find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-greater-than/:entityTypeId/:yearOfDateAdded/:arrivalDate}
      *
      *
-     * @param entityTypeId the Entity Type Id of the saathratriEntity2 to retrieve.
-     * @param yearOfDateAdded the Year Of Date Added of the saathratriEntity2 to retrieve.
-     * @param arrivalDate the Arrival Date of the saathratriEntity2 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity2, or with status {@code 404 (Not Found)}.
+     * @param entityTypeId the Entity Type Id of the entity to retrieve.
+     * @param yearOfDateAdded the Year Of Date Added of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity2, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-greater-than")
     public List<SaathratriEntity2DTO> findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThan(
@@ -461,6 +473,154 @@ public class SaathratriEntity2Resource {
             arrivalDate
         );
         return saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThan(
+            entityTypeId,
+            yearOfDateAdded,
+            arrivalDate
+        );
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id/:entityTypeId/:yearOfDateAdded/:arrivalDate/:blogId}
+     *
+     *
+     * @param entityTypeId the Entity Type Id of the entity to retrieve.
+     * @param yearOfDateAdded the Year Of Date Added of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     * @param blogId the Blog Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity2, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(
+        "/find-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id"
+    )
+    public Optional<
+        SaathratriEntity2DTO
+    > findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(
+        @RequestParam(name = "entityTypeId", required = true) final UUID entityTypeId,
+        @RequestParam(name = "yearOfDateAdded", required = true) final Long yearOfDateAdded,
+        @RequestParam(name = "arrivalDate", required = true) final Long arrivalDate,
+        @RequestParam(name = "blogId", required = true) final UUID blogId
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId method for SaathratriEntity2s with parameteres entityTypeId: {}, yearOfDateAdded: {}, arrivalDate: {}, blogId: {}",
+            entityTypeId,
+            yearOfDateAdded,
+            arrivalDate,
+            blogId
+        );
+        return saathratriEntity2Service.findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(
+            entityTypeId,
+            yearOfDateAdded,
+            arrivalDate,
+            blogId
+        );
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-less-than/:entityTypeId/:yearOfDateAdded/:arrivalDate/:blogId}
+     *
+     *
+     * @param entityTypeId the Entity Type Id of the entity to retrieve.
+     * @param yearOfDateAdded the Year Of Date Added of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     * @param blogId the Blog Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity2, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(
+        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-less-than"
+    )
+    public List<
+        SaathratriEntity2DTO
+    > findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThan(
+        @RequestParam(name = "entityTypeId", required = true) final UUID entityTypeId,
+        @RequestParam(name = "yearOfDateAdded", required = true) final Long yearOfDateAdded,
+        @RequestParam(name = "arrivalDate", required = true) final Long arrivalDate,
+        @RequestParam(name = "blogId", required = true) final UUID blogId
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThan method for SaathratriEntity2s with parameteres entityTypeId: {}, yearOfDateAdded: {}, arrivalDate: {}, blogId: {}",
+            entityTypeId,
+            yearOfDateAdded,
+            arrivalDate,
+            blogId
+        );
+        return saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThan(
+            entityTypeId,
+            yearOfDateAdded,
+            arrivalDate,
+            blogId
+        );
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-greater-than/:entityTypeId/:yearOfDateAdded/:arrivalDate/:blogId}
+     *
+     *
+     * @param entityTypeId the Entity Type Id of the entity to retrieve.
+     * @param yearOfDateAdded the Year Of Date Added of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     * @param blogId the Blog Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity2, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(
+        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-greater-than"
+    )
+    public List<
+        SaathratriEntity2DTO
+    > findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThan(
+        @RequestParam(name = "entityTypeId", required = true) final UUID entityTypeId,
+        @RequestParam(name = "yearOfDateAdded", required = true) final Long yearOfDateAdded,
+        @RequestParam(name = "arrivalDate", required = true) final Long arrivalDate,
+        @RequestParam(name = "blogId", required = true) final UUID blogId
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThan method for SaathratriEntity2s with parameteres entityTypeId: {}, yearOfDateAdded: {}, arrivalDate: {}, blogId: {}",
+            entityTypeId,
+            yearOfDateAdded,
+            arrivalDate,
+            blogId
+        );
+        return saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThan(
+            entityTypeId,
+            yearOfDateAdded,
+            arrivalDate,
+            blogId
+        );
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-latest-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date/:entityTypeId/:yearOfDateAdded/:arrivalDate}
+     *
+     *
+     * @param entityTypeId the Entity Type Id of the entity to retrieve.
+     * @param yearOfDateAdded the Year Of Date Added of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity2, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/find-latest-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date")
+    public SaathratriEntity2DTO findLatestByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDate(
+        @RequestParam(name = "entityTypeId", required = true) final UUID entityTypeId,
+        @RequestParam(name = "yearOfDateAdded", required = true) final Long yearOfDateAdded,
+        @RequestParam(name = "arrivalDate", required = true) final Long arrivalDate
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findLatestByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDate method for SaathratriEntity2s with parameteres entityTypeId: {}, yearOfDateAdded: {}, arrivalDate: {}",
+            entityTypeId,
+            yearOfDateAdded,
+            arrivalDate
+        );
+        return saathratriEntity2Service.findLatestByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDate(
             entityTypeId,
             yearOfDateAdded,
             arrivalDate

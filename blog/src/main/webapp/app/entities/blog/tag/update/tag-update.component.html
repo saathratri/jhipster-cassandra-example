@@ -11,6 +11,8 @@
         <div class="mb-3">
           <label class="form-label" for="field_id" jhiTranslate="blogApp.blogTag.id">Id</label>
           <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" />
+          <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateUUID('id')">Generate</button>
+          <button *ngIf="isNew" type="button" class="btn btn-danger" (click)="reset('id')" [disabled]="isResetDisabled['id']">Reset</button>
         </div>
 
         <div class="mb-3">

@@ -22,7 +22,7 @@ type SaathratriEntity5FormGroupInput = ISaathratriEntity5 | PartialWithRequiredK
  * Type that converts some properties for forms.
  */
 type FormValueOf<T extends ISaathratriEntity5 | NewSaathratriEntity5> = Omit<T, 'addOnDetailsBigInt'> & {
-  addOnDetailsBigInt?: string | null;
+  addOnDetailsBigInt: Record<string, string> | null | undefined;
 };
 
 type SaathratriEntity5FormRawValue = FormValueOf<ISaathratriEntity5>;
@@ -133,7 +133,6 @@ export class SaathratriEntity5FormService {
         entityId: null,
         addOnId: null,
       },
-      addOnDetailsBoolean: false,
     };
   }
 
@@ -145,7 +144,11 @@ export class SaathratriEntity5FormService {
       compositeId: {
         ...rawSaathratriEntity5.compositeId,
       },
-      addOnDetailsBigInt: dayjs(rawSaathratriEntity5.addOnDetailsBigInt, DATE_TIME_FORMAT),
+      addOnDetailsBigInt: rawSaathratriEntity5.addOnDetailsBigInt
+        ? Object.fromEntries(
+            Object.entries(rawSaathratriEntity5.addOnDetailsBigInt).map(([key, value]) => [key, dayjs(value, DATE_TIME_FORMAT)]),
+          )
+        : {},
     };
   }
 
@@ -157,7 +160,11 @@ export class SaathratriEntity5FormService {
       compositeId: {
         ...saathratriEntity5.compositeId,
       },
-      addOnDetailsBigInt: saathratriEntity5.addOnDetailsBigInt ? saathratriEntity5.addOnDetailsBigInt.format(DATE_TIME_FORMAT) : undefined,
+      addOnDetailsBigInt: saathratriEntity5.addOnDetailsBigInt
+        ? Object.fromEntries(
+            Object.entries(saathratriEntity5.addOnDetailsBigInt).map(([key, value]) => [key, value.format(DATE_TIME_FORMAT)]),
+          )
+        : {},
     };
   }
 }

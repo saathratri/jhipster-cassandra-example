@@ -2,7 +2,6 @@ package com.saathratri.developer.blog.web.rest;
 
 import static com.saathratri.developer.blog.domain.SaathratriEntity6Asserts.*;
 import static com.saathratri.developer.blog.web.rest.TestUtil.createUpdateProxyForBean;
-import static com.saathratri.developer.blog.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -17,6 +16,8 @@ import com.saathratri.developer.blog.repository.SaathratriEntity6Repository;
 import com.saathratri.developer.blog.service.dto.SaathratriEntity6DTO;
 import com.saathratri.developer.blog.service.mapper.SaathratriEntity6Mapper;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
@@ -72,17 +73,37 @@ class SaathratriEntity6ResourceIT {
     private static final String DEFAULT_TINY_URL_SHORT_CODE = "AAAAAAAAAA";
     private static final String UPDATED_TINY_URL_SHORT_CODE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_ADD_ON_DETAILS_TEXT = "AAAAAAAAAA";
-    private static final String UPDATED_ADD_ON_DETAILS_TEXT = "BBBBBBBBBB";
+    private static final Map<String, String> DEFAULT_ADD_ON_DETAILS_TEXT = new HashMap<String, String>();
+    private static final Map<String, String> UPDATED_ADD_ON_DETAILS_TEXT = new HashMap<String, String>();
 
-    private static final BigDecimal DEFAULT_ADD_ON_DETAILS_DECIMAL = new BigDecimal(1);
-    private static final BigDecimal UPDATED_ADD_ON_DETAILS_DECIMAL = new BigDecimal(2);
+    static {
+        DEFAULT_ADD_ON_DETAILS_TEXT.put("AAAAAAAAAA", "1");
+        UPDATED_ADD_ON_DETAILS_TEXT.put("AAAAAAAAAA", "2");
+    }
 
-    private static final Boolean DEFAULT_ADD_ON_DETAILS_BOOLEAN = false;
-    private static final Boolean UPDATED_ADD_ON_DETAILS_BOOLEAN = true;
+    private static final Map<String, BigDecimal> DEFAULT_ADD_ON_DETAILS_DECIMAL = new HashMap<String, BigDecimal>();
+    private static final Map<String, BigDecimal> UPDATED_ADD_ON_DETAILS_DECIMAL = new HashMap<String, BigDecimal>();
 
-    private static final Long DEFAULT_ADD_ON_DETAILS_BIG_INT = 1L;
-    private static final Long UPDATED_ADD_ON_DETAILS_BIG_INT = 2L;
+    static {
+        DEFAULT_ADD_ON_DETAILS_DECIMAL.put("AAAAAAAAAA", new BigDecimal(1));
+        UPDATED_ADD_ON_DETAILS_DECIMAL.put("AAAAAAAAAA", new BigDecimal(2));
+    }
+
+    private static final Map<String, Boolean> DEFAULT_ADD_ON_DETAILS_BOOLEAN = new HashMap<String, Boolean>();
+    private static final Map<String, Boolean> UPDATED_ADD_ON_DETAILS_BOOLEAN = new HashMap<String, Boolean>();
+
+    static {
+        DEFAULT_ADD_ON_DETAILS_BOOLEAN.put("AAAAAAAAAA", false);
+        UPDATED_ADD_ON_DETAILS_BOOLEAN.put("AAAAAAAAAA", true);
+    }
+
+    private static final Map<String, Long> DEFAULT_ADD_ON_DETAILS_BIG_INT = new HashMap<String, Long>();
+    private static final Map<String, Long> UPDATED_ADD_ON_DETAILS_BIG_INT = new HashMap<String, Long>();
+
+    static {
+        DEFAULT_ADD_ON_DETAILS_BIG_INT.put("AAAAAAAAAA", 1L);
+        UPDATED_ADD_ON_DETAILS_BIG_INT.put("AAAAAAAAAA", 2L);
+    }
 
     private static final String ENTITY_API_URL = "/api/saathratri-entity-6-s";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{organizationId}";
@@ -127,10 +148,34 @@ class SaathratriEntity6ResourceIT {
             .customerUpdatedPhoneNumber("customerUpdatedPhoneNumber1")
             .customerEstimatedArrivalTime("customerEstimatedArrivalTime1")
             .tinyUrlShortCode("tinyUrlShortCode1")
-            .addOnDetailsText("addOnDetailsText1")
-            .addOnDetailsDecimal(new BigDecimal(1))
-            .addOnDetailsBoolean(false)
-            .addOnDetailsBigInt(1L);
+            .addOnDetailsText(
+                new java.util.HashMap<String, String>() {
+                    {
+                        put("addOnDetailsText1", "addOnDetailsText1");
+                    }
+                }
+            )
+            .addOnDetailsDecimal(
+                new java.util.HashMap<String, BigDecimal>() {
+                    {
+                        put("addOnDetailsDecimal1", new BigDecimal(1));
+                    }
+                }
+            )
+            .addOnDetailsBoolean(
+                new java.util.HashMap<String, Boolean>() {
+                    {
+                        put("addOnDetailsBoolean1", false);
+                    }
+                }
+            )
+            .addOnDetailsBigInt(
+                new java.util.HashMap<String, Long>() {
+                    {
+                        put("addOnDetailsBigInt1", 1L);
+                    }
+                }
+            );
         saathratriEntity6.setCompositeId(
             new SaathratriEntity6Id(DEFAULT_ORGANIZATION_ID, DEFAULT_ARRIVAL_DATE, DEFAULT_ACCOUNT_NUMBER, DEFAULT_CREATED_TIME_ID)
         );
@@ -160,10 +205,34 @@ class SaathratriEntity6ResourceIT {
             .customerUpdatedPhoneNumber("customerUpdatedPhoneNumber1")
             .customerEstimatedArrivalTime("customerEstimatedArrivalTime1")
             .tinyUrlShortCode("tinyUrlShortCode1")
-            .addOnDetailsText("addOnDetailsText1")
-            .addOnDetailsDecimal(new BigDecimal(1))
-            .addOnDetailsBoolean(false)
-            .addOnDetailsBigInt(1L);
+            .addOnDetailsText(
+                new java.util.HashMap<String, String>() {
+                    {
+                        put("addOnDetailsText1", "addOnDetailsText1");
+                    }
+                }
+            )
+            .addOnDetailsDecimal(
+                new java.util.HashMap<String, BigDecimal>() {
+                    {
+                        put("addOnDetailsDecimal1", new BigDecimal(1));
+                    }
+                }
+            )
+            .addOnDetailsBoolean(
+                new java.util.HashMap<String, Boolean>() {
+                    {
+                        put("addOnDetailsBoolean1", false);
+                    }
+                }
+            )
+            .addOnDetailsBigInt(
+                new java.util.HashMap<String, Long>() {
+                    {
+                        put("addOnDetailsBigInt1", 1L);
+                    }
+                }
+            );
         saathratriEntity6.setCompositeId(
             new SaathratriEntity6Id(UPDATED_ORGANIZATION_ID, UPDATED_ARRIVAL_DATE, UPDATED_ACCOUNT_NUMBER, UPDATED_CREATED_TIME_ID)
         );
@@ -262,10 +331,10 @@ class SaathratriEntity6ResourceIT {
             .andExpect(jsonPath("$.[*].customerUpdatedPhoneNumber").value(hasItem(DEFAULT_CUSTOMER_UPDATED_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].customerEstimatedArrivalTime").value(hasItem(DEFAULT_CUSTOMER_ESTIMATED_ARRIVAL_TIME)))
             .andExpect(jsonPath("$.[*].tinyUrlShortCode").value(hasItem(DEFAULT_TINY_URL_SHORT_CODE)))
-            .andExpect(jsonPath("$.[*].addOnDetailsText").value(hasItem(DEFAULT_ADD_ON_DETAILS_TEXT)))
-            .andExpect(jsonPath("$.[*].addOnDetailsDecimal").value(hasItem(sameNumber(DEFAULT_ADD_ON_DETAILS_DECIMAL))))
-            .andExpect(jsonPath("$.[*].addOnDetailsBoolean").value(hasItem(DEFAULT_ADD_ON_DETAILS_BOOLEAN.booleanValue())))
-            .andExpect(jsonPath("$.[*].addOnDetailsBigInt").value(hasItem(DEFAULT_ADD_ON_DETAILS_BIG_INT.intValue())));
+            .andExpect(jsonPath("$.[*].addOnDetailsText['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_TEXT.get("AAAAAAAAAA")))
+            .andExpect(jsonPath("$.[*].addOnDetailsDecimal['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_DECIMAL.get("AAAAAAAAAA")))
+            .andExpect(jsonPath("$.[*].addOnDetailsBoolean['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BOOLEAN.get("AAAAAAAAAA")))
+            .andExpect(jsonPath("$.[*].addOnDetailsBigInt['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BIG_INT.get("AAAAAAAAAA")));
     }
 
     @Test
@@ -315,10 +384,10 @@ class SaathratriEntity6ResourceIT {
             .andExpect(jsonPath("$.[*].customerUpdatedPhoneNumber").value(hasItem(DEFAULT_CUSTOMER_UPDATED_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].customerEstimatedArrivalTime").value(hasItem(DEFAULT_CUSTOMER_ESTIMATED_ARRIVAL_TIME)))
             .andExpect(jsonPath("$.[*].tinyUrlShortCode").value(hasItem(DEFAULT_TINY_URL_SHORT_CODE)))
-            .andExpect(jsonPath("$.[*].addOnDetailsText").value(hasItem(DEFAULT_ADD_ON_DETAILS_TEXT)))
-            .andExpect(jsonPath("$.[*].addOnDetailsDecimal").value(hasItem(sameNumber(DEFAULT_ADD_ON_DETAILS_DECIMAL))))
-            .andExpect(jsonPath("$.[*].addOnDetailsBoolean").value(hasItem(DEFAULT_ADD_ON_DETAILS_BOOLEAN.booleanValue())))
-            .andExpect(jsonPath("$.[*].addOnDetailsBigInt").value(hasItem(DEFAULT_ADD_ON_DETAILS_BIG_INT.intValue())));
+            .andExpect(jsonPath("$.[*].addOnDetailsText['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_TEXT.get("AAAAAAAAAA")))
+            .andExpect(jsonPath("$.[*].addOnDetailsDecimal['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_DECIMAL.get("AAAAAAAAAA")))
+            .andExpect(jsonPath("$.[*].addOnDetailsBoolean['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BOOLEAN.get("AAAAAAAAAA")))
+            .andExpect(jsonPath("$.[*].addOnDetailsBigInt['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BIG_INT.get("AAAAAAAAAA")));
     }
 
     @Test

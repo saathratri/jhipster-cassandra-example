@@ -2,6 +2,7 @@ package com.saathratri.developer.blog.service.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -12,10 +13,10 @@ public class SaathratriEntity5DTO implements Serializable {
 
     private SaathratriEntity5DTOId compositeId;
     private String addOnType;
-    private String addOnDetailsText;
-    private BigDecimal addOnDetailsDecimal;
-    private Boolean addOnDetailsBoolean;
-    private Long addOnDetailsBigInt;
+    private Map<String, String> addOnDetailsText;
+    private Map<String, BigDecimal> addOnDetailsDecimal;
+    private Map<String, Boolean> addOnDetailsBoolean;
+    private Map<String, Long> addOnDetailsBigInt;
 
     public SaathratriEntity5DTO() {
         // Empty constructor needed for Jackson.
@@ -47,54 +48,54 @@ public class SaathratriEntity5DTO implements Serializable {
         return this;
     }
 
-    public String getAddOnDetailsText() {
+    public Map<String, String> getAddOnDetailsText() {
         return addOnDetailsText;
     }
 
-    public void setAddOnDetailsText(String addOnDetailsText) {
+    public void setAddOnDetailsText(Map<String, String> addOnDetailsText) {
         this.addOnDetailsText = addOnDetailsText;
     }
 
-    public SaathratriEntity5DTO addOnDetailsText(String addOnDetailsText) {
+    public SaathratriEntity5DTO addOnDetailsText(Map<String, String> addOnDetailsText) {
         this.addOnDetailsText = addOnDetailsText;
         return this;
     }
 
-    public BigDecimal getAddOnDetailsDecimal() {
+    public Map<String, BigDecimal> getAddOnDetailsDecimal() {
         return addOnDetailsDecimal;
     }
 
-    public void setAddOnDetailsDecimal(BigDecimal addOnDetailsDecimal) {
+    public void setAddOnDetailsDecimal(Map<String, BigDecimal> addOnDetailsDecimal) {
         this.addOnDetailsDecimal = addOnDetailsDecimal;
     }
 
-    public SaathratriEntity5DTO addOnDetailsDecimal(BigDecimal addOnDetailsDecimal) {
+    public SaathratriEntity5DTO addOnDetailsDecimal(Map<String, BigDecimal> addOnDetailsDecimal) {
         this.addOnDetailsDecimal = addOnDetailsDecimal;
         return this;
     }
 
-    public Boolean getAddOnDetailsBoolean() {
+    public Map<String, Boolean> getAddOnDetailsBoolean() {
         return addOnDetailsBoolean;
     }
 
-    public void setAddOnDetailsBoolean(Boolean addOnDetailsBoolean) {
+    public void setAddOnDetailsBoolean(Map<String, Boolean> addOnDetailsBoolean) {
         this.addOnDetailsBoolean = addOnDetailsBoolean;
     }
 
-    public SaathratriEntity5DTO addOnDetailsBoolean(Boolean addOnDetailsBoolean) {
+    public SaathratriEntity5DTO addOnDetailsBoolean(Map<String, Boolean> addOnDetailsBoolean) {
         this.addOnDetailsBoolean = addOnDetailsBoolean;
         return this;
     }
 
-    public Long getAddOnDetailsBigInt() {
+    public Map<String, Long> getAddOnDetailsBigInt() {
         return addOnDetailsBigInt;
     }
 
-    public void setAddOnDetailsBigInt(Long addOnDetailsBigInt) {
+    public void setAddOnDetailsBigInt(Map<String, Long> addOnDetailsBigInt) {
         this.addOnDetailsBigInt = addOnDetailsBigInt;
     }
 
-    public SaathratriEntity5DTO addOnDetailsBigInt(Long addOnDetailsBigInt) {
+    public SaathratriEntity5DTO addOnDetailsBigInt(Map<String, Long> addOnDetailsBigInt) {
         this.addOnDetailsBigInt = addOnDetailsBigInt;
         return this;
     }

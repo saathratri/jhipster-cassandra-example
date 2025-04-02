@@ -17,7 +17,6 @@ class TajUserTest {
 
         tajUser2.setId(tajUser1.getId());
         assertThat(tajUser1).isEqualTo(tajUser2);
-
         tajUser2 = getTajUserSample2();
         assertThat(tajUser1).isNotEqualTo(tajUser2);
     }

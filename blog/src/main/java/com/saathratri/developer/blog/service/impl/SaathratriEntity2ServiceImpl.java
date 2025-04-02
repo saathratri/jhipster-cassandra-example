@@ -181,4 +181,93 @@ public class SaathratriEntity2ServiceImpl implements SaathratriEntity2Service {
             .map(saathratriEntity2Mapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
+    @Override
+    public Optional<
+        SaathratriEntity2DTO
+    > findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(
+        final UUID entityTypeId,
+        final Long yearOfDateAdded,
+        final Long arrivalDate,
+        final UUID blogId
+    ) {
+        LOG.debug(
+            "Request to findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(final UUID entityTypeId, final Long yearOfDateAdded, final Long arrivalDate, final UUID blogId) service in SaathratriEntity2ServiceImpl."
+        );
+        return saathratriEntity2Repository
+            .findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(
+                entityTypeId,
+                yearOfDateAdded,
+                arrivalDate,
+                blogId
+            )
+            .map(saathratriEntity2Mapper::toDto);
+    }
+
+    @Override
+    public List<
+        SaathratriEntity2DTO
+    > findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThan(
+        final UUID entityTypeId,
+        final Long yearOfDateAdded,
+        final Long arrivalDate,
+        final UUID blogId
+    ) {
+        LOG.debug(
+            "Request to findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThan(final UUID entityTypeId, final Long yearOfDateAdded, final Long arrivalDate, final UUID blogId) service in SaathratriEntity2ServiceImpl."
+        );
+        return saathratriEntity2Repository
+            .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThan(
+                entityTypeId,
+                yearOfDateAdded,
+                arrivalDate,
+                blogId
+            )
+            .stream()
+            .map(saathratriEntity2Mapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public List<
+        SaathratriEntity2DTO
+    > findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThan(
+        final UUID entityTypeId,
+        final Long yearOfDateAdded,
+        final Long arrivalDate,
+        final UUID blogId
+    ) {
+        LOG.debug(
+            "Request to findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThan(final UUID entityTypeId, final Long yearOfDateAdded, final Long arrivalDate, final UUID blogId) service in SaathratriEntity2ServiceImpl."
+        );
+        return saathratriEntity2Repository
+            .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThan(
+                entityTypeId,
+                yearOfDateAdded,
+                arrivalDate,
+                blogId
+            )
+            .stream()
+            .map(saathratriEntity2Mapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public SaathratriEntity2DTO findLatestByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDate(
+        final UUID entityTypeId,
+        final Long yearOfDateAdded,
+        final Long arrivalDate
+    ) {
+        LOG.debug(
+            "Request to findLatestByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDate(final UUID entityTypeId, final Long yearOfDateAdded, final Long arrivalDate) service in SaathratriEntity2ServiceImpl."
+        );
+        return saathratriEntity2Repository
+            .findLatestByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDate(
+                entityTypeId,
+                yearOfDateAdded,
+                arrivalDate
+            )
+            .map(saathratriEntity2Mapper::toDto)
+            .orElse(null); // Return null if no record found
+    }
 }

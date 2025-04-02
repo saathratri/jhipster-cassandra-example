@@ -2,7 +2,8 @@ package com.saathratri.developer.blog.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
+import java.util.Set;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -18,9 +19,8 @@ public class SaathratriEntity3 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String entityType;
-
-    private UUID createdTimeId;
+    @Id
+    private SaathratriEntity3Id compositeId;
 
     @Column("entity_name")
     @CassandraType(type = CassandraType.Name.TEXT)
@@ -40,35 +40,22 @@ public class SaathratriEntity3 implements Serializable {
 
     @Column("tags")
     @CassandraType(type = CassandraType.Name.SET, typeArguments = CassandraType.Name.TEXT)
-    private String tags;
+    private Set<String> tags;
+
+    public SaathratriEntity3Id getCompositeId() {
+        return this.compositeId;
+    }
+
+    public void setCompositeId(SaathratriEntity3Id compositeId) {
+        this.compositeId = compositeId;
+    }
+
+    public SaathratriEntity3 compositeId(SaathratriEntity3Id compositeId) {
+        this.compositeId = compositeId;
+        return this;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
-    public String getEntityType() {
-        return this.entityType;
-    }
-
-    public SaathratriEntity3 entityType(String entityType) {
-        this.setEntityType(entityType);
-        return this;
-    }
-
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
-    }
-
-    public UUID getCreatedTimeId() {
-        return this.createdTimeId;
-    }
-
-    public SaathratriEntity3 createdTimeId(UUID createdTimeId) {
-        this.setCreatedTimeId(createdTimeId);
-        return this;
-    }
-
-    public void setCreatedTimeId(UUID createdTimeId) {
-        this.createdTimeId = createdTimeId;
-    }
 
     public String getEntityName() {
         return this.entityName;
@@ -122,16 +109,16 @@ public class SaathratriEntity3 implements Serializable {
         this.departureDate = departureDate;
     }
 
-    public String getTags() {
+    public Set<String> getTags() {
         return this.tags;
     }
 
-    public SaathratriEntity3 tags(String tags) {
+    public SaathratriEntity3 tags(Set<String> tags) {
         this.setTags(tags);
         return this;
     }
 
-    public void setTags(String tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
@@ -145,7 +132,7 @@ public class SaathratriEntity3 implements Serializable {
         if (!(o instanceof SaathratriEntity3)) {
             return false;
         }
-        return getEntityType() != null && getEntityType().equals(((SaathratriEntity3) o).getEntityType());
+        return getCompositeId() != null && getCompositeId().equals(((SaathratriEntity3) o).getCompositeId());
     }
 
     @Override
@@ -158,8 +145,7 @@ public class SaathratriEntity3 implements Serializable {
     @Override
     public String toString() {
         return "SaathratriEntity3{" +
-            "entityType=" + getEntityType() +
-            ", createdTimeId='" + getCreatedTimeId() + "'" +
+            "compositeId=" + getCompositeId() +
             ", entityName='" + getEntityName() + "'" +
             ", entityDescription='" + getEntityDescription() + "'" +
             ", entityCost=" + getEntityCost() +

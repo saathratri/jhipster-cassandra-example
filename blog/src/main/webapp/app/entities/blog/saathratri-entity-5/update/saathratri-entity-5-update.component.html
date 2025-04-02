@@ -25,6 +25,18 @@
               data-cy="organizationId"
               formControlName="organizationId"
             />
+            <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateUUID('compositeId.organizationId')">
+              Generate
+            </button>
+            <button
+              *ngIf="isNew"
+              type="button"
+              class="btn btn-danger"
+              (click)="reset('compositeId.organizationId')"
+              [disabled]="isResetDisabled['compositeId.organizationId']"
+            >
+              Reset
+            </button>
           </div>
 
           <div class="mb-3">
@@ -42,11 +54,31 @@
           <div class="mb-3">
             <label class="form-label" for="field_entityId" jhiTranslate="blogApp.blogSaathratriEntity5.entityId">Entity Id</label>
             <input type="text" class="form-control" name="entityId" id="field_entityId" data-cy="entityId" formControlName="entityId" />
+            <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateUUID('compositeId.entityId')">Generate</button>
+            <button
+              *ngIf="isNew"
+              type="button"
+              class="btn btn-danger"
+              (click)="reset('compositeId.entityId')"
+              [disabled]="isResetDisabled['compositeId.entityId']"
+            >
+              Reset
+            </button>
           </div>
 
           <div class="mb-3">
             <label class="form-label" for="field_addOnId" jhiTranslate="blogApp.blogSaathratriEntity5.addOnId">Add On Id</label>
             <input type="text" class="form-control" name="addOnId" id="field_addOnId" data-cy="addOnId" formControlName="addOnId" />
+            <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateUUID('compositeId.addOnId')">Generate</button>
+            <button
+              *ngIf="isNew"
+              type="button"
+              class="btn btn-danger"
+              (click)="reset('compositeId.addOnId')"
+              [disabled]="isResetDisabled['compositeId.addOnId']"
+            >
+              Reset
+            </button>
           </div>
         </div>
 
@@ -59,51 +91,35 @@
           <label class="form-label" for="field_addOnDetailsText" jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsText"
             >Add On Details Text</label
           >
-          <input
-            type="text"
-            class="form-control"
-            name="addOnDetailsText"
-            id="field_addOnDetailsText"
-            data-cy="addOnDetailsText"
-            formControlName="addOnDetailsText"
-          />
+          <app-map-string-component [inputFields]="inputFieldsAddOnDetailsText" (dataChange)="handleAddOnDetailsTextInputChange($event)">
+          </app-map-string-component>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_addOnDetailsDecimal" jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsDecimal"
             >Add On Details Decimal</label
           >
-          <input
-            type="number"
-            class="form-control"
-            name="addOnDetailsDecimal"
-            id="field_addOnDetailsDecimal"
-            data-cy="addOnDetailsDecimal"
-            formControlName="addOnDetailsDecimal"
-          />
+          <app-map-number-component
+            [inputFields]="inputFieldsAddOnDetailsDecimal"
+            (dataChange)="handleAddOnDetailsDecimalInputChange($event)"
+          >
+          </app-map-number-component>
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_addOnDetailsBoolean" jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsBoolean"
             >Add On Details Boolean</label
           >
-          <input
-            type="checkbox"
-            class="form-check"
-            name="addOnDetailsBoolean"
-            id="field_addOnDetailsBoolean"
-            data-cy="addOnDetailsBoolean"
-            formControlName="addOnDetailsBoolean"
-          />
+          <app-map-boolean-component
+            [inputFields]="inputFieldsAddOnDetailsBoolean"
+            (dataChange)="handleAddOnDetailsBooleanInputChange($event)"
+          >
+          </app-map-boolean-component>
         </div>
 
         <div class="mb-3">
-          <app-date-time
-            formControlName="addOnDetailsBigInt"
-            [dateTimeLabel]="'blogApp.blogSaathratriEntity5.addOnDetailsBigInt' | translate"
-            [labelClass]="'form-label'"
-            (isValid)="onDateTimeValid('addOnDetailsBigInt', $event)"
-          ></app-date-time>
+          <app-map-dayjs-component [inputFields]="inputFieldsAddOnDetailsBigInt" (dataChange)="handleAddOnDetailsBigIntInputChange($event)">
+          </app-map-dayjs-component>
         </div>
       </div>
 

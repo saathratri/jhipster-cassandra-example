@@ -58,6 +58,7 @@ public class SaathratriEntity4Resource {
     public ResponseEntity<SaathratriEntity4DTO> createSaathratriEntity4(@RequestBody SaathratriEntity4DTO saathratriEntity4DTO)
         throws URISyntaxException {
         LOG.debug("REST request to save SaathratriEntity4 : {}", saathratriEntity4DTO);
+
         // Composite Primary Key Code
         if (
             saathratriEntity4DTO.getCompositeId().getOrganizationId() == null ||
@@ -290,8 +291,9 @@ public class SaathratriEntity4Resource {
      * {@code GET /find-all-by-composite-id-organization-id/:organizationId}
      *
      *
-     * @param organizationId the Organization Id of the saathratriEntity4 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity4, or with status {@code 404 (Not Found)}.
+     * @param organizationId the Organization Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity4, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-organization-id")
     public List<SaathratriEntity4DTO> findAllByCompositeIdOrganizationId(
@@ -303,6 +305,30 @@ public class SaathratriEntity4Resource {
             organizationId
         );
         return saathratriEntity4Service.findAllByCompositeIdOrganizationId(organizationId);
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-by-composite-id-organization-id-and-composite-id-attribute-key/:organizationId/:attributeKey}
+     *
+     *
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param attributeKey the Attribute Key of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity4, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/find-by-composite-id-organization-id-and-composite-id-attribute-key")
+    public Optional<SaathratriEntity4DTO> findByCompositeIdOrganizationIdAndCompositeIdAttributeKey(
+        @RequestParam(name = "organizationId", required = true) final UUID organizationId,
+        @RequestParam(name = "attributeKey", required = true) final String attributeKey
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findByCompositeIdOrganizationIdAndCompositeIdAttributeKey method for SaathratriEntity4s with parameteres organizationId: {}, attributeKey: {}",
+            organizationId,
+            attributeKey
+        );
+        return saathratriEntity4Service.findByCompositeIdOrganizationIdAndCompositeIdAttributeKey(organizationId, attributeKey);
     }
 
     private String getUrlEncodedParameterValue(String parameterValue) {

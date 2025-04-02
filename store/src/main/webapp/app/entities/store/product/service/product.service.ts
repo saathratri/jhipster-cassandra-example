@@ -100,7 +100,7 @@ export class ProductService {
     return {
       ...product,
       addedDate: product.addedDate ? product.addedDate.valueOf() : null,
-    };
+    } as RestOf<T>;
   }
 
   protected convertDateFromServer(restProduct: RestProduct): IProduct {

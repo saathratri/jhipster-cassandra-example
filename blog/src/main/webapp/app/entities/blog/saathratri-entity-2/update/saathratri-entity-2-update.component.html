@@ -25,6 +25,16 @@
               data-cy="entityTypeId"
               formControlName="entityTypeId"
             />
+            <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateUUID('compositeId.entityTypeId')">Generate</button>
+            <button
+              *ngIf="isNew"
+              type="button"
+              class="btn btn-danger"
+              (click)="reset('compositeId.entityTypeId')"
+              [disabled]="isResetDisabled['compositeId.entityTypeId']"
+            >
+              Reset
+            </button>
           </div>
 
           <div class="mb-3">
@@ -60,6 +70,16 @@
           <div class="mb-3">
             <label class="form-label" for="field_blogId" jhiTranslate="blogApp.blogSaathratriEntity2.blogId">Blog Id</label>
             <input type="text" class="form-control" name="blogId" id="field_blogId" data-cy="blogId" formControlName="blogId" />
+            <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateTimeUUID('compositeId.blogId')">Generate</button>
+            <button
+              *ngIf="isNew"
+              type="button"
+              class="btn btn-danger"
+              (click)="reset('compositeId.blogId')"
+              [disabled]="isResetDisabled['compositeId.blogId']"
+            >
+              Reset
+            </button>
           </div>
         </div>
 

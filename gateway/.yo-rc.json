@@ -18,7 +18,7 @@
     "baseName": "gateway",
     "blueprints": [
       {
-        "name": "generator-jhipster-cassandra-composite-primary-key",
+        "name": "generator-jhipster-cassandra",
         "version": "1.0.8"
       }
     ],

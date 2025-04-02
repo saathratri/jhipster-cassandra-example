@@ -1,5 +1,6 @@
 package com.saathratri.developer.blog.web.rest;
 
+import com.datastax.oss.driver.api.core.uuid.Uuids;
 import com.saathratri.developer.blog.domain.SaathratriEntity6Id;
 import com.saathratri.developer.blog.repository.SaathratriEntity6Repository;
 import com.saathratri.developer.blog.service.SaathratriEntity6Service;
@@ -58,7 +59,13 @@ public class SaathratriEntity6Resource {
     public ResponseEntity<SaathratriEntity6DTO> createSaathratriEntity6(@RequestBody SaathratriEntity6DTO saathratriEntity6DTO)
         throws URISyntaxException {
         LOG.debug("REST request to save SaathratriEntity6 : {}", saathratriEntity6DTO);
+
         // Composite Primary Key Code
+
+        // Generate a TimeUUID for the Primary Key composite fields.
+
+        saathratriEntity6DTO.getCompositeId().setCreatedTimeId(Uuids.timeBased());
+
         if (
             saathratriEntity6DTO.getCompositeId().getOrganizationId() == null ||
             saathratriEntity6DTO.getCompositeId().getArrivalDate() == null ||
@@ -339,8 +346,9 @@ public class SaathratriEntity6Resource {
      * {@code GET /find-all-by-composite-id-organization-id/:organizationId}
      *
      *
-     * @param organizationId the Organization Id of the saathratriEntity6 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity6, or with status {@code 404 (Not Found)}.
+     * @param organizationId the Organization Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity6, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-organization-id")
     public List<SaathratriEntity6DTO> findAllByCompositeIdOrganizationId(
@@ -359,9 +367,10 @@ public class SaathratriEntity6Resource {
      * {@code GET /find-all-by-composite-id-organization-id-and-composite-id-arrival-date/:organizationId/:arrivalDate}
      *
      *
-     * @param organizationId the Organization Id of the saathratriEntity6 to retrieve.
-     * @param arrivalDate the Arrival Date of the saathratriEntity6 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity6, or with status {@code 404 (Not Found)}.
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity6, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-organization-id-and-composite-id-arrival-date")
     public List<SaathratriEntity6DTO> findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDate(
@@ -382,9 +391,10 @@ public class SaathratriEntity6Resource {
      * {@code GET /find-all-by-composite-id-organization-id-and-composite-id-arrival-date-less-than/:organizationId/:arrivalDate}
      *
      *
-     * @param organizationId the Organization Id of the saathratriEntity6 to retrieve.
-     * @param arrivalDate the Arrival Date of the saathratriEntity6 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity6, or with status {@code 404 (Not Found)}.
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity6, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-less-than")
     public List<SaathratriEntity6DTO> findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThan(
@@ -405,9 +415,10 @@ public class SaathratriEntity6Resource {
      * {@code GET /find-all-by-composite-id-organization-id-and-composite-id-arrival-date-greater-than/:organizationId/:arrivalDate}
      *
      *
-     * @param organizationId the Organization Id of the saathratriEntity6 to retrieve.
-     * @param arrivalDate the Arrival Date of the saathratriEntity6 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity6, or with status {@code 404 (Not Found)}.
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity6, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-greater-than")
     public List<SaathratriEntity6DTO> findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThan(
@@ -428,10 +439,11 @@ public class SaathratriEntity6Resource {
      * {@code GET /find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number/:organizationId/:arrivalDate/:accountNumber}
      *
      *
-     * @param organizationId the Organization Id of the saathratriEntity6 to retrieve.
-     * @param arrivalDate the Arrival Date of the saathratriEntity6 to retrieve.
-     * @param accountNumber the Account Number of the saathratriEntity6 to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the saathratriEntity6, or with status {@code 404 (Not Found)}.
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     * @param accountNumber the Account Number of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity6, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number")
     public List<SaathratriEntity6DTO> findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumber(
@@ -447,6 +459,154 @@ public class SaathratriEntity6Resource {
             accountNumber
         );
         return saathratriEntity6Service.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumber(
+            organizationId,
+            arrivalDate,
+            accountNumber
+        );
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id/:organizationId/:arrivalDate/:accountNumber/:createdTimeId}
+     *
+     *
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     * @param accountNumber the Account Number of the entity to retrieve.
+     * @param createdTimeId the Created Time Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity6, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(
+        "/find-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id"
+    )
+    public Optional<
+        SaathratriEntity6DTO
+    > findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId(
+        @RequestParam(name = "organizationId", required = true) final UUID organizationId,
+        @RequestParam(name = "arrivalDate", required = true) final Long arrivalDate,
+        @RequestParam(name = "accountNumber", required = true) final String accountNumber,
+        @RequestParam(name = "createdTimeId", required = true) final UUID createdTimeId
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId method for SaathratriEntity6s with parameteres organizationId: {}, arrivalDate: {}, accountNumber: {}, createdTimeId: {}",
+            organizationId,
+            arrivalDate,
+            accountNumber,
+            createdTimeId
+        );
+        return saathratriEntity6Service.findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId(
+            organizationId,
+            arrivalDate,
+            accountNumber,
+            createdTimeId
+        );
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-less-than/:organizationId/:arrivalDate/:accountNumber/:createdTimeId}
+     *
+     *
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     * @param accountNumber the Account Number of the entity to retrieve.
+     * @param createdTimeId the Created Time Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity6, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(
+        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-less-than"
+    )
+    public List<
+        SaathratriEntity6DTO
+    > findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThan(
+        @RequestParam(name = "organizationId", required = true) final UUID organizationId,
+        @RequestParam(name = "arrivalDate", required = true) final Long arrivalDate,
+        @RequestParam(name = "accountNumber", required = true) final String accountNumber,
+        @RequestParam(name = "createdTimeId", required = true) final UUID createdTimeId
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThan method for SaathratriEntity6s with parameteres organizationId: {}, arrivalDate: {}, accountNumber: {}, createdTimeId: {}",
+            organizationId,
+            arrivalDate,
+            accountNumber,
+            createdTimeId
+        );
+        return saathratriEntity6Service.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThan(
+            organizationId,
+            arrivalDate,
+            accountNumber,
+            createdTimeId
+        );
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-greater-than/:organizationId/:arrivalDate/:accountNumber/:createdTimeId}
+     *
+     *
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     * @param accountNumber the Account Number of the entity to retrieve.
+     * @param createdTimeId the Created Time Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity6, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(
+        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-greater-than"
+    )
+    public List<
+        SaathratriEntity6DTO
+    > findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThan(
+        @RequestParam(name = "organizationId", required = true) final UUID organizationId,
+        @RequestParam(name = "arrivalDate", required = true) final Long arrivalDate,
+        @RequestParam(name = "accountNumber", required = true) final String accountNumber,
+        @RequestParam(name = "createdTimeId", required = true) final UUID createdTimeId
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThan method for SaathratriEntity6s with parameteres organizationId: {}, arrivalDate: {}, accountNumber: {}, createdTimeId: {}",
+            organizationId,
+            arrivalDate,
+            accountNumber,
+            createdTimeId
+        );
+        return saathratriEntity6Service.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThan(
+            organizationId,
+            arrivalDate,
+            accountNumber,
+            createdTimeId
+        );
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-latest-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number/:organizationId/:arrivalDate/:accountNumber}
+     *
+     *
+     * @param organizationId the Organization Id of the entity to retrieve.
+     * @param arrivalDate the Arrival Date of the entity to retrieve.
+     * @param accountNumber the Account Number of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the SaathratriEntity6, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/find-latest-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number")
+    public SaathratriEntity6DTO findLatestByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumber(
+        @RequestParam(name = "organizationId", required = true) final UUID organizationId,
+        @RequestParam(name = "arrivalDate", required = true) final Long arrivalDate,
+        @RequestParam(name = "accountNumber", required = true) final String accountNumber
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findLatestByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumber method for SaathratriEntity6s with parameteres organizationId: {}, arrivalDate: {}, accountNumber: {}",
+            organizationId,
+            arrivalDate,
+            accountNumber
+        );
+        return saathratriEntity6Service.findLatestByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumber(
             organizationId,
             arrivalDate,
             accountNumber

@@ -9,6 +9,7 @@ import com.saathratri.developer.blog.service.mapper.SaathratriEntity3Mapper;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,5 +103,54 @@ public class SaathratriEntity3ServiceImpl implements SaathratriEntity3Service {
             .stream()
             .map(saathratriEntity3Mapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public Optional<SaathratriEntity3DTO> findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(
+        final String entityType,
+        final UUID createdTimeId
+    ) {
+        LOG.debug(
+            "Request to findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(final String entityType, final UUID createdTimeId) service in SaathratriEntity3ServiceImpl."
+        );
+        return saathratriEntity3Repository
+            .findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(entityType, createdTimeId)
+            .map(saathratriEntity3Mapper::toDto);
+    }
+
+    @Override
+    public List<SaathratriEntity3DTO> findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThan(
+        final String entityType,
+        final UUID createdTimeId
+    ) {
+        LOG.debug(
+            "Request to findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThan(final String entityType, final UUID createdTimeId) service in SaathratriEntity3ServiceImpl."
+        );
+        return saathratriEntity3Repository
+            .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThan(entityType, createdTimeId)
+            .stream()
+            .map(saathratriEntity3Mapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public List<SaathratriEntity3DTO> findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThan(
+        final String entityType,
+        final UUID createdTimeId
+    ) {
+        LOG.debug(
+            "Request to findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThan(final String entityType, final UUID createdTimeId) service in SaathratriEntity3ServiceImpl."
+        );
+        return saathratriEntity3Repository
+            .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThan(entityType, createdTimeId)
+            .stream()
+            .map(saathratriEntity3Mapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public SaathratriEntity3DTO findLatestByCompositeIdEntityType(final String entityType) {
+        LOG.debug("Request to findLatestByCompositeIdEntityType(final String entityType) service in SaathratriEntity3ServiceImpl.");
+        return saathratriEntity3Repository.findLatestByCompositeIdEntityType(entityType).map(saathratriEntity3Mapper::toDto).orElse(null); // Return null if no record found
     }
 }

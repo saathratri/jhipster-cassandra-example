@@ -126,7 +126,7 @@ export class SaathratriEntity2Service {
         arrivalDate: saathratriEntity2.compositeId.arrivalDate ? saathratriEntity2.compositeId.arrivalDate.valueOf() : null,
       },
       departureDate: saathratriEntity2.departureDate ? saathratriEntity2.departureDate.valueOf() : null,
-    };
+    } as RestOf<T>;
   }
 
   protected convertDateFromServer(restSaathratriEntity2: RestSaathratriEntity2): ISaathratriEntity2 {

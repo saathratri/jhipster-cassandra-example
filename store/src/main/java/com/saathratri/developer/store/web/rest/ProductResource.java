@@ -55,6 +55,7 @@ public class ProductResource {
     @PostMapping("")
     public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) throws URISyntaxException {
         LOG.debug("REST request to save Product : {}", productDTO);
+
         // Single-value Primary Key Code
         if (productDTO.getId() == null) {
             throw new BadRequestAlertException("A new product must have an ID", ENTITY_NAME, "idinvalid");

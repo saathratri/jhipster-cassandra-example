@@ -57,6 +57,7 @@ public class SaathratriEntityResource {
     public ResponseEntity<SaathratriEntityDTO> createSaathratriEntity(@RequestBody SaathratriEntityDTO saathratriEntityDTO)
         throws URISyntaxException {
         LOG.debug("REST request to save SaathratriEntity : {}", saathratriEntityDTO);
+
         // Single-value Primary Key Code
         if (saathratriEntityDTO.getEntityId() == null) {
             throw new BadRequestAlertException("A new saathratriEntity must have an ID", ENTITY_NAME, "idinvalid");

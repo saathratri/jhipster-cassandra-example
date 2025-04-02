@@ -4,7 +4,6 @@ import com.saathratri.developer.store.service.dto.ProductDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.UUID;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.store.domain.Product}.

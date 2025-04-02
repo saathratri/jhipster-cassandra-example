@@ -3,6 +3,7 @@ package com.saathratri.developer.blog.domain;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.UUID;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -18,6 +19,9 @@ public class Tag implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @Column("id")
+    @CassandraType(type = CassandraType.Name.UUID)
     private UUID id;
 
     @NotNull
@@ -26,20 +30,20 @@ public class Tag implements Serializable {
     @CassandraType(type = CassandraType.Name.TEXT)
     private String name;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public UUID getId() {
         return this.id;
-    }
-
-    public Tag id(UUID id) {
-        this.setId(id);
-        return this;
     }
 
     public void setId(UUID id) {
         this.id = id;
     }
+
+    public Tag id(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public String getName() {
         return this.name;

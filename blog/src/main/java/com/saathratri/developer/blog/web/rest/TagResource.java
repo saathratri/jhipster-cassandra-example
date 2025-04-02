@@ -55,6 +55,7 @@ public class TagResource {
     @PostMapping("")
     public ResponseEntity<TagDTO> createTag(@Valid @RequestBody TagDTO tagDTO) throws URISyntaxException {
         LOG.debug("REST request to save Tag : {}", tagDTO);
+
         // Single-value Primary Key Code
         if (tagDTO.getId() == null) {
             throw new BadRequestAlertException("A new tag must have an ID", ENTITY_NAME, "idinvalid");

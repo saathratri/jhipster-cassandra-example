@@ -3,10 +3,10 @@ import dayjs from 'dayjs/esm';
 export interface ISaathratriEntity5 {
   compositeId: ISaathratriEntity5Id;
   addOnType?: string | null;
-  addOnDetailsText?: string | null;
-  addOnDetailsDecimal?: number | null;
-  addOnDetailsBoolean?: boolean | null;
-  addOnDetailsBigInt?: dayjs.Dayjs | null;
+  addOnDetailsText?: Record<string, string> | null;
+  addOnDetailsDecimal?: Record<string, number> | null;
+  addOnDetailsBoolean?: Record<string, boolean> | null;
+  addOnDetailsBigInt?: Record<string, dayjs.Dayjs> | null;
 }
 export interface ISaathratriEntity5Id {
   organizationId: string | null;

@@ -2,7 +2,8 @@ package com.saathratri.developer.blog.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
+import java.util.Map;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -18,87 +19,43 @@ public class SaathratriEntity5 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private UUID organizationId;
-
-    private String entityType;
-
-    private UUID entityId;
-
-    private UUID addOnId;
+    @Id
+    private SaathratriEntity5Id compositeId;
 
     @Column("add_on_type")
     @CassandraType(type = CassandraType.Name.TEXT)
     private String addOnType;
 
     @Column("add_on_details_text")
-    @CassandraType(type = CassandraType.Name.TEXT)
-    private String addOnDetailsText;
+    @CassandraType(type = CassandraType.Name.MAP, typeArguments = { CassandraType.Name.TEXT, CassandraType.Name.TEXT })
+    private Map<String, String> addOnDetailsText;
 
     @Column("add_on_details_decimal")
-    @CassandraType(type = CassandraType.Name.DECIMAL)
-    private BigDecimal addOnDetailsDecimal;
+    @CassandraType(type = CassandraType.Name.MAP, typeArguments = { CassandraType.Name.TEXT, CassandraType.Name.DECIMAL })
+    private Map<String, BigDecimal> addOnDetailsDecimal;
 
     @Column("add_on_details_boolean")
-    @CassandraType(type = CassandraType.Name.BOOLEAN)
-    private Boolean addOnDetailsBoolean;
+    @CassandraType(type = CassandraType.Name.MAP, typeArguments = { CassandraType.Name.TEXT, CassandraType.Name.BOOLEAN })
+    private Map<String, Boolean> addOnDetailsBoolean;
 
     @Column("add_on_details_big_int")
-    @CassandraType(type = CassandraType.Name.BIGINT)
-    private Long addOnDetailsBigInt;
+    @CassandraType(type = CassandraType.Name.MAP, typeArguments = { CassandraType.Name.TEXT, CassandraType.Name.BIGINT })
+    private Map<String, Long> addOnDetailsBigInt;
+
+    public SaathratriEntity5Id getCompositeId() {
+        return this.compositeId;
+    }
+
+    public void setCompositeId(SaathratriEntity5Id compositeId) {
+        this.compositeId = compositeId;
+    }
+
+    public SaathratriEntity5 compositeId(SaathratriEntity5Id compositeId) {
+        this.compositeId = compositeId;
+        return this;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
-    public UUID getOrganizationId() {
-        return this.organizationId;
-    }
-
-    public SaathratriEntity5 organizationId(UUID organizationId) {
-        this.setOrganizationId(organizationId);
-        return this;
-    }
-
-    public void setOrganizationId(UUID organizationId) {
-        this.organizationId = organizationId;
-    }
-
-    public String getEntityType() {
-        return this.entityType;
-    }
-
-    public SaathratriEntity5 entityType(String entityType) {
-        this.setEntityType(entityType);
-        return this;
-    }
-
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
-    }
-
-    public UUID getEntityId() {
-        return this.entityId;
-    }
-
-    public SaathratriEntity5 entityId(UUID entityId) {
-        this.setEntityId(entityId);
-        return this;
-    }
-
-    public void setEntityId(UUID entityId) {
-        this.entityId = entityId;
-    }
-
-    public UUID getAddOnId() {
-        return this.addOnId;
-    }
-
-    public SaathratriEntity5 addOnId(UUID addOnId) {
-        this.setAddOnId(addOnId);
-        return this;
-    }
-
-    public void setAddOnId(UUID addOnId) {
-        this.addOnId = addOnId;
-    }
 
     public String getAddOnType() {
         return this.addOnType;
@@ -113,55 +70,55 @@ public class SaathratriEntity5 implements Serializable {
         this.addOnType = addOnType;
     }
 
-    public String getAddOnDetailsText() {
+    public Map<String, String> getAddOnDetailsText() {
         return this.addOnDetailsText;
     }
 
-    public SaathratriEntity5 addOnDetailsText(String addOnDetailsText) {
+    public SaathratriEntity5 addOnDetailsText(Map<String, String> addOnDetailsText) {
         this.setAddOnDetailsText(addOnDetailsText);
         return this;
     }
 
-    public void setAddOnDetailsText(String addOnDetailsText) {
+    public void setAddOnDetailsText(Map<String, String> addOnDetailsText) {
         this.addOnDetailsText = addOnDetailsText;
     }
 
-    public BigDecimal getAddOnDetailsDecimal() {
+    public Map<String, BigDecimal> getAddOnDetailsDecimal() {
         return this.addOnDetailsDecimal;
     }
 
-    public SaathratriEntity5 addOnDetailsDecimal(BigDecimal addOnDetailsDecimal) {
+    public SaathratriEntity5 addOnDetailsDecimal(Map<String, BigDecimal> addOnDetailsDecimal) {
         this.setAddOnDetailsDecimal(addOnDetailsDecimal);
         return this;
     }
 
-    public void setAddOnDetailsDecimal(BigDecimal addOnDetailsDecimal) {
+    public void setAddOnDetailsDecimal(Map<String, BigDecimal> addOnDetailsDecimal) {
         this.addOnDetailsDecimal = addOnDetailsDecimal;
     }
 
-    public Boolean getAddOnDetailsBoolean() {
+    public Map<String, Boolean> getAddOnDetailsBoolean() {
         return this.addOnDetailsBoolean;
     }
 
-    public SaathratriEntity5 addOnDetailsBoolean(Boolean addOnDetailsBoolean) {
+    public SaathratriEntity5 addOnDetailsBoolean(Map<String, Boolean> addOnDetailsBoolean) {
         this.setAddOnDetailsBoolean(addOnDetailsBoolean);
         return this;
     }
 
-    public void setAddOnDetailsBoolean(Boolean addOnDetailsBoolean) {
+    public void setAddOnDetailsBoolean(Map<String, Boolean> addOnDetailsBoolean) {
         this.addOnDetailsBoolean = addOnDetailsBoolean;
     }
 
-    public Long getAddOnDetailsBigInt() {
+    public Map<String, Long> getAddOnDetailsBigInt() {
         return this.addOnDetailsBigInt;
     }
 
-    public SaathratriEntity5 addOnDetailsBigInt(Long addOnDetailsBigInt) {
+    public SaathratriEntity5 addOnDetailsBigInt(Map<String, Long> addOnDetailsBigInt) {
         this.setAddOnDetailsBigInt(addOnDetailsBigInt);
         return this;
     }
 
-    public void setAddOnDetailsBigInt(Long addOnDetailsBigInt) {
+    public void setAddOnDetailsBigInt(Map<String, Long> addOnDetailsBigInt) {
         this.addOnDetailsBigInt = addOnDetailsBigInt;
     }
 
@@ -175,7 +132,7 @@ public class SaathratriEntity5 implements Serializable {
         if (!(o instanceof SaathratriEntity5)) {
             return false;
         }
-        return getOrganizationId() != null && getOrganizationId().equals(((SaathratriEntity5) o).getOrganizationId());
+        return getCompositeId() != null && getCompositeId().equals(((SaathratriEntity5) o).getCompositeId());
     }
 
     @Override
@@ -188,10 +145,7 @@ public class SaathratriEntity5 implements Serializable {
     @Override
     public String toString() {
         return "SaathratriEntity5{" +
-            "organizationId=" + getOrganizationId() +
-            ", entityType='" + getEntityType() + "'" +
-            ", entityId='" + getEntityId() + "'" +
-            ", addOnId='" + getAddOnId() + "'" +
+            "compositeId=" + getCompositeId() +
             ", addOnType='" + getAddOnType() + "'" +
             ", addOnDetailsText='" + getAddOnDetailsText() + "'" +
             ", addOnDetailsDecimal=" + getAddOnDetailsDecimal() +

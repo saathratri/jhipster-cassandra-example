@@ -27,16 +27,43 @@
 
           <div class="mb-3">
             <app-date-time
+              fieldName="addedDateTime"
               formControlName="addedDateTime"
               [dateTimeLabel]="'blogApp.blogPost.addedDateTime' | translate"
               [labelClass]="'form-label'"
-              (isValid)="onDateTimeValid('addedDateTime', $event)"
-            ></app-date-time>
+              [isRequired]="true"
+              (isValid)="onDateTimeValid('compositeId.addedDateTime', $event)"
+              (dirtyStateChange)="updateDirtyState($event)"
+              [isNew]="isNew"
+            >
+            </app-date-time>
+            <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateDateTime('compositeId.addedDateTime')">
+              Generate
+            </button>
+            <button
+              *ngIf="isNew"
+              type="button"
+              class="btn btn-danger"
+              (click)="resetDateTime('compositeId.addedDateTime')"
+              [disabled]="!isDateTimeDirty['compositeId.addedDateTime']"
+            >
+              Reset
+            </button>
           </div>
 
           <div class="mb-3">
             <label class="form-label" for="field_postId" jhiTranslate="blogApp.blogPost.postId">Post Id</label>
             <input type="text" class="form-control" name="postId" id="field_postId" data-cy="postId" formControlName="postId" />
+            <button *ngIf="isNew" type="button" class="btn btn-primary" (click)="generateUUID('compositeId.postId')">Generate</button>
+            <button
+              *ngIf="isNew"
+              type="button"
+              class="btn btn-danger"
+              (click)="reset('compositeId.postId')"
+              [disabled]="isResetDisabled['compositeId.postId']"
+            >
+              Reset
+            </button>
           </div>
         </div>
 
@@ -66,11 +93,25 @@
 
         <div class="mb-3">
           <app-date-time
+            fieldName="publishedDateTime"
             formControlName="publishedDateTime"
             [dateTimeLabel]="'blogApp.blogPost.publishedDateTime' | translate"
             [labelClass]="'form-label'"
+            [isRequired]="false"
             (isValid)="onDateTimeValid('publishedDateTime', $event)"
-          ></app-date-time>
+            (dirtyStateChange)="updateDirtyState($event)"
+            [isNew]="isNew"
+          >
+          </app-date-time>
+          <button type="button" class="btn btn-primary" (click)="generateDateTime('publishedDateTime')">Generate</button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="resetDateTime('publishedDateTime')"
+            [disabled]="!isDateTimeDirty['publishedDateTime']"
+          >
+            Reset
+          </button>
         </div>
 
         <div class="mb-3">

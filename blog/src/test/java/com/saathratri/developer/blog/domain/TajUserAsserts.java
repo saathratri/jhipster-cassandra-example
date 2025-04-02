@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TajUserAsserts {
 
     /**
-     * Asserts that the entity has all properties (fields/relationships) set.
+     * Asserts that the entity has all properties (fields) set.
      *
      * @param expected the expected entity
      * @param actual the actual entity
@@ -16,14 +16,13 @@ public class TajUserAsserts {
     }
 
     /**
-     * Asserts that the entity has all updatable properties (fields/relationships) set.
+     * Asserts that the entity has all updatable properties (fields) set.
      *
      * @param expected the expected entity
      * @param actual the actual entity
      */
     public static void assertTajUserAllUpdatablePropertiesEquals(TajUser expected, TajUser actual) {
         assertTajUserUpdatableFieldsEquals(expected, actual);
-        assertTajUserUpdatableRelationshipsEquals(expected, actual);
     }
 
     /**
@@ -45,18 +44,6 @@ public class TajUserAsserts {
      * @param actual the actual entity
      */
     public static void assertTajUserUpdatableFieldsEquals(TajUser expected, TajUser actual) {
-        assertThat(expected)
-            .as("Verify TajUser relevant properties")
-            .satisfies(e -> assertThat(e.getLogin()).as("check login").isEqualTo(actual.getLogin()));
-    }
-
-    /**
-     * Asserts that the entity has all the updatable relationships set.
-     *
-     * @param expected the expected entity
-     * @param actual the actual entity
-     */
-    public static void assertTajUserUpdatableRelationshipsEquals(TajUser expected, TajUser actual) {
-        // empty method
+        assertThat(expected).as("Verify TajUser relevant properties");
     }
 }

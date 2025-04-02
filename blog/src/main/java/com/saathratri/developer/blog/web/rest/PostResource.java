@@ -56,6 +56,7 @@ public class PostResource {
     @PostMapping("")
     public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO) throws URISyntaxException {
         LOG.debug("REST request to save Post : {}", postDTO);
+
         // Composite Primary Key Code
         if (
             postDTO.getCompositeId().getCreatedDate() == null ||
@@ -307,8 +308,9 @@ public class PostResource {
      * {@code GET /find-all-by-composite-id-created-date/:createdDate}
      *
      *
-     * @param createdDate the Created Date of the post to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the post, or with status {@code 404 (Not Found)}.
+     * @param createdDate the Created Date of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the Post, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-created-date")
     public List<PostDTO> findAllByCompositeIdCreatedDate(@RequestParam(name = "createdDate", required = true) final Long createdDate) {
@@ -322,9 +324,10 @@ public class PostResource {
      * {@code GET /find-all-by-composite-id-created-date-and-composite-id-added-date-time/:createdDate/:addedDateTime}
      *
      *
-     * @param createdDate the Created Date of the post to retrieve.
-     * @param addedDateTime the Added Date Time of the post to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the post, or with status {@code 404 (Not Found)}.
+     * @param createdDate the Created Date of the entity to retrieve.
+     * @param addedDateTime the Added Date Time of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the Post, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-created-date-and-composite-id-added-date-time")
     public List<PostDTO> findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTime(
@@ -345,9 +348,10 @@ public class PostResource {
      * {@code GET /find-all-by-composite-id-created-date-and-composite-id-added-date-time-less-than/:createdDate/:addedDateTime}
      *
      *
-     * @param createdDate the Created Date of the post to retrieve.
-     * @param addedDateTime the Added Date Time of the post to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the post, or with status {@code 404 (Not Found)}.
+     * @param createdDate the Created Date of the entity to retrieve.
+     * @param addedDateTime the Added Date Time of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the Post, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-created-date-and-composite-id-added-date-time-less-than")
     public List<PostDTO> findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeLessThan(
@@ -368,9 +372,10 @@ public class PostResource {
      * {@code GET /find-all-by-composite-id-created-date-and-composite-id-added-date-time-greater-than/:createdDate/:addedDateTime}
      *
      *
-     * @param createdDate the Created Date of the post to retrieve.
-     * @param addedDateTime the Added Date Time of the post to retrieve. *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the post, or with status {@code 404 (Not Found)}.
+     * @param createdDate the Created Date of the entity to retrieve.
+     * @param addedDateTime the Added Date Time of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the Post, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/find-all-by-composite-id-created-date-and-composite-id-added-date-time-greater-than")
     public List<PostDTO> findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThan(
@@ -384,6 +389,33 @@ public class PostResource {
             addedDateTime
         );
         return postService.findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThan(createdDate, addedDateTime);
+    }
+
+    /**
+     * // Composite Primary Key Code
+     * {@code GET /find-by-composite-id-created-date-and-composite-id-added-date-time-and-composite-id-post-id/:createdDate/:addedDateTime/:postId}
+     *
+     *
+     * @param createdDate the Created Date of the entity to retrieve.
+     * @param addedDateTime the Added Date Time of the entity to retrieve.
+     * @param postId the Post Id of the entity to retrieve.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the Post, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/find-by-composite-id-created-date-and-composite-id-added-date-time-and-composite-id-post-id")
+    public Optional<PostDTO> findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId(
+        @RequestParam(name = "createdDate", required = true) final Long createdDate,
+        @RequestParam(name = "addedDateTime", required = true) final Long addedDateTime,
+        @RequestParam(name = "postId", required = true) final UUID postId
+    ) {
+        // Composite Primary Key Code
+        LOG.debug(
+            "REST request to findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId method for Posts with parameteres createdDate: {}, addedDateTime: {}, postId: {}",
+            createdDate,
+            addedDateTime,
+            postId
+        );
+        return postService.findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId(createdDate, addedDateTime, postId);
     }
 
     private String getUrlEncodedParameterValue(String parameterValue) {

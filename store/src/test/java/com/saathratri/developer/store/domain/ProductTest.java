@@ -17,7 +17,6 @@ class ProductTest {
 
         product2.setId(product1.getId());
         assertThat(product1).isEqualTo(product2);
-
         product2 = getProductSample2();
         assertThat(product1).isNotEqualTo(product2);
     }
