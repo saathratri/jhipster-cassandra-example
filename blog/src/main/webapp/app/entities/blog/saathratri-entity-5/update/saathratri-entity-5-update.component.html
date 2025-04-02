@@ -1,0 +1,127 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-saathratri-entity-5-heading"
+        data-cy="SaathratriEntity5CreateUpdateHeading"
+        jhiTranslate="blogApp.blogSaathratriEntity5.home.createOrEditLabel"
+      >
+        Create or edit a Saathratri Entity 5
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div formGroupName="compositeId">
+          <div class="mb-3">
+            <label class="form-label" for="field_organizationId" jhiTranslate="blogApp.blogSaathratriEntity5.organizationId"
+              >Organization Id</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="organizationId"
+              id="field_organizationId"
+              data-cy="organizationId"
+              formControlName="organizationId"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_entityType" jhiTranslate="blogApp.blogSaathratriEntity5.entityType">Entity Type</label>
+            <input
+              type="text"
+              class="form-control"
+              name="entityType"
+              id="field_entityType"
+              data-cy="entityType"
+              formControlName="entityType"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_entityId" jhiTranslate="blogApp.blogSaathratriEntity5.entityId">Entity Id</label>
+            <input type="text" class="form-control" name="entityId" id="field_entityId" data-cy="entityId" formControlName="entityId" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_addOnId" jhiTranslate="blogApp.blogSaathratriEntity5.addOnId">Add On Id</label>
+            <input type="text" class="form-control" name="addOnId" id="field_addOnId" data-cy="addOnId" formControlName="addOnId" />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_addOnType" jhiTranslate="blogApp.blogSaathratriEntity5.addOnType">Add On Type</label>
+          <input type="text" class="form-control" name="addOnType" id="field_addOnType" data-cy="addOnType" formControlName="addOnType" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_addOnDetailsText" jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsText"
+            >Add On Details Text</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="addOnDetailsText"
+            id="field_addOnDetailsText"
+            data-cy="addOnDetailsText"
+            formControlName="addOnDetailsText"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_addOnDetailsDecimal" jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsDecimal"
+            >Add On Details Decimal</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="addOnDetailsDecimal"
+            id="field_addOnDetailsDecimal"
+            data-cy="addOnDetailsDecimal"
+            formControlName="addOnDetailsDecimal"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_addOnDetailsBoolean" jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsBoolean"
+            >Add On Details Boolean</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="addOnDetailsBoolean"
+            id="field_addOnDetailsBoolean"
+            data-cy="addOnDetailsBoolean"
+            formControlName="addOnDetailsBoolean"
+          />
+        </div>
+
+        <div class="mb-3">
+          <app-date-time
+            formControlName="addOnDetailsBigInt"
+            [dateTimeLabel]="'blogApp.blogSaathratriEntity5.addOnDetailsBigInt' | translate"
+            [labelClass]="'form-label'"
+            (isValid)="onDateTimeValid('addOnDetailsBigInt', $event)"
+          ></app-date-time>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving || !areAllDateTimeFieldsValid"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

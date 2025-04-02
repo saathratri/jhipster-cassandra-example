@@ -1,0 +1,138 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-saathratri-entity-2-heading"
+        data-cy="SaathratriEntity2CreateUpdateHeading"
+        jhiTranslate="blogApp.blogSaathratriEntity2.home.createOrEditLabel"
+      >
+        Create or edit a Saathratri Entity 2
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div formGroupName="compositeId">
+          <div class="mb-3">
+            <label class="form-label" for="field_entityTypeId" jhiTranslate="blogApp.blogSaathratriEntity2.entityTypeId"
+              >Entity Type Id</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="entityTypeId"
+              id="field_entityTypeId"
+              data-cy="entityTypeId"
+              formControlName="entityTypeId"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_yearOfDateAdded" jhiTranslate="blogApp.blogSaathratriEntity2.yearOfDateAdded"
+              >Year Of Date Added</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="yearOfDateAdded"
+              id="field_yearOfDateAdded"
+              data-cy="yearOfDateAdded"
+              formControlName="yearOfDateAdded"
+            />
+          </div>
+
+          <div class="mb-3">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label jhiTranslate="blogApp.blogSaathratriEntity2.arrivalDate">Arrival Date</mat-label>
+              <br />
+              <input
+                matInput
+                [matDatepicker]="arrivalDatePicker"
+                id="field_arrivalDate"
+                data-cy="arrivalDate"
+                formControlName="arrivalDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #arrivalDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_blogId" jhiTranslate="blogApp.blogSaathratriEntity2.blogId">Blog Id</label>
+            <input type="text" class="form-control" name="blogId" id="field_blogId" data-cy="blogId" formControlName="blogId" />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entityName" jhiTranslate="blogApp.blogSaathratriEntity2.entityName">Entity Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="entityName"
+            id="field_entityName"
+            data-cy="entityName"
+            formControlName="entityName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entityDescription" jhiTranslate="blogApp.blogSaathratriEntity2.entityDescription"
+            >Entity Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="entityDescription"
+            id="field_entityDescription"
+            data-cy="entityDescription"
+            formControlName="entityDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entityCost" jhiTranslate="blogApp.blogSaathratriEntity2.entityCost">Entity Cost</label>
+          <input
+            type="number"
+            class="form-control"
+            name="entityCost"
+            id="field_entityCost"
+            data-cy="entityCost"
+            formControlName="entityCost"
+          />
+        </div>
+
+        <div class="mb-3">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label jhiTranslate="blogApp.blogSaathratriEntity2.departureDate">Departure Date</mat-label>
+            <br />
+            <input
+              matInput
+              [matDatepicker]="departureDatePicker"
+              id="field_departureDate"
+              data-cy="departureDate"
+              formControlName="departureDate"
+            />
+            <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #departureDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

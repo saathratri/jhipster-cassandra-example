@@ -1,0 +1,262 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-saathratri-entity-6-heading"
+        data-cy="SaathratriEntity6CreateUpdateHeading"
+        jhiTranslate="blogApp.blogSaathratriEntity6.home.createOrEditLabel"
+      >
+        Create or edit a Saathratri Entity 6
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div formGroupName="compositeId">
+          <div class="mb-3">
+            <label class="form-label" for="field_organizationId" jhiTranslate="blogApp.blogSaathratriEntity6.organizationId"
+              >Organization Id</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="organizationId"
+              id="field_organizationId"
+              data-cy="organizationId"
+              formControlName="organizationId"
+            />
+          </div>
+
+          <div class="mb-3">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label jhiTranslate="blogApp.blogSaathratriEntity6.arrivalDate">Arrival Date</mat-label>
+              <br />
+              <input
+                matInput
+                [matDatepicker]="arrivalDatePicker"
+                id="field_arrivalDate"
+                data-cy="arrivalDate"
+                formControlName="arrivalDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #arrivalDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_accountNumber" jhiTranslate="blogApp.blogSaathratriEntity6.accountNumber"
+              >Account Number</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="accountNumber"
+              id="field_accountNumber"
+              data-cy="accountNumber"
+              formControlName="accountNumber"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_createdTimeId" jhiTranslate="blogApp.blogSaathratriEntity6.createdTimeId"
+              >Created Time Id</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="createdTimeId"
+              id="field_createdTimeId"
+              data-cy="createdTimeId"
+              formControlName="createdTimeId"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label jhiTranslate="blogApp.blogSaathratriEntity6.departureDate">Departure Date</mat-label>
+            <br />
+            <input
+              matInput
+              [matDatepicker]="departureDatePicker"
+              id="field_departureDate"
+              data-cy="departureDate"
+              formControlName="departureDate"
+            />
+            <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #departureDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customerId" jhiTranslate="blogApp.blogSaathratriEntity6.customerId">Customer Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="customerId"
+            id="field_customerId"
+            data-cy="customerId"
+            formControlName="customerId"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customerFirstName" jhiTranslate="blogApp.blogSaathratriEntity6.customerFirstName"
+            >Customer First Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerFirstName"
+            id="field_customerFirstName"
+            data-cy="customerFirstName"
+            formControlName="customerFirstName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customerLastName" jhiTranslate="blogApp.blogSaathratriEntity6.customerLastName"
+            >Customer Last Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerLastName"
+            id="field_customerLastName"
+            data-cy="customerLastName"
+            formControlName="customerLastName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customerUpdatedEmail" jhiTranslate="blogApp.blogSaathratriEntity6.customerUpdatedEmail"
+            >Customer Updated Email</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerUpdatedEmail"
+            id="field_customerUpdatedEmail"
+            data-cy="customerUpdatedEmail"
+            formControlName="customerUpdatedEmail"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_customerUpdatedPhoneNumber"
+            jhiTranslate="blogApp.blogSaathratriEntity6.customerUpdatedPhoneNumber"
+            >Customer Updated Phone Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerUpdatedPhoneNumber"
+            id="field_customerUpdatedPhoneNumber"
+            data-cy="customerUpdatedPhoneNumber"
+            formControlName="customerUpdatedPhoneNumber"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_customerEstimatedArrivalTime"
+            jhiTranslate="blogApp.blogSaathratriEntity6.customerEstimatedArrivalTime"
+            >Customer Estimated Arrival Time</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="customerEstimatedArrivalTime"
+            id="field_customerEstimatedArrivalTime"
+            data-cy="customerEstimatedArrivalTime"
+            formControlName="customerEstimatedArrivalTime"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tinyUrlShortCode" jhiTranslate="blogApp.blogSaathratriEntity6.tinyUrlShortCode"
+            >Tiny Url Short Code</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="tinyUrlShortCode"
+            id="field_tinyUrlShortCode"
+            data-cy="tinyUrlShortCode"
+            formControlName="tinyUrlShortCode"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_addOnDetailsText" jhiTranslate="blogApp.blogSaathratriEntity6.addOnDetailsText"
+            >Add On Details Text</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="addOnDetailsText"
+            id="field_addOnDetailsText"
+            data-cy="addOnDetailsText"
+            formControlName="addOnDetailsText"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_addOnDetailsDecimal" jhiTranslate="blogApp.blogSaathratriEntity6.addOnDetailsDecimal"
+            >Add On Details Decimal</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="addOnDetailsDecimal"
+            id="field_addOnDetailsDecimal"
+            data-cy="addOnDetailsDecimal"
+            formControlName="addOnDetailsDecimal"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_addOnDetailsBoolean" jhiTranslate="blogApp.blogSaathratriEntity6.addOnDetailsBoolean"
+            >Add On Details Boolean</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="addOnDetailsBoolean"
+            id="field_addOnDetailsBoolean"
+            data-cy="addOnDetailsBoolean"
+            formControlName="addOnDetailsBoolean"
+          />
+        </div>
+
+        <div class="mb-3">
+          <app-date-time
+            formControlName="addOnDetailsBigInt"
+            [dateTimeLabel]="'blogApp.blogSaathratriEntity6.addOnDetailsBigInt' | translate"
+            [labelClass]="'form-label'"
+            (isValid)="onDateTimeValid('addOnDetailsBigInt', $event)"
+          ></app-date-time>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving || !areAllDateTimeFieldsValid"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

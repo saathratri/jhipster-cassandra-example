@@ -1,0 +1,103 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (saathratriEntity6(); as saathratriEntity6Ref) {
+      <div>
+        <h2 data-cy="saathratriEntity6DetailsHeading">
+          <span jhiTranslate="blogApp.blogSaathratriEntity6.detail.title">Saathratri Entity 6</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.organizationId">Organization Id</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.compositeId.organizationId }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.arrivalDate">Arrival Date</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.compositeId.arrivalDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.accountNumber">Account Number</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.compositeId.accountNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.createdTimeId">Created Time Id</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.compositeId.createdTimeId }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.departureDate">Departure Date</span></dt>
+          <dd>
+            <td>{{ saathratriEntity6Ref.departureDate | formatMediumDate }}</td>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.customerId">Customer Id</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.customerId }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.customerFirstName">Customer First Name</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.customerFirstName }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.customerLastName">Customer Last Name</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.customerLastName }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.customerUpdatedEmail">Customer Updated Email</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.customerUpdatedEmail }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.customerUpdatedPhoneNumber">Customer Updated Phone Number</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.customerUpdatedPhoneNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.customerEstimatedArrivalTime">Customer Estimated Arrival Time</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.customerEstimatedArrivalTime }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.tinyUrlShortCode">Tiny Url Short Code</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.tinyUrlShortCode }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.addOnDetailsText">Add On Details Text</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.addOnDetailsText }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.addOnDetailsDecimal">Add On Details Decimal</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.addOnDetailsDecimal }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.addOnDetailsBoolean">Add On Details Boolean</span></dt>
+          <dd>
+            <span>{{ saathratriEntity6Ref.addOnDetailsBoolean }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity6.addOnDetailsBigInt">Add On Details Big Int</span></dt>
+          <dd>
+            <td>{{ saathratriEntity6Ref.addOnDetailsBigInt | formatMediumDatetime }}</td>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button
+          type="button"
+          [routerLink]="[
+            '/blog/saathratri-entity-6',
+            saathratriEntity6()!.compositeId.organizationId,
+            saathratriEntity6()!.compositeId.arrivalDate | convertFromDayjsToDateLong,
+            saathratriEntity6()!.compositeId.accountNumber,
+            saathratriEntity6()!.compositeId.createdTimeId,
+            'edit',
+          ]"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

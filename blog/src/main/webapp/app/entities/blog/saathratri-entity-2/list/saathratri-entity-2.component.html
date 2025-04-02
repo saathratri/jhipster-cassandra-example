@@ -1,0 +1,157 @@
+<div>
+  <h2 id="page-heading" data-cy="SaathratriEntity2Heading">
+    <span jhiTranslate="blogApp.blogSaathratriEntity2.home.title">Saathratri Entity 2 S</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="blogApp.blogSaathratriEntity2.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-saathratri-entity-2"
+        [routerLink]="['/blog/saathratri-entity-2/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="blogApp.blogSaathratriEntity2.home.createLabel">Create a new Saathratri Entity 2</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (saathratriEntity2s?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="blogApp.blogSaathratriEntity2.home.notFound">No Saathratri Entity 2 S found</span>
+    </div>
+  }
+
+  @if (saathratriEntity2s && saathratriEntity2s.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="entityTypeId">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity2.entityTypeId">Entity Type Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="yearOfDateAdded">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity2.yearOfDateAdded">Year Of Date Added</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="arrivalDate">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity2.arrivalDate">Arrival Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="blogId">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity2.blogId">Blog Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityName">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity2.entityName">Entity Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityDescription">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity2.entityDescription">Entity Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityCost">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity2.entityCost">Entity Cost</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="departureDate">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity2.departureDate">Departure Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (saathratriEntity2 of saathratriEntity2s; track trackCompositeId) {
+            <tr data-cy="entityTable">
+              <td>{{ saathratriEntity2!.compositeId.entityTypeId }}</td>
+
+              <td>{{ saathratriEntity2!.compositeId.yearOfDateAdded }}</td>
+
+              <td>{{ saathratriEntity2!.compositeId.arrivalDate | formatMediumDate }}</td>
+
+              <td>{{ saathratriEntity2!.compositeId.blogId }}</td>
+
+              <td>{{ saathratriEntity2.entityName }}</td>
+              <td>{{ saathratriEntity2.entityDescription }}</td>
+              <td>{{ saathratriEntity2.entityCost }}</td>
+              <td>{{ saathratriEntity2.departureDate | formatMediumDate }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="[
+                      '/blog/saathratri-entity-2',
+                      saathratriEntity2!.compositeId.entityTypeId,
+                      saathratriEntity2!.compositeId.yearOfDateAdded,
+                      saathratriEntity2!.compositeId.arrivalDate | convertFromDayjsToDateLong,
+                      saathratriEntity2!.compositeId.blogId,
+                      'view',
+                    ]"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a
+                    [routerLink]="[
+                      '/blog/saathratri-entity-2',
+                      saathratriEntity2!.compositeId.entityTypeId,
+                      saathratriEntity2!.compositeId.yearOfDateAdded,
+                      saathratriEntity2!.compositeId.arrivalDate | convertFromDayjsToDateLong,
+                      saathratriEntity2!.compositeId.blogId,
+                      'edit',
+                    ]"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(saathratriEntity2)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (saathratriEntity3(); as saathratriEntity3Ref) {
+      <div>
+        <h2 data-cy="saathratriEntity3DetailsHeading">
+          <span jhiTranslate="blogApp.blogSaathratriEntity3.detail.title">Saathratri Entity 3</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity3.entityType">Entity Type</span></dt>
+          <dd>
+            <span>{{ saathratriEntity3Ref.compositeId.entityType }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity3.createdTimeId">Created Time Id</span></dt>
+          <dd>
+            <span>{{ saathratriEntity3Ref.compositeId.createdTimeId }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity3.entityName">Entity Name</span></dt>
+          <dd>
+            <span>{{ saathratriEntity3Ref.entityName }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity3.entityDescription">Entity Description</span></dt>
+          <dd>
+            <span>{{ saathratriEntity3Ref.entityDescription }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity3.entityCost">Entity Cost</span></dt>
+          <dd>
+            <span>{{ saathratriEntity3Ref.entityCost }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity3.departureDate">Departure Date</span></dt>
+          <dd>
+            <td>{{ saathratriEntity3Ref.departureDate | formatMediumDate }}</td>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity3.tags">Tags</span></dt>
+          <dd>
+            <span>{{ saathratriEntity3Ref.tags }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button
+          type="button"
+          [routerLink]="[
+            '/blog/saathratri-entity-3',
+            saathratriEntity3()!.compositeId.entityType,
+            saathratriEntity3()!.compositeId.createdTimeId,
+            'edit',
+          ]"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

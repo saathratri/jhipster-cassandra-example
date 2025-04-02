@@ -1,0 +1,48 @@
+{
+  "annotations": {
+    "changelogDate": "20250402131036"
+  },
+  "applications": ["blog"],
+  "clientRootFolder": "blog",
+  "databaseType": "cassandra",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "category",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.PARTITIONED", "CassandraType.Name.TEXT", true, "0"],
+        "id": true
+      }
+    },
+    {
+      "fieldName": "blogId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.CLUSTERED", "CassandraType.Name.TIMEUUID", true, "1"]
+      }
+    },
+    {
+      "fieldName": "handle",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "3",
+      "options": {
+        "customAnnotation": [true, "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "content",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"],
+      "options": {
+        "customAnnotation": [true, "CassandraType.Name.TEXT"]
+      }
+    }
+  ],
+  "microserviceName": "blog",
+  "name": "Blog",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,143 @@
+<div>
+  <h2 id="page-heading" data-cy="SaathratriEntity3Heading">
+    <span jhiTranslate="blogApp.blogSaathratriEntity3.home.title">Saathratri Entity 3 S</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="blogApp.blogSaathratriEntity3.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-saathratri-entity-3"
+        [routerLink]="['/blog/saathratri-entity-3/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="blogApp.blogSaathratriEntity3.home.createLabel">Create a new Saathratri Entity 3</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (saathratriEntity3s?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="blogApp.blogSaathratriEntity3.home.notFound">No Saathratri Entity 3 S found</span>
+    </div>
+  }
+
+  @if (saathratriEntity3s && saathratriEntity3s.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="entityType">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity3.entityType">Entity Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdTimeId">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity3.createdTimeId">Created Time Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityName">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity3.entityName">Entity Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityDescription">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity3.entityDescription">Entity Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityCost">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity3.entityCost">Entity Cost</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="departureDate">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity3.departureDate">Departure Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tags">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity3.tags">Tags</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (saathratriEntity3 of saathratriEntity3s; track trackCompositeId) {
+            <tr data-cy="entityTable">
+              <td>{{ saathratriEntity3!.compositeId.entityType }}</td>
+
+              <td>{{ saathratriEntity3!.compositeId.createdTimeId }}</td>
+
+              <td>{{ saathratriEntity3.entityName }}</td>
+              <td>{{ saathratriEntity3.entityDescription }}</td>
+              <td>{{ saathratriEntity3.entityCost }}</td>
+              <td>{{ saathratriEntity3.departureDate | formatMediumDate }}</td>
+              <td>{{ saathratriEntity3.tags }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="[
+                      '/blog/saathratri-entity-3',
+                      saathratriEntity3!.compositeId.entityType,
+                      saathratriEntity3!.compositeId.createdTimeId,
+                      'view',
+                    ]"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a
+                    [routerLink]="[
+                      '/blog/saathratri-entity-3',
+                      saathratriEntity3!.compositeId.entityType,
+                      saathratriEntity3!.compositeId.createdTimeId,
+                      'edit',
+                    ]"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(saathratriEntity3)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

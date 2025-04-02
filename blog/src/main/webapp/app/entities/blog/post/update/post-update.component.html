@@ -1,0 +1,104 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-post-heading" data-cy="PostCreateUpdateHeading" jhiTranslate="blogApp.blogPost.home.createOrEditLabel">
+        Create or edit a Post
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div formGroupName="compositeId">
+          <div class="mb-3">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label jhiTranslate="blogApp.blogPost.createdDate">Created Date</mat-label>
+              <br />
+              <input
+                matInput
+                [matDatepicker]="createdDatePicker"
+                id="field_createdDate"
+                data-cy="createdDate"
+                formControlName="createdDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="createdDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #createdDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="mb-3">
+            <app-date-time
+              formControlName="addedDateTime"
+              [dateTimeLabel]="'blogApp.blogPost.addedDateTime' | translate"
+              [labelClass]="'form-label'"
+              (isValid)="onDateTimeValid('addedDateTime', $event)"
+            ></app-date-time>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_postId" jhiTranslate="blogApp.blogPost.postId">Post Id</label>
+            <input type="text" class="form-control" name="postId" id="field_postId" data-cy="postId" formControlName="postId" />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_title" jhiTranslate="blogApp.blogPost.title">Title</label>
+          <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
+          @if (editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)) {
+            <div>
+              @if (editForm.get('title')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_content" jhiTranslate="blogApp.blogPost.content">Content</label>
+          <input type="text" class="form-control" name="content" id="field_content" data-cy="content" formControlName="content" />
+          @if (editForm.get('content')!.invalid && (editForm.get('content')!.dirty || editForm.get('content')!.touched)) {
+            <div>
+              @if (editForm.get('content')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <app-date-time
+            formControlName="publishedDateTime"
+            [dateTimeLabel]="'blogApp.blogPost.publishedDateTime' | translate"
+            [labelClass]="'form-label'"
+            (isValid)="onDateTimeValid('publishedDateTime', $event)"
+          ></app-date-time>
+        </div>
+
+        <div class="mb-3">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label jhiTranslate="blogApp.blogPost.sentDate">Sent Date</mat-label>
+            <br />
+            <input matInput [matDatepicker]="sentDatePicker" id="field_sentDate" data-cy="sentDate" formControlName="sentDate" />
+            <mat-datepicker-toggle matSuffix [for]="sentDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #sentDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving || !areAllDateTimeFieldsValid"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+{
+  "blogApp": {
+    "blogPost": {
+      "home": {
+        "title": "Posts",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Post",
+        "createOrEditLabel": "Create or edit a Post",
+        "notFound": "No Posts found"
+      },
+      "created": "A new Post is created with identifier {{ param }}",
+      "updated": "A Post is updated with identifier {{ param }}",
+      "deleted": "A Post is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Post Created Date '{{ createdDate }}', Added Date Time '{{ addedDateTime }}', and Post Id '{{ postId }}'?"
+      },
+      "detail": {
+        "title": "Post"
+      },
+      "createdDate": "Created Date",
+      "addedDateTime": "Added Date Time",
+      "postId": "Post Id",
+      "title": "Title",
+      "content": "Content",
+      "publishedDateTime": "Published Date Time",
+      "sentDate": "Sent Date"
+    }
+  }
+}

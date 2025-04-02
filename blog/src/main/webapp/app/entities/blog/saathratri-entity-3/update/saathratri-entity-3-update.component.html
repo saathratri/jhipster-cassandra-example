@@ -1,0 +1,120 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-saathratri-entity-3-heading"
+        data-cy="SaathratriEntity3CreateUpdateHeading"
+        jhiTranslate="blogApp.blogSaathratriEntity3.home.createOrEditLabel"
+      >
+        Create or edit a Saathratri Entity 3
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div formGroupName="compositeId">
+          <div class="mb-3">
+            <label class="form-label" for="field_entityType" jhiTranslate="blogApp.blogSaathratriEntity3.entityType">Entity Type</label>
+            <input
+              type="text"
+              class="form-control"
+              name="entityType"
+              id="field_entityType"
+              data-cy="entityType"
+              formControlName="entityType"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_createdTimeId" jhiTranslate="blogApp.blogSaathratriEntity3.createdTimeId"
+              >Created Time Id</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="createdTimeId"
+              id="field_createdTimeId"
+              data-cy="createdTimeId"
+              formControlName="createdTimeId"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entityName" jhiTranslate="blogApp.blogSaathratriEntity3.entityName">Entity Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="entityName"
+            id="field_entityName"
+            data-cy="entityName"
+            formControlName="entityName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entityDescription" jhiTranslate="blogApp.blogSaathratriEntity3.entityDescription"
+            >Entity Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="entityDescription"
+            id="field_entityDescription"
+            data-cy="entityDescription"
+            formControlName="entityDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_entityCost" jhiTranslate="blogApp.blogSaathratriEntity3.entityCost">Entity Cost</label>
+          <input
+            type="number"
+            class="form-control"
+            name="entityCost"
+            id="field_entityCost"
+            data-cy="entityCost"
+            formControlName="entityCost"
+          />
+        </div>
+
+        <div class="mb-3">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label jhiTranslate="blogApp.blogSaathratriEntity3.departureDate">Departure Date</mat-label>
+            <br />
+            <input
+              matInput
+              [matDatepicker]="departureDatePicker"
+              id="field_departureDate"
+              data-cy="departureDate"
+              formControlName="departureDate"
+            />
+            <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #departureDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_tags" jhiTranslate="blogApp.blogSaathratriEntity3.tags">Tags</label>
+          <input type="text" class="form-control" name="tags" id="field_tags" data-cy="tags" formControlName="tags" />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

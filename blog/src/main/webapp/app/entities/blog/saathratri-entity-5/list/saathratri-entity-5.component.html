@@ -1,0 +1,165 @@
+<div>
+  <h2 id="page-heading" data-cy="SaathratriEntity5Heading">
+    <span jhiTranslate="blogApp.blogSaathratriEntity5.home.title">Saathratri Entity 5 S</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="blogApp.blogSaathratriEntity5.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-saathratri-entity-5"
+        [routerLink]="['/blog/saathratri-entity-5/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="blogApp.blogSaathratriEntity5.home.createLabel">Create a new Saathratri Entity 5</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (saathratriEntity5s?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="blogApp.blogSaathratriEntity5.home.notFound">No Saathratri Entity 5 S found</span>
+    </div>
+  }
+
+  @if (saathratriEntity5s && saathratriEntity5s.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="organizationId">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity5.organizationId">Organization Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityType">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity5.entityType">Entity Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="entityId">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity5.entityId">Entity Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnId">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity5.addOnId">Add On Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnType">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity5.addOnType">Add On Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnDetailsText">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsText">Add On Details Text</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnDetailsDecimal">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsDecimal">Add On Details Decimal</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnDetailsBoolean">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsBoolean">Add On Details Boolean</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="addOnDetailsBigInt">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsBigInt">Add On Details Big Int</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (saathratriEntity5 of saathratriEntity5s; track trackCompositeId) {
+            <tr data-cy="entityTable">
+              <td>{{ saathratriEntity5!.compositeId.organizationId }}</td>
+
+              <td>{{ saathratriEntity5!.compositeId.entityType }}</td>
+
+              <td>{{ saathratriEntity5!.compositeId.entityId }}</td>
+
+              <td>{{ saathratriEntity5!.compositeId.addOnId }}</td>
+
+              <td>{{ saathratriEntity5.addOnType }}</td>
+              <td>{{ saathratriEntity5.addOnDetailsText }}</td>
+              <td>{{ saathratriEntity5.addOnDetailsDecimal }}</td>
+              <td>{{ saathratriEntity5.addOnDetailsBoolean }}</td>
+              <td>{{ saathratriEntity5.addOnDetailsBigInt | formatMediumDatetime }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="[
+                      '/blog/saathratri-entity-5',
+                      saathratriEntity5!.compositeId.organizationId,
+                      saathratriEntity5!.compositeId.entityType,
+                      saathratriEntity5!.compositeId.entityId,
+                      saathratriEntity5!.compositeId.addOnId,
+                      'view',
+                    ]"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a
+                    [routerLink]="[
+                      '/blog/saathratri-entity-5',
+                      saathratriEntity5!.compositeId.organizationId,
+                      saathratriEntity5!.compositeId.entityType,
+                      saathratriEntity5!.compositeId.entityId,
+                      saathratriEntity5!.compositeId.addOnId,
+                      'edit',
+                    ]"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(saathratriEntity5)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

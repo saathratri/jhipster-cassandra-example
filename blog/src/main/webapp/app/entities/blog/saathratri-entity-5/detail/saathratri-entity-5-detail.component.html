@@ -1,0 +1,75 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (saathratriEntity5(); as saathratriEntity5Ref) {
+      <div>
+        <h2 data-cy="saathratriEntity5DetailsHeading">
+          <span jhiTranslate="blogApp.blogSaathratriEntity5.detail.title">Saathratri Entity 5</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.organizationId">Organization Id</span></dt>
+          <dd>
+            <span>{{ saathratriEntity5Ref.compositeId.organizationId }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.entityType">Entity Type</span></dt>
+          <dd>
+            <span>{{ saathratriEntity5Ref.compositeId.entityType }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.entityId">Entity Id</span></dt>
+          <dd>
+            <span>{{ saathratriEntity5Ref.compositeId.entityId }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnId">Add On Id</span></dt>
+          <dd>
+            <span>{{ saathratriEntity5Ref.compositeId.addOnId }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnType">Add On Type</span></dt>
+          <dd>
+            <span>{{ saathratriEntity5Ref.addOnType }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsText">Add On Details Text</span></dt>
+          <dd>
+            <span>{{ saathratriEntity5Ref.addOnDetailsText }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsDecimal">Add On Details Decimal</span></dt>
+          <dd>
+            <span>{{ saathratriEntity5Ref.addOnDetailsDecimal }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsBoolean">Add On Details Boolean</span></dt>
+          <dd>
+            <span>{{ saathratriEntity5Ref.addOnDetailsBoolean }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSaathratriEntity5.addOnDetailsBigInt">Add On Details Big Int</span></dt>
+          <dd>
+            <td>{{ saathratriEntity5Ref.addOnDetailsBigInt | formatMediumDatetime }}</td>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button
+          type="button"
+          [routerLink]="[
+            '/blog/saathratri-entity-5',
+            saathratriEntity5()!.compositeId.organizationId,
+            saathratriEntity5()!.compositeId.entityType,
+            saathratriEntity5()!.compositeId.entityId,
+            saathratriEntity5()!.compositeId.addOnId,
+            'edit',
+          ]"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
