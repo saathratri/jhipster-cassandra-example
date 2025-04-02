@@ -1,0 +1,21 @@
+{
+  "lastUsedInterNodeCommunicationNonSslPort": 7200,
+  "lastUsedInterNodeCommunicationSslPort": 7201,
+  "lastUsedJmxMonitoringPort": 7399,
+  "lastUsedNativeTransportCqlPort": 9242,
+  "lastUsedThriftTransportPort": 9360,
+  "store": {
+    "interNodeCommunicationNonSslPort": 7100,
+    "interNodeCommunicationSslPort": 7101,
+    "jmxMonitoringPort": 7299,
+    "nativeTransportCqlPort": 9142,
+    "thriftTransportPort": 9260
+  },
+  "blog": {
+    "interNodeCommunicationNonSslPort": 7200,
+    "interNodeCommunicationSslPort": 7201,
+    "jmxMonitoringPort": 7399,
+    "nativeTransportCqlPort": 9242,
+    "thriftTransportPort": 9360
+  }
+}
