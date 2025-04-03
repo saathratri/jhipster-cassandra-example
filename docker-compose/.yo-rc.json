@@ -5,7 +5,7 @@
     "blueprints": [
       {
         "name": "generator-jhipster-cassandra",
-        "version": "1.0.8"
+        "version": "1.0.9"
       }
     ],
     "clusteredDbApps": [],
@@ -14,7 +14,7 @@
     "dockerRepositoryName": "amarppatel",
     "gatewayType": "SpringCloudGateway",
     "jhipsterVersion": "8.7.3",
-    "jwtSecretKey": "NzVlNjNiZmJkMmEyNDFmZjUzZjQ1MTU4YmNhODU4N2JjMTBlMzEzZDA0ZTYzNTFiOTJkNWQwZjJhNjRkOTgyODUwZTJkMDRmNjAyMmQ1YTgwOGI5NTUzN2Q0YmMzZjc5NTAyZQ==",
+    "jwtSecretKey": "MTAyZWMxYzY5YTcxMjMzMmY2YzEyNmYwZWU1MDMxZDM0Yzg1MjJhNjM4OTliNDIxOWQ2ZDM4ZGQ3NmU4NjIwMjA1ZWRmMWI4OWQwN2M1ZDYzNjBjMjMyNTI1MzMxYTZlOWE4Ng==",
     "monitoring": "no",
     "serviceDiscoveryType": "eureka"
   }
