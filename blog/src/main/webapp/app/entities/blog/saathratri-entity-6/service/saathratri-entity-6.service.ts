@@ -130,7 +130,6 @@ export class SaathratriEntity6Service {
         arrivalDate: saathratriEntity6.compositeId.arrivalDate ? saathratriEntity6.compositeId.arrivalDate.valueOf() : null,
       },
       departureDate: saathratriEntity6.departureDate ? saathratriEntity6.departureDate.valueOf() : null,
-
       addOnDetailsBigInt: saathratriEntity6.addOnDetailsBigInt
         ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           Object.fromEntries(Object.entries(saathratriEntity6.addOnDetailsBigInt).map(([k, v]) => [k, v?.valueOf()]))

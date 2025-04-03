@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS saathratri_entity_3 (
     entity_description text,
     entity_cost decimal,
     departure_date bigint,
-    tags text,
+    tags set<text>,
   primary key (
     (entity_type),
  created_time_id  ))

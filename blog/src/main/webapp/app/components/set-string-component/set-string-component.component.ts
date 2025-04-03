@@ -18,6 +18,7 @@ export class SetStringComponent {
   @Output() dataChange = new EventEmitter<Set<string>>();
 
   form: FormGroup;
+  newFieldControl: FormControl;
 
   constructor(
     private fb: FormBuilder,
@@ -26,6 +27,8 @@ export class SetStringComponent {
     this.form = this.fb.group({
       fields: this.fb.array([]),
     });
+
+    this.newFieldControl = new FormControl('', Validators.required);
 
     this.populateFormArray();
   }
@@ -45,9 +48,15 @@ export class SetStringComponent {
     });
   }
 
-  addInputField(): void {
-    if (this.fields.valid) {
-      this.fields.push(new FormControl('', Validators.required));
+  addNewField(): void {
+    if (this.newFieldControl.valid) {
+      const newValue = this.newFieldControl.value.trim();
+
+      if (newValue && !this.fields.value.includes(newValue)) {
+        this.fields.push(new FormControl(newValue, Validators.required));
+        this.newFieldControl.reset();
+        this.emitChange();
+      }
     }
   }
 

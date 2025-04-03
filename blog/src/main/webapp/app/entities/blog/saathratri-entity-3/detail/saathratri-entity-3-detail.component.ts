@@ -14,6 +14,10 @@ import { ISaathratriEntity3 } from '../saathratri-entity-3.model';
 export class SaathratriEntity3DetailComponent {
   saathratriEntity3 = input<ISaathratriEntity3 | null>(null);
 
+  toArray(set: Set<string> | null | undefined): string[] {
+    return set ? Array.from(set) : [];
+  }
+
   previousState(): void {
     window.history.back();
   }

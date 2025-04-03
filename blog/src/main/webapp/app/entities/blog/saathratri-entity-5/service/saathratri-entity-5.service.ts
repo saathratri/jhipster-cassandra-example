@@ -124,7 +124,6 @@ export class SaathratriEntity5Service {
       compositeId: {
         ...saathratriEntity5.compositeId,
       },
-
       addOnDetailsBigInt: saathratriEntity5.addOnDetailsBigInt
         ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           Object.fromEntries(Object.entries(saathratriEntity5.addOnDetailsBigInt).map(([k, v]) => [k, v?.valueOf()]))

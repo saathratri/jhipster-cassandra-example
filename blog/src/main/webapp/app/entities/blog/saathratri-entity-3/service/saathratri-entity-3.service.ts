@@ -123,6 +123,7 @@ export class SaathratriEntity3Service {
         ...saathratriEntity3.compositeId,
       },
       departureDate: saathratriEntity3.departureDate ? saathratriEntity3.departureDate.valueOf() : null,
+      tags: saathratriEntity3.tags ? Array.from(saathratriEntity3.tags) : [],
     } as RestOf<T>;
   }
 
@@ -135,6 +136,7 @@ export class SaathratriEntity3Service {
         createdTimeId: restSaathratriEntity3.compositeId.createdTimeId,
       },
       departureDate: restSaathratriEntity3.departureDate ? dayjs(restSaathratriEntity3.departureDate) : null,
+      tags: restSaathratriEntity3.tags ? new Set(restSaathratriEntity3.tags) : new Set<string>(),
     };
   }
 

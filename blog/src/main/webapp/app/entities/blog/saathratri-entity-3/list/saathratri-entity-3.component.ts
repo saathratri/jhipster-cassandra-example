@@ -83,6 +83,10 @@ export class SaathratriEntity3Component implements OnInit {
     this.handleNavigation(event);
   }
 
+  toArray(set: Set<string> | null | undefined): string[] {
+    return set ? Array.from(set) : [];
+  }
+
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }

@@ -78,6 +78,8 @@ export class SaathratriEntity3UpdateComponent implements OnInit {
     this.isSaving = true;
     const saathratriEntity3 = this.saathratriEntity3FormService.getSaathratriEntity3(this.editForm);
 
+    saathratriEntity3.tags = this.inputFieldsTags;
+
     if (this.isNew) {
       this.subscribeToSaveResponse(this.saathratriEntity3Service.create(saathratriEntity3));
     } else {
@@ -143,6 +145,8 @@ export class SaathratriEntity3UpdateComponent implements OnInit {
   protected updateForm(saathratriEntity3: ISaathratriEntity3): void {
     this.saathratriEntity3 = saathratriEntity3;
     this.saathratriEntity3FormService.resetForm(this.editForm, saathratriEntity3);
+
+    this.inputFieldsTags = saathratriEntity3.tags ? new Set(saathratriEntity3.tags) : new Set<string>();
 
     Object.keys(this.editForm.controls).forEach(field => {
       this.lastSavedValues[field] = this.editForm.get(field)?.value;

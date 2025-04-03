@@ -39,7 +39,11 @@
           </dd>
           <dt><span jhiTranslate="blogApp.blogSaathratriEntity3.tags">Tags</span></dt>
           <dd>
-            <span>{{ saathratriEntity3Ref.tags }}</span>
+            <dl *ngIf="saathratriEntity3Ref.tags">
+              <div *ngFor="let item of toArray(saathratriEntity3Ref.tags)">
+                <dt>{{ item }}</dt>
+              </div>
+            </dl>
           </dd>
         </dl>
 

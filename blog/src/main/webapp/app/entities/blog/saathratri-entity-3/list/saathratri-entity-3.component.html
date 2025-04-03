@@ -98,7 +98,13 @@
               <td>{{ saathratriEntity3.entityDescription }}</td>
               <td>{{ saathratriEntity3.entityCost }}</td>
               <td>{{ saathratriEntity3.departureDate | formatMediumDate }}</td>
-              <td>{{ saathratriEntity3.tags }}</td>
+              <td>
+                <dl *ngIf="saathratriEntity3.tags">
+                  <div *ngFor="let tag of toArray(saathratriEntity3.tags)">
+                    <dt>{{ tag }}</dt>
+                  </div>
+                </dl>
+              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a
