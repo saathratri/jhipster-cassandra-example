@@ -66,6 +66,7 @@ export class ProductFormService {
       {
         ...productRawValue,
         id: { value: productRawValue.id, disabled: true },
+        addedDate: productRawValue.addedDate?.toDate(),
       } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
     );
   }
