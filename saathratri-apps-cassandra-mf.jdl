@@ -29,7 +29,7 @@ application {
     serviceDiscoveryType eureka
     testFrameworks [cypress]
   }
-  entities Blog, Post, Tag, TajUser, SaathratriEntity, SaathratriEntity2, SaathratriEntity3, SaathratriEntity4, SaathratriEntity5, SaathratriEntity6, SaathratriEntity7
+  entities Blog, Post, Tag, TajUser, SaathratriEntity, SaathratriEntity2, SaathratriEntity3, SaathratriEntity4, SaathratriEntity5, SaathratriEntity6, SaathratriEntity7, SaathratriEntity8
 }
 
 application {
@@ -145,6 +145,11 @@ entity SaathratriEntity7 {
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") detailsDecimal BigDecimal
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") detailsBoolean Boolean
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") detailsBigInt Long
+}
+
+entity SaathratriEntity8 {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
+  @customAnnotation("CassandraType.Name.SET") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") tags String
 }
 
 // Single-value Primary Key Example:
