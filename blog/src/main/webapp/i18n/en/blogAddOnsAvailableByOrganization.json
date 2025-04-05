@@ -1,0 +1,31 @@
+{
+  "blogApp": {
+    "blogAddOnsAvailableByOrganization": {
+      "home": {
+        "title": "Add Ons Available By Organizations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Add Ons Available By Organization",
+        "createOrEditLabel": "Create or edit a Add Ons Available By Organization",
+        "notFound": "No Add Ons Available By Organizations found"
+      },
+      "created": "A new Add Ons Available By Organization is created with identifier {{ param }}",
+      "updated": "A Add Ons Available By Organization is updated with identifier {{ param }}",
+      "deleted": "A Add Ons Available By Organization is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Add Ons Available By Organization Organization Id '{{ organizationId }}', Entity Type '{{ entityType }}', Entity Id '{{ entityId }}', and Add On Id '{{ addOnId }}'?"
+      },
+      "detail": {
+        "title": "Add Ons Available By Organization"
+      },
+      "organizationId": "Organization Id",
+      "entityType": "Entity Type",
+      "entityId": "Entity Id",
+      "addOnId": "Add On Id",
+      "addOnType": "Add On Type",
+      "addOnDetailsText": "Add On Details Text",
+      "addOnDetailsDecimal": "Add On Details Decimal",
+      "addOnDetailsBoolean": "Add On Details Boolean",
+      "addOnDetailsBigInt": "Add On Details Big Int"
+    }
+  }
+}

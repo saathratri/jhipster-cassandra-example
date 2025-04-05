@@ -29,7 +29,7 @@ application {
     serviceDiscoveryType eureka
     testFrameworks [cypress]
   }
-  entities Blog, Post, Tag, TajUser, SaathratriEntity, SaathratriEntity2, SaathratriEntity3, SaathratriEntity4, SaathratriEntity5, SaathratriEntity6, SaathratriEntity7, SaathratriEntity8
+  entities Blog, Post, Tag, TajUser, SaathratriEntity, SaathratriEntity2, SaathratriEntity3, SaathratriEntity4, AddOnsAvailableByOrganization, AddOnsSelectedByOrganization, LandingPageByOrganization, SetEntityByOrganization
 }
 
 application {
@@ -89,7 +89,7 @@ entity SaathratriEntity3 {
   @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityDescription String
   @customAnnotation("") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") entityCost BigDecimal
   @customAnnotation("") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") departureDate Long
-  @customAnnotation("CassandraType.Name.SET") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") tags String,
+  @customAnnotation("CassandraType.Name.SET") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") tags String
 }
 
 entity SaathratriEntity4 {
@@ -98,17 +98,7 @@ entity SaathratriEntity4 {
   @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") attributeValue String
 }
 
-// CREATE TABLE addons (
-//     addon_id UUID,                   -- Unique ID for the addon
-//     entity_type TEXT,                 -- Type of entity (e.g., "customer", "order", "product")
-//     entity_id UUID,                   -- ID of the entity to which the addon is attached
-//     addon_type TEXT,                   -- Type of the addon (e.g., "feature", "discount", "service")
-//     addon_details MAP<TEXT, TEXT>,     -- Key-value store for generic addon details
-//     created_at TIMESTAMP,              -- Timestamp of creation
-//     PRIMARY KEY ((entity_type, entity_id), addon_id)
-// );
-
-entity SaathratriEntity5 {
+entity AddOnsAvailableByOrganization {
   @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
   @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") entityType String
   @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") entityId UUID
@@ -120,7 +110,7 @@ entity SaathratriEntity5 {
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") addOnDetailsBigInt Long
 }
 
-entity SaathratriEntity6 {
+entity AddOnsSelectedByOrganization {
   @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
   @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATE") arrivalDate Long
   @customAnnotation("PrimaryKeyType.CLUSTERED") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") accountNumber String
@@ -139,15 +129,14 @@ entity SaathratriEntity6 {
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") addOnDetailsBigInt Long
 }
 
-entity SaathratriEntity7 {
+entity LandingPageByOrganization {
   @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") detailsText String
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.DECIMAL") @customAnnotation("") detailsDecimal BigDecimal
   @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") detailsBoolean Boolean
-  @customAnnotation("CassandraType.Name.MAP") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") detailsBigInt Long
 }
 
-entity SaathratriEntity8 {
+entity SetEntityByOrganization {
   @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") organizationId UUID
   @customAnnotation("CassandraType.Name.SET") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") tags String
 }

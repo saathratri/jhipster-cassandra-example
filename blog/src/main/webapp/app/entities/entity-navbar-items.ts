@@ -42,13 +42,23 @@ export const EntityNavbarItems: NavbarItem[] = [
     translationKey: 'global.menu.entities.blogSaathratriEntity4',
   },
   {
-    name: 'SaathratriEntity5',
-    route: '/blog/saathratri-entity-5',
-    translationKey: 'global.menu.entities.blogSaathratriEntity5',
+    name: 'AddOnsAvailableByOrganization',
+    route: '/blog/add-ons-available-by-organization',
+    translationKey: 'global.menu.entities.blogAddOnsAvailableByOrganization',
   },
   {
-    name: 'SaathratriEntity6',
-    route: '/blog/saathratri-entity-6',
-    translationKey: 'global.menu.entities.blogSaathratriEntity6',
+    name: 'AddOnsSelectedByOrganization',
+    route: '/blog/add-ons-selected-by-organization',
+    translationKey: 'global.menu.entities.blogAddOnsSelectedByOrganization',
+  },
+  {
+    name: 'LandingPageByOrganization',
+    route: '/blog/landing-page-by-organization',
+    translationKey: 'global.menu.entities.blogLandingPageByOrganization',
+  },
+  {
+    name: 'SetEntityByOrganization',
+    route: '/blog/set-entity-by-organization',
+    translationKey: 'global.menu.entities.blogSetEntityByOrganization',
   },
 ];

@@ -16,8 +16,10 @@
         "blogSaathratriEntity2": "Saathratri Entity 2",
         "blogSaathratriEntity3": "Saathratri Entity 3",
         "blogSaathratriEntity4": "Saathratri Entity 4",
-        "blogSaathratriEntity5": "Saathratri Entity 5",
-        "blogSaathratriEntity6": "Saathratri Entity 6"
+        "blogAddOnsAvailableByOrganization": "Add Ons Available By Organization",
+        "blogAddOnsSelectedByOrganization": "Add Ons Selected By Organization",
+        "blogLandingPageByOrganization": "Landing Page By Organization",
+        "blogSetEntityByOrganization": "Set Entity By Organization"
       },
       "account": {
         "main": "Account",

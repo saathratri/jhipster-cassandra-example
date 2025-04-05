@@ -1,0 +1,24 @@
+{
+  "blogApp": {
+    "blogSetEntityByOrganization": {
+      "home": {
+        "title": "Set Entity By Organizations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Set Entity By Organization",
+        "createOrEditLabel": "Create or edit a Set Entity By Organization",
+        "notFound": "No Set Entity By Organizations found"
+      },
+      "created": "A new Set Entity By Organization is created with identifier {{ param }}",
+      "updated": "A Set Entity By Organization is updated with identifier {{ param }}",
+      "deleted": "A Set Entity By Organization is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Set Entity By Organization {{ id }}?"
+      },
+      "detail": {
+        "title": "Set Entity By Organization"
+      },
+      "organizationId": "Organization Id",
+      "tags": "Tags"
+    }
+  }
+}

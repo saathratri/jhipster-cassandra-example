@@ -42,14 +42,24 @@ const routes: Routes = [
     loadChildren: () => import('./blog/saathratri-entity-4/saathratri-entity-4.routes'),
   },
   {
-    path: 'saathratri-entity-5',
-    data: { pageTitle: 'blogApp.blogSaathratriEntity5.home.title' },
-    loadChildren: () => import('./blog/saathratri-entity-5/saathratri-entity-5.routes'),
+    path: 'add-ons-available-by-organization',
+    data: { pageTitle: 'blogApp.blogAddOnsAvailableByOrganization.home.title' },
+    loadChildren: () => import('./blog/add-ons-available-by-organization/add-ons-available-by-organization.routes'),
   },
   {
-    path: 'saathratri-entity-6',
-    data: { pageTitle: 'blogApp.blogSaathratriEntity6.home.title' },
-    loadChildren: () => import('./blog/saathratri-entity-6/saathratri-entity-6.routes'),
+    path: 'add-ons-selected-by-organization',
+    data: { pageTitle: 'blogApp.blogAddOnsSelectedByOrganization.home.title' },
+    loadChildren: () => import('./blog/add-ons-selected-by-organization/add-ons-selected-by-organization.routes'),
+  },
+  {
+    path: 'landing-page-by-organization',
+    data: { pageTitle: 'blogApp.blogLandingPageByOrganization.home.title' },
+    loadChildren: () => import('./blog/landing-page-by-organization/landing-page-by-organization.routes'),
+  },
+  {
+    path: 'set-entity-by-organization',
+    data: { pageTitle: 'blogApp.blogSetEntityByOrganization.home.title' },
+    loadChildren: () => import('./blog/set-entity-by-organization/set-entity-by-organization.routes'),
   },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
