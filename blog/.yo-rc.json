@@ -7,7 +7,7 @@
     "blueprints": [
       {
         "name": "generator-jhipster-cassandra",
-        "version": "1.0.11"
+        "version": "1.0.12"
       }
     ],
     "buildTool": "maven",
@@ -31,9 +31,9 @@
       "SetEntityByOrganization"
     ],
     "jhipsterVersion": "8.7.3",
-    "jwtSecretKey": "YTA5MjQ3YTUyNDQ1Yjg3MzEyYjVmYWZjM2Q4ZDRiNzM5OGRmNGQ1MGNhMGQ1NzJjMmNlZWIyNGIyZDc1YzQ5YTVlMWU4MGMzMzA3NTU2OWRkODU2M2FkMzcwZmU5NjU3MTM1MjBjNmUyYTIxODE3OTU2MWM4ZjE4NzY5MWI3MWM=",
+    "jwtSecretKey": "ZjAyMmQ4Y2Y3ODRiZDZjMzU5NmNkMzg5ODU4ZWMwZThhMzU2ODVjZmUyNGM2ZjNmMTdhNjAwY2YwZGQ0OTU1NmVjYWI3YjcxNzRhZGI5M2M5ZWQxMGNiNzIzMDNjNzVmODEwMmRhOGYwNDMwZjRmYjcwYjk1ZjJmYTNiNjQzYWU=",
     "languages": ["en"],
-    "lastLiquibaseTimestamp": 1743820430000,
+    "lastLiquibaseTimestamp": 1745339463000,
     "monorepository": true,
     "nativeLanguage": "en",
     "packageName": "com.saathratri.developer.blog",
