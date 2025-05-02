@@ -19,14 +19,14 @@
     "blueprints": [
       {
         "name": "generator-jhipster-cassandra",
-        "version": "1.0.12"
+        "version": "1.0.13"
       }
     ],
     "buildTool": "maven",
     "clientFramework": "angular",
     "devServerPort": 4200,
     "entities": [],
-    "jhipsterVersion": "8.7.3",
+    "jhipsterVersion": "8.10.0",
     "languages": ["en"],
     "microfrontends": [
       {
