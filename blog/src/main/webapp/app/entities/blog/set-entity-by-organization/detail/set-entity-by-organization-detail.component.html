@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (setEntityByOrganization(); as setEntityByOrganizationRef) {
+      <div>
+        <h2 data-cy="setEntityByOrganizationDetailsHeading">
+          <span jhiTranslate="blogApp.blogSetEntityByOrganization.detail.title">Set Entity By Organization</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="blogApp.blogSetEntityByOrganization.organizationId">Organization Id</span></dt>
+          <dd>
+            <span>{{ setEntityByOrganizationRef.organizationId }}</span>
+          </dd>
+          <dt><span jhiTranslate="blogApp.blogSetEntityByOrganization.tags">Tags</span></dt>
+          <dd>
+            <dl *ngIf="setEntityByOrganizationRef.tags">
+              <div *ngFor="let item of toArray(setEntityByOrganizationRef.tags)">
+                <dt>{{ item }}</dt>
+              </div>
+            </dl>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button
+          type="button"
+          [routerLink]="['/blog/set-entity-by-organization', setEntityByOrganizationRef.organizationId, 'edit']"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

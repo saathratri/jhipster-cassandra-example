@@ -1,0 +1,106 @@
+<div>
+  <h2 id="page-heading" data-cy="SetEntityByOrganizationHeading">
+    <span jhiTranslate="blogApp.blogSetEntityByOrganization.home.title">Set Entity By Organizations</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="blogApp.blogSetEntityByOrganization.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-set-entity-by-organization"
+        [routerLink]="['/blog/set-entity-by-organization/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="blogApp.blogSetEntityByOrganization.home.createLabel">Create a new Set Entity By Organization</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (setEntityByOrganizations?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="blogApp.blogSetEntityByOrganization.home.notFound">No Set Entity By Organizations found</span>
+    </div>
+  }
+
+  @if (setEntityByOrganizations && setEntityByOrganizations.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState()" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="organizationId">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSetEntityByOrganization.organizationId">Organization Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tags">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogSetEntityByOrganization.tags">Tags</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (setEntityByOrganization of setEntityByOrganizations; track trackOrganizationId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/blog/set-entity-by-organization', setEntityByOrganization.organizationId, 'view']">{{
+                  setEntityByOrganization.organizationId
+                }}</a>
+              </td>
+              <td>
+                <dl *ngIf="setEntityByOrganization.tags">
+                  <div *ngFor="let tag of toArray(setEntityByOrganization.tags)">
+                    <dt>{{ tag }}</dt>
+                  </div>
+                </dl>
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/blog/set-entity-by-organization', setEntityByOrganization.organizationId, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a
+                    [routerLink]="['/blog/set-entity-by-organization', setEntityByOrganization.organizationId, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button
+                    type="submit"
+                    (click)="delete(setEntityByOrganization)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                  >
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

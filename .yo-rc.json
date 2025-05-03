@@ -1,0 +1,19 @@
+{
+  "generator-jhipster": {
+    "appsFolders": ["gateway", "blog", "store"],
+    "baseName": "workspaces",
+    "blueprints": [
+      {
+        "name": "generator-jhipster-cassandra",
+        "version": "1.0.13"
+      }
+    ],
+    "clientPackageManager": "npm",
+    "directoryPath": "./",
+    "dockerCompose": true,
+    "entities": [],
+    "jhipsterVersion": "8.10.0",
+    "monorepository": true,
+    "skipJhipsterDependencies": true
+  }
+}

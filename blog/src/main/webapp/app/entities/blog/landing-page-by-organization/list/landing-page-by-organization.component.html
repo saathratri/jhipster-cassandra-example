@@ -1,0 +1,152 @@
+<div>
+  <h2 id="page-heading" data-cy="LandingPageByOrganizationHeading">
+    <span jhiTranslate="blogApp.blogLandingPageByOrganization.home.title">Landing Page By Organizations</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="blogApp.blogLandingPageByOrganization.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-landing-page-by-organization"
+        [routerLink]="['/blog/landing-page-by-organization/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="blogApp.blogLandingPageByOrganization.home.createLabel">Create a new Landing Page By Organization</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (landingPageByOrganizations?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="blogApp.blogLandingPageByOrganization.home.notFound">No Landing Page By Organizations found</span>
+    </div>
+  }
+
+  @if (landingPageByOrganizations && landingPageByOrganizations.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState()" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="organizationId">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogLandingPageByOrganization.organizationId">Organization Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="detailsText">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogLandingPageByOrganization.detailsText">Details Text</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="detailsDecimal">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogLandingPageByOrganization.detailsDecimal">Details Decimal</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="detailsBoolean">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogLandingPageByOrganization.detailsBoolean">Details Boolean</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="detailsBigInt">
+              <div class="d-flex">
+                <span jhiTranslate="blogApp.blogLandingPageByOrganization.detailsBigInt">Details Big Int</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (landingPageByOrganization of landingPageByOrganizations; track trackOrganizationId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/blog/landing-page-by-organization', landingPageByOrganization.organizationId, 'view']">{{
+                  landingPageByOrganization.organizationId
+                }}</a>
+              </td>
+              <td>
+                <div *ngFor="let item of landingPageByOrganization.detailsText | keyvalue">
+                  <dt>{{ item.key }}</dt>
+                  <dd>
+                    <td>{{ item.value }}</td>
+                  </dd>
+                </div>
+              </td>
+              <td>
+                <div *ngFor="let item of landingPageByOrganization.detailsDecimal | keyvalue">
+                  <dt>{{ item.key }}</dt>
+                  <dd>
+                    <td>{{ item.value }}</td>
+                  </dd>
+                </div>
+              </td>
+              <td>
+                <div *ngFor="let item of landingPageByOrganization.detailsBoolean | keyvalue">
+                  <dt>{{ item.key }}</dt>
+                  <dd>
+                    <td>{{ item.value }}</td>
+                  </dd>
+                </div>
+              </td>
+              <td>
+                <div *ngFor="let item of landingPageByOrganization.detailsBigInt | keyvalue">
+                  <dt>{{ item.key }}</dt>
+                  <dd>
+                    <td>{{ item.value | formatMediumDatetime }}</td>
+                  </dd>
+                </div>
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/blog/landing-page-by-organization', landingPageByOrganization.organizationId, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a
+                    [routerLink]="['/blog/landing-page-by-organization', landingPageByOrganization.organizationId, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button
+                    type="submit"
+                    (click)="delete(landingPageByOrganization)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                  >
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

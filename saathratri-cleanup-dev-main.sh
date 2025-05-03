@@ -18,4 +18,6 @@ echo "Deleting .npmrc..."
 rm -f .npmrc
 echo "Deleting Gateway..."
 rm -fr gateway
+echo "Removing .gitignore..."
+rm -f .gitignore
 sh saathratri-cleanup-dev-cassandra.sh

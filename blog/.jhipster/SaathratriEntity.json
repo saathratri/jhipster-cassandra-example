@@ -1,0 +1,59 @@
+{
+  "annotations": {
+    "changelogDate": "20250503150405"
+  },
+  "applications": ["blog"],
+  "clientRootFolder": "blog",
+  "databaseType": "cassandra",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "entityId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["PrimaryKeyType.PARTITIONED", "CassandraType.Name.UUID", ""],
+        "id": true
+      }
+    },
+    {
+      "fieldName": "entityName",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "entityDescription",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "entityCost",
+      "fieldType": "BigDecimal",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.DECIMAL"]
+      }
+    },
+    {
+      "fieldName": "createdId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.UUID"]
+      }
+    },
+    {
+      "fieldName": "createdTimeId",
+      "fieldType": "UUID",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TIMEUUID"]
+      }
+    }
+  ],
+  "microserviceName": "blog",
+  "name": "SaathratriEntity",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

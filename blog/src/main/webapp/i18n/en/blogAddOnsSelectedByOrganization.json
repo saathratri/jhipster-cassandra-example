@@ -1,0 +1,38 @@
+{
+  "blogApp": {
+    "blogAddOnsSelectedByOrganization": {
+      "home": {
+        "title": "Add Ons Selected By Organizations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Add Ons Selected By Organization",
+        "createOrEditLabel": "Create or edit a Add Ons Selected By Organization",
+        "notFound": "No Add Ons Selected By Organizations found"
+      },
+      "created": "A new Add Ons Selected By Organization is created with identifier {{ param }}",
+      "updated": "A Add Ons Selected By Organization is updated with identifier {{ param }}",
+      "deleted": "A Add Ons Selected By Organization is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Add Ons Selected By Organization Organization Id '{{ organizationId }}', Arrival Date '{{ arrivalDate }}', Account Number '{{ accountNumber }}', and Created Time Id '{{ createdTimeId }}'?"
+      },
+      "detail": {
+        "title": "Add Ons Selected By Organization"
+      },
+      "organizationId": "Organization Id",
+      "arrivalDate": "Arrival Date",
+      "accountNumber": "Account Number",
+      "createdTimeId": "Created Time Id",
+      "departureDate": "Departure Date",
+      "customerId": "Customer Id",
+      "customerFirstName": "Customer First Name",
+      "customerLastName": "Customer Last Name",
+      "customerUpdatedEmail": "Customer Updated Email",
+      "customerUpdatedPhoneNumber": "Customer Updated Phone Number",
+      "customerEstimatedArrivalTime": "Customer Estimated Arrival Time",
+      "tinyUrlShortCode": "Tiny Url Short Code",
+      "addOnDetailsText": "Add On Details Text",
+      "addOnDetailsDecimal": "Add On Details Decimal",
+      "addOnDetailsBoolean": "Add On Details Boolean",
+      "addOnDetailsBigInt": "Add On Details Big Int"
+    }
+  }
+}
