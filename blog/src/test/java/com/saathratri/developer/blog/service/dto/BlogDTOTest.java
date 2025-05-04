@@ -12,12 +12,12 @@ class BlogDTOTest {
     void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(BlogDTO.class);
         BlogDTO blogDTO1 = new BlogDTO();
-        blogDTO1.setCompositeId(new BlogDTOId(1L, UUID.randomUUID()));
+        blogDTO1.setCompositeId(new BlogDTOId(UUID.randomUUID().toString(), UUID.randomUUID()));
         BlogDTO blogDTO2 = new BlogDTO();
         assertThat(blogDTO1).isNotEqualTo(blogDTO2);
         blogDTO2.setCompositeId(blogDTO1.getCompositeId());
         assertThat(blogDTO1).isEqualTo(blogDTO2);
-        blogDTO2.setCompositeId(new BlogDTOId(1L, UUID.randomUUID()));
+        blogDTO2.setCompositeId(new BlogDTOId(UUID.randomUUID().toString(), UUID.randomUUID()));
         assertThat(blogDTO1).isNotEqualTo(blogDTO2);
         blogDTO1.setCompositeId(null);
         assertThat(blogDTO1).isNotEqualTo(blogDTO2);

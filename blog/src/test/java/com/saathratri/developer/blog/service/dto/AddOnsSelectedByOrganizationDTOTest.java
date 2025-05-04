@@ -18,14 +18,24 @@ class AddOnsSelectedByOrganizationDTOTest {
         TestUtil.equalsVerifier(AddOnsSelectedByOrganizationDTO.class);
         AddOnsSelectedByOrganizationDTO addOnsSelectedByOrganizationDTO1 = new AddOnsSelectedByOrganizationDTO();
         addOnsSelectedByOrganizationDTO1.setCompositeId(
-            new AddOnsSelectedByOrganizationDTOId(UUID.randomUUID(), longCount.incrementAndGet(), 1L, UUID.randomUUID())
+            new AddOnsSelectedByOrganizationDTOId(
+                UUID.randomUUID(),
+                longCount.incrementAndGet(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID()
+            )
         );
         AddOnsSelectedByOrganizationDTO addOnsSelectedByOrganizationDTO2 = new AddOnsSelectedByOrganizationDTO();
         assertThat(addOnsSelectedByOrganizationDTO1).isNotEqualTo(addOnsSelectedByOrganizationDTO2);
         addOnsSelectedByOrganizationDTO2.setCompositeId(addOnsSelectedByOrganizationDTO1.getCompositeId());
         assertThat(addOnsSelectedByOrganizationDTO1).isEqualTo(addOnsSelectedByOrganizationDTO2);
         addOnsSelectedByOrganizationDTO2.setCompositeId(
-            new AddOnsSelectedByOrganizationDTOId(UUID.randomUUID(), longCount.incrementAndGet(), 1L, UUID.randomUUID())
+            new AddOnsSelectedByOrganizationDTOId(
+                UUID.randomUUID(),
+                longCount.incrementAndGet(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID()
+            )
         );
         assertThat(addOnsSelectedByOrganizationDTO1).isNotEqualTo(addOnsSelectedByOrganizationDTO2);
         addOnsSelectedByOrganizationDTO1.setCompositeId(null);
