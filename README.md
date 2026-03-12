@@ -117,6 +117,39 @@ Below are various examples of defining JDL entities using the @customAnnotation 
     }
 ```
 
+## Improvements Since v1.0.13
+
+The underlying `generator-jhipster-cassandra` blueprint has received significant improvements since the last open-source tagged release (v1.0.13). Regenerating this example with the latest blueprint version will include:
+
+### Cassandra Pagination Overhaul
+- Replaced page-number-based pagination with native **Cassandra Slice pagination** using paging state tokens, which is the correct approach for Cassandra's distributed architecture.
+- Added a dedicated `/slice` endpoint for backward-compatible paginated queries.
+- Replaced automatic infinite scroll with a **Load More button** for better UX control.
+- Fixed paging state extraction to use `CassandraPageRequest` with the correct public API.
+- Fixed infinite "Load More" loop by properly checking for empty results.
+
+### Composite Key Search Widget
+- Added **findBy search methods** for Cassandra composite keys with a full search widget on entity list pages.
+- Added **date pickers and comparison operators** (equals, greater than, less than, etc.) for clustering key fields.
+- Clustering key fields are **automatically disabled** when an inequality operator is selected on a preceding clustering column (respecting Cassandra's query restrictions).
+- Navbar entities are now **sorted alphabetically** for easier navigation.
+
+### UTC Date Handling
+- Added `UTC_DATE` display support that prevents timezone shifting -- dates are rendered exactly as stored.
+- Added a custom `FormatUtcDatePipe` for consistent date-only formatting in Angular templates.
+- Fixed UTC_DATE form handling to use dayjs throughout the stack (create, update, and search forms).
+- Configured `DayjsDateAdapter` for Material Datepicker integration.
+
+### Composite Key Sorting
+- Added **column sorting** for Cassandra entities, with proper data array clearing when sort changes.
+- Sort by composite key fields is now fully supported in the Angular list view.
+
+### Backend Fixes
+- Fixed malformed CQL `@Query` generation in `findLatestBy` repository methods.
+- Removed expensive `count()` queries from Cassandra resource templates (not supported efficiently by Cassandra).
+- Fixed Cassandra pagination to use an explicit `pagingState` query parameter for clean API design.
+- Improved translation key generation for Cassandra entities using i18n entity labels.
+
 ## Prerequisites:
 
 - [Java](https://sdkman.io/) 21+
