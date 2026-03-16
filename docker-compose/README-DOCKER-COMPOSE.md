@@ -12,12 +12,12 @@ Launch all your infrastructure by running: `docker compose up -d`.
 
 ### Applications and dependencies:
 
-- gateway (gateway application)
-- gateway's postgresql database
-- blog (microservice application)
-- blog's cassandra database
-- store (microservice application)
-- store's cassandra database
+- cassandragateway (gateway application)
+- cassandragateway's postgresql database
+- cassandrablog (microservice application)
+- cassandrablog's cassandra database
+- cassandrastore (microservice application)
+- cassandrastore's cassandra database
 
 ### Additional Services:
 

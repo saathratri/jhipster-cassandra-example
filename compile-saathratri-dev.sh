@@ -1,15 +1,15 @@
 echo "Compiling Blog"
-cd blog
+cd cassandrablog
 ./mvnw clean package -Pdev,api-docs -DskipTests
 cd ..
 
 echo "Compiling Store"
-cd store
+cd cassandrastore
 ./mvnw clean package -Pdev,api-docs -DskipTests
 cd ..
 
-echo "Compiling Fateway"
-cd gateway
+echo "Compiling Gateway"
+cd cassandragateway
 ./mvnw clean package -Pdev,api-docs -DskipTests
 cd ..
 

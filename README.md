@@ -1,4 +1,4 @@
-
+.
 ## JHipster Example for Composite Primary Keys in Cassandra
 
 ### About this JHipster Example
@@ -164,6 +164,8 @@ Build Java Microservices using the Cassandra Composite Primary Key Blueprint
 ### Build Java Microservices using the Cassandra Composite Primary Key Blueprint
 
 1. To generate a microservices architecture with Cassandra composite primary key support, run the following command:
+
+**Linux / macOS:**
 ```console
 npm install -g generator-jhipster-cassandra
 
@@ -174,6 +176,17 @@ cd jhipster-cassandra-example
 sh saathratri-generate-code-dev-cassandra.sh
 ```
 
+**Windows:**
+```console
+npm install -g generator-jhipster-cassandra
+
+git clone https://github.com/amarpatel-xx/jhipster-cassandra-example.git
+
+cd jhipster-cassandra-example
+
+saathratri-generate-code-dev-cassandra.bat
+```
+
  2. You should see the message:
 ```console
 Congratulations, JHipster execution is complete!
@@ -182,32 +195,81 @@ Congratulations, JHipster execution is complete!
 ### Run your Cassandra Composite Primary Key Entities Example
 
 1.  When the process is complete, cd into the `gateway` directory and start Keycloak and Eureka using Docker Compose.
+
+**Linux / macOS:**
 ```console
 cd gateway
 docker compose -f src/main/docker/keycloak.yml up -d
 docker compose -f src/main/docker/jhipster-registry.yml up -d
 ```
+
+**Windows:**
+```console
+cd gateway
+docker compose -f src\main\docker\keycloak.yml up -d
+docker compose -f src\main\docker\jhipster-registry.yml up -d
+```
 Please make sure the jhipster-registry-1 Docker Container is started; sometimes that container does not run after the above command and needs to be started manually in Docker Desktop.  The jhipster-registry-1 container should appear under the gateway application within Docker Desktop.
 
 2.  Start `gateway` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then start the `gateway` by running the Maven command.
+
+**Linux / macOS:**
 ```console
 npm run docker:db:up
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
+**Windows:**
+```console
+npm run docker:db:up
+mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
 3.  Start `blog` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then, start the `blog` microservice.
+
+**Linux / macOS:**
 ```console
 cd blog
 npm run docker:db:up
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
+**Windows:**
+```console
+cd blog
+npm run docker:db:up
+mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
 4.  Start `store` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then, start the `store` microservice.
+
+**Linux / macOS:**
 ```console
 cd store
 npm run docker:db:up
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
+
+**Windows:**
+```console
+cd store
+npm run docker:db:up
+mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+### Available Scripts
+
+All shell scripts have corresponding Windows batch file equivalents:
+
+| Linux / macOS | Windows |
+|---|---|
+| `sh saathratri-generate-code-dev-cassandra.sh` | `saathratri-generate-code-dev-cassandra.bat` |
+| `sh saathratri-generate-code-dev-cassandra-mf.sh` | `saathratri-generate-code-dev-cassandra-mf.bat` |
+| `sh saathratri-cleanup-dev-main.sh` | `saathratri-cleanup-dev-main.bat` |
+| `sh saathratri-cleanup-dev-cassandra.sh` | `saathratri-cleanup-dev-cassandra.bat` |
+| `sh compile-saathratri-dev.sh` | `compile-saathratri-dev.bat` |
+| `sh saathratri-deploy.sh` | `saathratri-deploy.bat` |
+| `sh docker-remove-orphans.sh` | `docker-remove-orphans.bat` |
 
 ### Switch Identity Providers
 

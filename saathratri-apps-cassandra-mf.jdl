@@ -1,6 +1,6 @@
 application {
   config {
-    baseName gateway
+    baseName cassandragateway
     packageName com.saathratri.developer.gateway
     applicationType gateway
     authenticationType oauth2
@@ -9,13 +9,13 @@ application {
     prodDatabaseType postgresql
     serviceDiscoveryType eureka
     testFrameworks [cypress]
-    microfrontends [blog, store]
+    microfrontends [cassandrablog, cassandrastore]
   }
 }
 
 application {
   config {
-    baseName blog
+    baseName cassandrablog
     packageName com.saathratri.developer.blog
     applicationType microservice
     authenticationType oauth2
@@ -34,7 +34,7 @@ application {
 
 application {
   config {
-    baseName store
+    baseName cassandrastore
     packageName com.saathratri.developer.store
     applicationType microservice
     authenticationType oauth2
@@ -181,7 +181,7 @@ entity Product {
 deployment {
   deploymentType docker-compose
   serviceDiscoveryType eureka
-  appsFolders [gateway, blog, store]
+  appsFolders [cassandragateway, cassandrablog, cassandrastore]
   dockerRepositoryName "amarppatel"
 }
 

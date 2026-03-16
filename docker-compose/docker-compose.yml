@@ -1,17 +1,19 @@
 services:
-  gateway:
-    image: gateway
+  cassandragateway:
+    image: cassandragateway
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
       - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-      - SPRING_R2DBC_URL=r2dbc:postgresql://gateway-postgresql:5432/gateway
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://gateway-postgresql:5432/gateway
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=web_app
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=web_app
+      - SPRING_R2DBC_URL=r2dbc:postgresql://cassandragateway-postgresql:5432/cassandragateway
+      - SPRING_R2DBC_USERNAME=cassandragateway
+      - SPRING_R2DBC_PASSWORD=
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://cassandragateway-postgresql:5432/cassandragateway
       - JHIPSTER_REGISTRY_PASSWORD=admin
     ports:
       - 8080:8080
@@ -25,16 +27,16 @@ services:
       timeout: 5s
       retries: 40
     depends_on:
-      gateway-postgresql:
+      cassandragateway-postgresql:
         condition: service_healthy
       keycloak:
         condition: service_healthy
       jhipster-registry:
         condition: service_healthy
-  gateway-postgresql:
-    image: postgres:17.4
+  cassandragateway-postgresql:
+    image: postgres:18.3
     environment:
-      - POSTGRES_USER=gateway
+      - POSTGRES_USER=cassandragateway
       - POSTGRES_HOST_AUTH_METHOD=trust
     healthcheck:
       test:
@@ -44,8 +46,8 @@ services:
       timeout: 5s
       retries: 10
 
-  blog:
-    image: blog
+  cassandrablog:
+    image: cassandrablog
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
@@ -55,7 +57,7 @@ services:
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
-      - SPRING_CASSANDRA_CONTACTPOINTS=blog-cassandra
+      - SPRING_CASSANDRA_CONTACTPOINTS=cassandrablog-cassandra
       - JHIPSTER_SLEEP=10
       - JHIPSTER_REGISTRY_PASSWORD=admin
     healthcheck:
@@ -68,27 +70,27 @@ services:
       timeout: 5s
       retries: 40
     depends_on:
-      blog-cassandra:
+      cassandrablog-cassandra:
         condition: service_healthy
-      blog-cassandra-migration:
+      cassandrablog-cassandra-migration:
         condition: service_completed_successfully
       keycloak:
         condition: service_healthy
       jhipster-registry:
         condition: service_healthy
-  blog-cassandra-migration:
+  cassandrablog-cassandra-migration:
     environment:
-      - CASSANDRA_CONTACT_POINT=blog-cassandra
+      - CASSANDRA_CONTACT_POINT=cassandrablog-cassandra
       - USER=docker-cassandra-migration
       - CREATE_KEYSPACE_SCRIPT=create-keyspace.cql
     build:
-      context: ../blog/src/main/docker
+      context: ../cassandrablog/src/main/docker
       dockerfile: cassandra/Cassandra-Migration.Dockerfile
     volumes:
-      - ../blog/src/main/resources/config/cql:/cql:ro
-  blog-cassandra:
-    image: cassandra:5.0
-    container_name: blog-cassandra
+      - ../cassandrablog/src/main/resources/config/cql:/cql:ro
+  cassandrablog-cassandra:
+    image: cassandra:5.0.6
+    container_name: cassandrablog-cassandra
     environment:
       - MAX_HEAP_SIZE=2G
       - HEAP_NEWSIZE=512M
@@ -104,8 +106,8 @@ services:
     labels:
       org.springframework.boot.ignore: true
 
-  store:
-    image: store
+  cassandrastore:
+    image: cassandrastore
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
@@ -115,7 +117,7 @@ services:
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
-      - SPRING_CASSANDRA_CONTACTPOINTS=store-cassandra
+      - SPRING_CASSANDRA_CONTACTPOINTS=cassandrastore-cassandra
       - JHIPSTER_SLEEP=10
       - JHIPSTER_REGISTRY_PASSWORD=admin
     healthcheck:
@@ -128,27 +130,27 @@ services:
       timeout: 5s
       retries: 40
     depends_on:
-      store-cassandra:
+      cassandrastore-cassandra:
         condition: service_healthy
-      store-cassandra-migration:
+      cassandrastore-cassandra-migration:
         condition: service_completed_successfully
       keycloak:
         condition: service_healthy
       jhipster-registry:
         condition: service_healthy
-  store-cassandra-migration:
+  cassandrastore-cassandra-migration:
     environment:
-      - CASSANDRA_CONTACT_POINT=store-cassandra
+      - CASSANDRA_CONTACT_POINT=cassandrastore-cassandra
       - USER=docker-cassandra-migration
       - CREATE_KEYSPACE_SCRIPT=create-keyspace.cql
     build:
-      context: ../store/src/main/docker
+      context: ../cassandrastore/src/main/docker
       dockerfile: cassandra/Cassandra-Migration.Dockerfile
     volumes:
-      - ../store/src/main/resources/config/cql:/cql:ro
-  store-cassandra:
-    image: cassandra:5.0
-    container_name: store-cassandra
+      - ../cassandrastore/src/main/resources/config/cql:/cql:ro
+  cassandrastore-cassandra:
+    image: cassandra:5.0.6
+    container_name: cassandrastore-cassandra
     environment:
       - MAX_HEAP_SIZE=2G
       - HEAP_NEWSIZE=512M
@@ -165,7 +167,7 @@ services:
       org.springframework.boot.ignore: true
 
   jhipster-registry:
-    image: jhipster/jhipster-registry:v7.4.0
+    image: jhipster/jhipster-registry:v7.5.0
     volumes:
       - ./central-server-config:/central-config
     # By default the JHipster Registry runs with the "dev" and "native"
@@ -197,15 +199,15 @@ services:
       timeout: 5s
       retries: 10
   keycloak:
-    image: quay.io/keycloak/keycloak:26.1.4
+    image: quay.io/keycloak/keycloak:26.5.5
     command: 'start-dev --import-realm'
     volumes:
       - ./realm-config:/opt/keycloak/data/import
       - ./realm-config/keycloak-health-check.sh:/opt/keycloak/health-check.sh
     environment:
       - KC_DB=dev-file
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
       - KC_FEATURES=scripts
       - KC_HTTP_PORT=9080
       - KC_HTTPS_PORT=9443

@@ -1,9 +1,9 @@
 {
-  "lastUsedInterNodeCommunicationNonSslPort": 7200,
-  "lastUsedInterNodeCommunicationSslPort": 7201,
-  "lastUsedJmxMonitoringPort": 7399,
-  "lastUsedNativeTransportCqlPort": 9242,
-  "lastUsedThriftTransportPort": 9360,
+  "lastUsedInterNodeCommunicationNonSslPort": 7400,
+  "lastUsedInterNodeCommunicationSslPort": 7401,
+  "lastUsedJmxMonitoringPort": 7599,
+  "lastUsedNativeTransportCqlPort": 9442,
+  "lastUsedThriftTransportPort": 9560,
   "store": {
     "interNodeCommunicationNonSslPort": 7100,
     "interNodeCommunicationSslPort": 7101,
@@ -17,5 +17,19 @@
     "jmxMonitoringPort": 7399,
     "nativeTransportCqlPort": 9242,
     "thriftTransportPort": 9360
+  },
+  "cassandrastore": {
+    "interNodeCommunicationNonSslPort": 7200,
+    "interNodeCommunicationSslPort": 7201,
+    "jmxMonitoringPort": 7399,
+    "nativeTransportCqlPort": 9242,
+    "thriftTransportPort": 9360
+  },
+  "cassandrablog": {
+    "interNodeCommunicationNonSslPort": 7300,
+    "interNodeCommunicationSslPort": 7301,
+    "jmxMonitoringPort": 7499,
+    "nativeTransportCqlPort": 9342,
+    "thriftTransportPort": 9460
   }
 }
