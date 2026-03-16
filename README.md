@@ -198,20 +198,20 @@ Congratulations, JHipster execution is complete!
 
 **Linux / macOS:**
 ```console
-cd gateway
+cd cassandragateway
 docker compose -f src/main/docker/keycloak.yml up -d
 docker compose -f src/main/docker/jhipster-registry.yml up -d
 ```
 
 **Windows:**
 ```console
-cd gateway
+cd cassandragateway
 docker compose -f src\main\docker\keycloak.yml up -d
 docker compose -f src\main\docker\jhipster-registry.yml up -d
 ```
 Please make sure the jhipster-registry-1 Docker Container is started; sometimes that container does not run after the above command and needs to be started manually in Docker Desktop.  The jhipster-registry-1 container should appear under the gateway application within Docker Desktop.
 
-2.  Start `gateway` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then start the `gateway` by running the Maven command.
+2.  Start `cassandragateway` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then start the `cassandragateway` by running the Maven command.
 
 **Linux / macOS:**
 ```console
@@ -225,34 +225,34 @@ npm run docker:db:up
 mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-3.  Start `blog` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then, start the `blog` microservice.
+3.  Start `cassandrablog` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then, start the `cassandrablog` microservice.
 
 **Linux / macOS:**
 ```console
-cd blog
+cd cassandrablog
 npm run docker:db:up
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 **Windows:**
 ```console
-cd blog
+cd cassandrablog
 npm run docker:db:up
 mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-4.  Start `store` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then, start the `store` microservice.
+4.  Start `cassandrastore` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then, start the `cassandrastore` microservice.
 
 **Linux / macOS:**
 ```console
-cd store
+cd cassandrastore
 npm run docker:db:up
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 **Windows:**
 ```console
-cd store
+cd cassandrastore
 npm run docker:db:up
 mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
 ```
