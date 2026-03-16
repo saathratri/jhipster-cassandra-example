@@ -1,0 +1,34 @@
+{
+  "generator-jhipster": {
+    "applicationIndex": 2,
+    "applicationType": "microservice",
+    "authenticationType": "oauth2",
+    "baseName": "cassandrastore",
+    "blueprints": [
+      {
+        "name": "generator-jhipster-cassandra",
+        "version": "1.0.14"
+      }
+    ],
+    "buildTool": "maven",
+    "clientFramework": "angular",
+    "databaseType": "cassandra",
+    "devDatabaseType": "cassandra",
+    "devServerPort": 4202,
+    "enableHibernateCache": false,
+    "entities": ["Product"],
+    "jhipsterVersion": "9.0.0",
+    "jwtSecretKey": "NmNlYTA4NDE3YjcyMDVkZjAxZmNlM2I4M2ZlMWI3M2NhMjdmNGI3NmYyNjFhZGQzZmUxNTM4ZDRkZGFiZDhhNmY4NjQxNDg5ZTZmMTU0NDVkM2MyZDVhZTYwZmMwYWUxNmE5ZDA2NWYxOWI0ODM1NDI2Nzg1M2I1NzljYzI0Yjk=",
+    "languages": ["en"],
+    "lastLiquibaseTimestamp": 1773668760000,
+    "monorepository": true,
+    "nativeLanguage": "en",
+    "packageName": "com.saathratri.developer.store",
+    "prodDatabaseType": "cassandra",
+    "serverPort": "8082",
+    "serviceDiscoveryType": "eureka",
+    "skipCommitHook": true,
+    "skipJhipsterDependencies": true,
+    "testFrameworks": ["cypress"]
+  }
+}
