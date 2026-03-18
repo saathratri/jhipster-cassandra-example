@@ -1,0 +1,71 @@
+const { withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
+
+const packageJson = require('../package.json');
+// Microfrontend api, should match across gateway and microservices.
+const apiVersion = '0.0.1';
+
+const sharedDefaults = { singleton: true, strictVersion: true, requiredVersion: apiVersion };
+const shareMappings = (...mappings) => Object.fromEntries(mappings.map(map => [map, { ...sharedDefaults, version: apiVersion }]));
+
+const shareDependencies = ({ skipList = [] } = {}) =>
+  Object.fromEntries(
+    Object.entries(packageJson.dependencies)
+      .filter(([dependency]) => !skipList.includes(dependency))
+      .map(([dependency, version]) => [dependency, { ...sharedDefaults, version, requiredVersion: version }]),
+  );
+
+let sharedDependencies = shareDependencies({ skipList: ['@angular/localize', 'zone.js'] });
+const ngBootstrapShared = sharedDependencies['@ng-bootstrap/ng-bootstrap'];
+sharedDependencies = {
+  ...sharedDependencies,
+  '@angular/common/http': sharedDependencies['@angular/common'],
+  'rxjs/operators': sharedDependencies.rxjs,
+
+  '@ng-bootstrap/ng-bootstrap/alert': ngBootstrapShared,
+  '@ng-bootstrap/ng-bootstrap/collapse': ngBootstrapShared,
+  '@ng-bootstrap/ng-bootstrap/datepicker': ngBootstrapShared,
+  '@ng-bootstrap/ng-bootstrap/dropdown': ngBootstrapShared,
+  '@ng-bootstrap/ng-bootstrap/modal': ngBootstrapShared,
+  '@ng-bootstrap/ng-bootstrap/progressbar': ngBootstrapShared,
+  '@ng-bootstrap/ng-bootstrap/typeahead': ngBootstrapShared,
+};
+
+// eslint-disable-next-line no-unused-vars
+module.exports = (config, options, targetOptions) => {
+  return withModuleFederationPlugin({
+    name: 'cassandragateway',
+    shared: {
+      ...sharedDependencies,
+      ...shareMappings(
+        'app/config/input.constants',
+        'app/config/pagination.constants',
+        'app/config/translation.config',
+        'app/core/auth',
+        'app/core/config',
+        'app/core/interceptor',
+        'app/core/request',
+        'app/core/util',
+        'app/shared',
+        'app/shared/alert',
+        'app/shared/auth',
+        'app/shared/date',
+        'app/shared/language',
+        'app/shared/pagination',
+        'app/shared/sort',
+
+        'app/components',
+        'app/components/date-time',
+        'app/components/set-string-component',
+        'app/components/set-string-edit-dialog-component',
+        'app/components/map-boolean-component',
+        'app/components/map-number-component',
+        'app/components/map-string-component',
+        'app/components/map-dayjs-component',
+        'app/components/map-boolean-edit-dialog-component',
+        'app/components/map-number-edit-dialog-component',
+        'app/components/map-string-edit-dialog-component',
+        'app/components/map-dayjs-edit-dialog-component',
+      ),
+    },
+  });
+};

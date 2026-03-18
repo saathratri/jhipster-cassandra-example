@@ -1,0 +1,48 @@
+{
+  "workspaces": {
+    "packages": [
+      "cassandrablog",
+      "cassandragateway",
+      "cassandrastore"
+    ]
+  },
+  "scripts": {
+    "backend:build-cache": "concurrently npm:backend:build-cache:cassandragateway npm:backend:build-cache:cassandrablog npm:backend:build-cache:cassandrastore",
+    "backend:build-cache:cassandrablog": "npm run backend:build-cache --workspace cassandrablog --if-present",
+    "backend:build-cache:cassandragateway": "npm run backend:build-cache --workspace cassandragateway --if-present",
+    "backend:build-cache:cassandrastore": "npm run backend:build-cache --workspace cassandrastore --if-present",
+    "ci:backend:test": "npm run ci:backend:test --workspaces --if-present",
+    "ci:e2e:package": "npm run ci:docker:build --workspaces --if-present && npm run java:docker --workspaces --if-present",
+    "ci:e2e:prepare": "npm run docker-compose",
+    "ci:e2e:run": "npm run e2e:headless --workspaces --if-present",
+    "ci:e2e:teardown": "docker compose -f docker-compose/docker-compose.yml down -v",
+    "ci:frontend:test": "npm run ci:frontend:test --workspaces --if-present",
+    "docker-compose": "docker compose -f docker-compose/docker-compose.yml up --wait",
+    "java:docker": "concurrently npm:java:docker:cassandragateway npm:java:docker:cassandrablog npm:java:docker:cassandrastore",
+    "java:docker:arm64": "concurrently npm:java:docker:arm64:cassandragateway npm:java:docker:arm64:cassandrablog npm:java:docker:arm64:cassandrastore",
+    "java:docker:arm64:cassandrablog": "npm run java:docker:arm64 --workspace cassandrablog --if-present",
+    "java:docker:arm64:cassandragateway": "npm run java:docker:arm64 --workspace cassandragateway --if-present",
+    "java:docker:arm64:cassandrastore": "npm run java:docker:arm64 --workspace cassandrastore --if-present",
+    "java:docker:cassandrablog": "npm run java:docker --workspace cassandrablog --if-present",
+    "java:docker:cassandragateway": "npm run java:docker --workspace cassandragateway --if-present",
+    "java:docker:cassandrastore": "npm run java:docker --workspace cassandrastore --if-present",
+    "prettier:check": "prettier --check \"{,.blueprint/**/}*.{md,json,yml,js,cjs,mjs,ts,cts,mts}\"",
+    "prettier:format": "prettier --write \"{,.blueprint/**/}*.{md,json,yml,js,cjs,mjs,ts,cts,mts}\"",
+    "watch": "concurrently npm:watch:cassandragateway npm:watch:cassandrablog npm:watch:cassandrastore",
+    "watch:cassandrablog": "npm run watch --workspace cassandrablog --if-present",
+    "watch:cassandragateway": "npm run watch --workspace cassandragateway --if-present",
+    "watch:cassandrastore": "npm run watch --workspace cassandrastore --if-present",
+    "webapp:test": "npm run webapp:test --workspaces --if-present"
+  },
+  "overrides": {
+    "browser-sync": "3.0.4",
+    "webpack": "5.105.4"
+  },
+  "devDependencies": {
+    "concurrently": "9.2.1",
+    "prettier": "3.8.1",
+    "prettier-plugin-java": "2.8.1",
+    "prettier-plugin-packagejson": "3.0.2",
+    "rxjs": "7.8.2"
+  }
+}
