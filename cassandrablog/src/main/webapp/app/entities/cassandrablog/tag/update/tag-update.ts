@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,7 +34,7 @@ import { TagFormGroup, TagFormService } from './tag-form.service';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    DecimalPipe,
+    JsonPipe,
   ],
 })
 export class TagUpdateComponent implements OnInit {

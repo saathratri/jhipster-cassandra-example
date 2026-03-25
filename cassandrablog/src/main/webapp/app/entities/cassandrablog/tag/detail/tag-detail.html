@@ -25,6 +25,34 @@
           </dd>
         </dl>
 
+        <dl class="row-md jh-entity-details">
+          <dt><span>Name Embedding</span></dt>
+          <dd>
+            <small class="text-muted">
+              @if (tagRef.nameEmbedding && tagRef.nameEmbedding.length > 0) {
+                [{{ tagRef.nameEmbedding[0] | number: '1.0-5' }}, {{ tagRef.nameEmbedding[1] | number: '1.0-5' }},
+                {{ tagRef.nameEmbedding[2] | number: '1.0-5' }}, ...]
+              } @else {
+                <em>Not generated</em>
+              }
+            </small>
+          </dd>
+        </dl>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Description Embedding</span></dt>
+          <dd>
+            <small class="text-muted">
+              @if (tagRef.descriptionEmbedding && tagRef.descriptionEmbedding.length > 0) {
+                [{{ tagRef.descriptionEmbedding[0] | number: '1.0-5' }}, {{ tagRef.descriptionEmbedding[1] | number: '1.0-5' }},
+                {{ tagRef.descriptionEmbedding[2] | number: '1.0-5' }}, ...]
+              } @else {
+                <em>Not generated</em>
+              }
+            </small>
+          </dd>
+        </dl>
+
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
         </button>

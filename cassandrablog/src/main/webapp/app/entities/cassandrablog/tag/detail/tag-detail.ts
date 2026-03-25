@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -25,6 +26,7 @@ import { ITag } from '../tag.model';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ConvertFromDayjsToDateLongPipe,
+    DecimalPipe,
   ],
 })
 export class TagDetailComponent {
