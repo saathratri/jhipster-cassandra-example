@@ -14,6 +14,8 @@ public class TagDTO implements Serializable {
     private UUID id;
     private String name;
     private String description;
+    private java.util.List<Float> nameEmbedding;
+    private java.util.List<Float> descriptionEmbedding;
 
     public TagDTO() {
         // Empty constructor needed for Jackson.
@@ -56,6 +58,22 @@ public class TagDTO implements Serializable {
     public TagDTO description(String description) {
         this.description = description;
         return this;
+    }
+
+    public java.util.List<Float> getNameEmbedding() {
+        return nameEmbedding;
+    }
+
+    public void setNameEmbedding(java.util.List<Float> nameEmbedding) {
+        this.nameEmbedding = nameEmbedding;
+    }
+
+    public java.util.List<Float> getDescriptionEmbedding() {
+        return descriptionEmbedding;
+    }
+
+    public void setDescriptionEmbedding(java.util.List<Float> descriptionEmbedding) {
+        this.descriptionEmbedding = descriptionEmbedding;
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.saathratri.developer.blog.service.mapper;
 
+import com.datastax.oss.driver.api.core.data.CqlVector;
 import com.saathratri.developer.blog.domain.Tag;
 import com.saathratri.developer.blog.service.dto.TagDTO;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import org.mapstruct.*;
@@ -32,5 +35,16 @@ public interface TagMapper extends EntityMapper<TagDTO, Tag> {
             return null;
         }
         return value.iterator().next();
+    }
+
+    default List<Float> mapCqlVectorToList(CqlVector<Float> vector) {
+        if (vector == null) {
+            return null;
+        }
+        List<Float> list = new ArrayList<>();
+        for (Float f : vector) {
+            list.add(f);
+        }
+        return list;
     }
 }

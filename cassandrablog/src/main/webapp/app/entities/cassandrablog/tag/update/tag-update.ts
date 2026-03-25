@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +25,17 @@ import { TagFormGroup, TagFormService } from './tag-form.service';
 @Component({
   selector: 'jhi-tag-update',
   templateUrl: './tag-update.html',
-  imports: [FontAwesomeModule, Alert, AlertError, TranslateDirective, TranslateModule, FormsModule, ReactiveFormsModule, MaterialModule],
+  imports: [
+    FontAwesomeModule,
+    Alert,
+    AlertError,
+    TranslateDirective,
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    DecimalPipe,
+  ],
 })
 export class TagUpdateComponent implements OnInit {
   isSaving = false;

@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, NgZone, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -38,6 +39,7 @@ import { ITag } from '../tag.model';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ConvertFromDayjsToDateLongPipe,
+    DecimalPipe,
   ],
 })
 export class TagComponent implements OnInit {
