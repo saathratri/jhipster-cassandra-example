@@ -14,6 +14,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 /**
@@ -172,6 +174,12 @@ public class TagServiceImpl implements TagService {
     public void delete(UUID id) {
         LOG.debug("Request to delete Tag : {}", id);
         tagRepository.deleteById(id);
+    }
+
+    @Override
+    public Slice<TagDTO> findAllSlice(org.springframework.data.domain.Pageable pageable) {
+        LOG.debug("Request to get a slice of Tags");
+        return tagRepository.findAll(pageable).map(tagMapper::toDto);
     }
 
     // ==================== AI Text Search ====================

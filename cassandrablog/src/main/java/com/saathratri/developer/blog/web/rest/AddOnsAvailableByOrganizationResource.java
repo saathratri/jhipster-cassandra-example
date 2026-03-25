@@ -282,6 +282,65 @@ public class AddOnsAvailableByOrganizationResource {
     }
 
     /**
+     * {@code GET  /add-ons-available-by-organizations/slice} : get addOnsAvailableByOrganizations with Cassandra cursor-based pagination.
+     *
+     * @param pagingState the Cassandra paging state for cursor-based pagination.
+     * @param size the page size.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of addOnsAvailableByOrganizations in body.
+     */
+    @GetMapping("/slice")
+    public ResponseEntity<List<AddOnsAvailableByOrganizationDTO>> getAllAddOnsAvailableByOrganizationsSlice(
+        @RequestParam(name = "pagingState", required = false) String pagingState,
+        @RequestParam(name = "size", defaultValue = "20") int size
+    ) {
+        LOG.debug("REST request to get a slice of AddOnsAvailableByOrganizations, pagingState: {}, size: {}", pagingState, size);
+
+        // Build CassandraPageRequest from pagingState parameter
+        org.springframework.data.domain.Pageable cassandraPageRequest;
+        if (pagingState == null || pagingState.isEmpty()) {
+            cassandraPageRequest = CassandraPageRequest.first(size);
+        } else {
+            try {
+                java.nio.ByteBuffer pagingStateBuffer;
+                try {
+                    pagingStateBuffer = java.nio.ByteBuffer.wrap(java.util.Base64.getUrlDecoder().decode(pagingState));
+                } catch (IllegalArgumentException e) {
+                    pagingStateBuffer = java.nio.ByteBuffer.wrap(java.util.Base64.getDecoder().decode(pagingState));
+                }
+                cassandraPageRequest = CassandraPageRequest.of(org.springframework.data.domain.PageRequest.of(0, size), pagingStateBuffer);
+            } catch (Exception e) {
+                LOG.warn("Invalid paging state, starting from beginning", e);
+                cassandraPageRequest = CassandraPageRequest.first(size);
+            }
+        }
+
+        Slice<AddOnsAvailableByOrganizationDTO> slice = addOnsAvailableByOrganizationService.findAllSlice(cassandraPageRequest);
+        List<AddOnsAvailableByOrganizationDTO> result = slice.getContent();
+
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        boolean hasNext = slice.hasNext();
+        if (hasNext && slice.getPageable() instanceof CassandraPageRequest) {
+            java.nio.ByteBuffer nextPagingState = null;
+            CassandraPageRequest currentCassandraPageRequest = (CassandraPageRequest) slice.getPageable();
+            if (currentCassandraPageRequest.getPagingState() != null) {
+                org.springframework.data.domain.Pageable nextPageable = slice.nextPageable();
+                if (nextPageable instanceof CassandraPageRequest) {
+                    nextPagingState = ((CassandraPageRequest) nextPageable).getPagingState();
+                }
+            }
+            if (nextPagingState != null) {
+                byte[] pagingStateBytes = new byte[nextPagingState.remaining()];
+                nextPagingState.duplicate().get(pagingStateBytes);
+                headers.add("X-Paging-State", java.util.Base64.getUrlEncoder().encodeToString(pagingStateBytes));
+            }
+        }
+        headers.add("X-Has-Next-Page", String.valueOf(hasNext));
+        headers.add("Access-Control-Expose-Headers", "X-Has-Next-Page, X-Paging-State, X-Total-Count");
+
+        return ResponseEntity.ok().headers(headers).body(result);
+    }
+
+    /**
      * // Composite Primary Key Code
      * {@code GET  /:organizationId/:entityType/:entityId/:addOnId} : get the "organizationId" addOnsAvailableByOrganization.
      *

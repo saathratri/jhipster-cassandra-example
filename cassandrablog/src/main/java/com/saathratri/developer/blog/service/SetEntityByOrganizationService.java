@@ -4,6 +4,8 @@ import com.saathratri.developer.blog.service.dto.SetEntityByOrganizationDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.blog.domain.SetEntityByOrganization}.
@@ -54,4 +56,12 @@ public interface SetEntityByOrganizationService {
      * @param id the id of the entity.
      */
     void delete(UUID organizationId);
+
+    /**
+     * Get all the setEntityByOrganizations with Cassandra cursor-based pagination.
+     *
+     * @param pageable the pagination information.
+     * @return the slice of entities.
+     */
+    Slice<SetEntityByOrganizationDTO> findAllSlice(org.springframework.data.domain.Pageable pageable);
 }

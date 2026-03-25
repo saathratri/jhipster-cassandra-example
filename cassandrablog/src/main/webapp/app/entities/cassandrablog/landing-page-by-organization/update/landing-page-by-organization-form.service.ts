@@ -99,7 +99,10 @@ export class LandingPageByOrganizationFormService {
       ...rawLandingPageByOrganization,
       detailsBigInt: rawLandingPageByOrganization.detailsBigInt
         ? Object.fromEntries(
-            Object.entries(rawLandingPageByOrganization.detailsBigInt).map(([key, value]) => [key, dayjs(value, DATE_TIME_FORMAT)]),
+            Object.entries(rawLandingPageByOrganization.detailsBigInt).map(([key, value]) => [
+              key,
+              typeof value === 'number' ? dayjs(value) : dayjs(value, DATE_TIME_FORMAT),
+            ]),
           )
         : {},
     };

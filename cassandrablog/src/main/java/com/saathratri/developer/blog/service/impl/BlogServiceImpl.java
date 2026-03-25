@@ -86,6 +86,12 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public Slice<BlogDTO> findAllSlice(org.springframework.data.domain.Pageable pageable) {
+        LOG.debug("Request to get a slice of Blogs");
+        return blogRepository.findAll(pageable).map(blogMapper::toDto);
+    }
+
+    @Override
     public List<BlogDTO> findAllByCompositeIdCategory(final String category) {
         LOG.debug("Request to findAllByCompositeIdCategory(final String category) service in BlogServiceImpl.");
         return blogRepository

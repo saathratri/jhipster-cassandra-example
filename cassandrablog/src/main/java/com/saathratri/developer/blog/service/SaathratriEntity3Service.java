@@ -58,6 +58,14 @@ public interface SaathratriEntity3Service {
      */
     void delete(SaathratriEntity3Id id);
 
+    /**
+     * Get all the saathratriEntity3s with Cassandra cursor-based pagination.
+     *
+     * @param pageable the pagination information.
+     * @return the slice of entities.
+     */
+    Slice<SaathratriEntity3DTO> findAllSlice(org.springframework.data.domain.Pageable pageable);
+
     List<SaathratriEntity3DTO> findAllByCompositeIdEntityType(final String entityType);
     Slice<SaathratriEntity3DTO> findAllByCompositeIdEntityTypePageable(final String entityType, Pageable pageable);
     Optional<SaathratriEntity3DTO> findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(

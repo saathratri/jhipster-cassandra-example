@@ -4,6 +4,8 @@ import com.saathratri.developer.store.service.dto.ProductDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.store.domain.Product}.
@@ -54,4 +56,12 @@ public interface ProductService {
      * @param id the id of the entity.
      */
     void delete(UUID id);
+
+    /**
+     * Get all the products with Cassandra cursor-based pagination.
+     *
+     * @param pageable the pagination information.
+     * @return the slice of entities.
+     */
+    Slice<ProductDTO> findAllSlice(org.springframework.data.domain.Pageable pageable);
 }

@@ -12,6 +12,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 /**
@@ -87,5 +89,11 @@ public class SaathratriEntityServiceImpl implements SaathratriEntityService {
     public void delete(UUID entityId) {
         LOG.debug("Request to delete SaathratriEntity : {}", entityId);
         saathratriEntityRepository.deleteById(entityId);
+    }
+
+    @Override
+    public Slice<SaathratriEntityDTO> findAllSlice(org.springframework.data.domain.Pageable pageable) {
+        LOG.debug("Request to get a slice of SaathratriEntities");
+        return saathratriEntityRepository.findAll(pageable).map(saathratriEntityMapper::toDto);
     }
 }

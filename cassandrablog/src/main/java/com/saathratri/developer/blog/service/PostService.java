@@ -58,6 +58,14 @@ public interface PostService {
      */
     void delete(PostId id);
 
+    /**
+     * Get all the posts with Cassandra cursor-based pagination.
+     *
+     * @param pageable the pagination information.
+     * @return the slice of entities.
+     */
+    Slice<PostDTO> findAllSlice(org.springframework.data.domain.Pageable pageable);
+
     List<PostDTO> findAllByCompositeIdCreatedDate(final Long createdDate);
     Slice<PostDTO> findAllByCompositeIdCreatedDatePageable(final Long createdDate, Pageable pageable);
     List<PostDTO> findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTime(final Long createdDate, final Long addedDateTime);

@@ -58,6 +58,14 @@ public interface AddOnsSelectedByOrganizationService {
      */
     void delete(AddOnsSelectedByOrganizationId id);
 
+    /**
+     * Get all the addOnsSelectedByOrganizations with Cassandra cursor-based pagination.
+     *
+     * @param pageable the pagination information.
+     * @return the slice of entities.
+     */
+    Slice<AddOnsSelectedByOrganizationDTO> findAllSlice(org.springframework.data.domain.Pageable pageable);
+
     List<AddOnsSelectedByOrganizationDTO> findAllByCompositeIdOrganizationId(final UUID organizationId);
     Slice<AddOnsSelectedByOrganizationDTO> findAllByCompositeIdOrganizationIdPageable(final UUID organizationId, Pageable pageable);
     List<AddOnsSelectedByOrganizationDTO> findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDate(

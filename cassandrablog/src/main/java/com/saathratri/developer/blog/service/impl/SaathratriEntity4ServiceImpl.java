@@ -98,6 +98,12 @@ public class SaathratriEntity4ServiceImpl implements SaathratriEntity4Service {
     }
 
     @Override
+    public Slice<SaathratriEntity4DTO> findAllSlice(org.springframework.data.domain.Pageable pageable) {
+        LOG.debug("Request to get a slice of SaathratriEntity4s");
+        return saathratriEntity4Repository.findAll(pageable).map(saathratriEntity4Mapper::toDto);
+    }
+
+    @Override
     public List<SaathratriEntity4DTO> findAllByCompositeIdOrganizationId(final UUID organizationId) {
         LOG.debug("Request to findAllByCompositeIdOrganizationId(final UUID organizationId) service in SaathratriEntity4ServiceImpl.");
         return saathratriEntity4Repository

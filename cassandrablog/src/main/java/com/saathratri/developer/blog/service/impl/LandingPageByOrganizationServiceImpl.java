@@ -12,6 +12,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 /**
@@ -87,5 +89,11 @@ public class LandingPageByOrganizationServiceImpl implements LandingPageByOrgani
     public void delete(UUID organizationId) {
         LOG.debug("Request to delete LandingPageByOrganization : {}", organizationId);
         landingPageByOrganizationRepository.deleteById(organizationId);
+    }
+
+    @Override
+    public Slice<LandingPageByOrganizationDTO> findAllSlice(org.springframework.data.domain.Pageable pageable) {
+        LOG.debug("Request to get a slice of LandingPageByOrganizations");
+        return landingPageByOrganizationRepository.findAll(pageable).map(landingPageByOrganizationMapper::toDto);
     }
 }

@@ -92,6 +92,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Slice<PostDTO> findAllSlice(org.springframework.data.domain.Pageable pageable) {
+        LOG.debug("Request to get a slice of Posts");
+        return postRepository.findAll(pageable).map(postMapper::toDto);
+    }
+
+    @Override
     public List<PostDTO> findAllByCompositeIdCreatedDate(final Long createdDate) {
         LOG.debug("Request to findAllByCompositeIdCreatedDate(final Long createdDate) service in PostServiceImpl.");
         return postRepository

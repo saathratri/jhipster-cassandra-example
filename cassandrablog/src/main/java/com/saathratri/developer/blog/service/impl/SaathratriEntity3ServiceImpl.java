@@ -98,6 +98,12 @@ public class SaathratriEntity3ServiceImpl implements SaathratriEntity3Service {
     }
 
     @Override
+    public Slice<SaathratriEntity3DTO> findAllSlice(org.springframework.data.domain.Pageable pageable) {
+        LOG.debug("Request to get a slice of SaathratriEntity3s");
+        return saathratriEntity3Repository.findAll(pageable).map(saathratriEntity3Mapper::toDto);
+    }
+
+    @Override
     public List<SaathratriEntity3DTO> findAllByCompositeIdEntityType(final String entityType) {
         LOG.debug("Request to findAllByCompositeIdEntityType(final String entityType) service in SaathratriEntity3ServiceImpl.");
         return saathratriEntity3Repository

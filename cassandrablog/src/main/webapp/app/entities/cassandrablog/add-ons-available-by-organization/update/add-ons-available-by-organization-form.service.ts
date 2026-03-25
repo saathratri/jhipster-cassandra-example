@@ -168,7 +168,7 @@ export class AddOnsAvailableByOrganizationFormService {
         ? Object.fromEntries(
             Object.entries(rawAddOnsAvailableByOrganization.addOnDetailsBigInt).map(([key, value]) => [
               key,
-              dayjs(value, DATE_TIME_FORMAT),
+              typeof value === 'number' ? dayjs(value) : dayjs(value, DATE_TIME_FORMAT),
             ]),
           )
         : {},

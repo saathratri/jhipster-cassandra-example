@@ -9,7 +9,9 @@ import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,6 +19,11 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.cassandra.core.query.CassandraPageRequest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -164,6 +171,65 @@ public class ProductResource {
     public List<ProductDTO> getAllProducts() {
         LOG.debug("REST request to get all Products");
         return productService.findAll();
+    }
+
+    /**
+     * {@code GET  /products/slice} : get products with Cassandra cursor-based pagination.
+     *
+     * @param pagingState the Cassandra paging state for cursor-based pagination.
+     * @param size the page size.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
+     */
+    @GetMapping("/slice")
+    public ResponseEntity<List<ProductDTO>> getAllProductsSlice(
+        @RequestParam(name = "pagingState", required = false) String pagingState,
+        @RequestParam(name = "size", defaultValue = "20") int size
+    ) {
+        LOG.debug("REST request to get a slice of Products, pagingState: {}, size: {}", pagingState, size);
+
+        // Build CassandraPageRequest from pagingState parameter
+        org.springframework.data.domain.Pageable cassandraPageRequest;
+        if (pagingState == null || pagingState.isEmpty()) {
+            cassandraPageRequest = CassandraPageRequest.first(size);
+        } else {
+            try {
+                java.nio.ByteBuffer pagingStateBuffer;
+                try {
+                    pagingStateBuffer = java.nio.ByteBuffer.wrap(java.util.Base64.getUrlDecoder().decode(pagingState));
+                } catch (IllegalArgumentException e) {
+                    pagingStateBuffer = java.nio.ByteBuffer.wrap(java.util.Base64.getDecoder().decode(pagingState));
+                }
+                cassandraPageRequest = CassandraPageRequest.of(org.springframework.data.domain.PageRequest.of(0, size), pagingStateBuffer);
+            } catch (Exception e) {
+                LOG.warn("Invalid paging state, starting from beginning", e);
+                cassandraPageRequest = CassandraPageRequest.first(size);
+            }
+        }
+
+        Slice<ProductDTO> slice = productService.findAllSlice(cassandraPageRequest);
+        List<ProductDTO> result = slice.getContent();
+
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        boolean hasNext = slice.hasNext();
+        if (hasNext && slice.getPageable() instanceof CassandraPageRequest) {
+            java.nio.ByteBuffer nextPagingState = null;
+            CassandraPageRequest currentCassandraPageRequest = (CassandraPageRequest) slice.getPageable();
+            if (currentCassandraPageRequest.getPagingState() != null) {
+                org.springframework.data.domain.Pageable nextPageable = slice.nextPageable();
+                if (nextPageable instanceof CassandraPageRequest) {
+                    nextPagingState = ((CassandraPageRequest) nextPageable).getPagingState();
+                }
+            }
+            if (nextPagingState != null) {
+                byte[] pagingStateBytes = new byte[nextPagingState.remaining()];
+                nextPagingState.duplicate().get(pagingStateBytes);
+                headers.add("X-Paging-State", java.util.Base64.getUrlEncoder().encodeToString(pagingStateBytes));
+            }
+        }
+        headers.add("X-Has-Next-Page", String.valueOf(hasNext));
+        headers.add("Access-Control-Expose-Headers", "X-Has-Next-Page, X-Paging-State, X-Total-Count");
+
+        return ResponseEntity.ok().headers(headers).body(result);
     }
 
     /**

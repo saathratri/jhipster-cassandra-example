@@ -4,6 +4,8 @@ import com.saathratri.developer.blog.service.dto.SaathratriEntityDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.blog.domain.SaathratriEntity}.
@@ -54,4 +56,12 @@ public interface SaathratriEntityService {
      * @param id the id of the entity.
      */
     void delete(UUID entityId);
+
+    /**
+     * Get all the saathratriEntities with Cassandra cursor-based pagination.
+     *
+     * @param pageable the pagination information.
+     * @return the slice of entities.
+     */
+    Slice<SaathratriEntityDTO> findAllSlice(org.springframework.data.domain.Pageable pageable);
 }

@@ -58,6 +58,14 @@ public interface BlogService {
      */
     void delete(BlogId id);
 
+    /**
+     * Get all the blogs with Cassandra cursor-based pagination.
+     *
+     * @param pageable the pagination information.
+     * @return the slice of entities.
+     */
+    Slice<BlogDTO> findAllSlice(org.springframework.data.domain.Pageable pageable);
+
     List<BlogDTO> findAllByCompositeIdCategory(final String category);
     Slice<BlogDTO> findAllByCompositeIdCategoryPageable(final String category, Pageable pageable);
     Optional<BlogDTO> findByCompositeIdCategoryAndCompositeIdBlogId(final String category, final UUID blogId);

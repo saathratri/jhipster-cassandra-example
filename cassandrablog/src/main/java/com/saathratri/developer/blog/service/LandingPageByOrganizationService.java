@@ -4,6 +4,8 @@ import com.saathratri.developer.blog.service.dto.LandingPageByOrganizationDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.blog.domain.LandingPageByOrganization}.
@@ -54,4 +56,12 @@ public interface LandingPageByOrganizationService {
      * @param id the id of the entity.
      */
     void delete(UUID organizationId);
+
+    /**
+     * Get all the landingPageByOrganizations with Cassandra cursor-based pagination.
+     *
+     * @param pageable the pagination information.
+     * @return the slice of entities.
+     */
+    Slice<LandingPageByOrganizationDTO> findAllSlice(org.springframework.data.domain.Pageable pageable);
 }

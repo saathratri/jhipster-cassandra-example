@@ -124,9 +124,15 @@ export class PostFormService {
       ...rawPost,
       compositeId: {
         ...rawPost.compositeId,
-        addedDateTime: dayjs(rawPost.compositeId.addedDateTime, DATE_TIME_FORMAT),
+        addedDateTime:
+          typeof rawPost.compositeId.addedDateTime === 'number'
+            ? dayjs(rawPost.compositeId.addedDateTime)
+            : dayjs(rawPost.compositeId.addedDateTime, DATE_TIME_FORMAT),
       },
-      publishedDateTime: dayjs(rawPost.publishedDateTime, DATE_TIME_FORMAT),
+      publishedDateTime:
+        typeof rawPost.publishedDateTime === 'number'
+          ? dayjs(rawPost.publishedDateTime)
+          : dayjs(rawPost.publishedDateTime, DATE_TIME_FORMAT),
     };
   }
 

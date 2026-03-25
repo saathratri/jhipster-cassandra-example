@@ -4,6 +4,8 @@ import com.saathratri.developer.blog.service.dto.TagDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 /**
  * Service Interface for managing {@link com.saathratri.developer.blog.domain.Tag}.
@@ -54,6 +56,14 @@ public interface TagService {
      * @param id the id of the entity.
      */
     void delete(UUID id);
+
+    /**
+     * Get all the tags with Cassandra cursor-based pagination.
+     *
+     * @param pageable the pagination information.
+     * @return the slice of entities.
+     */
+    Slice<TagDTO> findAllSlice(org.springframework.data.domain.Pageable pageable);
 
     // ==================== AI Text Search ====================
 

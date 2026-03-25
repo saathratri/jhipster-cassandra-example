@@ -176,7 +176,10 @@ export class AddOnsSelectedByOrganizationFormService {
       },
       addOnDetailsBigInt: rawAddOnsSelectedByOrganization.addOnDetailsBigInt
         ? Object.fromEntries(
-            Object.entries(rawAddOnsSelectedByOrganization.addOnDetailsBigInt).map(([key, value]) => [key, dayjs(value, DATE_TIME_FORMAT)]),
+            Object.entries(rawAddOnsSelectedByOrganization.addOnDetailsBigInt).map(([key, value]) => [
+              key,
+              typeof value === 'number' ? dayjs(value) : dayjs(value, DATE_TIME_FORMAT),
+            ]),
           )
         : {},
     };

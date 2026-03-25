@@ -104,6 +104,12 @@ public class AddOnsAvailableByOrganizationServiceImpl implements AddOnsAvailable
     }
 
     @Override
+    public Slice<AddOnsAvailableByOrganizationDTO> findAllSlice(org.springframework.data.domain.Pageable pageable) {
+        LOG.debug("Request to get a slice of AddOnsAvailableByOrganizations");
+        return addOnsAvailableByOrganizationRepository.findAll(pageable).map(addOnsAvailableByOrganizationMapper::toDto);
+    }
+
+    @Override
     public List<AddOnsAvailableByOrganizationDTO> findAllByCompositeIdOrganizationId(final UUID organizationId) {
         LOG.debug(
             "Request to findAllByCompositeIdOrganizationId(final UUID organizationId) service in AddOnsAvailableByOrganizationServiceImpl."
