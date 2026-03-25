@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, httpResource } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse, httpResource } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 
 import dayjs from 'dayjs/esm';
@@ -128,6 +128,229 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     return this.http
       .get<RestAddOnsSelectedByOrganization[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  querySlice(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestAddOnsSelectedByOrganization[]>(`${this.resourceUrl}/slice`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdPageable(organizationId: string, req?: any): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDatePageable(
+    organizationId: string,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberPageable(
+    organizationId: string,
+    arrivalDate: number,
+    accountNumber: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('accountNumber', String(accountNumber));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdPageable(
+    organizationId: string,
+    arrivalDate: number,
+    accountNumber: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('accountNumber', String(accountNumber));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanPageable(
+    organizationId: string,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-less-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanEqualPageable(
+    organizationId: string,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-less-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanPageable(
+    organizationId: string,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-greater-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanEqualPageable(
+    organizationId: string,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-greater-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanPageable(
+    organizationId: string,
+    arrivalDate: number,
+    accountNumber: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('accountNumber', String(accountNumber));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-less-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanEqualPageable(
+    organizationId: string,
+    arrivalDate: number,
+    accountNumber: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('accountNumber', String(accountNumber));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-less-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanPageable(
+    organizationId: string,
+    arrivalDate: number,
+    accountNumber: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('accountNumber', String(accountNumber));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-greater-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanEqualPageable(
+    organizationId: string,
+    arrivalDate: number,
+    accountNumber: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('accountNumber', String(accountNumber));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestAddOnsSelectedByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-greater-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId(
+    organizationId: string,
+    arrivalDate: number,
+    accountNumber: string,
+    createdTimeId: string,
+  ): Observable<EntityResponseType> {
+    let options = new HttpParams();
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('accountNumber', String(accountNumber));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<RestAddOnsSelectedByOrganization>(
+        `${this.resourceUrl}/find-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id`,
+        { params: options, observe: 'response' },
+      )
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   delete(addOnsSelectedByOrganization: IAddOnsSelectedByOrganization): Observable<HttpResponse<{}>> {

@@ -19,6 +19,7 @@ type TagFormDefaults = Pick<NewTag, 'id'>;
 type TagFormGroupContent = {
   id: FormControl<ITag['id']>;
   name: FormControl<ITag['name']>;
+  description: FormControl<ITag['description']>;
 };
 
 export type TagFormGroup = FormGroup<TagFormGroupContent>;
@@ -41,6 +42,7 @@ export class TagFormService {
       name: new FormControl(tagRawValue.name, {
         validators: [Validators.required, Validators.minLength(2)],
       }),
+      description: new FormControl(tagRawValue.description),
     });
   }
 

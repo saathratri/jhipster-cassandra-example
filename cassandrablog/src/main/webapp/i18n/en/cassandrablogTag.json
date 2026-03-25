@@ -21,7 +21,10 @@
         "title": "Tag"
       },
       "id": "Id",
-      "name": "Name"
+      "name": "Name",
+      "description": "Description",
+      "nameEmbedding": "Name Embedding",
+      "descriptionEmbedding": "Description Embedding"
     }
   }
 }

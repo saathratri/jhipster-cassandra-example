@@ -13,6 +13,7 @@ public class TagDTO implements Serializable {
 
     private UUID id;
     private String name;
+    private String description;
 
     public TagDTO() {
         // Empty constructor needed for Jackson.
@@ -44,6 +45,19 @@ public class TagDTO implements Serializable {
         return this;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public TagDTO description(String description) {
+        this.description = description;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,6 +77,7 @@ public class TagDTO implements Serializable {
     public String toString() {
         return "TagDTO {" +"id = " + getId() +
             ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }

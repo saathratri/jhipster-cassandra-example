@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, httpResource } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse, httpResource } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 
 import dayjs from 'dayjs/esm';
@@ -110,6 +110,237 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     return this.http
       .get<RestSaathratriEntity2[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  querySlice(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestSaathratriEntity2[]>(`${this.resourceUrl}/slice`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdPageable(entityTypeId: string, req?: any): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDatePageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    blogId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('blogId', String(blogId));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThanPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-less-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThanEqualPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-less-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThanPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-greater-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThanEqualPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-greater-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThanPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    blogId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('blogId', String(blogId));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-less-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThanEqualPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    blogId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('blogId', String(blogId));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-less-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThanPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    blogId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('blogId', String(blogId));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-greater-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThanEqualPageable(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    blogId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('blogId', String(blogId));
+    return this.http
+      .get<
+        RestSaathratriEntity2[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-greater-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(
+    entityTypeId: string,
+    yearOfDateAdded: number,
+    arrivalDate: number,
+    blogId: string,
+  ): Observable<EntityResponseType> {
+    let options = new HttpParams();
+    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('blogId', String(blogId));
+    return this.http
+      .get<RestSaathratriEntity2>(
+        `${this.resourceUrl}/find-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id`,
+        { params: options, observe: 'response' },
+      )
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   delete(saathratriEntity2: ISaathratriEntity2): Observable<HttpResponse<{}>> {

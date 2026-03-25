@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, httpResource } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse, httpResource } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -64,6 +64,44 @@ export class SaathratriEntity4Service extends SaathratriEntity4sService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ISaathratriEntity4[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  querySlice(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ISaathratriEntity4[]>(`${this.resourceUrl}/slice`, { params: options, observe: 'response' });
+  }
+
+  findAllByCompositeIdOrganizationIdPageable(organizationId: string, req?: any): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    return this.http.get<ISaathratriEntity4[]>(`${this.resourceUrl}/find-all-by-composite-id-organization-id-pageable`, {
+      params: options,
+      observe: 'response',
+    });
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdAttributeKeyPageable(
+    organizationId: string,
+    attributeKey: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('attributeKey', String(attributeKey));
+    return this.http.get<ISaathratriEntity4[]>(
+      `${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-attribute-key-pageable`,
+      { params: options, observe: 'response' },
+    );
+  }
+
+  findByCompositeIdOrganizationIdAndCompositeIdAttributeKey(organizationId: string, attributeKey: string): Observable<EntityResponseType> {
+    let options = new HttpParams();
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('attributeKey', String(attributeKey));
+    return this.http.get<ISaathratriEntity4>(`${this.resourceUrl}/find-by-composite-id-organization-id-and-composite-id-attribute-key`, {
+      params: options,
+      observe: 'response',
+    });
   }
 
   delete(saathratriEntity4: ISaathratriEntity4): Observable<HttpResponse<{}>> {

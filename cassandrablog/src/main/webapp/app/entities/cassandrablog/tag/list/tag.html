@@ -24,11 +24,74 @@
 
   <jhi-alert></jhi-alert>
 
+  <form name="aiSearchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="aiSearchQuery">AI Search</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="aiSearchQuery"
+          id="aiSearchQuery"
+          name="aiSearchQuery"
+          placeholder="AI Search (semantic)..."
+          (keyup.enter)="performAiSearch(aiSearchQuery)"
+        />
+
+        <button class="btn btn-warning" (click)="performAiSearch(aiSearchQuery)" [disabled]="aiSearchLoading()">
+          @if (aiSearchLoading()) {
+            <fa-icon icon="sync" animation="spin"></fa-icon>
+          } @else {
+            <fa-icon icon="search"></fa-icon>
+          }
+          <span class="d-none d-md-inline">AI Search</span>
+        </button>
+
+        @if (isAiSearchActive()) {
+          <button class="btn btn-danger" (click)="clearAiSearch()">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+      <div class="mt-2 d-flex flex-wrap gap-3">
+        <small class="text-muted me-1">Search in:</small>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="aiField_nameEmbedding"
+            [checked]="aiSearchSelectedFields['nameEmbedding']"
+            (change)="toggleAiSearchField('nameEmbedding')"
+          />
+          <label class="form-check-label" for="aiField_nameEmbedding">name</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="aiField_descriptionEmbedding"
+            [checked]="aiSearchSelectedFields['descriptionEmbedding']"
+            (change)="toggleAiSearchField('descriptionEmbedding')"
+          />
+          <label class="form-check-label" for="aiField_descriptionEmbedding">description</label>
+        </div>
+      </div>
+    </div>
+  </form>
+  @if (isAiSearchActive()) {
+    <div class="alert alert-info mt-2 mb-0">
+      <fa-icon icon="search"></fa-icon> Showing AI-powered semantic search results.
+      <a href="javascript:void(0)" (click)="clearAiSearch()">Clear search</a>
+    </div>
+  }
+
   @if (tags().length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span jhiTranslate="cassandrablogApp.cassandrablogTag.home.notFound">No Tags found</span>
     </div>
-  } @else {
+  }
+
+  @if (tags().length > 0) {
     <div class="table-responsive table-entities" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
@@ -47,6 +110,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrablogApp.cassandrablogTag.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -57,6 +127,7 @@
                 <a [routerLink]="['/cassandrablog/tag', tag.id, 'view']">{{ tag.id }}</a>
               </td>
               <td>{{ tag.name }}</td>
+              <td>{{ tag.description }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/cassandrablog/tag', tag.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
@@ -78,6 +149,20 @@
           }
         </tbody>
       </table>
+      <div class="d-flex justify-content-center mt-3 mb-3">
+        @if (isLoadingMore) {
+          <button class="btn btn-primary" disabled>
+            <fa-icon icon="sync" [animation]="'spin'"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogTag.home.loadingMore">Loading more tags...</span>
+          </button>
+        }
+        @if (!hasNextPage && tags().length > 0 && !isLoadingMore) {
+          <div class="text-muted">
+            <fa-icon icon="check-circle" class="me-2"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogTag.home.endOfList">You&apos;ve reached the end of the list</span>
+          </div>
+        }
+      </div>
     </div>
   }
 </div>

@@ -28,7 +28,9 @@
     <div class="alert alert-warning" id="no-result">
       <span jhiTranslate="cassandrablogApp.cassandrablogTajUser.home.notFound">No Taj Users found</span>
     </div>
-  } @else {
+  }
+
+  @if (tajUsers().length > 0) {
     <div class="table-responsive table-entities" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
@@ -86,6 +88,20 @@
           }
         </tbody>
       </table>
+      <div class="d-flex justify-content-center mt-3 mb-3">
+        @if (isLoadingMore) {
+          <button class="btn btn-primary" disabled>
+            <fa-icon icon="sync" [animation]="'spin'"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogTajUser.home.loadingMore">Loading more taj users...</span>
+          </button>
+        }
+        @if (!hasNextPage && tajUsers().length > 0 && !isLoadingMore) {
+          <div class="text-muted">
+            <fa-icon icon="check-circle" class="me-2"></fa-icon>
+            <span jhiTranslate="cassandrablogApp.cassandrablogTajUser.home.endOfList">You&apos;ve reached the end of the list</span>
+          </div>
+        }
+      </div>
     </div>
   }
 </div>

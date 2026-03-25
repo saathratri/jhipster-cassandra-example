@@ -54,4 +54,25 @@ public interface TagService {
      * @param id the id of the entity.
      */
     void delete(UUID id);
+
+    // ==================== AI Text Search ====================
+
+    /**
+     * Search for tags using AI-powered semantic similarity.
+     *
+     * @param query the text query to search for
+     * @param limit maximum number of results to return
+     * @param fields optional list of vector field names to search in (null or empty searches all)
+     * @return list of semantically similar tags
+     */
+    List<TagDTO> aiSearch(String query, int limit, List<String> fields);
+
+    /**
+     * Find tags similar to the given embedding vector using nameEmbedding.
+     */
+    List<TagDTO> findSimilarByNameEmbedding(com.datastax.oss.driver.api.core.data.CqlVector<Float> embedding, int limit);
+    /**
+     * Find tags similar to the given embedding vector using descriptionEmbedding.
+     */
+    List<TagDTO> findSimilarByDescriptionEmbedding(com.datastax.oss.driver.api.core.data.CqlVector<Float> embedding, int limit);
 }

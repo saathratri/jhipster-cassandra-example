@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, httpResource } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse, httpResource } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 
 import dayjs from 'dayjs/esm';
@@ -107,6 +107,110 @@ export class SaathratriEntity3Service extends SaathratriEntity3sService {
     return this.http
       .get<RestSaathratriEntity3[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  querySlice(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestSaathratriEntity3[]>(`${this.resourceUrl}/slice`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypePageable(entityType: string, req?: any): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityType', String(entityType));
+    return this.http
+      .get<
+        RestSaathratriEntity3[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdPageable(
+    entityType: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityType', String(entityType));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestSaathratriEntity3[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanPageable(
+    entityType: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityType', String(entityType));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestSaathratriEntity3[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-less-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanEqualPageable(
+    entityType: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityType', String(entityType));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestSaathratriEntity3[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-less-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanPageable(
+    entityType: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityType', String(entityType));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestSaathratriEntity3[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-greater-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanEqualPageable(
+    entityType: string,
+    createdTimeId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('entityType', String(entityType));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<
+        RestSaathratriEntity3[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-greater-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(entityType: string, createdTimeId: string): Observable<EntityResponseType> {
+    let options = new HttpParams();
+    options = options.set('entityType', String(entityType));
+    options = options.set('createdTimeId', String(createdTimeId));
+    return this.http
+      .get<RestSaathratriEntity3>(`${this.resourceUrl}/find-by-composite-id-entity-type-and-composite-id-created-time-id`, {
+        params: options,
+        observe: 'response',
+      })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   delete(saathratriEntity3: ISaathratriEntity3): Observable<HttpResponse<{}>> {

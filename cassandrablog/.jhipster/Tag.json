@@ -1,6 +1,6 @@
 {
   "annotations": {
-    "changelogDate": "20260318180131"
+    "changelogDate": "20260325015516"
   },
   "applications": ["cassandrablog"],
   "clientRootFolder": "cassandrablog",
@@ -22,6 +22,27 @@
       "fieldValidateRulesMinlength": "2",
       "options": {
         "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "options": {
+        "customAnnotation": ["", "CassandraType.Name.TEXT"]
+      }
+    },
+    {
+      "fieldName": "nameEmbedding",
+      "fieldType": "Blob",
+      "options": {
+        "customAnnotation": ["VECTOR", "1536", ""]
+      }
+    },
+    {
+      "fieldName": "descriptionEmbedding",
+      "fieldType": "Blob",
+      "options": {
+        "customAnnotation": ["VECTOR", "1536", ""]
       }
     }
   ],

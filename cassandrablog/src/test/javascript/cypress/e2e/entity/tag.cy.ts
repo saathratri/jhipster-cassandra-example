@@ -15,7 +15,7 @@ describe('Tag e2e test', () => {
   const tagPageUrlPattern = new RegExp('/cassandrablog/tag(\\?.*)?$');
   let username: string;
   let password: string;
-  const tagSample = { name: 'honestly by' };
+  const tagSample = { name: 'illiterate' };
 
   let tag;
 
@@ -166,6 +166,11 @@ describe('Tag e2e test', () => {
       cy.get(`[data-cy="name"]`).type('necklace outside');
       cy.get(`[data-cy="name"]`).should('have.value', 'necklace outside');
 
+      cy.get(`[data-cy="description"]`).type('honestly by');
+      cy.get(`[data-cy="description"]`).should('have.value', 'honestly by');
+
+      // since cypress clicks submit too fast before the blob fields are validated
+      cy.wait(200); // eslint-disable-line cypress/no-unnecessary-waiting
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {

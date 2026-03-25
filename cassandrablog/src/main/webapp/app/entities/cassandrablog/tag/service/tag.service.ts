@@ -55,6 +55,11 @@ export class TagService extends TagsService {
     return this.http.get<ITag[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  querySlice(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ITag[]>(`${this.resourceUrl}/slice`, { params: options, observe: 'response' });
+  }
+
   delete(id: string): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
@@ -82,5 +87,15 @@ export class TagService extends TagsService {
       return [...tagsToAdd, ...tagCollection];
     }
     return tagCollection;
+  }
+
+  aiSearch(query: string, limit: number, fields?: string[]): Observable<ITag[]> {
+    const params: { [key: string]: string | string[] } = { query, limit: String(limit) };
+    if (fields && fields.length > 0) {
+      params.fields = fields.join(',');
+    }
+    return this.http.get<ITag[]>(`${this.resourceUrl}/ai-search`, {
+      params,
+    });
   }
 }

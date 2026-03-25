@@ -1,10 +1,12 @@
 package com.saathratri.developer.blog.domain;
 
+import com.datastax.oss.driver.api.core.data.CqlVector;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
+import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -29,6 +31,16 @@ public class Tag implements Serializable {
     @Column("name")
     @CassandraType(type = CassandraType.Name.TEXT)
     private String name;
+
+    @Column("description")
+    @CassandraType(type = CassandraType.Name.TEXT)
+    private String description;
+
+    @Column("name_embedding")
+    private CqlVector<Float> nameEmbedding;
+
+    @Column("description_embedding")
+    private CqlVector<Float> descriptionEmbedding;
 
     public UUID getId() {
         return this.id;
@@ -58,6 +70,45 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
+    public Tag description(String description) {
+        this.setDescription(description);
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public CqlVector<Float> getNameEmbedding() {
+        return this.nameEmbedding;
+    }
+
+    public Tag nameEmbedding(CqlVector<Float> nameEmbedding) {
+        this.setNameEmbedding(nameEmbedding);
+        return this;
+    }
+
+    public void setNameEmbedding(CqlVector<Float> nameEmbedding) {
+        this.nameEmbedding = nameEmbedding;
+    }
+
+    public CqlVector<Float> getDescriptionEmbedding() {
+        return this.descriptionEmbedding;
+    }
+
+    public Tag descriptionEmbedding(CqlVector<Float> descriptionEmbedding) {
+        this.setDescriptionEmbedding(descriptionEmbedding);
+        return this;
+    }
+
+    public void setDescriptionEmbedding(CqlVector<Float> descriptionEmbedding) {
+        this.descriptionEmbedding = descriptionEmbedding;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -83,6 +134,9 @@ public class Tag implements Serializable {
         return "Tag{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", nameEmbedding='" + getNameEmbedding() + "'" +
+            ", descriptionEmbedding='" + getDescriptionEmbedding() + "'" +
             "}";
     }
 }

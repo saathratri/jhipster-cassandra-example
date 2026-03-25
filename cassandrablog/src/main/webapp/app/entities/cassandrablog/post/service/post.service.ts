@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, httpResource } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse, httpResource } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 
 import dayjs from 'dayjs/esm';
@@ -105,6 +105,130 @@ export class PostService extends PostsService {
     return this.http
       .get<RestPost[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  querySlice(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestPost[]>(`${this.resourceUrl}/slice`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdCreatedDatePageable(createdDate: number, req?: any): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('createdDate', String(createdDate));
+    return this.http
+      .get<RestPost[]>(`${this.resourceUrl}/find-all-by-composite-id-created-date-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimePageable(
+    createdDate: number,
+    addedDateTime: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('createdDate', String(createdDate));
+    options = options.set('addedDateTime', String(addedDateTime));
+    return this.http
+      .get<
+        RestPost[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-created-date-and-composite-id-added-date-time-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostIdPageable(
+    createdDate: number,
+    addedDateTime: number,
+    postId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('createdDate', String(createdDate));
+    options = options.set('addedDateTime', String(addedDateTime));
+    options = options.set('postId', String(postId));
+    return this.http
+      .get<
+        RestPost[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-created-date-and-composite-id-added-date-time-and-composite-id-post-id-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeLessThanPageable(
+    createdDate: number,
+    addedDateTime: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('createdDate', String(createdDate));
+    options = options.set('addedDateTime', String(addedDateTime));
+    return this.http
+      .get<
+        RestPost[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-created-date-and-composite-id-added-date-time-less-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeLessThanEqualPageable(
+    createdDate: number,
+    addedDateTime: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('createdDate', String(createdDate));
+    options = options.set('addedDateTime', String(addedDateTime));
+    return this.http
+      .get<
+        RestPost[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-created-date-and-composite-id-added-date-time-less-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThanPageable(
+    createdDate: number,
+    addedDateTime: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('createdDate', String(createdDate));
+    options = options.set('addedDateTime', String(addedDateTime));
+    return this.http
+      .get<
+        RestPost[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-created-date-and-composite-id-added-date-time-greater-than-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThanEqualPageable(
+    createdDate: number,
+    addedDateTime: number,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('createdDate', String(createdDate));
+    options = options.set('addedDateTime', String(addedDateTime));
+    return this.http
+      .get<
+        RestPost[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-created-date-and-composite-id-added-date-time-greater-than-equal-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId(
+    createdDate: number,
+    addedDateTime: number,
+    postId: string,
+  ): Observable<EntityResponseType> {
+    let options = new HttpParams();
+    options = options.set('createdDate', String(createdDate));
+    options = options.set('addedDateTime', String(addedDateTime));
+    options = options.set('postId', String(postId));
+    return this.http
+      .get<RestPost>(`${this.resourceUrl}/find-by-composite-id-created-date-and-composite-id-added-date-time-and-composite-id-post-id`, {
+        params: options,
+        observe: 'response',
+      })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   delete(post: IPost): Observable<HttpResponse<{}>> {

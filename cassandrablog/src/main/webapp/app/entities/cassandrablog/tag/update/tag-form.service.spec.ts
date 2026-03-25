@@ -21,6 +21,9 @@ describe('Tag Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
+            description: expect.any(Object),
+            nameEmbedding: expect.any(Object),
+            descriptionEmbedding: expect.any(Object),
           }),
         );
       });
@@ -32,6 +35,9 @@ describe('Tag Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
+            description: expect.any(Object),
+            nameEmbedding: expect.any(Object),
+            descriptionEmbedding: expect.any(Object),
           }),
         );
       });

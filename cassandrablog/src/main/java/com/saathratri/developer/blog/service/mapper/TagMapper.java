@@ -11,6 +11,14 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface TagMapper extends EntityMapper<TagDTO, Tag> {
+    @Mapping(target = "nameEmbedding", ignore = true)
+    @Mapping(target = "descriptionEmbedding", ignore = true)
+    Tag toEntity(TagDTO tagDTO);
+
+    @Mapping(target = "nameEmbedding", ignore = true)
+    @Mapping(target = "descriptionEmbedding", ignore = true)
+    void partialUpdate(@MappingTarget Tag entity, TagDTO dto);
+
     default Set<String> map(String value) {
         Set<String> theSet = new TreeSet<String>();
         if (value != null) {

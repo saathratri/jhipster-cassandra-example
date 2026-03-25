@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, httpResource } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse, httpResource } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 
 import dayjs from 'dayjs/esm';
@@ -120,6 +120,93 @@ export class AddOnsAvailableByOrganizationService extends AddOnsAvailableByOrgan
     return this.http
       .get<RestAddOnsAvailableByOrganization[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  querySlice(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestAddOnsAvailableByOrganization[]>(`${this.resourceUrl}/slice`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdPageable(organizationId: string, req?: any): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    return this.http
+      .get<
+        RestAddOnsAvailableByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypePageable(
+    organizationId: string,
+    entityType: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('entityType', String(entityType));
+    return this.http
+      .get<
+        RestAddOnsAvailableByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-entity-type-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdPageable(
+    organizationId: string,
+    entityType: string,
+    entityId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('entityType', String(entityType));
+    options = options.set('entityId', String(entityId));
+    return this.http
+      .get<
+        RestAddOnsAvailableByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnIdPageable(
+    organizationId: string,
+    entityType: string,
+    entityId: string,
+    addOnId: string,
+    req?: any,
+  ): Observable<EntityArrayResponseType> {
+    let options = createRequestOption(req);
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('entityType', String(entityType));
+    options = options.set('entityId', String(entityId));
+    options = options.set('addOnId', String(addOnId));
+    return this.http
+      .get<
+        RestAddOnsAvailableByOrganization[]
+      >(`${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id-and-composite-id-add-on-id-pageable`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId(
+    organizationId: string,
+    entityType: string,
+    entityId: string,
+    addOnId: string,
+  ): Observable<EntityResponseType> {
+    let options = new HttpParams();
+    options = options.set('organizationId', String(organizationId));
+    options = options.set('entityType', String(entityType));
+    options = options.set('entityId', String(entityId));
+    options = options.set('addOnId', String(addOnId));
+    return this.http
+      .get<RestAddOnsAvailableByOrganization>(
+        `${this.resourceUrl}/find-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id-and-composite-id-add-on-id`,
+        { params: options, observe: 'response' },
+      )
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   delete(addOnsAvailableByOrganization: IAddOnsAvailableByOrganization): Observable<HttpResponse<{}>> {

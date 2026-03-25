@@ -9,8 +9,11 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID (UUID v4)
 
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { Alert } from 'app/shared/alert/alert';
 import { AlertError } from 'app/shared/alert/alert-error';
+import { AlertErrorModel } from 'app/shared/alert/alert-error.model';
 import { TranslateDirective } from 'app/shared/language';
 import { MaterialModule } from 'app/shared/material.module';
 import { TagService } from '../service/tag.service';
@@ -30,6 +33,8 @@ export class TagUpdateComponent implements OnInit {
 
   tag: ITag | null = null;
 
+  protected dataUtils = inject(DataUtils);
+  protected eventManager = inject(EventManager);
   protected tagService = inject(TagService);
   protected tagFormService = inject(TagFormService);
   protected activatedRoute = inject(ActivatedRoute);
@@ -59,6 +64,23 @@ export class TagUpdateComponent implements OnInit {
         this.isResetDisabled[field] = true; // Disable reset button on load
         this.updateResetButtonState(field);
       });
+    });
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    this.dataUtils.openFile(base64String, contentType);
+  }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: FileLoadError) =>
+        this.eventManager.broadcast(
+          new EventWithContent<AlertErrorModel>('cassandrablogApp.error', { ...err, key: `error.file.${err.key}` }),
+        ),
     });
   }
 

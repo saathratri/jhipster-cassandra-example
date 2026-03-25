@@ -37,6 +37,9 @@ class TagResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/tags";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -61,7 +64,7 @@ class TagResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Tag createEntity() {
-        Tag tag = new Tag().id(DEFAULT_ID).name(DEFAULT_NAME);
+        Tag tag = new Tag().id(DEFAULT_ID).name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION);
         return tag;
     }
 
@@ -72,7 +75,7 @@ class TagResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Tag createUpdatedEntity() {
-        Tag tag = new Tag().id(UPDATED_ID).name(UPDATED_NAME);
+        Tag tag = new Tag().id(UPDATED_ID).name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
         return tag;
     }
 
@@ -148,7 +151,8 @@ class TagResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tag.getId().toString())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
     @Test
@@ -163,7 +167,8 @@ class TagResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tag.getId().toString())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
     @Test
@@ -182,7 +187,7 @@ class TagResourceIT {
 
         // Update the tag
         Tag updatedTag = tagRepository.findById(tag.getId()).orElseThrow();
-        updatedTag.id(UPDATED_ID).name(UPDATED_NAME);
+        updatedTag.id(UPDATED_ID).name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
         TagDTO tagDTO = tagMapper.toDto(updatedTag);
 
         restTagMockMvc
@@ -271,7 +276,7 @@ class TagResourceIT {
         Tag partialUpdatedTag = new Tag();
         partialUpdatedTag.setId(tag.getId());
 
-        partialUpdatedTag.name(UPDATED_NAME);
+        partialUpdatedTag.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
 
         restTagMockMvc
             .perform(
@@ -300,7 +305,7 @@ class TagResourceIT {
         Tag partialUpdatedTag = new Tag();
         partialUpdatedTag.setId(tag.getId());
 
-        partialUpdatedTag.name(UPDATED_NAME);
+        partialUpdatedTag.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
 
         restTagMockMvc
             .perform(
