@@ -48,7 +48,17 @@ application {
     serviceDiscoveryType eureka
     testFrameworks [cypress]
   }
-  entities Product
+  entities Product, Report
+}
+
+// AnyBlob/PDF Example:
+entity Report {
+  @Id @customAnnotation("PrimaryKeyType.PARTITIONED") @customAnnotation("CassandraType.Name.UUID") @customAnnotation("") @customAnnotation("") id UUID
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") fileName String required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.TEXT") @customAnnotation("") @customAnnotation("") fileExtension String required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BIGINT") @customAnnotation("UTC_DATETIME") @customAnnotation("") createDate Long required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BLOB") @customAnnotation("any") @customAnnotation("") file AnyBlob required
+  @customAnnotation("") @customAnnotation("CassandraType.Name.BOOLEAN") @customAnnotation("") @customAnnotation("") approved Boolean
 }
 
 // Simple Composite Primary Key Example:
