@@ -18,6 +18,7 @@ public class ReportDTO implements Serializable {
     private Long createDate;
     private ByteBuffer file;
     private Boolean approved;
+    private String fileContentType;
 
     public ReportDTO() {
         // Empty constructor needed for Jackson.
@@ -33,6 +34,19 @@ public class ReportDTO implements Serializable {
 
     public ReportDTO id(UUID id) {
         this.id = id;
+        return this;
+    }
+
+    public String getFileContentType() {
+        return this.fileContentType;
+    }
+
+    public void setFileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
+    }
+
+    public ReportDTO fileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
         return this;
     }
 

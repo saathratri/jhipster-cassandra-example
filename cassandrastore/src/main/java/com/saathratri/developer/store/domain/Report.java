@@ -41,6 +41,10 @@ public class Report implements Serializable {
     @CassandraType(type = CassandraType.Name.BIGINT)
     private Long createDate;
 
+    @Column("file_content_type")
+    @CassandraType(type = CassandraType.Name.TEXT)
+    private String fileContentType;
+
     @Column("file")
     @CassandraType(type = CassandraType.Name.BLOB)
     private ByteBuffer file;
