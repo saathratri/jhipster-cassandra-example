@@ -1,0 +1,180 @@
+<style>
+  .saathratri-pdf-badge-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .saathratri-pdf-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e53935;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #1976d2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .saathratri-pdf-badge:hover {
+    border-color: #0d47a1;
+    box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+    transform: scale(1.05);
+  }
+  .saathratri-pdf-badge-sm {
+    width: 40px;
+    height: 52px;
+    font-size: 0.6rem;
+  }
+  .saathratri-pdf-badge-lg {
+    width: 60px;
+    height: 78px;
+    font-size: 0.75rem;
+  }
+</style>
+<div>
+  <h2 id="page-heading" data-cy="ReportHeading">
+    <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.home.title">Reports</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
+        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-report"
+        [routerLink]="['/cassandrastore/report/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.home.createLabel">Create a new Report</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (reports().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.home.notFound">No Reports found</span>
+    </div>
+  }
+
+  @if (reports().length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.id">Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fileName">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.fileName">File Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fileExtension">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.fileExtension">File Extension</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createDate">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.createDate">Create Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="file">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.file">File</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="approved">
+              <div class="d-flex">
+                <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.approved">Approved</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (report of reports(); track trackId(report)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/cassandrastore/report', report.id, 'view']">{{ report.id }}</a>
+              </td>
+              <td>{{ report.fileName }}</td>
+              <td>{{ report.fileExtension }}</td>
+              <td>{{ report.createDate }}</td>
+              <td>
+                @if (report.file) {
+                  @if (report.fileContentType === 'application/pdf') {
+                    <a class="saathratri-pdf-badge-link" (click)="openFile(report.file ?? '', report.fileContentType)">
+                      <div class="saathratri-pdf-badge saathratri-pdf-badge-sm">PDF</div>
+                    </a>
+                  } @else {
+                    <a (click)="openFile(report.file ?? '', report.fileContentType)" jhiTranslate="entity.action.open">Open</a>
+                  }
+                  <span>{{ report.fileContentType }}, {{ byteSize(report.file ?? '') }}</span>
+                }
+              </td>
+              <td>{{ report.approved }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/cassandrastore/report', report.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+                  <a [routerLink]="['/cassandrastore/report', report.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(report)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center mt-3 mb-3">
+        @if (isLoadingMore) {
+          <button class="btn btn-primary" disabled>
+            <fa-icon icon="sync" [animation]="'spin'"></fa-icon>
+            <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.home.loadingMore">Loading more reports...</span>
+          </button>
+        }
+        @if (!hasNextPage && reports().length > 0 && !isLoadingMore) {
+          <div class="text-muted">
+            <fa-icon icon="check-circle" class="me-2"></fa-icon>
+            <span jhiTranslate="cassandrastoreApp.cassandrastoreReport.home.endOfList">You&apos;ve reached the end of the list</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

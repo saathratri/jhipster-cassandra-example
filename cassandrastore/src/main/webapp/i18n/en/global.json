@@ -8,7 +8,8 @@
       "entities": {
         "main": "Entities",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "cassandrastoreProduct": "Product"
+        "cassandrastoreProduct": "Product",
+        "cassandrastoreReport": "Report"
       },
       "account": {
         "main": "Account",

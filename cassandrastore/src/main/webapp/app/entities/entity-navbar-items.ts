@@ -6,5 +6,10 @@ export const EntityNavbarItems: NavbarItem[] = [
     route: '/cassandrastore/product',
     translationKey: 'global.menu.entities.cassandrastoreProduct',
   },
+  {
+    name: 'Report',
+    route: '/cassandrastore/report',
+    translationKey: 'global.menu.entities.cassandrastoreReport',
+  },
   /* jhipster-needle-add-entity-navbar - JHipster will add entity navbar items here */
 ];
