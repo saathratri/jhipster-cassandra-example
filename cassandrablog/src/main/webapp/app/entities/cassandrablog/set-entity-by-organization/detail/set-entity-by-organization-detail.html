@@ -57,11 +57,15 @@
           </dd>
           <dt><span jhiTranslate="cassandrablogApp.cassandrablogSetEntityByOrganization.tags">Tags</span></dt>
           <dd>
-            <dl *ngIf="setEntityByOrganizationRef.tags">
-              <div *ngFor="let item of toArray(setEntityByOrganizationRef.tags)">
-                <dt>{{ item }}</dt>
-              </div>
-            </dl>
+            @if (setEntityByOrganizationRef.tags) {
+              <dl>
+                @for (item of toArray(setEntityByOrganizationRef.tags); track $index) {
+                  <div>
+                    <dt>{{ item }}</dt>
+                  </div>
+                }
+              </dl>
+            }
           </dd>
         </dl>
 

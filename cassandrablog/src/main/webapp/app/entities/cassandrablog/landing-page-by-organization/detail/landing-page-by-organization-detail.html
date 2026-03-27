@@ -57,47 +57,55 @@
           </dd>
           <dt><span jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.detailsText">Details Text</span></dt>
           <dd>
-            <dl *ngIf="landingPageByOrganizationRef.detailsText">
-              <div *ngFor="let item of landingPageByOrganizationRef.detailsText | keyvalue">
-                <dt>{{ item.key }}</dt>
-                <dd>
-                  <td>{{ item.value }}</td>
-                </dd>
-              </div>
-            </dl>
+            @if (landingPageByOrganizationRef.detailsText) {
+              <dl>
+                @for (item of landingPageByOrganizationRef.detailsText | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
           </dd>
           <dt><span jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.detailsDecimal">Details Decimal</span></dt>
           <dd>
-            <dl *ngIf="landingPageByOrganizationRef.detailsDecimal">
-              <div *ngFor="let item of landingPageByOrganizationRef.detailsDecimal | keyvalue">
-                <dt>{{ item.key }}</dt>
-                <dd>
-                  <td>{{ item.value }}</td>
-                </dd>
-              </div>
-            </dl>
+            @if (landingPageByOrganizationRef.detailsDecimal) {
+              <dl>
+                @for (item of landingPageByOrganizationRef.detailsDecimal | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
           </dd>
           <dt><span jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.detailsBoolean">Details Boolean</span></dt>
           <dd>
-            <dl *ngIf="landingPageByOrganizationRef.detailsBoolean">
-              <div *ngFor="let item of landingPageByOrganizationRef.detailsBoolean | keyvalue">
-                <dt>{{ item.key }}</dt>
-                <dd>
-                  <td>{{ item.value }}</td>
-                </dd>
-              </div>
-            </dl>
+            @if (landingPageByOrganizationRef.detailsBoolean) {
+              <dl>
+                @for (item of landingPageByOrganizationRef.detailsBoolean | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
           </dd>
           <dt><span jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.detailsBigInt">Details Big Int</span></dt>
           <dd>
-            <dl *ngIf="landingPageByOrganizationRef.detailsBigInt">
-              <div *ngFor="let item of landingPageByOrganizationRef.detailsBigInt | keyvalue">
-                <dt>{{ item.key }}</dt>
-                <dd>
-                  <td>{{ item.value | formatMediumDatetime }}</td>
-                </dd>
-              </div>
-            </dl>
+            @if (landingPageByOrganizationRef.detailsBigInt) {
+              <dl>
+                @for (item of landingPageByOrganizationRef.detailsBigInt | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value | formatMediumDatetime }}</dd>
+                  </div>
+                }
+              </dl>
+            }
           </dd>
         </dl>
 

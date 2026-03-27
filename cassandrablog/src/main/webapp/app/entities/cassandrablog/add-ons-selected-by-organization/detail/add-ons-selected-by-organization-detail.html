@@ -123,14 +123,16 @@
             <span jhiTranslate="cassandrablogApp.cassandrablogAddOnsSelectedByOrganization.addOnDetailsText">Add On Details Text</span>
           </dt>
           <dd>
-            <dl *ngIf="addOnsSelectedByOrganizationRef.addOnDetailsText">
-              <div *ngFor="let item of addOnsSelectedByOrganizationRef.addOnDetailsText | keyvalue">
-                <dt>{{ item.key }}</dt>
-                <dd>
-                  <td>{{ item.value }}</td>
-                </dd>
-              </div>
-            </dl>
+            @if (addOnsSelectedByOrganizationRef.addOnDetailsText) {
+              <dl>
+                @for (item of addOnsSelectedByOrganizationRef.addOnDetailsText | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
           </dd>
           <dt>
             <span jhiTranslate="cassandrablogApp.cassandrablogAddOnsSelectedByOrganization.addOnDetailsDecimal"
@@ -138,14 +140,16 @@
             >
           </dt>
           <dd>
-            <dl *ngIf="addOnsSelectedByOrganizationRef.addOnDetailsDecimal">
-              <div *ngFor="let item of addOnsSelectedByOrganizationRef.addOnDetailsDecimal | keyvalue">
-                <dt>{{ item.key }}</dt>
-                <dd>
-                  <td>{{ item.value }}</td>
-                </dd>
-              </div>
-            </dl>
+            @if (addOnsSelectedByOrganizationRef.addOnDetailsDecimal) {
+              <dl>
+                @for (item of addOnsSelectedByOrganizationRef.addOnDetailsDecimal | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
           </dd>
           <dt>
             <span jhiTranslate="cassandrablogApp.cassandrablogAddOnsSelectedByOrganization.addOnDetailsBoolean"
@@ -153,27 +157,31 @@
             >
           </dt>
           <dd>
-            <dl *ngIf="addOnsSelectedByOrganizationRef.addOnDetailsBoolean">
-              <div *ngFor="let item of addOnsSelectedByOrganizationRef.addOnDetailsBoolean | keyvalue">
-                <dt>{{ item.key }}</dt>
-                <dd>
-                  <td>{{ item.value }}</td>
-                </dd>
-              </div>
-            </dl>
+            @if (addOnsSelectedByOrganizationRef.addOnDetailsBoolean) {
+              <dl>
+                @for (item of addOnsSelectedByOrganizationRef.addOnDetailsBoolean | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value }}</dd>
+                  </div>
+                }
+              </dl>
+            }
           </dd>
           <dt>
             <span jhiTranslate="cassandrablogApp.cassandrablogAddOnsSelectedByOrganization.addOnDetailsBigInt">Add On Details Big Int</span>
           </dt>
           <dd>
-            <dl *ngIf="addOnsSelectedByOrganizationRef.addOnDetailsBigInt">
-              <div *ngFor="let item of addOnsSelectedByOrganizationRef.addOnDetailsBigInt | keyvalue">
-                <dt>{{ item.key }}</dt>
-                <dd>
-                  <td>{{ item.value | formatMediumDatetime }}</td>
-                </dd>
-              </div>
-            </dl>
+            @if (addOnsSelectedByOrganizationRef.addOnDetailsBigInt) {
+              <dl>
+                @for (item of addOnsSelectedByOrganizationRef.addOnDetailsBigInt | keyvalue; track item.key) {
+                  <div>
+                    <dt>{{ item.key }}</dt>
+                    <dd>{{ item.value | formatMediumDatetime }}</dd>
+                  </div>
+                }
+              </dl>
+            }
           </dd>
         </dl>
 

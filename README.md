@@ -117,6 +117,42 @@ Below are various examples of defining JDL entities using the @customAnnotation 
     }
 ```
 
+## MAP Data Type UI Components
+
+The blueprint generates custom Angular UI components for each Cassandra MAP value type. The following screenshots demonstrate the `AddOnsAvailableByOrganization` entity, which uses all four supported MAP types.
+
+### MAP&lt;TEXT, TEXT&gt; — String Key-Value Pairs
+
+Edit string-to-string map entries with inline key and value fields. Each entry can be added, edited, or removed.
+
+![MAP Text Editor](screenshots/Cassandra-Map-Text.png)
+
+### MAP&lt;TEXT, DECIMAL&gt; — Numeric Values
+
+Edit string-to-decimal map entries for numeric data such as mileage, cost, or quantity.
+
+![MAP Decimal Editor](screenshots/Cassandra-Map-Decimal.png)
+
+### MAP&lt;TEXT, BOOLEAN&gt; — Boolean Toggle Values
+
+Edit string-to-boolean map entries using toggle switches for true/false values.
+
+![MAP Boolean Editor](screenshots/Cassandra-Map-Boolean.png)
+
+### MAP&lt;TEXT, BIGINT&gt; with UTC_DATETIME — Date-Time Values
+
+Edit string-to-datetime map entries with a full date and time picker (date, hours, minutes, AM/PM).
+
+![MAP Date-Time Editor](screenshots/Cassandra-Map-Date-Time.png)
+
+### List Page — All MAP Types Displayed
+
+The list page renders all MAP columns with their key-value pairs displayed inline.
+
+![MAP View Page](screenshots/Cassandra-Map-View-Page.png)
+
+---
+
 ## Improvements Since v1.0.13
 
 The underlying `generator-jhipster-cassandra` blueprint has received significant improvements since the last open-source tagged release (v1.0.13). Regenerating this example with the latest blueprint version will include:
