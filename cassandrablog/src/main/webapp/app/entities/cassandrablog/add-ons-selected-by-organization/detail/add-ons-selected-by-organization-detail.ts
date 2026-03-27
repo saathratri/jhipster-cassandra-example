@@ -1,4 +1,5 @@
 import { Component, input } from '@angular/core';
+import { KeyValuePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -24,6 +25,7 @@ import { IAddOnsSelectedByOrganization } from '../add-ons-selected-by-organizati
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ConvertFromDayjsToDateLongPipe,
+    KeyValuePipe,
   ],
 })
 export class AddOnsSelectedByOrganizationDetailComponent {
