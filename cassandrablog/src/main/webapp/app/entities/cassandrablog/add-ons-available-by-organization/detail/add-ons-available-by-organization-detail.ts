@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core';
 import { KeyValuePipe } from '@angular/common';
+import { Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
