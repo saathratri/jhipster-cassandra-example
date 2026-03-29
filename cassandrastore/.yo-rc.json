@@ -7,7 +7,7 @@
     "blueprints": [
       {
         "name": "generator-jhipster-cassandra",
-        "version": "1.0.14"
+        "version": "1.0.15"
       }
     ],
     "buildTool": "maven",
@@ -18,9 +18,9 @@
     "enableHibernateCache": false,
     "entities": ["Product", "Report"],
     "jhipsterVersion": "9.0.0",
-    "jwtSecretKey": "MzA0NzQ3NjA3ZDFiOTlkMzc3MmQxMzlkZDcxNzZkMDE4MjEwMDA3YzAxOTdhNDJlMDJjNGQ1MjM4NGI0OGY1YjYyMTVmMjU1NjhjYzM1NDRlNGI3NTg5NmIxMmU5NTc5ZTRhYWU3MDJkZGY0MDNiMjU5YjkzYjZhNjNkOTU4YzA=",
+    "jwtSecretKey": "NzlhZTlkN2YzZjBhZTliODVlZDZiNGExNmMzYjA4OGVkMGRmMTYzZjRlYWQ3MzZiNzc0MWNjNjA0OTc2ODU2MGNiMjJjNzc3MjgwNGY4OWQ0MmZjMDZhODExNjdiNmI4MjZiZTcyMzEyNjNjNmY5ZjNhMWI3OTdjZWFhNmM3ZTc=",
     "languages": ["en"],
-    "lastLiquibaseTimestamp": 1774573840000,
+    "lastLiquibaseTimestamp": 1774721326000,
     "monorepository": true,
     "nativeLanguage": "en",
     "packageName": "com.saathratri.developer.store",
