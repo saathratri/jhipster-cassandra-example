@@ -3,7 +3,7 @@
 
 ### About this JHipster Example
 
-This code was generated using the JHipster blueprint `generator-jhipster-cassandra`. 
+This code was generated using the JHipster blueprint `generator-jhipster-cassandra`.
 The source code for the underlying JHipster blueprint is available at: https://github.com/amarpatel-xx/generator-jhipster-cassandra.
 
 The blueprint for generating the composite primary key with Cassandra entities is open source software made with love by `Amar Premsaran Patel`.
@@ -197,7 +197,7 @@ The underlying `generator-jhipster-cassandra` blueprint has received significant
 - [Java](https://sdkman.io/) 21+
 - [Node.js](https://nodejs.org/) 20+
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [JHipster](https://www.jhipster.tech/installation/) 8.6.0
+- [JHipster](https://www.jhipster.tech/installation/) 9.0.0
 
 ### Build
 
