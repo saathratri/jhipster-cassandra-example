@@ -41,8 +41,8 @@
     <span jhiTranslate="cassandrablogApp.cassandrablogSaathratriEntity3.home.title">Saathratri Entity 3s</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
-        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined"></fa-icon>
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
         <span jhiTranslate="cassandrablogApp.cassandrablogSaathratriEntity3.home.refreshListLabel">Refresh list</span>
       </button>
 
@@ -154,7 +154,7 @@
     }
   </div>
 
-  @if (saathratriEntity3s().length === 0 && !isLoading()) {
+  @if (saathratriEntity3s().length === 0 && !isLoading) {
     <div class="alert alert-warning" id="no-result">
       <span jhiTranslate="cassandrablogApp.cassandrablogSaathratriEntity3.home.notFound">No Saathratri Entity 3s found</span>
     </div>

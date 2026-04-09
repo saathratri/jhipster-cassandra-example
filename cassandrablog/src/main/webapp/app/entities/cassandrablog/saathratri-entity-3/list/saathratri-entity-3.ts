@@ -8,7 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import dayjs from 'dayjs/esm';
 import customParseFormat from 'dayjs/esm/plugin/customParseFormat';
-import { Observable, Subscription, combineLatest, filter, finalize, map, tap } from 'rxjs';
+import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs';
 
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { Alert } from 'app/shared/alert/alert';
@@ -73,8 +73,9 @@ export class SaathratriEntity3Component implements OnInit {
 
   public readonly router = inject(Router);
   protected readonly saathratriEntity3Service = inject(SaathratriEntity3Service);
-  // Cassandra entities use Observable-based loading
-  readonly isLoading = signal(false);
+  // Cassandra entities use Observable-based loading (plain boolean, not signal,
+  // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
@@ -111,9 +112,14 @@ export class SaathratriEntity3Component implements OnInit {
   }
 
   load(): void {
+    this.isLoading = true;
     this.queryBackend().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
       },
     });
   }
@@ -147,7 +153,7 @@ export class SaathratriEntity3Component implements OnInit {
     const pageHeight = document.documentElement.scrollHeight;
     const threshold = 200;
 
-    if (scrollPosition >= pageHeight - threshold && this.hasNextPage && !this.isLoadingMore && !this.isLoading()) {
+    if (scrollPosition >= pageHeight - threshold && this.hasNextPage && !this.isLoadingMore && !this.isLoading) {
       this.loadMore();
     }
   }
@@ -380,7 +386,6 @@ export class SaathratriEntity3Component implements OnInit {
   }
 
   protected queryBackend(): Observable<EntityArrayResponseType> {
-    this.isLoading.set(true);
     const queryObject: any = {
       pagingState: this.pagingState,
       size: this.pageSize,
@@ -407,40 +412,31 @@ export class SaathratriEntity3Component implements OnInit {
                   status: res.status,
                 });
               }),
-              finalize(() => this.isLoading.set(false)),
             );
         } else if (operatorCreatedTimeId === 'lt') {
-          return this.saathratriEntity3Service
-            .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanPageable(
-              this.searchCriteria.entityType!,
-              this.searchCriteria.createdTimeId!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
+          return this.saathratriEntity3Service.findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanPageable(
+            this.searchCriteria.entityType!,
+            this.searchCriteria.createdTimeId!,
+            queryObject,
+          );
         } else if (operatorCreatedTimeId === 'lte') {
-          return this.saathratriEntity3Service
-            .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanEqualPageable(
-              this.searchCriteria.entityType!,
-              this.searchCriteria.createdTimeId!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
+          return this.saathratriEntity3Service.findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanEqualPageable(
+            this.searchCriteria.entityType!,
+            this.searchCriteria.createdTimeId!,
+            queryObject,
+          );
         } else if (operatorCreatedTimeId === 'gt') {
-          return this.saathratriEntity3Service
-            .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanPageable(
-              this.searchCriteria.entityType!,
-              this.searchCriteria.createdTimeId!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
+          return this.saathratriEntity3Service.findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanPageable(
+            this.searchCriteria.entityType!,
+            this.searchCriteria.createdTimeId!,
+            queryObject,
+          );
         } else if (operatorCreatedTimeId === 'gte') {
-          return this.saathratriEntity3Service
-            .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanEqualPageable(
-              this.searchCriteria.entityType!,
-              this.searchCriteria.createdTimeId!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
+          return this.saathratriEntity3Service.findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanEqualPageable(
+            this.searchCriteria.entityType!,
+            this.searchCriteria.createdTimeId!,
+            queryObject,
+          );
         }
         return this.saathratriEntity3Service
           .findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(this.searchCriteria.entityType!, this.searchCriteria.createdTimeId!)
@@ -453,16 +449,13 @@ export class SaathratriEntity3Component implements OnInit {
                 status: res.status,
               });
             }),
-            finalize(() => this.isLoading.set(false)),
           );
       } else if (this.searchCriteria.entityType && this.searchCriteria.entityType.trim() !== '') {
-        return this.saathratriEntity3Service
-          .findAllByCompositeIdEntityTypePageable(this.searchCriteria.entityType!, queryObject)
-          .pipe(finalize(() => this.isLoading.set(false)));
+        return this.saathratriEntity3Service.findAllByCompositeIdEntityTypePageable(this.searchCriteria.entityType!, queryObject);
       }
     }
     // Fallback: no valid criteria
-    return this.saathratriEntity3Service.querySlice(queryObject).pipe(finalize(() => this.isLoading.set(false)));
+    return this.saathratriEntity3Service.querySlice(queryObject);
   }
 
   protected handleNavigation(sortState: SortState): void {

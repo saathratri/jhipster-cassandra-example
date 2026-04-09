@@ -41,8 +41,8 @@
     <span jhiTranslate="cassandrablogApp.cassandrablogBlog.home.title">Blogs</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
-        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined"></fa-icon>
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
         <span jhiTranslate="cassandrablogApp.cassandrablogBlog.home.refreshListLabel">Refresh list</span>
       </button>
 
@@ -150,7 +150,7 @@
     }
   </div>
 
-  @if (blogs().length === 0 && !isLoading()) {
+  @if (blogs().length === 0 && !isLoading) {
     <div class="alert alert-warning" id="no-result">
       <span jhiTranslate="cassandrablogApp.cassandrablogBlog.home.notFound">No Blogs found</span>
     </div>

@@ -41,8 +41,8 @@
     <span jhiTranslate="cassandrablogApp.cassandrablogAddOnsAvailableByOrganization.home.title">Add Ons Available By Organizations</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
-        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined"></fa-icon>
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
         <span jhiTranslate="cassandrablogApp.cassandrablogAddOnsAvailableByOrganization.home.refreshListLabel">Refresh list</span>
       </button>
 
@@ -197,7 +197,7 @@
     }
   </div>
 
-  @if (addOnsAvailableByOrganizations().length === 0 && !isLoading()) {
+  @if (addOnsAvailableByOrganizations().length === 0 && !isLoading) {
     <div class="alert alert-warning" id="no-result">
       <span jhiTranslate="cassandrablogApp.cassandrablogAddOnsAvailableByOrganization.home.notFound"
         >No Add Ons Available By Organizations found</span

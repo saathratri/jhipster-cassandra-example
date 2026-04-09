@@ -46,7 +46,6 @@ export default class Navbar implements OnInit {
   readonly openAPIEnabled = signal(false);
   readonly version: string;
   readonly account = inject(AccountService).account;
-
   cassandrablogEntityNavbarItems = signal<NavbarItem[]>([]);
   cassandrastoreEntityNavbarItems = signal<NavbarItem[]>([]);
 
@@ -97,10 +96,6 @@ export default class Navbar implements OnInit {
     this.collapseNavbar();
     this.loginService.logout();
     this.router.navigate(['']);
-  }
-
-  toggleNavbar(): void {
-    this.isNavbarCollapsed.update(isNavbarCollapsed => !isNavbarCollapsed);
   }
 
   private sortNavbarItemsAlphabetically(items: NavbarItem[]): NavbarItem[] {

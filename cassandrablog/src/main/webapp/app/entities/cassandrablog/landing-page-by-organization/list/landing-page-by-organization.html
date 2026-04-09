@@ -41,8 +41,8 @@
     <span jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.home.title">Landing Page By Organizations</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
-        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined"></fa-icon>
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
         <span jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.home.refreshListLabel">Refresh list</span>
       </button>
 

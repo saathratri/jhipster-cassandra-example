@@ -8,7 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import dayjs from 'dayjs/esm';
 import customParseFormat from 'dayjs/esm/plugin/customParseFormat';
-import { Observable, Subscription, combineLatest, filter, finalize, map, tap } from 'rxjs';
+import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs';
 
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { Alert } from 'app/shared/alert/alert';
@@ -87,8 +87,9 @@ export class AddOnsSelectedByOrganizationComponent implements OnInit {
 
   public readonly router = inject(Router);
   protected readonly addOnsSelectedByOrganizationService = inject(AddOnsSelectedByOrganizationService);
-  // Cassandra entities use Observable-based loading
-  readonly isLoading = signal(false);
+  // Cassandra entities use Observable-based loading (plain boolean, not signal,
+  // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
@@ -126,9 +127,14 @@ export class AddOnsSelectedByOrganizationComponent implements OnInit {
   }
 
   load(): void {
+    this.isLoading = true;
     this.queryBackend().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
       },
     });
   }
@@ -162,7 +168,7 @@ export class AddOnsSelectedByOrganizationComponent implements OnInit {
     const pageHeight = document.documentElement.scrollHeight;
     const threshold = 200;
 
-    if (scrollPosition >= pageHeight - threshold && this.hasNextPage && !this.isLoadingMore && !this.isLoading()) {
+    if (scrollPosition >= pageHeight - threshold && this.hasNextPage && !this.isLoadingMore && !this.isLoading) {
       this.loadMore();
     }
   }
@@ -395,7 +401,6 @@ export class AddOnsSelectedByOrganizationComponent implements OnInit {
   }
 
   protected queryBackend(): Observable<EntityArrayResponseType> {
-    this.isLoading.set(true);
     const queryObject: any = {
       pagingState: this.pagingState,
       size: this.pageSize,
@@ -431,48 +436,39 @@ export class AddOnsSelectedByOrganizationComponent implements OnInit {
                   status: res.status,
                 });
               }),
-              finalize(() => this.isLoading.set(false)),
             );
         } else if (operatorCreatedTimeId === 'lt') {
-          return this.addOnsSelectedByOrganizationService
-            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanPageable(
-              this.searchCriteria.organizationId!,
-              this.searchCriteria.arrivalDate!,
-              this.searchCriteria.accountNumber!,
-              this.searchCriteria.createdTimeId!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
+          return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanPageable(
+            this.searchCriteria.organizationId!,
+            this.searchCriteria.arrivalDate!,
+            this.searchCriteria.accountNumber!,
+            this.searchCriteria.createdTimeId!,
+            queryObject,
+          );
         } else if (operatorCreatedTimeId === 'lte') {
-          return this.addOnsSelectedByOrganizationService
-            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanEqualPageable(
-              this.searchCriteria.organizationId!,
-              this.searchCriteria.arrivalDate!,
-              this.searchCriteria.accountNumber!,
-              this.searchCriteria.createdTimeId!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
+          return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanEqualPageable(
+            this.searchCriteria.organizationId!,
+            this.searchCriteria.arrivalDate!,
+            this.searchCriteria.accountNumber!,
+            this.searchCriteria.createdTimeId!,
+            queryObject,
+          );
         } else if (operatorCreatedTimeId === 'gt') {
-          return this.addOnsSelectedByOrganizationService
-            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanPageable(
-              this.searchCriteria.organizationId!,
-              this.searchCriteria.arrivalDate!,
-              this.searchCriteria.accountNumber!,
-              this.searchCriteria.createdTimeId!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
+          return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanPageable(
+            this.searchCriteria.organizationId!,
+            this.searchCriteria.arrivalDate!,
+            this.searchCriteria.accountNumber!,
+            this.searchCriteria.createdTimeId!,
+            queryObject,
+          );
         } else if (operatorCreatedTimeId === 'gte') {
-          return this.addOnsSelectedByOrganizationService
-            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanEqualPageable(
-              this.searchCriteria.organizationId!,
-              this.searchCriteria.arrivalDate!,
-              this.searchCriteria.accountNumber!,
-              this.searchCriteria.createdTimeId!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
+          return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanEqualPageable(
+            this.searchCriteria.organizationId!,
+            this.searchCriteria.arrivalDate!,
+            this.searchCriteria.accountNumber!,
+            this.searchCriteria.createdTimeId!,
+            queryObject,
+          );
         }
         return this.addOnsSelectedByOrganizationService
           .findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId(
@@ -490,7 +486,6 @@ export class AddOnsSelectedByOrganizationComponent implements OnInit {
                 status: res.status,
               });
             }),
-            finalize(() => this.isLoading.set(false)),
           );
       } else if (
         this.searchCriteria.organizationId &&
@@ -500,14 +495,12 @@ export class AddOnsSelectedByOrganizationComponent implements OnInit {
         this.searchCriteria.accountNumber &&
         this.searchCriteria.accountNumber.trim() !== ''
       ) {
-        return this.addOnsSelectedByOrganizationService
-          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberPageable(
-            this.searchCriteria.organizationId!,
-            this.searchCriteria.arrivalDate!,
-            this.searchCriteria.accountNumber!,
-            queryObject,
-          )
-          .pipe(finalize(() => this.isLoading.set(false)));
+        return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberPageable(
+          this.searchCriteria.organizationId!,
+          this.searchCriteria.arrivalDate!,
+          this.searchCriteria.accountNumber!,
+          queryObject,
+        );
       } else if (
         this.searchCriteria.organizationId &&
         this.searchCriteria.organizationId.trim() !== '' &&
@@ -516,53 +509,44 @@ export class AddOnsSelectedByOrganizationComponent implements OnInit {
       ) {
         const operatorArrivalDate = this.searchCriteria.arrivalDateOperator || 'eq';
         if (operatorArrivalDate === 'lt') {
-          return this.addOnsSelectedByOrganizationService
-            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanPageable(
-              this.searchCriteria.organizationId!,
-              this.searchCriteria.arrivalDate!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
-        } else if (operatorArrivalDate === 'lte') {
-          return this.addOnsSelectedByOrganizationService
-            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanEqualPageable(
-              this.searchCriteria.organizationId!,
-              this.searchCriteria.arrivalDate!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
-        } else if (operatorArrivalDate === 'gt') {
-          return this.addOnsSelectedByOrganizationService
-            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanPageable(
-              this.searchCriteria.organizationId!,
-              this.searchCriteria.arrivalDate!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
-        } else if (operatorArrivalDate === 'gte') {
-          return this.addOnsSelectedByOrganizationService
-            .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanEqualPageable(
-              this.searchCriteria.organizationId!,
-              this.searchCriteria.arrivalDate!,
-              queryObject,
-            )
-            .pipe(finalize(() => this.isLoading.set(false)));
-        }
-        return this.addOnsSelectedByOrganizationService
-          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDatePageable(
+          return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanPageable(
             this.searchCriteria.organizationId!,
             this.searchCriteria.arrivalDate!,
             queryObject,
-          )
-          .pipe(finalize(() => this.isLoading.set(false)));
+          );
+        } else if (operatorArrivalDate === 'lte') {
+          return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanEqualPageable(
+            this.searchCriteria.organizationId!,
+            this.searchCriteria.arrivalDate!,
+            queryObject,
+          );
+        } else if (operatorArrivalDate === 'gt') {
+          return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanPageable(
+            this.searchCriteria.organizationId!,
+            this.searchCriteria.arrivalDate!,
+            queryObject,
+          );
+        } else if (operatorArrivalDate === 'gte') {
+          return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanEqualPageable(
+            this.searchCriteria.organizationId!,
+            this.searchCriteria.arrivalDate!,
+            queryObject,
+          );
+        }
+        return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDatePageable(
+          this.searchCriteria.organizationId!,
+          this.searchCriteria.arrivalDate!,
+          queryObject,
+        );
       } else if (this.searchCriteria.organizationId && this.searchCriteria.organizationId.trim() !== '') {
-        return this.addOnsSelectedByOrganizationService
-          .findAllByCompositeIdOrganizationIdPageable(this.searchCriteria.organizationId!, queryObject)
-          .pipe(finalize(() => this.isLoading.set(false)));
+        return this.addOnsSelectedByOrganizationService.findAllByCompositeIdOrganizationIdPageable(
+          this.searchCriteria.organizationId!,
+          queryObject,
+        );
       }
     }
     // Fallback: no valid criteria
-    return this.addOnsSelectedByOrganizationService.querySlice(queryObject).pipe(finalize(() => this.isLoading.set(false)));
+    return this.addOnsSelectedByOrganizationService.querySlice(queryObject);
   }
 
   protected handleNavigation(sortState: SortState): void {

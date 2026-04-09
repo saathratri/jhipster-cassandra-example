@@ -14,20 +14,12 @@ const shareDependencies = ({ skipList = [] } = {}) =>
       .map(([dependency, version]) => [dependency, { ...sharedDefaults, version, requiredVersion: version }]),
   );
 
-let sharedDependencies = shareDependencies({ skipList: ['@angular/localize', 'zone.js'] });
-const ngBootstrapShared = sharedDependencies['@ng-bootstrap/ng-bootstrap'];
+let sharedDependencies = shareDependencies({ skipList: ['@angular/localize'] });
 sharedDependencies = {
   ...sharedDependencies,
   '@angular/common/http': sharedDependencies['@angular/common'],
+  '@angular/core/rxjs-interop': sharedDependencies['@angular/core'],
   'rxjs/operators': sharedDependencies.rxjs,
-
-  '@ng-bootstrap/ng-bootstrap/alert': ngBootstrapShared,
-  '@ng-bootstrap/ng-bootstrap/collapse': ngBootstrapShared,
-  '@ng-bootstrap/ng-bootstrap/datepicker': ngBootstrapShared,
-  '@ng-bootstrap/ng-bootstrap/dropdown': ngBootstrapShared,
-  '@ng-bootstrap/ng-bootstrap/modal': ngBootstrapShared,
-  '@ng-bootstrap/ng-bootstrap/progressbar': ngBootstrapShared,
-  '@ng-bootstrap/ng-bootstrap/typeahead': ngBootstrapShared,
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -57,19 +49,6 @@ module.exports = (config, options, targetOptions) => {
         'app/shared/language',
         'app/shared/pagination',
         'app/shared/sort',
-
-        'app/components',
-        'app/components/date-time',
-        'app/components/set-string-component',
-        'app/components/set-string-edit-dialog-component',
-        'app/components/map-boolean-component',
-        'app/components/map-number-component',
-        'app/components/map-string-component',
-        'app/components/map-dayjs-component',
-        'app/components/map-boolean-edit-dialog-component',
-        'app/components/map-number-edit-dialog-component',
-        'app/components/map-string-edit-dialog-component',
-        'app/components/map-dayjs-edit-dialog-component',
       ),
     },
   });

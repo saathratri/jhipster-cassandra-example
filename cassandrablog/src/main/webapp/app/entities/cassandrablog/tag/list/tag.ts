@@ -7,7 +7,7 @@ import { ActivatedRoute, Data, ParamMap, Router, RouterLink } from '@angular/rou
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, Subscription, combineLatest, filter, finalize, tap } from 'rxjs';
+import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
 
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { DataUtils } from 'app/core/util/data-util.service';
@@ -63,8 +63,9 @@ export class TagComponent implements OnInit {
 
   public readonly router = inject(Router);
   protected readonly tagService = inject(TagService);
-  // Cassandra entities use Observable-based loading
-  readonly isLoading = signal(false);
+  // Cassandra entities use Observable-based loading (plain boolean, not signal,
+  // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected dataUtils = inject(DataUtils);
@@ -110,9 +111,14 @@ export class TagComponent implements OnInit {
   }
 
   load(): void {
+    this.isLoading = true;
     this.queryBackend().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
       },
     });
   }
@@ -146,7 +152,7 @@ export class TagComponent implements OnInit {
     const pageHeight = document.documentElement.scrollHeight;
     const threshold = 200;
 
-    if (scrollPosition >= pageHeight - threshold && this.hasNextPage && !this.isLoadingMore && !this.isLoading()) {
+    if (scrollPosition >= pageHeight - threshold && this.hasNextPage && !this.isLoadingMore && !this.isLoading) {
       this.loadMore();
     }
   }
@@ -248,14 +254,13 @@ export class TagComponent implements OnInit {
   }
 
   protected queryBackend(): Observable<EntityArrayResponseType> {
-    this.isLoading.set(true);
     const queryObject: any = {
       pagingState: this.pagingState,
       size: this.pageSize,
       sort: this.sortService.buildSortParam(this.sortState()),
     };
 
-    return this.tagService.querySlice(queryObject).pipe(finalize(() => this.isLoading.set(false)));
+    return this.tagService.querySlice(queryObject);
   }
 
   protected handleNavigation(sortState: SortState): void {

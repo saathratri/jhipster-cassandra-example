@@ -13,7 +13,7 @@
       aria-controls="navbarResponsive"
       aria-expanded="false"
       aria-label="Toggle navigation"
-      (click)="toggleNavbar()"
+      (click)="isNavbarCollapsed.update(isNavbarCollapsed => !isNavbarCollapsed)"
     >
       <fa-icon icon="bars" />
     </a>
@@ -27,158 +27,179 @@
             </span>
           </a>
         </li>
-        <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/blog"
+        @if (account() !== null) {
+          <li
+            ngbDropdown
+            class="nav-item dropdown pointer"
+            display="static"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
+            data-cy="entity"
           >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogBlog">Blog</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/post"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogPost">Post</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/tag"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogTag">Tag</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/taj-user"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogTajUser">Taj User</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/saathratri-entity"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogSaathratriEntity">Saathratri Entity</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/saathratri-entity-2"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogSaathratriEntity2">Saathratri Entity 2</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/saathratri-entity-3"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogSaathratriEntity3">Saathratri Entity 3</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/saathratri-entity-4"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogSaathratriEntity4">Saathratri Entity 4</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/add-ons-available-by-organization"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogAddOnsAvailableByOrganization">Add Ons Available By Organization</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/add-ons-selected-by-organization"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogAddOnsSelectedByOrganization">Add Ons Selected By Organization</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/landing-page-by-organization"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogLandingPageByOrganization">Landing Page By Organization</span>
-          </a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            routerLink="/cassandrablog/set-entity-by-organization"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            (click)="collapseNavbar()"
-          >
-            <fa-icon icon="asterisk" [fixedWidth]="true" />
-            <span jhiTranslate="global.menu.entities.cassandrablogSetEntityByOrganization">Set Entity By Organization</span>
-          </a>
-        </li>
-        <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
+              <span>
+                <fa-icon icon="th-list" />
+                <span jhiTranslate="global.menu.entities.main">Entities</span>
+              </span>
+            </a>
+            <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/blog"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogBlog">Blog</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/post"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogPost">Post</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/tag"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogTag">Tag</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/taj-user"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogTajUser">Taj User</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/saathratri-entity"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogSaathratriEntity">Saathratri Entity</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/saathratri-entity-2"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogSaathratriEntity2">Saathratri Entity 2</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/saathratri-entity-3"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogSaathratriEntity3">Saathratri Entity 3</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/saathratri-entity-4"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogSaathratriEntity4">Saathratri Entity 4</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/add-ons-available-by-organization"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogAddOnsAvailableByOrganization"
+                    >Add Ons Available By Organization</span
+                  >
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/add-ons-selected-by-organization"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogAddOnsSelectedByOrganization"
+                    >Add Ons Selected By Organization</span
+                  >
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/landing-page-by-organization"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogLandingPageByOrganization">Landing Page By Organization</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/cassandrablog/set-entity-by-organization"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true" />
+                  <span jhiTranslate="global.menu.entities.cassandrablogSetEntityByOrganization">Set Entity By Organization</span>
+                </a>
+              </li>
+              <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+            </ul>
+          </li>
+        }
         <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
           ngbDropdown
           class="nav-item dropdown pointer"
-          display="dynamic"
+          display="static"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           data-cy="adminMenu"
@@ -194,7 +215,7 @@
           </ul>
         </li>
         @if (languages && languages.length > 1) {
-          <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
+          <li ngbDropdown class="nav-item dropdown pointer" display="static">
             <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
               <span>
                 <fa-icon icon="flag" />
@@ -219,7 +240,7 @@
         <li
           ngbDropdown
           class="nav-item dropdown pointer"
-          display="dynamic"
+          display="static"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           data-cy="accountMenu"

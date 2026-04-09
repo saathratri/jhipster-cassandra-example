@@ -5,8 +5,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle } from '@ng-bootstrap/ng-bootstrap/dropdown';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-
 import { environment } from 'environments/environment';
+
 import { LANGUAGES } from 'app/config/language.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
@@ -46,7 +46,6 @@ export default class Navbar implements OnInit {
   readonly openAPIEnabled = signal(false);
   readonly version: string;
   readonly account = inject(AccountService).account;
-
   entitiesNavbarItems: NavbarItem[] = [];
 
   private readonly loginService = inject(LoginService);
@@ -65,7 +64,7 @@ export default class Navbar implements OnInit {
   }
 
   ngOnInit(): void {
-    // Sort entity navbar items alphabetically by name
+    // Saathratri modification - sort entity navbar items alphabetically
     this.entitiesNavbarItems = [...EntityNavbarItems].sort((a, b) => a.name.localeCompare(b.name));
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction.set(profileInfo.inProduction ?? true);
@@ -90,9 +89,5 @@ export default class Navbar implements OnInit {
     this.collapseNavbar();
     this.loginService.logout();
     this.router.navigate(['']);
-  }
-
-  toggleNavbar(): void {
-    this.isNavbarCollapsed.update(isNavbarCollapsed => !isNavbarCollapsed);
   }
 }

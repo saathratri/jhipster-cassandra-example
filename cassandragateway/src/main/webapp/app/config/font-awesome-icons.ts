@@ -7,7 +7,6 @@ import {
   faBook,
   faCalendarAlt,
   faCheck,
-  // Saathratri change: extra icons for Cassandra search form UI (collapsible sections, validation, key display). Not in upstream.
   faCheckCircle,
   faChevronDown,
   faChevronRight,
@@ -19,7 +18,6 @@ import {
   faHeart,
   faHome,
   faKey,
-  // End of Saathratri change.
   faList,
   faLock,
   faPencilAlt,
@@ -55,10 +53,6 @@ export const fontAwesomeIcons = [
   faBook,
   faCalendarAlt,
   faCheck,
-  // Saathratri change: extra icons for Cassandra search form UI (collapsible sections, validation, key display). Not in upstream.
-  faCheckCircle,
-  faChevronDown,
-  faChevronRight,
   faCloud,
   faCogs,
   faDatabase,
@@ -66,8 +60,6 @@ export const fontAwesomeIcons = [
   faFlag,
   faHeart,
   faHome,
-  faKey,
-  // End of Saathratri change.
   faList,
   faLock,
   faPencilAlt,
@@ -91,5 +83,9 @@ export const fontAwesomeIcons = [
   faUsers,
   faUsersCog,
   faWrench,
+  faCheckCircle,
+  faChevronDown,
+  faChevronRight,
+  faKey,
   // jhipster-needle-add-icon-import
 ];

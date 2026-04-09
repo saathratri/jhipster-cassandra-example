@@ -8,7 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import dayjs from 'dayjs/esm';
 import customParseFormat from 'dayjs/esm/plugin/customParseFormat';
-import { Observable, Subscription, combineLatest, filter, finalize, map, tap } from 'rxjs';
+import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs';
 
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { Alert } from 'app/shared/alert/alert';
@@ -81,8 +81,9 @@ export class AddOnsAvailableByOrganizationComponent implements OnInit {
 
   public readonly router = inject(Router);
   protected readonly addOnsAvailableByOrganizationService = inject(AddOnsAvailableByOrganizationService);
-  // Cassandra entities use Observable-based loading
-  readonly isLoading = signal(false);
+  // Cassandra entities use Observable-based loading (plain boolean, not signal,
+  // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
@@ -120,9 +121,14 @@ export class AddOnsAvailableByOrganizationComponent implements OnInit {
   }
 
   load(): void {
+    this.isLoading = true;
     this.queryBackend().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
       },
     });
   }
@@ -156,7 +162,7 @@ export class AddOnsAvailableByOrganizationComponent implements OnInit {
     const pageHeight = document.documentElement.scrollHeight;
     const threshold = 200;
 
-    if (scrollPosition >= pageHeight - threshold && this.hasNextPage && !this.isLoadingMore && !this.isLoading()) {
+    if (scrollPosition >= pageHeight - threshold && this.hasNextPage && !this.isLoadingMore && !this.isLoading) {
       this.loadMore();
     }
   }
@@ -392,7 +398,6 @@ export class AddOnsAvailableByOrganizationComponent implements OnInit {
   }
 
   protected queryBackend(): Observable<EntityArrayResponseType> {
-    this.isLoading.set(true);
     const queryObject: any = {
       pagingState: this.pagingState,
       size: this.pageSize,
@@ -426,7 +431,6 @@ export class AddOnsAvailableByOrganizationComponent implements OnInit {
                 status: res.status,
               });
             }),
-            finalize(() => this.isLoading.set(false)),
           );
       } else if (
         this.searchCriteria.organizationId &&
@@ -436,35 +440,32 @@ export class AddOnsAvailableByOrganizationComponent implements OnInit {
         this.searchCriteria.entityId &&
         this.searchCriteria.entityId.trim() !== ''
       ) {
-        return this.addOnsAvailableByOrganizationService
-          .findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdPageable(
-            this.searchCriteria.organizationId!,
-            this.searchCriteria.entityType!,
-            this.searchCriteria.entityId!,
-            queryObject,
-          )
-          .pipe(finalize(() => this.isLoading.set(false)));
+        return this.addOnsAvailableByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdPageable(
+          this.searchCriteria.organizationId!,
+          this.searchCriteria.entityType!,
+          this.searchCriteria.entityId!,
+          queryObject,
+        );
       } else if (
         this.searchCriteria.organizationId &&
         this.searchCriteria.organizationId.trim() !== '' &&
         this.searchCriteria.entityType &&
         this.searchCriteria.entityType.trim() !== ''
       ) {
-        return this.addOnsAvailableByOrganizationService
-          .findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypePageable(
-            this.searchCriteria.organizationId!,
-            this.searchCriteria.entityType!,
-            queryObject,
-          )
-          .pipe(finalize(() => this.isLoading.set(false)));
+        return this.addOnsAvailableByOrganizationService.findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypePageable(
+          this.searchCriteria.organizationId!,
+          this.searchCriteria.entityType!,
+          queryObject,
+        );
       } else if (this.searchCriteria.organizationId && this.searchCriteria.organizationId.trim() !== '') {
-        return this.addOnsAvailableByOrganizationService
-          .findAllByCompositeIdOrganizationIdPageable(this.searchCriteria.organizationId!, queryObject)
-          .pipe(finalize(() => this.isLoading.set(false)));
+        return this.addOnsAvailableByOrganizationService.findAllByCompositeIdOrganizationIdPageable(
+          this.searchCriteria.organizationId!,
+          queryObject,
+        );
       }
     }
     // Fallback: no valid criteria
-    return this.addOnsAvailableByOrganizationService.querySlice(queryObject).pipe(finalize(() => this.isLoading.set(false)));
+    return this.addOnsAvailableByOrganizationService.querySlice(queryObject);
   }
 
   protected handleNavigation(sortState: SortState): void {

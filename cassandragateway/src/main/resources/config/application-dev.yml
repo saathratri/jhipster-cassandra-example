@@ -42,9 +42,6 @@ spring:
       additional-exclude: static/**
     livereload:
       enabled: false # we use Webpack dev server + BrowserSync for livereload
-  docker:
-    compose:
-      enabled: false
   jackson:
     serialization:
       indent-output: true
