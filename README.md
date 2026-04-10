@@ -159,38 +159,60 @@ The detail/view page renders all MAP fields with their key-value pairs.
 
 ---
 
-## Improvements Since v1.0.13
+## Improvements Since v1.0.13 (Current: v1.0.16)
 
-The underlying `generator-jhipster-cassandra` blueprint has received significant improvements since the last open-source tagged release (v1.0.13). Regenerating this example with the latest blueprint version will include:
+The underlying `generator-jhipster-cassandra` blueprint has received significant improvements since the last open-source tagged release (v1.0.13). This example has been regenerated with `generator-jhipster@9.0.0` and `generator-jhipster-cassandra@1.0.16`.
 
-### Cassandra Pagination Overhaul
+### AI Semantic Search with Vector Embeddings (v1.0.15+)
+- Added support for **Cassandra VECTOR type** fields using `@customAnnotation("VECTOR")` with configurable dimensions.
+- Generates CQL schema with `VECTOR<FLOAT, N>` columns and **SAI (Storage Attached Index)** for similarity search.
+- Repository methods use **ANN OF** (Approximate Nearest Neighbor) queries for vector similarity.
+- Service layer auto-generates embeddings on save/update via a configurable `EmbeddingService`.
+- REST endpoint `/api/<entity>/ai-search` with field selection support for semantic search.
+- Angular **AI search bar** with checkboxes for selecting which fields to search.
+- Integrated with **Spring AI 2.0.0-M3** and `EmbeddingConfiguration` for OpenAI-compatible embedding providers.
+- **Graceful degradation** when an API key is not configured.
+- Consistent vector display: list/detail pages show first 3 floats with 5 decimal places; update page shows full vector in a readonly textarea.
+
+### AnyBlob Content Type Support (v1.0.15+)
+- Added support for **AnyBlob** fields using `@customAnnotation("any")`, enabling file uploads of any content type (PDF, DOCX, etc.).
+- Generates **PDF badge styling** on list, detail, and update pages for PDF files.
+- Full file upload/download support with content type detection.
+
+### MAP and SET Display Fixes (v1.0.15+)
+- Fixed detail page rendering of **MAP** and **SET** fields by converting legacy `*ngIf`/`*ngFor` directives to modern `@if`/`@for` control flow.
+- Fixed `KeyValuePipe` import for standalone Angular components with MAP fields.
+- All four MAP value types (TEXT, DECIMAL, BOOLEAN, BIGINT/UTC_DATETIME) render correctly on list, detail, and update pages.
+
+### Cassandra Pagination Overhaul (v1.0.14)
 - Replaced page-number-based pagination with native **Cassandra Slice pagination** using paging state tokens, which is the correct approach for Cassandra's distributed architecture.
 - Added a dedicated `/slice` endpoint for backward-compatible paginated queries.
 - Replaced automatic infinite scroll with a **Load More button** for better UX control.
 - Fixed paging state extraction to use `CassandraPageRequest` with the correct public API.
 - Fixed infinite "Load More" loop by properly checking for empty results.
 
-### Composite Key Search Widget
+### Composite Key Search Widget (v1.0.14)
 - Added **findBy search methods** for Cassandra composite keys with a full search widget on entity list pages.
 - Added **date pickers and comparison operators** (equals, greater than, less than, etc.) for clustering key fields.
 - Clustering key fields are **automatically disabled** when an inequality operator is selected on a preceding clustering column (respecting Cassandra's query restrictions).
 - Navbar entities are now **sorted alphabetically** for easier navigation.
 
-### UTC Date Handling
+### UTC Date Handling (v1.0.14)
 - Added `UTC_DATE` display support that prevents timezone shifting -- dates are rendered exactly as stored.
 - Added a custom `FormatUtcDatePipe` for consistent date-only formatting in Angular templates.
 - Fixed UTC_DATE form handling to use dayjs throughout the stack (create, update, and search forms).
 - Configured `DayjsDateAdapter` for Material Datepicker integration.
 
-### Composite Key Sorting
+### Composite Key Sorting (v1.0.14)
 - Added **column sorting** for Cassandra entities, with proper data array clearing when sort changes.
 - Sort by composite key fields is now fully supported in the Angular list view.
 
-### Backend Fixes
+### Backend Fixes (v1.0.14+)
 - Fixed malformed CQL `@Query` generation in `findLatestBy` repository methods.
 - Removed expensive `count()` queries from Cassandra resource templates (not supported efficiently by Cassandra).
 - Fixed Cassandra pagination to use an explicit `pagingState` query parameter for clean API design.
 - Improved translation key generation for Cassandra entities using i18n entity labels.
+- Updated JHipster version reference from 8.6.0 to 9.0.0.
 
 ## Prerequisites:
 
@@ -198,6 +220,7 @@ The underlying `generator-jhipster-cassandra` blueprint has received significant
 - [Node.js](https://nodejs.org/) 20+
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [JHipster](https://www.jhipster.tech/installation/) 9.0.0
+- [generator-jhipster-cassandra](https://www.npmjs.com/package/generator-jhipster-cassandra) 1.0.16
 
 ### Build
 
