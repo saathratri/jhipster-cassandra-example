@@ -322,6 +322,61 @@ npm run docker:db:up
 mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
+## Testing the Generated Code
+
+Every application generated into this example ships with a full test suite — both
+**backend** (JUnit + Testcontainers) and **frontend** (ESLint + Vitest). All three
+services (`cassandragateway`, `cassandrablog`, `cassandrastore`) are tested the same way.
+
+> Integration tests use **Testcontainers**, so **Docker Desktop must be running**. The
+> `*ResourceIT` tests start a real **Cassandra 5** container automatically for the two
+> microservices (the gateway uses PostgreSQL) — no manual database setup is required.
+
+### Backend tests (per service)
+
+Run from each service directory (`cassandragateway`, `cassandrablog`, `cassandrastore`):
+
+**Linux / macOS:**
+```console
+./mvnw -ntp -DskipTests -Dskip.npm package   # compile + package only (no Docker)
+./mvnw -ntp -Dskip.npm verify                 # unit + integration tests (Docker required)
+```
+
+**Windows:**
+```console
+mvnw.cmd -ntp -DskipTests -Dskip.npm package
+mvnw.cmd -ntp -Dskip.npm verify
+```
+
+`verify` runs the domain, DTO, security and structural tests plus the **composite-key
+entity REST CRUD integration tests** (`*ResourceIT`): create / get-one / get-all /
+update (PUT) / partial update (PATCH) / delete and their negative cases, for both
+single-value and composite primary keys (including auto-generated `TIMEUUID` clustering
+keys, and `Set` / `Map` columns).
+
+### Frontend tests (per service)
+
+Each service has an Angular microfrontend. Run from each service directory:
+
+```console
+npm install
+npm test
+```
+
+`npm test` runs **`eslint .` first** (the `pretest` hook) — if lint fails, the unit tests
+never run — then the Angular unit tests on **Vitest** (`ng test --coverage`). The lint
+gate fails only on **errors**, not warnings. To run just one half: `npx eslint .` (lint
+only) or `npx ng test` (Vitest only).
+
+### Debugging test failures
+
+This example is **generated code** — do not fix a failing test by hand-editing the
+generated app, because the next regeneration overwrites it. Instead, fix the **blueprint
+template** that produced the code, then regenerate. The full debugging runbook (the
+generate-sample tight loop, the backend composite-key bug patterns, and the Angular
+frontend compile / runtime / lint bug catalogue) lives in the blueprint repo:
+**[`generator-jhipster-cassandra/TESTING.md`](https://github.com/amarpatel-xx/generator-jhipster-cassandra/blob/main/TESTING.md)**.
+
 ### Available Scripts
 
 All shell scripts have corresponding Windows batch file equivalents:
