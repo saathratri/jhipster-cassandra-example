@@ -368,6 +368,55 @@ never run — then the Angular unit tests on **Vitest** (`ng test --coverage`). 
 gate fails only on **errors**, not warnings. To run just one half: `npx eslint .` (lint
 only) or `npx ng test` (Vitest only).
 
+### End-to-End (E2E) tests with Cypress
+
+Each service also ships a **Cypress** E2E suite under `src/test/javascript/cypress/`
+(account, administration, and per-entity CRUD specs). Unlike the unit tests, Cypress drives
+a **running, fully-assembled** app in a real browser, so the whole stack must be up first. A
+local **Chrome** is required for the headless run, and **Docker Desktop** must be running.
+
+**1. Build and start the full stack** — the same flow as *Run your … Example* above.
+Packaging first ensures each gateway/remote serves its compiled Angular bundle, so micro
+frontend module federation resolves at runtime:
+
+**Linux / macOS:**
+```console
+sh compile-saathratri-dev.sh   # package all three apps (backend + Angular client)
+sh saathratri-deploy.sh        # Keycloak + JHipster Registry, then each DB + mvnw spring-boot:run
+```
+
+**Windows:**
+```console
+compile-saathratri-dev.bat
+saathratri-deploy.bat
+```
+
+Wait until all three services appear in the registry at <http://localhost:8761> and the
+gateway UI loads at <http://localhost:8080>. Login uses the bundled Keycloak realm
+(`admin`/`admin`).
+
+**2. Run the suite** — from each service directory (`cassandragateway`, `cassandrablog`,
+`cassandrastore`), after a one-time `npm install` (which also fetches the Cypress binary):
+
+```console
+npm run e2e          # cypress run (headed) against the gateway at http://localhost:8080
+npm run cypress      # interactive Cypress runner (cypress open)
+```
+
+> **Micro frontend note:** every app (gateway and each remote) carries its **own** entity
+> specs but points `baseUrl` at the **gateway** (port 8080), so the specs run against the
+> assembled shell. The gateway **and** the service whose entities you are testing must both
+> be running.
+
+To exercise just the gateway's account/admin specs without the full fleet, run
+`npm run e2e:devserver` from `cassandragateway`; it starts that app's backend plus Angular
+dev server (port 9000) and runs Cypress against it.
+
+The per-entity specs carry the blueprint's **composite-key DELETE handling** — the
+`afterEach` cleanup URL uses every `compositeId` segment and the delete intercept matches the
+multi-segment path. See
+[`generator-jhipster-cassandra/TESTING.md` (§5.2)](https://github.com/amarpatel-xx/generator-jhipster-cassandra/blob/main/TESTING.md).
+
 ### Debugging test failures
 
 This example is **generated code** — do not fix a failing test by hand-editing the
