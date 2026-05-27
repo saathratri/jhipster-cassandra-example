@@ -375,9 +375,14 @@ Each service also ships a **Cypress** E2E suite under `src/test/javascript/cypre
 a **running, fully-assembled** app in a real browser, so the whole stack must be up first. A
 local **Chrome** is required for the headless run, and **Docker Desktop** must be running.
 
-**1. Build and start the full stack** — the same flow as *Run your … Example* above.
-Packaging first ensures each gateway/remote serves its compiled Angular bundle, so micro
-frontend module federation resolves at runtime:
+**1. Build and start the full stack.** You can bring up the infrastructure, databases, and
+backends exactly as described in the [*Run your Cassandra Composite Primary Key Entities
+Example*](#run-your-cassandra-composite-primary-key-entities-example) steps above — start
+Keycloak and the JHipster Registry, then for each service run `npm run docker:db:up` followed
+by `./mvnw spring-boot:run -Dspring-boot.run.profiles=dev` (`mvnw.cmd` on Windows).
+
+The helper scripts do the same thing in one go (packaging first so each gateway/remote serves
+its compiled Angular bundle, which micro frontend module federation needs at runtime):
 
 **Linux / macOS:**
 ```console
@@ -391,8 +396,8 @@ compile-saathratri-dev.bat
 saathratri-deploy.bat
 ```
 
-Wait until all three services appear in the registry at <http://localhost:8761> and the
-gateway UI loads at <http://localhost:8080>. Login uses the bundled Keycloak realm
+Either way, wait until all three services appear in the registry at <http://localhost:8761>
+and the gateway UI loads at <http://localhost:8080>. Login uses the bundled Keycloak realm
 (`admin`/`admin`).
 
 **2. Run the suite** — from each service directory (`cassandragateway`, `cassandrablog`,
