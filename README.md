@@ -445,6 +445,15 @@ All shell scripts have corresponding Windows batch file equivalents:
 | `sh saathratri-deploy.sh` | `saathratri-deploy.bat` |
 | `sh docker-remove-orphans.sh` | `docker-remove-orphans.bat` |
 
+> **Note on regen prompts:** `saathratri-generate-code-dev-cassandra.{sh,bat}` calls
+> `saathratri-cleanup-dev-main.{sh,bat}` first, which now also wipes the root-level
+> `.prettierignore`, `.prettierrc.yml`, and `.gitattributes` files in addition to the per-service dirs.
+> Without those deletions, JHipster's monorepo mode (`--monorepository --workspaces`) would prompt
+> `Overwrite .prettierignore? (ynadxreiH)` on every regen because the previous run left them at the
+> repo root. If you still see overwrite prompts for files inside a Cassandra service dir
+> (`cassandragateway/`, `cassandrablog/`, `cassandrastore/`), it usually means an IDE or `mvnw` process
+> has a file handle on a file inside — close it and re-run.
+
 ### Switch Identity Providers
 
 JHipster ships with Keycloak when you choose OAuth 2.0 / OIDC as the authentication type.

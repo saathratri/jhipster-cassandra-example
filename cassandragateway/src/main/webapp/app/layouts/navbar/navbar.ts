@@ -98,10 +98,6 @@ export default class Navbar implements OnInit {
     this.router.navigate(['']);
   }
 
-  private sortNavbarItemsAlphabetically(items: NavbarItem[]): NavbarItem[] {
-    return [...items].sort((a, b) => a.name.localeCompare(b.name));
-  }
-
   loadMicrofrontendsEntities(): void {
     // Lazy load microfrontend entities.
     loadNavbarItems('cassandrablog').then(
@@ -136,5 +132,9 @@ export default class Navbar implements OnInit {
         console.log('Error loading cassandrastore entities', error);
       },
     );
+  }
+
+  private sortNavbarItemsAlphabetically(items: NavbarItem[]): NavbarItem[] {
+    return [...items].sort((a, b) => a.name.localeCompare(b.name));
   }
 }

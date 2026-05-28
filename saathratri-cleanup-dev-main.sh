@@ -20,4 +20,10 @@ echo "Deleting Gateway..."
 rm -fr cassandragateway
 echo "Removing .gitignore..."
 rm -f .gitignore
+echo "Removing .gitattributes..."
+rm -f .gitattributes
+echo "Removing .prettierignore..."
+rm -f .prettierignore
+echo "Removing .prettierrc.yml..."
+rm -f .prettierrc.yml
 sh saathratri-cleanup-dev-cassandra.sh
