@@ -32,7 +32,7 @@ describe('SaathratriEntity4 e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/saathratri-entity-4-s**').as('entitiesRequest');
+    cy.intercept('GET', /^\/services\/cassandrablog\/api\/saathratri-entity-4-s\b/).as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/saathratri-entity-4-s').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrablog/api/saathratri-entity-4-s/*/*').as('deleteEntityRequest');
   });
@@ -94,7 +94,7 @@ describe('SaathratriEntity4 e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/saathratri-entity-4-s**',
+              url: /^\/services\/cassandrablog\/api\/saathratri-entity-4-s\b/,
               times: 1,
             },
             {

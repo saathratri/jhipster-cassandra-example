@@ -30,7 +30,7 @@ describe('TajUser e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/taj-users**').as('entitiesRequest');
+    cy.intercept('GET', /^\/services\/cassandrablog\/api\/taj-users\b/).as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/taj-users').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrablog/api/taj-users/*').as('deleteEntityRequest');
   });
@@ -92,7 +92,7 @@ describe('TajUser e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/taj-users**',
+              url: /^\/services\/cassandrablog\/api\/taj-users\b/,
               times: 1,
             },
             {

@@ -30,7 +30,7 @@ describe('SetEntityByOrganization e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/set-entity-by-organizations**').as('entitiesRequest');
+    cy.intercept('GET', /^\/services\/cassandrablog\/api\/set-entity-by-organizations\b/).as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/set-entity-by-organizations').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrablog/api/set-entity-by-organizations/*').as('deleteEntityRequest');
   });
@@ -92,7 +92,7 @@ describe('SetEntityByOrganization e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/set-entity-by-organizations**',
+              url: /^\/services\/cassandrablog\/api\/set-entity-by-organizations\b/,
               times: 1,
             },
             {

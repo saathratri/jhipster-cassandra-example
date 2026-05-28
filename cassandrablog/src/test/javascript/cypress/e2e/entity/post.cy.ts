@@ -34,7 +34,7 @@ describe('Post e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/posts**').as('entitiesRequest');
+    cy.intercept('GET', /^\/services\/cassandrablog\/api\/posts\b/).as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/posts').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrablog/api/posts/*/*/*').as('deleteEntityRequest');
   });
@@ -96,7 +96,7 @@ describe('Post e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/posts**',
+              url: /^\/services\/cassandrablog\/api\/posts\b/,
               times: 1,
             },
             {
