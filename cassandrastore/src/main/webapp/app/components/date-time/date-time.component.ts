@@ -213,6 +213,24 @@ export class DateTimeComponent implements OnInit, ControlValueAccessor {
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
+  generateDateTime(): void {
+    const now = new Date();
+    const hours12 = now.getHours() % 12 || 12;
+    this.editForm.setValue(
+      {
+        date: dayjs(now),
+        hours: this.padZero(hours12),
+        minutes: this.padZero(now.getMinutes()),
+        amPm: now.getHours() >= 12 ? 'PM' : 'AM',
+        seconds: 0,
+        milliseconds: 0,
+      },
+      { emitEvent: true },
+    );
+    this.editForm.markAsDirty();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   dateTimeValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     const controls = ['date', 'hours', 'minutes', 'amPm'].map(field => formGroup.get(field)?.value);

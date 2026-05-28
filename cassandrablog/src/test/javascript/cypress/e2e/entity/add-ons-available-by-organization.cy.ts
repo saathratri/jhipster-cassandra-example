@@ -226,14 +226,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
 
       cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('rt-addOnDetailsBigInt-key');
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).type('1/15/2030', { force: true });
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).blur();
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).clear();
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).type('10');
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-minutes"]`).clear();
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-minutes"]`).type('30');
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-ampm"]`).click();
-      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-generate"]`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBigInt-add-button"]`).click();
 
       cy.get(entityCreateSaveButtonSelector).click();
@@ -352,14 +345,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
     it('should delete a row in the addOnDetailsBigInt widget', () => {
       cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('del-addOnDetailsBigInt-key');
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).type('1/15/2030', { force: true });
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).blur();
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).clear();
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).type('10');
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-minutes"]`).clear();
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-minutes"]`).type('30');
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-ampm"]`).click();
-      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-generate"]`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBigInt-add-button"]`).click();
       cy.get(`[data-cy="addOnDetailsBigInt-row-del-addOnDetailsBigInt-key-edit"]`).should('exist');
       cy.get(`[data-cy="addOnDetailsBigInt-row-del-addOnDetailsBigInt-key-delete"]`).click();

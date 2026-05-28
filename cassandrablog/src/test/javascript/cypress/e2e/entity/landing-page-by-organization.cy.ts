@@ -195,14 +195,7 @@ describe('LandingPageByOrganization e2e test', () => {
       cy.get(`[data-cy="detailsBoolean-add-button"]`).click();
 
       cy.get(`[data-cy="detailsBigInt-add-key"]`).type('rt-detailsBigInt-key');
-      cy.get(`[data-cy="detailsBigInt-add-datetime-date"]`).type('1/15/2030', { force: true });
-      cy.get(`[data-cy="detailsBigInt-add-datetime-date"]`).blur();
-      cy.get(`[data-cy="detailsBigInt-add-datetime-hours"]`).clear();
-      cy.get(`[data-cy="detailsBigInt-add-datetime-hours"]`).type('10');
-      cy.get(`[data-cy="detailsBigInt-add-datetime-minutes"]`).clear();
-      cy.get(`[data-cy="detailsBigInt-add-datetime-minutes"]`).type('30');
-      cy.get(`[data-cy="detailsBigInt-add-datetime-ampm"]`).click();
-      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="detailsBigInt-add-datetime-generate"]`).click({ force: true });
       cy.get(`[data-cy="detailsBigInt-add-button"]`).click();
 
       cy.get(entityCreateSaveButtonSelector).click();
@@ -316,14 +309,7 @@ describe('LandingPageByOrganization e2e test', () => {
 
     it('should delete a row in the detailsBigInt widget', () => {
       cy.get(`[data-cy="detailsBigInt-add-key"]`).type('del-detailsBigInt-key');
-      cy.get(`[data-cy="detailsBigInt-add-datetime-date"]`).type('1/15/2030', { force: true });
-      cy.get(`[data-cy="detailsBigInt-add-datetime-date"]`).blur();
-      cy.get(`[data-cy="detailsBigInt-add-datetime-hours"]`).clear();
-      cy.get(`[data-cy="detailsBigInt-add-datetime-hours"]`).type('10');
-      cy.get(`[data-cy="detailsBigInt-add-datetime-minutes"]`).clear();
-      cy.get(`[data-cy="detailsBigInt-add-datetime-minutes"]`).type('30');
-      cy.get(`[data-cy="detailsBigInt-add-datetime-ampm"]`).click();
-      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="detailsBigInt-add-datetime-generate"]`).click({ force: true });
       cy.get(`[data-cy="detailsBigInt-add-button"]`).click();
       cy.get(`[data-cy="detailsBigInt-row-del-detailsBigInt-key-edit"]`).should('exist');
       cy.get(`[data-cy="detailsBigInt-row-del-detailsBigInt-key-delete"]`).click();
