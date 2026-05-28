@@ -19,7 +19,8 @@ import { MapDayjsEditDialogComponent } from '../map-dayjs-edit-dialog-component/
 })
 export class MapDayjsComponent implements OnChanges {
   @Input() inputFields: Record<string, dayjs.Dayjs> = {};
-  @Input() fieldName: string = '';
+
+  @Input() fieldName = '';
   @Output() dataChange = new EventEmitter<Record<string, dayjs.Dayjs>>();
 
   mapDetails: Record<string, dayjs.Dayjs> = {};

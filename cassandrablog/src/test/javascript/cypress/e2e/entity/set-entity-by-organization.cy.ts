@@ -178,18 +178,25 @@ describe('SetEntityByOrganization e2e test', () => {
     });
 
     it('should round-trip MAP/SET widget entries through POST', () => {
-      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000050');
+      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
+      cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
 
-      cy.get(`[data-cy="tags-add-value"]`).type('rt-tag-1');
+      cy.get(`[data-cy="tags-add-value"]`).type('rt-tags-value');
       cy.get(`[data-cy="tags-add-button"]`).click();
 
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {
         expect(response?.statusCode).to.equal(201);
-      expect(response.body.tags, 'SET round-trip: tags').to.include('rt-tag-1');
+        expect(response.body.tags, 'SET round-trip: tags').to.include('rt-tags-value');
         setEntityByOrganization = response.body;
       });
+    });
+
+    it('should accept input on the tags SET widget add row', () => {
+      cy.get(`[data-cy="tags-add-value"]`).type('sample-tags-1');
+      cy.get(`[data-cy="tags-add-value"]`).should('have.value', 'sample-tags-1');
+      cy.get(`[data-cy="tags-add-button"]`).should('not.be.disabled');
     });
 
     it('should edit a row in the tags widget via dialog', () => {
@@ -197,7 +204,8 @@ describe('SetEntityByOrganization e2e test', () => {
       cy.get(`[data-cy="tags-add-button"]`).click();
       cy.get(`[data-cy="tags-row-0-edit"]`).click();
       cy.get('mat-dialog-container').should('be.visible');
-      cy.get('[data-cy="dialog-edit-value"]').clear().type('edit-new');
+      cy.get('[data-cy="dialog-edit-value"]').clear();
+      cy.get('[data-cy="dialog-edit-value"]').type('edit-new');
       cy.get('[data-cy="dialog-save-button"]').click();
       cy.get('mat-dialog-container').should('not.exist');
     });
@@ -208,12 +216,6 @@ describe('SetEntityByOrganization e2e test', () => {
       cy.get(`[data-cy="tags-row-0-edit"]`).should('exist');
       cy.get(`[data-cy="tags-row-0-delete"]`).click();
       cy.get(`[data-cy="tags-row-0-edit"]`).should('not.exist');
-    });
-
-    it('should accept input on the tags SET widget add row', () => {
-      cy.get(`[data-cy="tags-add-value"]`).type('sample-tags-1');
-      cy.get(`[data-cy="tags-add-value"]`).should('have.value', 'sample-tags-1');
-      cy.get(`[data-cy="tags-add-button"]`).should('not.be.disabled');
     });
   });
 });

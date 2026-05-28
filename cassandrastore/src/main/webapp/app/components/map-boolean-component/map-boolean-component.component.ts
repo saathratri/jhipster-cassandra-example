@@ -16,7 +16,8 @@ import { MapBooleanEditDialogComponent } from '../map-boolean-edit-dialog-compon
 })
 export class MapBooleanComponent implements OnInit, OnChanges {
   @Input() inputFields: Record<string, boolean> = {};
-  @Input() fieldName: string = '';
+
+  @Input() fieldName = '';
   @Output() dataChange = new EventEmitter<Record<string, boolean>>();
 
   mapDetails: Record<string, boolean> = {};

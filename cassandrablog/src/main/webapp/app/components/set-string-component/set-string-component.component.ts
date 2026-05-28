@@ -16,7 +16,8 @@ import { SetStringEditDialogComponent } from '../set-string-edit-dialog-componen
 })
 export class SetStringComponent implements OnChanges {
   @Input() inputFields: Set<string> = new Set<string>();
-  @Input() fieldName: string = '';
+
+  @Input() fieldName = '';
   @Output() dataChange = new EventEmitter<Set<string>>();
 
   form!: FormGroup;

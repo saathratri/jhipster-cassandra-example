@@ -195,19 +195,40 @@ describe('SaathratriEntity3 e2e test', () => {
     });
 
     it('should round-trip MAP/SET widget entries through POST', () => {
-      cy.get(`[data-cy="entityType"]`).type('rt-entityType-3');
-      cy.get(`[data-cy="createdTimeId"]`).type('00000000-0000-4000-8000-000000000040');
+      cy.get(`[data-cy="entityType"]`).type('1dc81d79-b38e-4129-9f38-54d48cd77b53');
+      cy.get(`[data-cy="entityType"]`).should('have.value', '1dc81d79-b38e-4129-9f38-54d48cd77b53');
 
-      cy.get(`[data-cy="tags-add-value"]`).type('rt-tag-1');
+      cy.get(`[data-cy="createdTimeId"]`).type('80f92053-15fd-4316-85a6-653ebe913a18');
+      cy.get(`[data-cy="createdTimeId"]`).invoke('val').should('match', new RegExp('80f92053-15fd-4316-85a6-653ebe913a18'));
+
+      cy.get(`[data-cy="entityName"]`).type('a');
+      cy.get(`[data-cy="entityName"]`).should('have.value', 'a');
+
+      cy.get(`[data-cy="entityDescription"]`).type('firsthand');
+      cy.get(`[data-cy="entityDescription"]`).should('have.value', 'firsthand');
+
+      cy.get(`[data-cy="entityCost"]`).type('19238.72');
+      cy.get(`[data-cy="entityCost"]`).should('have.value', '19238.72');
+
+      cy.get(`[data-cy="departureDate"]`).type('14623');
+      cy.get(`[data-cy="departureDate"]`).should('have.value', '14623');
+
+      cy.get(`[data-cy="tags-add-value"]`).type('rt-tags-value');
       cy.get(`[data-cy="tags-add-button"]`).click();
 
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {
         expect(response?.statusCode).to.equal(201);
-      expect(response.body.tags, 'SET round-trip: tags').to.include('rt-tag-1');
+        expect(response.body.tags, 'SET round-trip: tags').to.include('rt-tags-value');
         saathratriEntity3 = response.body;
       });
+    });
+
+    it('should accept input on the tags SET widget add row', () => {
+      cy.get(`[data-cy="tags-add-value"]`).type('sample-tags-1');
+      cy.get(`[data-cy="tags-add-value"]`).should('have.value', 'sample-tags-1');
+      cy.get(`[data-cy="tags-add-button"]`).should('not.be.disabled');
     });
 
     it('should edit a row in the tags widget via dialog', () => {
@@ -215,7 +236,8 @@ describe('SaathratriEntity3 e2e test', () => {
       cy.get(`[data-cy="tags-add-button"]`).click();
       cy.get(`[data-cy="tags-row-0-edit"]`).click();
       cy.get('mat-dialog-container').should('be.visible');
-      cy.get('[data-cy="dialog-edit-value"]').clear().type('edit-new');
+      cy.get('[data-cy="dialog-edit-value"]').clear();
+      cy.get('[data-cy="dialog-edit-value"]').type('edit-new');
       cy.get('[data-cy="dialog-save-button"]').click();
       cy.get('mat-dialog-container').should('not.exist');
     });
@@ -226,12 +248,6 @@ describe('SaathratriEntity3 e2e test', () => {
       cy.get(`[data-cy="tags-row-0-edit"]`).should('exist');
       cy.get(`[data-cy="tags-row-0-delete"]`).click();
       cy.get(`[data-cy="tags-row-0-edit"]`).should('not.exist');
-    });
-
-    it('should accept input on the tags SET widget add row', () => {
-      cy.get(`[data-cy="tags-add-value"]`).type('sample-tags-1');
-      cy.get(`[data-cy="tags-add-value"]`).should('have.value', 'sample-tags-1');
-      cy.get(`[data-cy="tags-add-button"]`).should('not.be.disabled');
     });
   });
 });

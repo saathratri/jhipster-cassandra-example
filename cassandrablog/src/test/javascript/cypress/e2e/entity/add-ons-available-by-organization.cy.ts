@@ -199,91 +199,63 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
     });
 
     it('should round-trip MAP/SET widget entries through POST', () => {
-      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000010');
-      cy.get(`[data-cy="entityType"]`).type('rt-entityType');
-      cy.get(`[data-cy="entityId"]`).type('00000000-0000-4000-8000-000000000011');
-      cy.get(`[data-cy="addOnId"]`).type('00000000-0000-4000-8000-000000000012');
-      cy.get(`[data-cy="addOnType"]`).type('rt-addOnType');
+      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
+      cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
 
-      cy.get(`[data-cy="addOnDetailsText-add-key"]`).type('rt-text-key');
-      cy.get(`[data-cy="addOnDetailsText-add-value"]`).type('rt-text-value');
+      cy.get(`[data-cy="entityType"]`).type('midst scarily majority');
+      cy.get(`[data-cy="entityType"]`).should('have.value', 'midst scarily majority');
+
+      cy.get(`[data-cy="entityId"]`).type('bc5d5225-cfcd-4e6a-bc1e-d8ff5d84d115');
+      cy.get(`[data-cy="entityId"]`).invoke('val').should('match', new RegExp('bc5d5225-cfcd-4e6a-bc1e-d8ff5d84d115'));
+
+      cy.get(`[data-cy="addOnId"]`).type('f8ccc258-d399-4fb1-b548-7255b74385b9');
+      cy.get(`[data-cy="addOnId"]`).invoke('val').should('match', new RegExp('f8ccc258-d399-4fb1-b548-7255b74385b9'));
+
+      cy.get(`[data-cy="addOnType"]`).type('ah vulgarise clearly');
+      cy.get(`[data-cy="addOnType"]`).should('have.value', 'ah vulgarise clearly');
+      cy.get(`app-date-time[fieldName="addOnDetailsBigInt"]`).parent().contains('button', 'Generate').click();
+
+      cy.get(`[data-cy="addOnDetailsText-add-key"]`).type('rt-addOnDetailsText-key');
+      cy.get(`[data-cy="addOnDetailsText-add-value"]`).type('rt-addOnDetailsText-value');
       cy.get(`[data-cy="addOnDetailsText-add-button"]`).click();
-      cy.get(`[data-cy="addOnDetailsDecimal-add-key"]`).type('rt-decimal-key');
+
+      cy.get(`[data-cy="addOnDetailsDecimal-add-key"]`).type('rt-addOnDetailsDecimal-key');
       cy.get(`[data-cy="addOnDetailsDecimal-add-value"]`).type('99.99');
       cy.get(`[data-cy="addOnDetailsDecimal-add-button"]`).click();
-      cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('rt-bool-key');
+
+      cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('rt-addOnDetailsBoolean-key');
       cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
+
+      cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('rt-addOnDetailsBigInt-key');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).type('1/15/2030');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).blur();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).clear();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).type('10');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-minutes"]`).clear();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-minutes"]`).type('30');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-ampm"]`).click();
+      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-button"]`).click();
 
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {
         expect(response?.statusCode).to.equal(201);
-      expect(response.body.addOnDetailsText, 'MAP<TEXT> round-trip: addOnDetailsText').to.have.property('rt-text-key', 'rt-text-value');
-      expect(response.body.addOnDetailsDecimal, 'MAP<DECIMAL> round-trip: addOnDetailsDecimal').to.have.property('rt-decimal-key');
-      expect(response.body.addOnDetailsBoolean, 'MAP<BOOLEAN> round-trip: addOnDetailsBoolean').to.have.property('rt-bool-key', true);
+        expect(response.body.addOnDetailsText, 'MAP<TEXT> round-trip: addOnDetailsText').to.have.property(
+          'rt-addOnDetailsText-key',
+          'rt-addOnDetailsText-value',
+        );
+        expect(response.body.addOnDetailsDecimal, 'MAP<DECIMAL> round-trip: addOnDetailsDecimal').to.have.property(
+          'rt-addOnDetailsDecimal-key',
+        );
+        expect(response.body.addOnDetailsBoolean, 'MAP<BOOLEAN> round-trip: addOnDetailsBoolean').to.have.property(
+          'rt-addOnDetailsBoolean-key',
+          true,
+        );
+        expect(response.body.addOnDetailsBigInt, 'MAP<DAYJS> round-trip: addOnDetailsBigInt').to.have.property('rt-addOnDetailsBigInt-key');
         addOnsAvailableByOrganization = response.body;
       });
-    });
-
-    it('should edit a row in the addOnDetailsText widget via dialog', () => {
-      cy.get(`[data-cy="addOnDetailsText-add-key"]`).type('edit-addOnDetailsText-key');
-      cy.get(`[data-cy="addOnDetailsText-add-value"]`).type('edit-orig');
-      cy.get(`[data-cy="addOnDetailsText-add-button"]`).click();
-      cy.get(`[data-cy="addOnDetailsText-row-edit-addOnDetailsText-key-edit"]`).click();
-      cy.get('mat-dialog-container').should('be.visible');
-      cy.get('[data-cy="dialog-edit-value"]').clear().type('edit-new');
-      cy.get('[data-cy="dialog-save-button"]').click();
-      cy.get('mat-dialog-container').should('not.exist');
-    });
-
-    it('should delete a row in the addOnDetailsText widget', () => {
-      cy.get(`[data-cy="addOnDetailsText-add-key"]`).type('del-addOnDetailsText-key');
-      cy.get(`[data-cy="addOnDetailsText-add-value"]`).type('delete-val');
-      cy.get(`[data-cy="addOnDetailsText-add-button"]`).click();
-      cy.get(`[data-cy="addOnDetailsText-row-del-addOnDetailsText-key-edit"]`).should('exist');
-      cy.get(`[data-cy="addOnDetailsText-row-del-addOnDetailsText-key-delete"]`).click();
-      cy.get(`[data-cy="addOnDetailsText-row-del-addOnDetailsText-key-edit"]`).should('not.exist');
-    });
-
-    it('should edit a row in the addOnDetailsDecimal widget via dialog', () => {
-      cy.get(`[data-cy="addOnDetailsDecimal-add-key"]`).type('edit-addOnDetailsDecimal-key');
-      cy.get(`[data-cy="addOnDetailsDecimal-add-value"]`).type('77.77');
-      cy.get(`[data-cy="addOnDetailsDecimal-add-button"]`).click();
-      cy.get(`[data-cy="addOnDetailsDecimal-row-edit-addOnDetailsDecimal-key-edit"]`).click();
-      cy.get('mat-dialog-container').should('be.visible');
-      cy.get('[data-cy="dialog-edit-value"]').clear().type('88.88');
-      cy.get('[data-cy="dialog-save-button"]').click();
-      cy.get('mat-dialog-container').should('not.exist');
-    });
-
-    it('should delete a row in the addOnDetailsDecimal widget', () => {
-      cy.get(`[data-cy="addOnDetailsDecimal-add-key"]`).type('del-addOnDetailsDecimal-key');
-      cy.get(`[data-cy="addOnDetailsDecimal-add-value"]`).type('66.66');
-      cy.get(`[data-cy="addOnDetailsDecimal-add-button"]`).click();
-      cy.get(`[data-cy="addOnDetailsDecimal-row-del-addOnDetailsDecimal-key-edit"]`).should('exist');
-      cy.get(`[data-cy="addOnDetailsDecimal-row-del-addOnDetailsDecimal-key-delete"]`).click();
-      cy.get(`[data-cy="addOnDetailsDecimal-row-del-addOnDetailsDecimal-key-edit"]`).should('not.exist');
-    });
-
-    it('should edit a row in the addOnDetailsBoolean widget via dialog', () => {
-      cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('edit-bool-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
-      cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
-      cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).click();
-      cy.get('mat-dialog-container').should('be.visible');
-      cy.get('[data-cy="dialog-edit-toggle"]').click();
-      cy.get('[data-cy="dialog-save-button"]').click();
-      cy.get('mat-dialog-container').should('not.exist');
-    });
-
-    it('should delete a row in the addOnDetailsBoolean widget', () => {
-      cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('del-bool-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
-      cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
-      cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).should('exist');
-      cy.get(`[data-cy="addOnDetailsBoolean-row-0-delete"]`).click();
-      cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).should('not.exist');
     });
 
     it('should accept input on the addOnDetailsText MAP widget add row', () => {
@@ -316,15 +288,96 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
     });
 
     it('should accept input on the addOnDetailsBigInt date-time widget sub-inputs', () => {
-      cy.get(`[data-cy="addOnDetailsBigInt-hours"]`).clear().type('10');
+      cy.get(`[data-cy="addOnDetailsBigInt-hours"]`).clear();
+      cy.get(`[data-cy="addOnDetailsBigInt-hours"]`).type('10');
       cy.get(`[data-cy="addOnDetailsBigInt-hours"]`).should('have.value', '10');
 
-      cy.get(`[data-cy="addOnDetailsBigInt-minutes"]`).clear().type('30');
+      cy.get(`[data-cy="addOnDetailsBigInt-minutes"]`).clear();
+
+      cy.get(`[data-cy="addOnDetailsBigInt-minutes"]`).type('30');
       cy.get(`[data-cy="addOnDetailsBigInt-minutes"]`).should('have.value', '30');
 
       cy.get(`[data-cy="addOnDetailsBigInt-ampm"]`).click();
       cy.get('mat-option').contains('AM').click();
       cy.get(`[data-cy="addOnDetailsBigInt-ampm"]`).should('contain', 'AM');
+    });
+
+    it('should edit a row in the addOnDetailsText widget via dialog', () => {
+      cy.get(`[data-cy="addOnDetailsText-add-key"]`).type('edit-addOnDetailsText-key');
+      cy.get(`[data-cy="addOnDetailsText-add-value"]`).type('edit-orig');
+      cy.get(`[data-cy="addOnDetailsText-add-button"]`).click();
+      cy.get(`[data-cy="addOnDetailsText-row-edit-addOnDetailsText-key-edit"]`).click();
+      cy.get('mat-dialog-container').should('be.visible');
+      cy.get('[data-cy="dialog-edit-value"]').clear();
+      cy.get('[data-cy="dialog-edit-value"]').type('edit-new');
+      cy.get('[data-cy="dialog-save-button"]').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
+    it('should edit a row in the addOnDetailsDecimal widget via dialog', () => {
+      cy.get(`[data-cy="addOnDetailsDecimal-add-key"]`).type('edit-addOnDetailsDecimal-key');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-value"]`).type('77.77');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-button"]`).click();
+      cy.get(`[data-cy="addOnDetailsDecimal-row-edit-addOnDetailsDecimal-key-edit"]`).click();
+      cy.get('mat-dialog-container').should('be.visible');
+      cy.get('[data-cy="dialog-edit-value"]').clear();
+      cy.get('[data-cy="dialog-edit-value"]').type('88.88');
+      cy.get('[data-cy="dialog-save-button"]').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
+    it('should edit a row in the addOnDetailsBoolean widget via dialog', () => {
+      cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('edit-addOnDetailsBoolean-key');
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).click();
+      cy.get('mat-dialog-container').should('be.visible');
+      cy.get('[data-cy="dialog-edit-toggle"]').click();
+      cy.get('[data-cy="dialog-save-button"]').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
+    it('should delete a row in the addOnDetailsText widget', () => {
+      cy.get(`[data-cy="addOnDetailsText-add-key"]`).type('del-addOnDetailsText-key');
+      cy.get(`[data-cy="addOnDetailsText-add-value"]`).type('delete-val');
+      cy.get(`[data-cy="addOnDetailsText-add-button"]`).click();
+      cy.get(`[data-cy="addOnDetailsText-row-del-addOnDetailsText-key-edit"]`).should('exist');
+      cy.get(`[data-cy="addOnDetailsText-row-del-addOnDetailsText-key-delete"]`).click();
+      cy.get(`[data-cy="addOnDetailsText-row-del-addOnDetailsText-key-edit"]`).should('not.exist');
+    });
+
+    it('should delete a row in the addOnDetailsDecimal widget', () => {
+      cy.get(`[data-cy="addOnDetailsDecimal-add-key"]`).type('del-addOnDetailsDecimal-key');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-value"]`).type('66.66');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-button"]`).click();
+      cy.get(`[data-cy="addOnDetailsDecimal-row-del-addOnDetailsDecimal-key-edit"]`).should('exist');
+      cy.get(`[data-cy="addOnDetailsDecimal-row-del-addOnDetailsDecimal-key-delete"]`).click();
+      cy.get(`[data-cy="addOnDetailsDecimal-row-del-addOnDetailsDecimal-key-edit"]`).should('not.exist');
+    });
+
+    it('should delete a row in the addOnDetailsBoolean widget', () => {
+      cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('del-addOnDetailsBoolean-key');
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).should('exist');
+      cy.get(`[data-cy="addOnDetailsBoolean-row-0-delete"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).should('not.exist');
+    });
+
+    it('should delete a row in the addOnDetailsBigInt widget', () => {
+      cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('del-addOnDetailsBigInt-key');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).type('1/15/2030');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).blur();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).clear();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).type('10');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-minutes"]`).clear();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-minutes"]`).type('30');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-ampm"]`).click();
+      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="addOnDetailsBigInt-add-button"]`).click();
+      cy.get(`[data-cy="addOnDetailsBigInt-row-del-addOnDetailsBigInt-key-edit"]`).should('exist');
+      cy.get(`[data-cy="addOnDetailsBigInt-row-del-addOnDetailsBigInt-key-delete"]`).click();
+      cy.get(`[data-cy="addOnDetailsBigInt-row-del-addOnDetailsBigInt-key-edit"]`).should('not.exist');
     });
   });
 });

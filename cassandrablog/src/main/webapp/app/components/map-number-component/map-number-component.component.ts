@@ -16,7 +16,8 @@ import { MapNumberEditDialogComponent } from '../map-number-edit-dialog-componen
 })
 export class MapNumberComponent implements OnChanges {
   @Input() inputFields: Record<string, number> = {};
-  @Input() fieldName: string = '';
+
+  @Input() fieldName = '';
   @Output() dataChange = new EventEmitter<Record<string, number>>();
 
   mapDetails: Record<string, number> = {};

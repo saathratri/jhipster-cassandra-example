@@ -16,7 +16,8 @@ import { MapStringEditDialogComponent } from '../map-string-edit-dialog-componen
 })
 export class MapStringComponent implements OnChanges {
   @Input() inputFields: Record<string, string> = {};
-  @Input() fieldName: string = '';
+
+  @Input() fieldName = '';
   @Output() dataChange = new EventEmitter<Record<string, string>>();
 
   mapDetails: Record<string, string> = {};
