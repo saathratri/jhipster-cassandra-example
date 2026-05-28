@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
@@ -14,16 +14,12 @@ import { MaterialModule } from '../../shared/material.module';
   styleUrls: ['./set-string-edit-dialog-component.component.css'],
 })
 export class SetStringEditDialogComponent {
-  form: FormGroup;
+  dialogRef = inject<MatDialogRef<SetStringEditDialogComponent>>(MatDialogRef);
+  data = inject<{ value: string }>(MAT_DIALOG_DATA);
 
-  constructor(
-    public dialogRef: MatDialogRef<SetStringEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { value: string },
-  ) {
-    this.form = new FormGroup({
-      value: new FormControl(data.value, Validators.required),
-    });
-  }
+  form: FormGroup = new FormGroup({
+    value: new FormControl(this.data.value, Validators.required),
+  });
 
   onCancel(): void {
     this.dialogRef.close();

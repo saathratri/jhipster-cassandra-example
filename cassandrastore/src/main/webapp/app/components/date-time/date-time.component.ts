@@ -34,9 +34,7 @@ import { MaterialModule } from '../../shared/material.module';
 export class DateTimeComponent implements OnInit, ControlValueAccessor {
   editForm!: FormGroup;
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   private lastValidValue: number | null = null; // Store last valid timestamp
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   private preInitializedValue: boolean | null = null;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

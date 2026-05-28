@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -16,15 +16,15 @@ import { MapBooleanEditDialogComponent } from '../map-boolean-edit-dialog-compon
 })
 export class MapBooleanComponent implements OnInit, OnChanges {
   @Input() inputFields: Record<string, boolean> = {};
+  @Input() fieldName: string = '';
   @Output() dataChange = new EventEmitter<Record<string, boolean>>();
 
   mapDetails: Record<string, boolean> = {};
-  form: FormGroup;
+  form!: FormGroup;
+  private fb = inject(FormBuilder);
+  private dialog = inject(MatDialog);
 
-  constructor(
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
     this.form = this.fb.group({
       fields: this.fb.array([]),
       newKey: ['', Validators.required],

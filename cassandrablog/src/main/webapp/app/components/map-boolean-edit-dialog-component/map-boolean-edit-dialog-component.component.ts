@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'; // ✅ Import Slide Toggle
@@ -15,17 +15,13 @@ import { MaterialModule } from '../../shared/material.module';
   styleUrls: ['./map-boolean-edit-dialog-component.component.css'],
 })
 export class MapBooleanEditDialogComponent {
-  form: FormGroup;
+  dialogRef = inject<MatDialogRef<MapBooleanEditDialogComponent>>(MatDialogRef);
+  data = inject<{ key: string; value: boolean }>(MAT_DIALOG_DATA);
 
-  constructor(
-    public dialogRef: MatDialogRef<MapBooleanEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { key: string; value: boolean },
-  ) {
-    this.form = new FormGroup({
-      key: new FormControl({ value: data.key, disabled: true }), // ✅ Read-only key
-      value: new FormControl(data.value, Validators.required), // ✅ Ensure a selection is made
-    });
-  }
+  form: FormGroup = new FormGroup({
+    key: new FormControl({ value: this.data.key, disabled: true }), // ✅ Read-only key
+    value: new FormControl(this.data.value, Validators.required), // ✅ Ensure a selection is made
+  });
 
   onCancel(): void {
     this.dialogRef.close();

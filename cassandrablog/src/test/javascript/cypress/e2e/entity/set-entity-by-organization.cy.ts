@@ -176,5 +176,11 @@ describe('SetEntityByOrganization e2e test', () => {
       });
       cy.url().should('match', setEntityByOrganizationPageUrlPattern);
     });
+
+    it('should accept input on the tags SET widget add row', () => {
+      cy.get(`[data-cy="tags-add-value"]`).type('sample-tags-1');
+      cy.get(`[data-cy="tags-add-value"]`).should('have.value', 'sample-tags-1');
+      cy.get(`[data-cy="tags-add-button"]`).should('not.be.disabled');
+    });
   });
 });

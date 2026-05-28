@@ -176,5 +176,34 @@ describe('LandingPageByOrganization e2e test', () => {
       });
       cy.url().should('match', landingPageByOrganizationPageUrlPattern);
     });
+
+    it('should accept input on the detailsText MAP widget add row', () => {
+      cy.get(`[data-cy="detailsText-add-key"]`).type('sample-key');
+      cy.get(`[data-cy="detailsText-add-key"]`).should('have.value', 'sample-key');
+      cy.get(`[data-cy="detailsText-add-value"]`).type('sample-value');
+      cy.get(`[data-cy="detailsText-add-value"]`).should('have.value', 'sample-value');
+      cy.get(`[data-cy="detailsText-add-button"]`).should('not.be.disabled');
+    });
+
+    it('should accept input on the detailsDecimal MAP widget add row', () => {
+      cy.get(`[data-cy="detailsDecimal-add-key"]`).type('sample-key');
+      cy.get(`[data-cy="detailsDecimal-add-key"]`).should('have.value', 'sample-key');
+      cy.get(`[data-cy="detailsDecimal-add-value"]`).type('1001');
+      cy.get(`[data-cy="detailsDecimal-add-value"]`).should('have.value', '1001');
+      cy.get(`[data-cy="detailsDecimal-add-button"]`).should('not.be.disabled');
+    });
+
+    it('should accept input on the detailsBoolean MAP<BOOLEAN> widget add row', () => {
+      cy.get(`[data-cy="detailsBoolean-add-key"]`).type('sample-key');
+      cy.get(`[data-cy="detailsBoolean-add-key"]`).should('have.value', 'sample-key');
+      cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="detailsBoolean-add-button"]`).should('not.be.disabled');
+    });
+
+    it('should accept input on the detailsBigInt MAP<BIGINT/DATETIME> widget add row', () => {
+      cy.get(`[data-cy="detailsBigInt-add-key"]`).type('sample-key');
+      cy.get(`[data-cy="detailsBigInt-add-key"]`).should('have.value', 'sample-key');
+      cy.get(`[data-cy="detailsBigInt-add-button"]`).should('exist');
+    });
   });
 });

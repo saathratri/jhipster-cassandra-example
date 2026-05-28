@@ -1,4 +1,6 @@
+import { beforeEach, describe, expect, it } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { SetStringEditDialogComponent } from './set-string-edit-dialog-component.component';
 
@@ -9,6 +11,10 @@ describe('SetStringEditDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SetStringEditDialogComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: { close() {} } },
+        { provide: MAT_DIALOG_DATA, useValue: { value: 'a' } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SetStringEditDialogComponent);

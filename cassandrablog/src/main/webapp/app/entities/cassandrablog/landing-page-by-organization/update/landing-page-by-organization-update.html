@@ -80,7 +80,8 @@
             jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.detailsText"
             >Details Text</label
           >
-          <app-map-string-component [inputFields]="inputFieldsDetailsText" (dataChange)="handleDetailsTextInputChange($event)">
+          <app-map-string-component
+        fieldName="detailsText" [inputFields]="inputFieldsDetailsText" (dataChange)="handleDetailsTextInputChange($event)">
           </app-map-string-component>
         </div>
 
@@ -91,7 +92,8 @@
             jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.detailsDecimal"
             >Details Decimal</label
           >
-          <app-map-number-component [inputFields]="inputFieldsDetailsDecimal" (dataChange)="handleDetailsDecimalInputChange($event)">
+          <app-map-number-component
+        fieldName="detailsDecimal" [inputFields]="inputFieldsDetailsDecimal" (dataChange)="handleDetailsDecimalInputChange($event)">
           </app-map-number-component>
         </div>
 
@@ -102,7 +104,8 @@
             jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.detailsBoolean"
             >Details Boolean</label
           >
-          <app-map-boolean-component [inputFields]="inputFieldsDetailsBoolean" (dataChange)="handleDetailsBooleanInputChange($event)">
+          <app-map-boolean-component
+        fieldName="detailsBoolean" [inputFields]="inputFieldsDetailsBoolean" (dataChange)="handleDetailsBooleanInputChange($event)">
           </app-map-boolean-component>
         </div>
 
@@ -113,7 +116,8 @@
             jhiTranslate="cassandrablogApp.cassandrablogLandingPageByOrganization.detailsBigInt"
             >Details Big Int</label
           >
-          <app-map-dayjs-component [inputFields]="inputFieldsDetailsBigInt" (dataChange)="handleDetailsBigIntInputChange($event)">
+          <app-map-dayjs-component
+        fieldName="detailsBigInt" [inputFields]="inputFieldsDetailsBigInt" (dataChange)="handleDetailsBigIntInputChange($event)">
           </app-map-dayjs-component>
         </div>
       </div>

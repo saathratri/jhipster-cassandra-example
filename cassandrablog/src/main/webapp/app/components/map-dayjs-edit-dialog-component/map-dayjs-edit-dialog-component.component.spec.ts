@@ -1,4 +1,8 @@
+import { beforeEach, describe, expect, it } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+import dayjs from 'dayjs/esm';
 
 import { MapDayjsEditDialogComponent } from './map-dayjs-edit-dialog-component.component';
 
@@ -9,6 +13,10 @@ describe('MapDayjsEditDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MapDayjsEditDialogComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: { close() {} } },
+        { provide: MAT_DIALOG_DATA, useValue: { key: 'a', value: dayjs() } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MapDayjsEditDialogComponent);

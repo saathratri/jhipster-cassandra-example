@@ -195,5 +195,34 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
       });
       cy.url().should('match', addOnsAvailableByOrganizationPageUrlPattern);
     });
+
+    it('should accept input on the addOnDetailsText MAP widget add row', () => {
+      cy.get(`[data-cy="addOnDetailsText-add-key"]`).type('sample-key');
+      cy.get(`[data-cy="addOnDetailsText-add-key"]`).should('have.value', 'sample-key');
+      cy.get(`[data-cy="addOnDetailsText-add-value"]`).type('sample-value');
+      cy.get(`[data-cy="addOnDetailsText-add-value"]`).should('have.value', 'sample-value');
+      cy.get(`[data-cy="addOnDetailsText-add-button"]`).should('not.be.disabled');
+    });
+
+    it('should accept input on the addOnDetailsDecimal MAP widget add row', () => {
+      cy.get(`[data-cy="addOnDetailsDecimal-add-key"]`).type('sample-key');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-key"]`).should('have.value', 'sample-key');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-value"]`).type('1001');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-value"]`).should('have.value', '1001');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-button"]`).should('not.be.disabled');
+    });
+
+    it('should accept input on the addOnDetailsBoolean MAP<BOOLEAN> widget add row', () => {
+      cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('sample-key');
+      cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).should('have.value', 'sample-key');
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).should('not.be.disabled');
+    });
+
+    it('should accept input on the addOnDetailsBigInt MAP<BIGINT/DATETIME> widget add row', () => {
+      cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('sample-key');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).should('have.value', 'sample-key');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-button"]`).should('exist');
+    });
   });
 });

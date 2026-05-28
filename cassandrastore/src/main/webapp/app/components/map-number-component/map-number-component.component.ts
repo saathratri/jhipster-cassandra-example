@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -16,16 +16,16 @@ import { MapNumberEditDialogComponent } from '../map-number-edit-dialog-componen
 })
 export class MapNumberComponent implements OnChanges {
   @Input() inputFields: Record<string, number> = {};
+  @Input() fieldName: string = '';
   @Output() dataChange = new EventEmitter<Record<string, number>>();
 
   mapDetails: Record<string, number> = {};
 
-  form: FormGroup;
+  form!: FormGroup;
+  private fb = inject(FormBuilder);
+  private dialog = inject(MatDialog);
 
-  constructor(
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
     this.form = this.fb.group({
       newKey: ['', Validators.required],
       newValue: ['', [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],

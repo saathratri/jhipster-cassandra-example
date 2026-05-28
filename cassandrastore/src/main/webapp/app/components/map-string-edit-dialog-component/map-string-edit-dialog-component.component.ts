@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
@@ -14,17 +14,13 @@ import { MaterialModule } from '../../shared/material.module';
   styleUrls: ['./map-string-edit-dialog-component.component.css'],
 })
 export class MapStringEditDialogComponent {
-  form: FormGroup;
+  dialogRef = inject<MatDialogRef<MapStringEditDialogComponent>>(MatDialogRef);
+  data = inject<{ key: string; value: string }>(MAT_DIALOG_DATA);
 
-  constructor(
-    public dialogRef: MatDialogRef<MapStringEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { key: string; value: string },
-  ) {
-    this.form = new FormGroup({
-      key: new FormControl({ value: data.key, disabled: true }), // ✅ Read-only key
-      value: new FormControl(data.value, Validators.required), // ✅ Required value field
-    });
-  }
+  form: FormGroup = new FormGroup({
+    key: new FormControl({ value: this.data.key, disabled: true }), // ✅ Read-only key
+    value: new FormControl(this.data.value, Validators.required), // ✅ Required value field
+  });
 
   onCancel(): void {
     this.dialogRef.close();

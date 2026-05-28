@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -19,18 +19,18 @@ import { MapDayjsEditDialogComponent } from '../map-dayjs-edit-dialog-component/
 })
 export class MapDayjsComponent implements OnChanges {
   @Input() inputFields: Record<string, dayjs.Dayjs> = {};
+  @Input() fieldName: string = '';
   @Output() dataChange = new EventEmitter<Record<string, dayjs.Dayjs>>();
 
   mapDetails: Record<string, dayjs.Dayjs> = {};
   isDateTimeValid: Record<string, boolean> = {};
   isDateTimeDirty: Record<string, boolean> = {};
 
-  form: FormGroup;
+  form!: FormGroup;
+  private fb = inject(FormBuilder);
+  private dialog = inject(MatDialog);
 
-  constructor(
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
     this.form = this.fb.group({
       newKey: ['', Validators.required],
       newValue: [null, Validators.required],

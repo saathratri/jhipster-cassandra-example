@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -14,23 +14,21 @@ import { SetStringEditDialogComponent } from '../set-string-edit-dialog-componen
   templateUrl: './set-string-component.component.html',
   styleUrls: ['./set-string-component.component.css'],
 })
-export class SetStringComponent {
+export class SetStringComponent implements OnChanges {
   @Input() inputFields: Set<string> = new Set<string>();
+  @Input() fieldName: string = '';
   @Output() dataChange = new EventEmitter<Set<string>>();
 
-  form: FormGroup;
-  newFieldControl: FormControl;
+  form!: FormGroup;
+  newFieldControl!: FormControl;
+  private fb = inject(FormBuilder);
+  private dialog = inject(MatDialog);
 
-  constructor(
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
     this.form = this.fb.group({
       fields: this.fb.array([]),
     });
-
     this.newFieldControl = new FormControl('', Validators.required);
-
     this.populateFormArray();
   }
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
@@ -17,18 +17,17 @@ import { DateTimeComponent } from '../date-time/date-time.component';
   styleUrls: ['./map-dayjs-edit-dialog-component.component.css'],
 })
 export class MapDayjsEditDialogComponent {
-  form: FormGroup;
+  data = inject<{ key: string; value: dayjs.Dayjs }>(MAT_DIALOG_DATA);
   isDateTimeValid: Record<string, boolean> = {};
   isDateTimeDirty: Record<string, boolean> = {};
+  form!: FormGroup;
+  private fb = inject(FormBuilder);
+  private dialogRef = inject<MatDialogRef<MapDayjsEditDialogComponent>>(MatDialogRef);
 
-  constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<MapDayjsEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { key: string; value: dayjs.Dayjs },
-  ) {
+  constructor() {
     this.form = this.fb.group({
-      key: [{ value: data.key, disabled: true }, Validators.required],
-      value: [data.value, Validators.required],
+      key: [{ value: this.data.key, disabled: true }, Validators.required],
+      value: [this.data.value, Validators.required],
     });
   }
 

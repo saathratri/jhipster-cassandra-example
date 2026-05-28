@@ -1,6 +1,8 @@
+import { beforeEach, describe, expect, it } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { MapBooleanEditDialogComponent } from './edit-boolean-dialog-component.component';
+import { MapBooleanEditDialogComponent } from './map-boolean-edit-dialog-component.component';
 
 describe('MapBooleanEditDialogComponent', () => {
   let component: MapBooleanEditDialogComponent;
@@ -9,6 +11,10 @@ describe('MapBooleanEditDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MapBooleanEditDialogComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: { close() {} } },
+        { provide: MAT_DIALOG_DATA, useValue: { key: 'a', value: false } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MapBooleanEditDialogComponent);
