@@ -170,9 +170,6 @@ describe('Post e2e test', () => {
       cy.get(`[data-cy="createdDate"]`).type('1001');
       cy.get(`[data-cy="createdDate"]`).should('have.value', '1001');
 
-      cy.get(`[data-cy="addedDateTime"]`).type('31971');
-      cy.get(`[data-cy="addedDateTime"]`).should('have.value', '31971');
-
       cy.get(`[data-cy="postId"]`).type('c2a66e78-54b4-422f-be8c-37350746ce3e');
       cy.get(`[data-cy="postId"]`).invoke('val').should('match', new RegExp('c2a66e78-54b4-422f-be8c-37350746ce3e'));
 
@@ -182,11 +179,11 @@ describe('Post e2e test', () => {
       cy.get(`[data-cy="content"]`).type('representation owlishly woot');
       cy.get(`[data-cy="content"]`).should('have.value', 'representation owlishly woot');
 
-      cy.get(`[data-cy="publishedDateTime"]`).type('22170');
-      cy.get(`[data-cy="publishedDateTime"]`).should('have.value', '22170');
-
       cy.get(`[data-cy="sentDate"]`).type('13556');
       cy.get(`[data-cy="sentDate"]`).should('have.value', '13556');
+
+      cy.get(`app-date-time[fieldName="addedDateTime"]`).parent().contains('button', 'Generate').click();
+      cy.get(`app-date-time[fieldName="publishedDateTime"]`).parent().contains('button', 'Generate').click();
 
       cy.get(entityCreateSaveButtonSelector).click();
 
