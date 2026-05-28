@@ -221,8 +221,8 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
       cy.get(`[data-cy="addOnDetailsDecimal-add-button"]`).click();
 
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('rt-addOnDetailsBoolean-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"] button`).click({ force: true });
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"] button`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
 
       cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('rt-addOnDetailsBigInt-key');
@@ -275,8 +275,8 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
     it('should accept input on the addOnDetailsBoolean MAP<BOOLEAN> widget add row', () => {
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('sample-key');
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).should('have.value', 'sample-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"] button`).click({ force: true });
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"] button`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).should('not.be.disabled');
     });
 
@@ -312,12 +312,12 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
     it('should edit a row in the addOnDetailsBoolean widget via dialog', () => {
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('edit-addOnDetailsBoolean-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"] button`).click({ force: true });
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"] button`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
       cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).click();
       cy.get('mat-dialog-container').should('be.visible');
-      cy.get('[data-cy="dialog-edit-toggle"]').click({ force: true });
+      cy.get('[data-cy="dialog-edit-toggle"] button').click({ force: true });
       cy.get('[data-cy="dialog-save-button"]').click();
       cy.get('mat-dialog-container').should('not.exist');
     });
@@ -342,8 +342,8 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
     it('should delete a row in the addOnDetailsBoolean widget', () => {
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('del-addOnDetailsBoolean-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"] button`).click({ force: true });
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"] button`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
       cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).should('exist');
       cy.get(`[data-cy="addOnDetailsBoolean-row-0-delete"]`).click();
