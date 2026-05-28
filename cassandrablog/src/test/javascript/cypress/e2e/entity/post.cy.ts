@@ -196,5 +196,29 @@ describe('Post e2e test', () => {
       });
       cy.url().should('match', postPageUrlPattern);
     });
+
+    it('should accept input on the addedDateTime date-time widget sub-inputs', () => {
+      cy.get(`[data-cy="addedDateTime-hours"]`).clear().type('10');
+      cy.get(`[data-cy="addedDateTime-hours"]`).should('have.value', '10');
+
+      cy.get(`[data-cy="addedDateTime-minutes"]`).clear().type('30');
+      cy.get(`[data-cy="addedDateTime-minutes"]`).should('have.value', '30');
+
+      cy.get(`[data-cy="addedDateTime-ampm"]`).click();
+      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="addedDateTime-ampm"]`).should('contain', 'AM');
+    });
+
+    it('should accept input on the publishedDateTime date-time widget sub-inputs', () => {
+      cy.get(`[data-cy="publishedDateTime-hours"]`).clear().type('10');
+      cy.get(`[data-cy="publishedDateTime-hours"]`).should('have.value', '10');
+
+      cy.get(`[data-cy="publishedDateTime-minutes"]`).clear().type('30');
+      cy.get(`[data-cy="publishedDateTime-minutes"]`).should('have.value', '30');
+
+      cy.get(`[data-cy="publishedDateTime-ampm"]`).click();
+      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="publishedDateTime-ampm"]`).should('contain', 'AM');
+    });
   });
 });
