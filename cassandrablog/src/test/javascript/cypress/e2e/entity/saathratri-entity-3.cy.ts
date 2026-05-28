@@ -194,6 +194,22 @@ describe('SaathratriEntity3 e2e test', () => {
       cy.url().should('match', saathratriEntity3PageUrlPattern);
     });
 
+    it('should round-trip MAP/SET widget entries through POST', () => {
+      cy.get(`[data-cy="entityType"]`).type('rt-entityType-3');
+      cy.get(`[data-cy="createdTimeId"]`).type('00000000-0000-4000-8000-000000000040');
+
+      cy.get(`[data-cy="tags-add-value"]`).type('rt-tag-1');
+      cy.get(`[data-cy="tags-add-button"]`).click();
+
+      cy.get(entityCreateSaveButtonSelector).click();
+
+      cy.wait('@postEntityRequest').then(({ response }) => {
+        expect(response?.statusCode).to.equal(201);
+      expect(response.body.tags, 'SET round-trip: tags').to.include('rt-tag-1');
+        saathratriEntity3 = response.body;
+      });
+    });
+
     it('should accept input on the tags SET widget add row', () => {
       cy.get(`[data-cy="tags-add-value"]`).type('sample-tags-1');
       cy.get(`[data-cy="tags-add-value"]`).should('have.value', 'sample-tags-1');

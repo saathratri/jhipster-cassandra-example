@@ -165,6 +165,8 @@ describe('LandingPageByOrganization e2e test', () => {
     it('should create an instance of LandingPageByOrganization', () => {
       cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
       cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
+      cy.get(`app-date-time[fieldName="detailsBigInt"]`).parent().contains('button', 'Generate').click();
+
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {
@@ -175,6 +177,30 @@ describe('LandingPageByOrganization e2e test', () => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', landingPageByOrganizationPageUrlPattern);
+    });
+
+    it('should round-trip MAP/SET widget entries through POST', () => {
+      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000030');
+
+      cy.get(`[data-cy="detailsText-add-key"]`).type('rt-text-key');
+      cy.get(`[data-cy="detailsText-add-value"]`).type('rt-text-value');
+      cy.get(`[data-cy="detailsText-add-button"]`).click();
+      cy.get(`[data-cy="detailsDecimal-add-key"]`).type('rt-decimal-key');
+      cy.get(`[data-cy="detailsDecimal-add-value"]`).type('99.99');
+      cy.get(`[data-cy="detailsDecimal-add-button"]`).click();
+      cy.get(`[data-cy="detailsBoolean-add-key"]`).type('rt-bool-key');
+      cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="detailsBoolean-add-button"]`).click();
+
+      cy.get(entityCreateSaveButtonSelector).click();
+
+      cy.wait('@postEntityRequest').then(({ response }) => {
+        expect(response?.statusCode).to.equal(201);
+      expect(response.body.detailsText, 'MAP<TEXT> round-trip: detailsText').to.have.property('rt-text-key', 'rt-text-value');
+      expect(response.body.detailsDecimal, 'MAP<DECIMAL> round-trip: detailsDecimal').to.have.property('rt-decimal-key');
+      expect(response.body.detailsBoolean, 'MAP<BOOLEAN> round-trip: detailsBoolean').to.have.property('rt-bool-key', true);
+        landingPageByOrganization = response.body;
+      });
     });
 
     it('should accept input on the detailsText MAP widget add row', () => {
@@ -204,6 +230,18 @@ describe('LandingPageByOrganization e2e test', () => {
       cy.get(`[data-cy="detailsBigInt-add-key"]`).type('sample-key');
       cy.get(`[data-cy="detailsBigInt-add-key"]`).should('have.value', 'sample-key');
       cy.get(`[data-cy="detailsBigInt-add-button"]`).should('exist');
+    });
+
+    it('should accept input on the detailsBigInt date-time widget sub-inputs', () => {
+      cy.get(`[data-cy="detailsBigInt-hours"]`).clear().type('10');
+      cy.get(`[data-cy="detailsBigInt-hours"]`).should('have.value', '10');
+
+      cy.get(`[data-cy="detailsBigInt-minutes"]`).clear().type('30');
+      cy.get(`[data-cy="detailsBigInt-minutes"]`).should('have.value', '30');
+
+      cy.get(`[data-cy="detailsBigInt-ampm"]`).click();
+      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="detailsBigInt-ampm"]`).should('contain', 'AM');
     });
   });
 });

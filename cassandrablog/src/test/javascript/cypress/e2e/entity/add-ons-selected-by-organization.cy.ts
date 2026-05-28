@@ -205,6 +205,8 @@ describe('AddOnsSelectedByOrganization e2e test', () => {
 
       cy.get(`[data-cy="tinyUrlShortCode"]`).type('whoa meh');
       cy.get(`[data-cy="tinyUrlShortCode"]`).should('have.value', 'whoa meh');
+      cy.get(`app-date-time[fieldName="addOnDetailsBigInt"]`).parent().contains('button', 'Generate').click();
+
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {
@@ -215,6 +217,33 @@ describe('AddOnsSelectedByOrganization e2e test', () => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', addOnsSelectedByOrganizationPageUrlPattern);
+    });
+
+    it('should round-trip MAP/SET widget entries through POST', () => {
+      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000020');
+      cy.get(`[data-cy="arrivalDate"]`).type('2024');
+      cy.get(`[data-cy="accountNumber"]`).type('rt-account-1');
+      cy.get(`[data-cy="createdTimeId"]`).type('00000000-0000-4000-8000-000000000021');
+
+      cy.get(`[data-cy="addOnDetailsText-add-key"]`).type('rt-text-key');
+      cy.get(`[data-cy="addOnDetailsText-add-value"]`).type('rt-text-value');
+      cy.get(`[data-cy="addOnDetailsText-add-button"]`).click();
+      cy.get(`[data-cy="addOnDetailsDecimal-add-key"]`).type('rt-decimal-key');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-value"]`).type('99.99');
+      cy.get(`[data-cy="addOnDetailsDecimal-add-button"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('rt-bool-key');
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
+
+      cy.get(entityCreateSaveButtonSelector).click();
+
+      cy.wait('@postEntityRequest').then(({ response }) => {
+        expect(response?.statusCode).to.equal(201);
+      expect(response.body.addOnDetailsText, 'MAP<TEXT> round-trip: addOnDetailsText').to.have.property('rt-text-key', 'rt-text-value');
+      expect(response.body.addOnDetailsDecimal, 'MAP<DECIMAL> round-trip: addOnDetailsDecimal').to.have.property('rt-decimal-key');
+      expect(response.body.addOnDetailsBoolean, 'MAP<BOOLEAN> round-trip: addOnDetailsBoolean').to.have.property('rt-bool-key', true);
+        addOnsSelectedByOrganization = response.body;
+      });
     });
 
     it('should accept input on the addOnDetailsText MAP widget add row', () => {
@@ -244,6 +273,18 @@ describe('AddOnsSelectedByOrganization e2e test', () => {
       cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('sample-key');
       cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).should('have.value', 'sample-key');
       cy.get(`[data-cy="addOnDetailsBigInt-add-button"]`).should('exist');
+    });
+
+    it('should accept input on the addOnDetailsBigInt date-time widget sub-inputs', () => {
+      cy.get(`[data-cy="addOnDetailsBigInt-hours"]`).clear().type('10');
+      cy.get(`[data-cy="addOnDetailsBigInt-hours"]`).should('have.value', '10');
+
+      cy.get(`[data-cy="addOnDetailsBigInt-minutes"]`).clear().type('30');
+      cy.get(`[data-cy="addOnDetailsBigInt-minutes"]`).should('have.value', '30');
+
+      cy.get(`[data-cy="addOnDetailsBigInt-ampm"]`).click();
+      cy.get('mat-option').contains('AM').click();
+      cy.get(`[data-cy="addOnDetailsBigInt-ampm"]`).should('contain', 'AM');
     });
   });
 });

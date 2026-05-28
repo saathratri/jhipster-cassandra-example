@@ -169,7 +169,6 @@ describe('Post e2e test', () => {
     it('should create an instance of Post', () => {
       cy.get(`[data-cy="createdDate"]`).type('1001');
       cy.get(`[data-cy="createdDate"]`).should('have.value', '1001');
-
       cy.get(`[data-cy="postId"]`).type('c2a66e78-54b4-422f-be8c-37350746ce3e');
       cy.get(`[data-cy="postId"]`).invoke('val').should('match', new RegExp('c2a66e78-54b4-422f-be8c-37350746ce3e'));
 
@@ -178,7 +177,6 @@ describe('Post e2e test', () => {
 
       cy.get(`[data-cy="content"]`).type('representation owlishly woot');
       cy.get(`[data-cy="content"]`).should('have.value', 'representation owlishly woot');
-
       cy.get(`[data-cy="sentDate"]`).type('13556');
       cy.get(`[data-cy="sentDate"]`).should('have.value', '13556');
 
