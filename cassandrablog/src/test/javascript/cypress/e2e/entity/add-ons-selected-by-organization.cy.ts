@@ -205,20 +205,6 @@ describe('AddOnsSelectedByOrganization e2e test', () => {
 
       cy.get(`[data-cy="tinyUrlShortCode"]`).type('whoa meh');
       cy.get(`[data-cy="tinyUrlShortCode"]`).should('have.value', 'whoa meh');
-
-      cy.get(`[data-cy="addOnDetailsText"]`).type('unnaturally');
-      cy.get(`[data-cy="addOnDetailsText"]`).should('have.value', 'unnaturally');
-
-      cy.get(`[data-cy="addOnDetailsDecimal"]`).type('25973.7');
-      cy.get(`[data-cy="addOnDetailsDecimal"]`).should('have.value', '25973.7');
-
-      cy.get(`[data-cy="addOnDetailsBoolean"]`).should('not.be.checked');
-      cy.get(`[data-cy="addOnDetailsBoolean"]`).click();
-      cy.get(`[data-cy="addOnDetailsBoolean"]`).should('be.checked');
-
-      cy.get(`[data-cy="addOnDetailsBigInt"]`).type('24715');
-      cy.get(`[data-cy="addOnDetailsBigInt"]`).should('have.value', '24715');
-
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {

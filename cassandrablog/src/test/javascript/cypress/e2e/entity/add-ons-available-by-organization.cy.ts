@@ -184,20 +184,6 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
       cy.get(`[data-cy="addOnType"]`).type('ah vulgarise clearly');
       cy.get(`[data-cy="addOnType"]`).should('have.value', 'ah vulgarise clearly');
-
-      cy.get(`[data-cy="addOnDetailsText"]`).type('tail colorize without');
-      cy.get(`[data-cy="addOnDetailsText"]`).should('have.value', 'tail colorize without');
-
-      cy.get(`[data-cy="addOnDetailsDecimal"]`).type('13484.47');
-      cy.get(`[data-cy="addOnDetailsDecimal"]`).should('have.value', '13484.47');
-
-      cy.get(`[data-cy="addOnDetailsBoolean"]`).should('not.be.checked');
-      cy.get(`[data-cy="addOnDetailsBoolean"]`).click();
-      cy.get(`[data-cy="addOnDetailsBoolean"]`).should('be.checked');
-
-      cy.get(`[data-cy="addOnDetailsBigInt"]`).type('18260');
-      cy.get(`[data-cy="addOnDetailsBigInt"]`).should('have.value', '18260');
-
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {

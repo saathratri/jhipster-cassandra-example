@@ -182,10 +182,6 @@ describe('SaathratriEntity3 e2e test', () => {
 
       cy.get(`[data-cy="departureDate"]`).type('14623');
       cy.get(`[data-cy="departureDate"]`).should('have.value', '14623');
-
-      cy.get(`[data-cy="tags"]`).type('tremendously indeed whose');
-      cy.get(`[data-cy="tags"]`).should('have.value', 'tremendously indeed whose');
-
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {

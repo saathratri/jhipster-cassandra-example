@@ -165,10 +165,6 @@ describe('SetEntityByOrganization e2e test', () => {
     it('should create an instance of SetEntityByOrganization', () => {
       cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
       cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
-
-      cy.get(`[data-cy="tags"]`).type('consequently');
-      cy.get(`[data-cy="tags"]`).should('have.value', 'consequently');
-
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {

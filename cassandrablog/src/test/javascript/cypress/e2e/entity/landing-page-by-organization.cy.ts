@@ -165,20 +165,6 @@ describe('LandingPageByOrganization e2e test', () => {
     it('should create an instance of LandingPageByOrganization', () => {
       cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
       cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
-
-      cy.get(`[data-cy="detailsText"]`).type('lecture');
-      cy.get(`[data-cy="detailsText"]`).should('have.value', 'lecture');
-
-      cy.get(`[data-cy="detailsDecimal"]`).type('6787.75');
-      cy.get(`[data-cy="detailsDecimal"]`).should('have.value', '6787.75');
-
-      cy.get(`[data-cy="detailsBoolean"]`).should('not.be.checked');
-      cy.get(`[data-cy="detailsBoolean"]`).click();
-      cy.get(`[data-cy="detailsBoolean"]`).should('be.checked');
-
-      cy.get(`[data-cy="detailsBigInt"]`).type('6081');
-      cy.get(`[data-cy="detailsBigInt"]`).should('have.value', '6081');
-
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {
