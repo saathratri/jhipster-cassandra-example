@@ -249,7 +249,7 @@ git clone https://github.com/amarpatel-xx/jhipster-cassandra-example.git
 
 cd jhipster-cassandra-example
 
-saathratri-generate-code-dev-cassandra.bat
+.\saathratri-generate-code-dev-cassandra.bat
 ```
 
  2. You should see the message:
@@ -287,7 +287,7 @@ npm run docker:db:up
 **Windows:**
 ```console
 npm run docker:db:up
-mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
 
 3.  Start `cassandrablog` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then, start the `cassandrablog` microservice.
@@ -303,7 +303,7 @@ npm run docker:db:up
 ```console
 cd cassandrablog
 npm run docker:db:up
-mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
 
 4.  Start `cassandrastore` database with Docker by opening a terminal and navigating to its directory and running the Docker command. Then, start the `cassandrastore` microservice.
@@ -319,7 +319,7 @@ npm run docker:db:up
 ```console
 cd cassandrastore
 npm run docker:db:up
-mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
 
 ## Testing the Generated Code
@@ -344,8 +344,8 @@ Run from each service directory (`cassandragateway`, `cassandrablog`, `cassandra
 
 **Windows:**
 ```console
-mvnw.cmd -ntp -DskipTests -Dskip.npm package
-mvnw.cmd -ntp -Dskip.npm verify
+.\mvnw.cmd -ntp -DskipTests "-Dskip.npm" package
+.\mvnw.cmd -ntp "-Dskip.npm" verify
 ```
 
 `verify` runs the domain, DTO, security and structural tests plus the **composite-key
@@ -394,11 +394,16 @@ sh compile-saathratri-dev.sh   # package all three apps (backend + Angular clien
 sh saathratri-deploy.sh        # Keycloak + JHipster Registry, then each DB + mvnw spring-boot:run
 ```
 
-**Windows:**
-```console
-compile-saathratri-dev.bat
-saathratri-deploy.bat
+**Windows (PowerShell):**
+```powershell
+.\compile-saathratri-dev.bat
+.\saathratri-deploy.bat
 ```
+
+> **PowerShell note.** PowerShell does not auto-run executables from the current directory
+> (`.`) — the leading `.\` is required. PowerShell also parses `-Dskip.npm` as `-Dskip` + a
+> `.npm` member-access token, so wrap `-D` properties containing dots in quotes
+> (`"-Dskip.npm"`). Equivalently, use the stop-parsing token: `.\mvnw.cmd --% -ntp -Dskip.npm verify`.
 
 Either way, wait until all three services appear in the registry at <http://localhost:8761>
 and the gateway UI loads at <http://localhost:8080>. Login uses the bundled Keycloak realm
