@@ -23,7 +23,7 @@ export const settingsItemSelector = '[data-cy="settings"]';
 export const passwordItemSelector = '[data-cy="passwordItem"]';
 export const loginItemSelector = '[data-cy="login"]';
 export const logoutItemSelector = '[data-cy="logout"]';
-export const entityItemSelector = '[data-cy="entity"]';
+export const entityItemSelector = '[data-cy="cassandrastoreMenu"]';
 
 // Administration
 export const swaggerFrameSelector = 'iframe[data-cy="swagger-frame"]';
