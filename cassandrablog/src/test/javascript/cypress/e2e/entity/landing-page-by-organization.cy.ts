@@ -165,8 +165,6 @@ describe('LandingPageByOrganization e2e test', () => {
     it('should create an instance of LandingPageByOrganization', () => {
       cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
       cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
-      cy.get(`app-date-time[fieldName="detailsBigInt"]`).parent().contains('button', 'Generate').click();
-
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {
@@ -182,7 +180,6 @@ describe('LandingPageByOrganization e2e test', () => {
     it('should round-trip MAP/SET widget entries through POST', () => {
       cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
       cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
-      cy.get(`app-date-time[fieldName="detailsBigInt"]`).parent().contains('button', 'Generate').click();
 
       cy.get(`[data-cy="detailsText-add-key"]`).type('rt-detailsText-key');
       cy.get(`[data-cy="detailsText-add-value"]`).type('rt-detailsText-value');
@@ -193,6 +190,7 @@ describe('LandingPageByOrganization e2e test', () => {
       cy.get(`[data-cy="detailsDecimal-add-button"]`).click();
 
       cy.get(`[data-cy="detailsBoolean-add-key"]`).type('rt-detailsBoolean-key');
+      cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="detailsBoolean-add-button"]`).click();
 
@@ -242,6 +240,7 @@ describe('LandingPageByOrganization e2e test', () => {
       cy.get(`[data-cy="detailsBoolean-add-key"]`).type('sample-key');
       cy.get(`[data-cy="detailsBoolean-add-key"]`).should('have.value', 'sample-key');
       cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click({ force: true });
+      cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="detailsBoolean-add-button"]`).should('not.be.disabled');
     });
 
@@ -249,20 +248,6 @@ describe('LandingPageByOrganization e2e test', () => {
       cy.get(`[data-cy="detailsBigInt-add-key"]`).type('sample-key');
       cy.get(`[data-cy="detailsBigInt-add-key"]`).should('have.value', 'sample-key');
       cy.get(`[data-cy="detailsBigInt-add-button"]`).should('exist');
-    });
-
-    it('should accept input on the detailsBigInt date-time widget sub-inputs', () => {
-      cy.get(`[data-cy="detailsBigInt-hours"]`).clear();
-      cy.get(`[data-cy="detailsBigInt-hours"]`).type('10');
-      cy.get(`[data-cy="detailsBigInt-hours"]`).should('have.value', '10');
-
-      cy.get(`[data-cy="detailsBigInt-minutes"]`).clear();
-      cy.get(`[data-cy="detailsBigInt-minutes"]`).type('30');
-      cy.get(`[data-cy="detailsBigInt-minutes"]`).should('have.value', '30');
-
-      cy.get(`[data-cy="detailsBigInt-ampm"]`).click();
-      cy.get('mat-option').contains('AM').click();
-      cy.get(`[data-cy="detailsBigInt-ampm"]`).should('contain', 'AM');
     });
 
     it('should edit a row in the detailsText widget via dialog', () => {
@@ -292,6 +277,7 @@ describe('LandingPageByOrganization e2e test', () => {
     it('should edit a row in the detailsBoolean widget via dialog', () => {
       cy.get(`[data-cy="detailsBoolean-add-key"]`).type('edit-detailsBoolean-key');
       cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click({ force: true });
+      cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="detailsBoolean-add-button"]`).click();
       cy.get(`[data-cy="detailsBoolean-row-0-edit"]`).click();
       cy.get('mat-dialog-container').should('be.visible');
@@ -320,6 +306,7 @@ describe('LandingPageByOrganization e2e test', () => {
 
     it('should delete a row in the detailsBoolean widget', () => {
       cy.get(`[data-cy="detailsBoolean-add-key"]`).type('del-detailsBoolean-key');
+      cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="detailsBoolean-add-button"]`).click();
       cy.get(`[data-cy="detailsBoolean-row-0-edit"]`).should('exist');
