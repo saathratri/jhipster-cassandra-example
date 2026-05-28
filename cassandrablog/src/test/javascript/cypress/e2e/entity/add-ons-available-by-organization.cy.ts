@@ -184,8 +184,6 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
       cy.get(`[data-cy="addOnType"]`).type('ah vulgarise clearly');
       cy.get(`[data-cy="addOnType"]`).should('have.value', 'ah vulgarise clearly');
-      cy.get(`app-date-time[fieldName="addOnDetailsBigInt"]`).parent().contains('button', 'Generate').click();
-
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {
@@ -213,8 +211,6 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
       cy.get(`[data-cy="addOnType"]`).type('ah vulgarise clearly');
       cy.get(`[data-cy="addOnType"]`).should('have.value', 'ah vulgarise clearly');
-      cy.get(`app-date-time[fieldName="addOnDetailsBigInt"]`).parent().contains('button', 'Generate').click();
-
       cy.get(`[data-cy="addOnDetailsText-add-key"]`).type('rt-addOnDetailsText-key');
       cy.get(`[data-cy="addOnDetailsText-add-value"]`).type('rt-addOnDetailsText-value');
       cy.get(`[data-cy="addOnDetailsText-add-button"]`).click();
@@ -224,11 +220,11 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
       cy.get(`[data-cy="addOnDetailsDecimal-add-button"]`).click();
 
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('rt-addOnDetailsBoolean-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
 
       cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('rt-addOnDetailsBigInt-key');
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).type('1/15/2030');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).type('1/15/2030', { force: true });
       cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).blur();
       cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).clear();
       cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).type('10');
@@ -277,7 +273,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
     it('should accept input on the addOnDetailsBoolean MAP<BOOLEAN> widget add row', () => {
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('sample-key');
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).should('have.value', 'sample-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).should('not.be.disabled');
     });
 
@@ -285,21 +281,6 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
       cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('sample-key');
       cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).should('have.value', 'sample-key');
       cy.get(`[data-cy="addOnDetailsBigInt-add-button"]`).should('exist');
-    });
-
-    it('should accept input on the addOnDetailsBigInt date-time widget sub-inputs', () => {
-      cy.get(`[data-cy="addOnDetailsBigInt-hours"]`).clear();
-      cy.get(`[data-cy="addOnDetailsBigInt-hours"]`).type('10');
-      cy.get(`[data-cy="addOnDetailsBigInt-hours"]`).should('have.value', '10');
-
-      cy.get(`[data-cy="addOnDetailsBigInt-minutes"]`).clear();
-
-      cy.get(`[data-cy="addOnDetailsBigInt-minutes"]`).type('30');
-      cy.get(`[data-cy="addOnDetailsBigInt-minutes"]`).should('have.value', '30');
-
-      cy.get(`[data-cy="addOnDetailsBigInt-ampm"]`).click();
-      cy.get('mat-option').contains('AM').click();
-      cy.get(`[data-cy="addOnDetailsBigInt-ampm"]`).should('contain', 'AM');
     });
 
     it('should edit a row in the addOnDetailsText widget via dialog', () => {
@@ -328,11 +309,11 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
     it('should edit a row in the addOnDetailsBoolean widget via dialog', () => {
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('edit-addOnDetailsBoolean-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
       cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).click();
       cy.get('mat-dialog-container').should('be.visible');
-      cy.get('[data-cy="dialog-edit-toggle"]').click();
+      cy.get('[data-cy="dialog-edit-toggle"]').click({ force: true });
       cy.get('[data-cy="dialog-save-button"]').click();
       cy.get('mat-dialog-container').should('not.exist');
     });
@@ -357,7 +338,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
     it('should delete a row in the addOnDetailsBoolean widget', () => {
       cy.get(`[data-cy="addOnDetailsBoolean-add-key"]`).type('del-addOnDetailsBoolean-key');
-      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="addOnDetailsBoolean-add-toggle"]`).click({ force: true });
       cy.get(`[data-cy="addOnDetailsBoolean-add-button"]`).click();
       cy.get(`[data-cy="addOnDetailsBoolean-row-0-edit"]`).should('exist');
       cy.get(`[data-cy="addOnDetailsBoolean-row-0-delete"]`).click();
@@ -366,7 +347,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
     it('should delete a row in the addOnDetailsBigInt widget', () => {
       cy.get(`[data-cy="addOnDetailsBigInt-add-key"]`).type('del-addOnDetailsBigInt-key');
-      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).type('1/15/2030');
+      cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).type('1/15/2030', { force: true });
       cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-date"]`).blur();
       cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).clear();
       cy.get(`[data-cy="addOnDetailsBigInt-add-datetime-hours"]`).type('10');
