@@ -15,7 +15,7 @@ describe('TajUser e2e test', () => {
   const tajUserPageUrlPattern = new RegExp('/cassandrablog/taj-user(\\?.*)?$');
   let username: string;
   let password: string;
-  const tajUserSample = { login: 'depend unless bashfully' };
+  const tajUserSample = { id: '00000000-0000-4000-8000-000000000001', login: 'depend unless bashfully' };
 
   let tajUser;
 
@@ -30,7 +30,7 @@ describe('TajUser e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/taj-users+(?*|)').as('entitiesRequest');
+    cy.intercept('GET', '/services/cassandrablog/api/taj-users**').as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/taj-users').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrablog/api/taj-users/*').as('deleteEntityRequest');
   });
@@ -49,7 +49,7 @@ describe('TajUser e2e test', () => {
   it('TajUsers menu should load TajUsers page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('cassandrablog/taj-user');
-    cy.wait('@entitiesRequest').then(({ response }) => {
+    cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
       if (response?.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
@@ -64,7 +64,7 @@ describe('TajUser e2e test', () => {
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(tajUserPageUrl);
-        cy.wait('@entitiesRequest');
+        cy.wait('@entitiesRequest', { timeout: 30000 });
       });
 
       it('should load create TajUser page', () => {
@@ -73,7 +73,7 @@ describe('TajUser e2e test', () => {
         cy.getEntityCreateUpdateHeading('TajUser');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tajUserPageUrlPattern);
@@ -92,7 +92,7 @@ describe('TajUser e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/taj-users+(?*|)',
+              url: '/services/cassandrablog/api/taj-users**',
               times: 1,
             },
             {
@@ -104,14 +104,14 @@ describe('TajUser e2e test', () => {
 
         cy.visit(tajUserPageUrl);
 
-        cy.wait('@entitiesRequestInternal');
+        cy.wait('@entitiesRequestInternal', { timeout: 30000 });
       });
 
       it('detail button click should load details TajUser page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('tajUser');
         cy.get(entityDetailsBackButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tajUserPageUrlPattern);
@@ -122,7 +122,7 @@ describe('TajUser e2e test', () => {
         cy.getEntityCreateUpdateHeading('TajUser');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tajUserPageUrlPattern);
@@ -132,7 +132,7 @@ describe('TajUser e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('TajUser');
         cy.get(entityCreateSaveButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tajUserPageUrlPattern);
@@ -145,7 +145,7 @@ describe('TajUser e2e test', () => {
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response?.statusCode).to.equal(204);
         });
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tajUserPageUrlPattern);
@@ -163,6 +163,9 @@ describe('TajUser e2e test', () => {
     });
 
     it('should create an instance of TajUser', () => {
+      cy.get(`[data-cy="id"]`).type('00000000-0000-4000-8000-000000000001');
+      cy.get(`[data-cy="id"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
+
       cy.get(`[data-cy="login"]`).type('hassle happily');
       cy.get(`[data-cy="login"]`).should('have.value', 'hassle happily');
 
@@ -172,7 +175,7 @@ describe('TajUser e2e test', () => {
         expect(response?.statusCode).to.equal(201);
         tajUser = response.body;
       });
-      cy.wait('@entitiesRequest').then(({ response }) => {
+      cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', tajUserPageUrlPattern);

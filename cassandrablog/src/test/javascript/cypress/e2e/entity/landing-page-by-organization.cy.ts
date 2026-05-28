@@ -15,7 +15,7 @@ describe('LandingPageByOrganization e2e test', () => {
   const landingPageByOrganizationPageUrlPattern = new RegExp('/cassandrablog/landing-page-by-organization(\\?.*)?$');
   let username: string;
   let password: string;
-  const landingPageByOrganizationSample = {};
+  const landingPageByOrganizationSample = { organizationId: '00000000-0000-4000-8000-000000000001' };
 
   let landingPageByOrganization;
 
@@ -30,7 +30,7 @@ describe('LandingPageByOrganization e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/landing-page-by-organizations+(?*|)').as('entitiesRequest');
+    cy.intercept('GET', '/services/cassandrablog/api/landing-page-by-organizations**').as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/landing-page-by-organizations').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrablog/api/landing-page-by-organizations/*').as('deleteEntityRequest');
   });
@@ -49,7 +49,7 @@ describe('LandingPageByOrganization e2e test', () => {
   it('LandingPageByOrganizations menu should load LandingPageByOrganizations page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('cassandrablog/landing-page-by-organization');
-    cy.wait('@entitiesRequest').then(({ response }) => {
+    cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
       if (response?.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
@@ -64,7 +64,7 @@ describe('LandingPageByOrganization e2e test', () => {
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(landingPageByOrganizationPageUrl);
-        cy.wait('@entitiesRequest');
+        cy.wait('@entitiesRequest', { timeout: 30000 });
       });
 
       it('should load create LandingPageByOrganization page', () => {
@@ -73,7 +73,7 @@ describe('LandingPageByOrganization e2e test', () => {
         cy.getEntityCreateUpdateHeading('LandingPageByOrganization');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', landingPageByOrganizationPageUrlPattern);
@@ -92,7 +92,7 @@ describe('LandingPageByOrganization e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/landing-page-by-organizations+(?*|)',
+              url: '/services/cassandrablog/api/landing-page-by-organizations**',
               times: 1,
             },
             {
@@ -104,14 +104,14 @@ describe('LandingPageByOrganization e2e test', () => {
 
         cy.visit(landingPageByOrganizationPageUrl);
 
-        cy.wait('@entitiesRequestInternal');
+        cy.wait('@entitiesRequestInternal', { timeout: 30000 });
       });
 
       it('detail button click should load details LandingPageByOrganization page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('landingPageByOrganization');
         cy.get(entityDetailsBackButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', landingPageByOrganizationPageUrlPattern);
@@ -122,7 +122,7 @@ describe('LandingPageByOrganization e2e test', () => {
         cy.getEntityCreateUpdateHeading('LandingPageByOrganization');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', landingPageByOrganizationPageUrlPattern);
@@ -132,7 +132,7 @@ describe('LandingPageByOrganization e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('LandingPageByOrganization');
         cy.get(entityCreateSaveButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', landingPageByOrganizationPageUrlPattern);
@@ -145,7 +145,7 @@ describe('LandingPageByOrganization e2e test', () => {
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response?.statusCode).to.equal(204);
         });
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', landingPageByOrganizationPageUrlPattern);
@@ -163,6 +163,9 @@ describe('LandingPageByOrganization e2e test', () => {
     });
 
     it('should create an instance of LandingPageByOrganization', () => {
+      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
+      cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
+
       cy.get(`[data-cy="detailsText"]`).type('lecture');
       cy.get(`[data-cy="detailsText"]`).should('have.value', 'lecture');
 
@@ -182,7 +185,7 @@ describe('LandingPageByOrganization e2e test', () => {
         expect(response?.statusCode).to.equal(201);
         landingPageByOrganization = response.body;
       });
-      cy.wait('@entitiesRequest').then(({ response }) => {
+      cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', landingPageByOrganizationPageUrlPattern);

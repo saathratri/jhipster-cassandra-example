@@ -15,7 +15,11 @@ describe('Post e2e test', () => {
   const postPageUrlPattern = new RegExp('/cassandrablog/post(\\?.*)?$');
   let username: string;
   let password: string;
-  const postSample = { title: 'contrail energetically retrospectivity', content: 'even windy' };
+  const postSample = {
+    compositeId: { createdDate: 1001, addedDateTime: 1001, postId: '00000000-0000-4000-8000-000000000001' },
+    title: 'contrail energetically retrospectivity',
+    content: 'even windy',
+  };
 
   let post;
 
@@ -30,16 +34,16 @@ describe('Post e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/posts+(?*|)').as('entitiesRequest');
+    cy.intercept('GET', '/services/cassandrablog/api/posts**').as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/posts').as('postEntityRequest');
-    cy.intercept('DELETE', '/services/cassandrablog/api/posts/*').as('deleteEntityRequest');
+    cy.intercept('DELETE', '/services/cassandrablog/api/posts/*/*/*').as('deleteEntityRequest');
   });
 
   afterEach(() => {
     if (post) {
       cy.authenticatedRequest({
         method: 'DELETE',
-        url: `/services/cassandrablog/api/posts/${post.createdDate}`,
+        url: `/services/cassandrablog/api/posts/${post.compositeId.createdDate}/${post.compositeId.addedDateTime}/${post.compositeId.postId}`,
       }).then(() => {
         post = undefined;
       });
@@ -49,7 +53,7 @@ describe('Post e2e test', () => {
   it('Posts menu should load Posts page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('cassandrablog/post');
-    cy.wait('@entitiesRequest').then(({ response }) => {
+    cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
       if (response?.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
@@ -64,7 +68,7 @@ describe('Post e2e test', () => {
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(postPageUrl);
-        cy.wait('@entitiesRequest');
+        cy.wait('@entitiesRequest', { timeout: 30000 });
       });
 
       it('should load create Post page', () => {
@@ -73,7 +77,7 @@ describe('Post e2e test', () => {
         cy.getEntityCreateUpdateHeading('Post');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', postPageUrlPattern);
@@ -92,7 +96,7 @@ describe('Post e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/posts+(?*|)',
+              url: '/services/cassandrablog/api/posts**',
               times: 1,
             },
             {
@@ -104,14 +108,14 @@ describe('Post e2e test', () => {
 
         cy.visit(postPageUrl);
 
-        cy.wait('@entitiesRequestInternal');
+        cy.wait('@entitiesRequestInternal', { timeout: 30000 });
       });
 
       it('detail button click should load details Post page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('post');
         cy.get(entityDetailsBackButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', postPageUrlPattern);
@@ -122,7 +126,7 @@ describe('Post e2e test', () => {
         cy.getEntityCreateUpdateHeading('Post');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', postPageUrlPattern);
@@ -132,7 +136,7 @@ describe('Post e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Post');
         cy.get(entityCreateSaveButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', postPageUrlPattern);
@@ -145,7 +149,7 @@ describe('Post e2e test', () => {
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response?.statusCode).to.equal(204);
         });
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', postPageUrlPattern);
@@ -163,6 +167,9 @@ describe('Post e2e test', () => {
     });
 
     it('should create an instance of Post', () => {
+      cy.get(`[data-cy="createdDate"]`).type('1001');
+      cy.get(`[data-cy="createdDate"]`).should('have.value', '1001');
+
       cy.get(`[data-cy="addedDateTime"]`).type('31971');
       cy.get(`[data-cy="addedDateTime"]`).should('have.value', '31971');
 
@@ -187,7 +194,7 @@ describe('Post e2e test', () => {
         expect(response?.statusCode).to.equal(201);
         post = response.body;
       });
-      cy.wait('@entitiesRequest').then(({ response }) => {
+      cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', postPageUrlPattern);

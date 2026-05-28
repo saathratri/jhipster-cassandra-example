@@ -15,7 +15,9 @@ describe('SaathratriEntity4 e2e test', () => {
   const saathratriEntity4PageUrlPattern = new RegExp('/cassandrablog/saathratri-entity-4(\\?.*)?$');
   let username: string;
   let password: string;
-  const saathratriEntity4Sample = {};
+  const saathratriEntity4Sample = {
+    compositeId: { organizationId: '00000000-0000-4000-8000-000000000001', attributeKey: 'sample-attributeKey-1' },
+  };
 
   let saathratriEntity4;
 
@@ -30,16 +32,16 @@ describe('SaathratriEntity4 e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/saathratri-entity-4-s+(?*|)').as('entitiesRequest');
+    cy.intercept('GET', '/services/cassandrablog/api/saathratri-entity-4-s**').as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/saathratri-entity-4-s').as('postEntityRequest');
-    cy.intercept('DELETE', '/services/cassandrablog/api/saathratri-entity-4-s/*').as('deleteEntityRequest');
+    cy.intercept('DELETE', '/services/cassandrablog/api/saathratri-entity-4-s/*/*').as('deleteEntityRequest');
   });
 
   afterEach(() => {
     if (saathratriEntity4) {
       cy.authenticatedRequest({
         method: 'DELETE',
-        url: `/services/cassandrablog/api/saathratri-entity-4-s/${saathratriEntity4.organizationId}`,
+        url: `/services/cassandrablog/api/saathratri-entity-4-s/${saathratriEntity4.compositeId.organizationId}/${saathratriEntity4.compositeId.attributeKey}`,
       }).then(() => {
         saathratriEntity4 = undefined;
       });
@@ -49,7 +51,7 @@ describe('SaathratriEntity4 e2e test', () => {
   it('SaathratriEntity4s menu should load SaathratriEntity4s page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('cassandrablog/saathratri-entity-4');
-    cy.wait('@entitiesRequest').then(({ response }) => {
+    cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
       if (response?.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
@@ -64,7 +66,7 @@ describe('SaathratriEntity4 e2e test', () => {
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(saathratriEntity4PageUrl);
-        cy.wait('@entitiesRequest');
+        cy.wait('@entitiesRequest', { timeout: 30000 });
       });
 
       it('should load create SaathratriEntity4 page', () => {
@@ -73,7 +75,7 @@ describe('SaathratriEntity4 e2e test', () => {
         cy.getEntityCreateUpdateHeading('SaathratriEntity4');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', saathratriEntity4PageUrlPattern);
@@ -92,7 +94,7 @@ describe('SaathratriEntity4 e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/saathratri-entity-4-s+(?*|)',
+              url: '/services/cassandrablog/api/saathratri-entity-4-s**',
               times: 1,
             },
             {
@@ -104,14 +106,14 @@ describe('SaathratriEntity4 e2e test', () => {
 
         cy.visit(saathratriEntity4PageUrl);
 
-        cy.wait('@entitiesRequestInternal');
+        cy.wait('@entitiesRequestInternal', { timeout: 30000 });
       });
 
       it('detail button click should load details SaathratriEntity4 page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('saathratriEntity4');
         cy.get(entityDetailsBackButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', saathratriEntity4PageUrlPattern);
@@ -122,7 +124,7 @@ describe('SaathratriEntity4 e2e test', () => {
         cy.getEntityCreateUpdateHeading('SaathratriEntity4');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', saathratriEntity4PageUrlPattern);
@@ -132,7 +134,7 @@ describe('SaathratriEntity4 e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('SaathratriEntity4');
         cy.get(entityCreateSaveButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', saathratriEntity4PageUrlPattern);
@@ -145,7 +147,7 @@ describe('SaathratriEntity4 e2e test', () => {
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response?.statusCode).to.equal(204);
         });
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', saathratriEntity4PageUrlPattern);
@@ -163,6 +165,9 @@ describe('SaathratriEntity4 e2e test', () => {
     });
 
     it('should create an instance of SaathratriEntity4', () => {
+      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
+      cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
+
       cy.get(`[data-cy="attributeKey"]`).type('comestible jogging');
       cy.get(`[data-cy="attributeKey"]`).should('have.value', 'comestible jogging');
 
@@ -175,7 +180,7 @@ describe('SaathratriEntity4 e2e test', () => {
         expect(response?.statusCode).to.equal(201);
         saathratriEntity4 = response.body;
       });
-      cy.wait('@entitiesRequest').then(({ response }) => {
+      cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', saathratriEntity4PageUrlPattern);

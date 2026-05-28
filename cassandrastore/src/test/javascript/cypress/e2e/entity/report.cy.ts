@@ -30,7 +30,7 @@ describe('Report e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrastore/api/reports+(?*|)').as('entitiesRequest');
+    cy.intercept('GET', '/services/cassandrastore/api/reports**').as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrastore/api/reports').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrastore/api/reports/*').as('deleteEntityRequest');
   });
@@ -92,7 +92,7 @@ describe('Report e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrastore/api/reports+(?*|)',
+              url: '/services/cassandrastore/api/reports**',
               times: 1,
             },
             {

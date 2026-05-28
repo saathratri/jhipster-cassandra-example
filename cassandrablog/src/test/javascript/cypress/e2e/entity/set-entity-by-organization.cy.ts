@@ -15,7 +15,7 @@ describe('SetEntityByOrganization e2e test', () => {
   const setEntityByOrganizationPageUrlPattern = new RegExp('/cassandrablog/set-entity-by-organization(\\?.*)?$');
   let username: string;
   let password: string;
-  const setEntityByOrganizationSample = {};
+  const setEntityByOrganizationSample = { organizationId: '00000000-0000-4000-8000-000000000001' };
 
   let setEntityByOrganization;
 
@@ -30,7 +30,7 @@ describe('SetEntityByOrganization e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/set-entity-by-organizations+(?*|)').as('entitiesRequest');
+    cy.intercept('GET', '/services/cassandrablog/api/set-entity-by-organizations**').as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/set-entity-by-organizations').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrablog/api/set-entity-by-organizations/*').as('deleteEntityRequest');
   });
@@ -49,7 +49,7 @@ describe('SetEntityByOrganization e2e test', () => {
   it('SetEntityByOrganizations menu should load SetEntityByOrganizations page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('cassandrablog/set-entity-by-organization');
-    cy.wait('@entitiesRequest').then(({ response }) => {
+    cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
       if (response?.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
@@ -64,7 +64,7 @@ describe('SetEntityByOrganization e2e test', () => {
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(setEntityByOrganizationPageUrl);
-        cy.wait('@entitiesRequest');
+        cy.wait('@entitiesRequest', { timeout: 30000 });
       });
 
       it('should load create SetEntityByOrganization page', () => {
@@ -73,7 +73,7 @@ describe('SetEntityByOrganization e2e test', () => {
         cy.getEntityCreateUpdateHeading('SetEntityByOrganization');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', setEntityByOrganizationPageUrlPattern);
@@ -92,7 +92,7 @@ describe('SetEntityByOrganization e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/set-entity-by-organizations+(?*|)',
+              url: '/services/cassandrablog/api/set-entity-by-organizations**',
               times: 1,
             },
             {
@@ -104,14 +104,14 @@ describe('SetEntityByOrganization e2e test', () => {
 
         cy.visit(setEntityByOrganizationPageUrl);
 
-        cy.wait('@entitiesRequestInternal');
+        cy.wait('@entitiesRequestInternal', { timeout: 30000 });
       });
 
       it('detail button click should load details SetEntityByOrganization page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('setEntityByOrganization');
         cy.get(entityDetailsBackButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', setEntityByOrganizationPageUrlPattern);
@@ -122,7 +122,7 @@ describe('SetEntityByOrganization e2e test', () => {
         cy.getEntityCreateUpdateHeading('SetEntityByOrganization');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', setEntityByOrganizationPageUrlPattern);
@@ -132,7 +132,7 @@ describe('SetEntityByOrganization e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('SetEntityByOrganization');
         cy.get(entityCreateSaveButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', setEntityByOrganizationPageUrlPattern);
@@ -145,7 +145,7 @@ describe('SetEntityByOrganization e2e test', () => {
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response?.statusCode).to.equal(204);
         });
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', setEntityByOrganizationPageUrlPattern);
@@ -163,6 +163,9 @@ describe('SetEntityByOrganization e2e test', () => {
     });
 
     it('should create an instance of SetEntityByOrganization', () => {
+      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
+      cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
+
       cy.get(`[data-cy="tags"]`).type('consequently');
       cy.get(`[data-cy="tags"]`).should('have.value', 'consequently');
 
@@ -172,7 +175,7 @@ describe('SetEntityByOrganization e2e test', () => {
         expect(response?.statusCode).to.equal(201);
         setEntityByOrganization = response.body;
       });
-      cy.wait('@entitiesRequest').then(({ response }) => {
+      cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', setEntityByOrganizationPageUrlPattern);

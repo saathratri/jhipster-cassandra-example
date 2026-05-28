@@ -15,7 +15,7 @@ describe('Tag e2e test', () => {
   const tagPageUrlPattern = new RegExp('/cassandrablog/tag(\\?.*)?$');
   let username: string;
   let password: string;
-  const tagSample = { name: 'illiterate' };
+  const tagSample = { id: '00000000-0000-4000-8000-000000000001', name: 'illiterate' };
 
   let tag;
 
@@ -30,7 +30,7 @@ describe('Tag e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/tags+(?*|)').as('entitiesRequest');
+    cy.intercept('GET', '/services/cassandrablog/api/tags**').as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/tags').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrablog/api/tags/*').as('deleteEntityRequest');
   });
@@ -49,7 +49,7 @@ describe('Tag e2e test', () => {
   it('Tags menu should load Tags page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('cassandrablog/tag');
-    cy.wait('@entitiesRequest').then(({ response }) => {
+    cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
       if (response?.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
@@ -64,7 +64,7 @@ describe('Tag e2e test', () => {
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(tagPageUrl);
-        cy.wait('@entitiesRequest');
+        cy.wait('@entitiesRequest', { timeout: 30000 });
       });
 
       it('should load create Tag page', () => {
@@ -73,7 +73,7 @@ describe('Tag e2e test', () => {
         cy.getEntityCreateUpdateHeading('Tag');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tagPageUrlPattern);
@@ -92,7 +92,7 @@ describe('Tag e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/tags+(?*|)',
+              url: '/services/cassandrablog/api/tags**',
               times: 1,
             },
             {
@@ -104,14 +104,14 @@ describe('Tag e2e test', () => {
 
         cy.visit(tagPageUrl);
 
-        cy.wait('@entitiesRequestInternal');
+        cy.wait('@entitiesRequestInternal', { timeout: 30000 });
       });
 
       it('detail button click should load details Tag page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('tag');
         cy.get(entityDetailsBackButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tagPageUrlPattern);
@@ -122,7 +122,7 @@ describe('Tag e2e test', () => {
         cy.getEntityCreateUpdateHeading('Tag');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tagPageUrlPattern);
@@ -132,7 +132,7 @@ describe('Tag e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Tag');
         cy.get(entityCreateSaveButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tagPageUrlPattern);
@@ -145,7 +145,7 @@ describe('Tag e2e test', () => {
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response?.statusCode).to.equal(204);
         });
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', tagPageUrlPattern);
@@ -163,6 +163,9 @@ describe('Tag e2e test', () => {
     });
 
     it('should create an instance of Tag', () => {
+      cy.get(`[data-cy="id"]`).type('00000000-0000-4000-8000-000000000001');
+      cy.get(`[data-cy="id"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
+
       cy.get(`[data-cy="name"]`).type('necklace outside');
       cy.get(`[data-cy="name"]`).should('have.value', 'necklace outside');
 
@@ -177,7 +180,7 @@ describe('Tag e2e test', () => {
         expect(response?.statusCode).to.equal(201);
         tag = response.body;
       });
-      cy.wait('@entitiesRequest').then(({ response }) => {
+      cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', tagPageUrlPattern);

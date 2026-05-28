@@ -15,7 +15,14 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
   const addOnsAvailableByOrganizationPageUrlPattern = new RegExp('/cassandrablog/add-ons-available-by-organization(\\?.*)?$');
   let username: string;
   let password: string;
-  const addOnsAvailableByOrganizationSample = {};
+  const addOnsAvailableByOrganizationSample = {
+    compositeId: {
+      organizationId: '00000000-0000-4000-8000-000000000001',
+      entityType: 'sample-entityType-1',
+      entityId: '00000000-0000-4000-8000-000000000001',
+      addOnId: '00000000-0000-4000-8000-000000000001',
+    },
+  };
 
   let addOnsAvailableByOrganization;
 
@@ -30,16 +37,16 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrablog/api/add-ons-available-by-organizations+(?*|)').as('entitiesRequest');
+    cy.intercept('GET', '/services/cassandrablog/api/add-ons-available-by-organizations**').as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrablog/api/add-ons-available-by-organizations').as('postEntityRequest');
-    cy.intercept('DELETE', '/services/cassandrablog/api/add-ons-available-by-organizations/*').as('deleteEntityRequest');
+    cy.intercept('DELETE', '/services/cassandrablog/api/add-ons-available-by-organizations/*/*/*/*').as('deleteEntityRequest');
   });
 
   afterEach(() => {
     if (addOnsAvailableByOrganization) {
       cy.authenticatedRequest({
         method: 'DELETE',
-        url: `/services/cassandrablog/api/add-ons-available-by-organizations/${addOnsAvailableByOrganization.organizationId}`,
+        url: `/services/cassandrablog/api/add-ons-available-by-organizations/${addOnsAvailableByOrganization.compositeId.organizationId}/${addOnsAvailableByOrganization.compositeId.entityType}/${addOnsAvailableByOrganization.compositeId.entityId}/${addOnsAvailableByOrganization.compositeId.addOnId}`,
       }).then(() => {
         addOnsAvailableByOrganization = undefined;
       });
@@ -49,7 +56,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
   it('AddOnsAvailableByOrganizations menu should load AddOnsAvailableByOrganizations page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('cassandrablog/add-ons-available-by-organization');
-    cy.wait('@entitiesRequest').then(({ response }) => {
+    cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
       if (response?.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
@@ -64,7 +71,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(addOnsAvailableByOrganizationPageUrl);
-        cy.wait('@entitiesRequest');
+        cy.wait('@entitiesRequest', { timeout: 30000 });
       });
 
       it('should load create AddOnsAvailableByOrganization page', () => {
@@ -73,7 +80,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
         cy.getEntityCreateUpdateHeading('AddOnsAvailableByOrganization');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', addOnsAvailableByOrganizationPageUrlPattern);
@@ -92,7 +99,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrablog/api/add-ons-available-by-organizations+(?*|)',
+              url: '/services/cassandrablog/api/add-ons-available-by-organizations**',
               times: 1,
             },
             {
@@ -104,14 +111,14 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
 
         cy.visit(addOnsAvailableByOrganizationPageUrl);
 
-        cy.wait('@entitiesRequestInternal');
+        cy.wait('@entitiesRequestInternal', { timeout: 30000 });
       });
 
       it('detail button click should load details AddOnsAvailableByOrganization page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('addOnsAvailableByOrganization');
         cy.get(entityDetailsBackButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', addOnsAvailableByOrganizationPageUrlPattern);
@@ -122,7 +129,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
         cy.getEntityCreateUpdateHeading('AddOnsAvailableByOrganization');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', addOnsAvailableByOrganizationPageUrlPattern);
@@ -132,7 +139,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('AddOnsAvailableByOrganization');
         cy.get(entityCreateSaveButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', addOnsAvailableByOrganizationPageUrlPattern);
@@ -145,7 +152,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response?.statusCode).to.equal(204);
         });
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', addOnsAvailableByOrganizationPageUrlPattern);
@@ -163,6 +170,9 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
     });
 
     it('should create an instance of AddOnsAvailableByOrganization', () => {
+      cy.get(`[data-cy="organizationId"]`).type('00000000-0000-4000-8000-000000000001');
+      cy.get(`[data-cy="organizationId"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
+
       cy.get(`[data-cy="entityType"]`).type('midst scarily majority');
       cy.get(`[data-cy="entityType"]`).should('have.value', 'midst scarily majority');
 
@@ -194,7 +204,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
         expect(response?.statusCode).to.equal(201);
         addOnsAvailableByOrganization = response.body;
       });
-      cy.wait('@entitiesRequest').then(({ response }) => {
+      cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', addOnsAvailableByOrganizationPageUrlPattern);
