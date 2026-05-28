@@ -20,10 +20,10 @@
       </app-date-time>
 
       <div class="action-buttons">
-        <button type="button" mat-icon-button (click)="openEditDayjsDialog(entry.key, entry.value)">
+        <button type="button" mat-icon-button (click)="openEditDayjsDialog(entry.key, entry.value)" [attr.data-cy]="fieldName + '-row-' + entry.key + '-edit'">
           <mat-icon>edit</mat-icon>
         </button>
-        <button type="button" mat-icon-button (click)="deleteRow(entry.key)">
+        <button type="button" mat-icon-button (click)="deleteRow(entry.key)" [attr.data-cy]="fieldName + '-row-' + entry.key + '-delete'">
           <mat-icon>close</mat-icon>
         </button>
       </div>
@@ -42,15 +42,27 @@
 
     <app-date-time
       formControlName="newValue"
+      [fieldName]="fieldName + '-add-datetime'"
       dateTimeLabel="Value"
       [labelClass]="'form-label'"
       [isRequired]="true"
       (isValid)="onDateTimeValid('newValue', $event)"
       (dirtyStateChange)="updateDirtyState($event)"
       class="form-field"
-     [attr.data-cy]="fieldName + '-add-datetime'">
+      [attr.data-cy]="fieldName + '-add-datetime'"
+    >
     </app-date-time>
 
-    <button type="button" mat-raised-button color="primary" [disabled]="form.invalid" (click)="addNewRow()" class="add-button" [attr.data-cy]="fieldName + '-add-button'">Add</button>
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      [disabled]="form.invalid"
+      (click)="addNewRow()"
+      class="add-button"
+      [attr.data-cy]="fieldName + '-add-button'"
+    >
+      Add
+    </button>
   </form>
 </div>

@@ -203,6 +203,66 @@ describe('LandingPageByOrganization e2e test', () => {
       });
     });
 
+    it('should edit a row in the detailsText widget via dialog', () => {
+      cy.get(`[data-cy="detailsText-add-key"]`).type('edit-detailsText-key');
+      cy.get(`[data-cy="detailsText-add-value"]`).type('edit-orig');
+      cy.get(`[data-cy="detailsText-add-button"]`).click();
+      cy.get(`[data-cy="detailsText-row-edit-detailsText-key-edit"]`).click();
+      cy.get('mat-dialog-container').should('be.visible');
+      cy.get('[data-cy="dialog-edit-value"]').clear().type('edit-new');
+      cy.get('[data-cy="dialog-save-button"]').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
+    it('should delete a row in the detailsText widget', () => {
+      cy.get(`[data-cy="detailsText-add-key"]`).type('del-detailsText-key');
+      cy.get(`[data-cy="detailsText-add-value"]`).type('delete-val');
+      cy.get(`[data-cy="detailsText-add-button"]`).click();
+      cy.get(`[data-cy="detailsText-row-del-detailsText-key-edit"]`).should('exist');
+      cy.get(`[data-cy="detailsText-row-del-detailsText-key-delete"]`).click();
+      cy.get(`[data-cy="detailsText-row-del-detailsText-key-edit"]`).should('not.exist');
+    });
+
+    it('should edit a row in the detailsDecimal widget via dialog', () => {
+      cy.get(`[data-cy="detailsDecimal-add-key"]`).type('edit-detailsDecimal-key');
+      cy.get(`[data-cy="detailsDecimal-add-value"]`).type('77.77');
+      cy.get(`[data-cy="detailsDecimal-add-button"]`).click();
+      cy.get(`[data-cy="detailsDecimal-row-edit-detailsDecimal-key-edit"]`).click();
+      cy.get('mat-dialog-container').should('be.visible');
+      cy.get('[data-cy="dialog-edit-value"]').clear().type('88.88');
+      cy.get('[data-cy="dialog-save-button"]').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
+    it('should delete a row in the detailsDecimal widget', () => {
+      cy.get(`[data-cy="detailsDecimal-add-key"]`).type('del-detailsDecimal-key');
+      cy.get(`[data-cy="detailsDecimal-add-value"]`).type('66.66');
+      cy.get(`[data-cy="detailsDecimal-add-button"]`).click();
+      cy.get(`[data-cy="detailsDecimal-row-del-detailsDecimal-key-edit"]`).should('exist');
+      cy.get(`[data-cy="detailsDecimal-row-del-detailsDecimal-key-delete"]`).click();
+      cy.get(`[data-cy="detailsDecimal-row-del-detailsDecimal-key-edit"]`).should('not.exist');
+    });
+
+    it('should edit a row in the detailsBoolean widget via dialog', () => {
+      cy.get(`[data-cy="detailsBoolean-add-key"]`).type('edit-bool-key');
+      cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="detailsBoolean-add-button"]`).click();
+      cy.get(`[data-cy="detailsBoolean-row-0-edit"]`).click();
+      cy.get('mat-dialog-container').should('be.visible');
+      cy.get('[data-cy="dialog-edit-toggle"]').click();
+      cy.get('[data-cy="dialog-save-button"]').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
+    it('should delete a row in the detailsBoolean widget', () => {
+      cy.get(`[data-cy="detailsBoolean-add-key"]`).type('del-bool-key');
+      cy.get(`[data-cy="detailsBoolean-add-toggle"]`).click();
+      cy.get(`[data-cy="detailsBoolean-add-button"]`).click();
+      cy.get(`[data-cy="detailsBoolean-row-0-edit"]`).should('exist');
+      cy.get(`[data-cy="detailsBoolean-row-0-delete"]`).click();
+      cy.get(`[data-cy="detailsBoolean-row-0-edit"]`).should('not.exist');
+    });
+
     it('should accept input on the detailsText MAP widget add row', () => {
       cy.get(`[data-cy="detailsText-add-key"]`).type('sample-key');
       cy.get(`[data-cy="detailsText-add-key"]`).should('have.value', 'sample-key');

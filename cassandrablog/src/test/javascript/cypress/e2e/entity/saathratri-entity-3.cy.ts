@@ -210,6 +210,24 @@ describe('SaathratriEntity3 e2e test', () => {
       });
     });
 
+    it('should edit a row in the tags widget via dialog', () => {
+      cy.get(`[data-cy="tags-add-value"]`).type('edit-orig');
+      cy.get(`[data-cy="tags-add-button"]`).click();
+      cy.get(`[data-cy="tags-row-0-edit"]`).click();
+      cy.get('mat-dialog-container').should('be.visible');
+      cy.get('[data-cy="dialog-edit-value"]').clear().type('edit-new');
+      cy.get('[data-cy="dialog-save-button"]').click();
+      cy.get('mat-dialog-container').should('not.exist');
+    });
+
+    it('should delete a row in the tags widget', () => {
+      cy.get(`[data-cy="tags-add-value"]`).type('delete-target');
+      cy.get(`[data-cy="tags-add-button"]`).click();
+      cy.get(`[data-cy="tags-row-0-edit"]`).should('exist');
+      cy.get(`[data-cy="tags-row-0-delete"]`).click();
+      cy.get(`[data-cy="tags-row-0-edit"]`).should('not.exist');
+    });
+
     it('should accept input on the tags SET widget add row', () => {
       cy.get(`[data-cy="tags-add-value"]`).type('sample-tags-1');
       cy.get(`[data-cy="tags-add-value"]`).should('have.value', 'sample-tags-1');

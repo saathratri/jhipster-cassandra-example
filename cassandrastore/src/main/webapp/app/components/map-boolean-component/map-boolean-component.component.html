@@ -16,10 +16,10 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-          <button type="button" mat-icon-button (click)="openEditBooleanDialog(i)">
+          <button type="button" mat-icon-button (click)="openEditBooleanDialog(i)" [attr.data-cy]="fieldName + '-row-' + i + '-edit'">
             <mat-icon>edit</mat-icon>
           </button>
-          <button type="button" mat-icon-button (click)="deleteRow(i)">
+          <button type="button" mat-icon-button (click)="deleteRow(i)" [attr.data-cy]="fieldName + '-row-' + i + '-delete'">
             <mat-icon>close</mat-icon>
           </button>
         </div>
@@ -43,7 +43,15 @@
       </mat-slide-toggle>
 
       <!-- Add Button -->
-      <button type="button" mat-raised-button color="primary" [disabled]="form.invalid" (click)="addNewRow()" class="add-button" [attr.data-cy]="fieldName + '-add-button'">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        [disabled]="form.invalid"
+        (click)="addNewRow()"
+        class="add-button"
+        [attr.data-cy]="fieldName + '-add-button'"
+      >
         Add
       </button>
     </div>
