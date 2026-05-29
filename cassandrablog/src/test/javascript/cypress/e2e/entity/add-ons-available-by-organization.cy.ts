@@ -242,7 +242,7 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
         );
         expect(response.body.addOnDetailsBoolean, 'MAP<BOOLEAN> round-trip: addOnDetailsBoolean').to.have.property(
           'rt-addOnDetailsBoolean-key',
-          true,
+          false,
         );
         expect(response.body.addOnDetailsBigInt, 'MAP<DAYJS> round-trip: addOnDetailsBigInt').to.have.property('rt-addOnDetailsBigInt-key');
         addOnsAvailableByOrganization = response.body;

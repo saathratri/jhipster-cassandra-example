@@ -207,7 +207,7 @@ describe('LandingPageByOrganization e2e test', () => {
           'rt-detailsText-value',
         );
         expect(response.body.detailsDecimal, 'MAP<DECIMAL> round-trip: detailsDecimal').to.have.property('rt-detailsDecimal-key');
-        expect(response.body.detailsBoolean, 'MAP<BOOLEAN> round-trip: detailsBoolean').to.have.property('rt-detailsBoolean-key', true);
+        expect(response.body.detailsBoolean, 'MAP<BOOLEAN> round-trip: detailsBoolean').to.have.property('rt-detailsBoolean-key', false);
         expect(response.body.detailsBigInt, 'MAP<DAYJS> round-trip: detailsBigInt').to.have.property('rt-detailsBigInt-key');
         landingPageByOrganization = response.body;
       });

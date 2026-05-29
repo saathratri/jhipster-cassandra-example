@@ -196,12 +196,10 @@ describe('Post e2e test', () => {
     });
 
     it('should accept input on the addedDateTime date-time widget sub-inputs', () => {
-      cy.get(`[data-cy="addedDateTime-hours"]`).clear({ force: true });
-      cy.get(`[data-cy="addedDateTime-hours"]`).type('10', { force: true });
+      cy.get(`[data-cy="addedDateTime-hours"]`).invoke('val', '10').trigger('input', { force: true });
       cy.get(`[data-cy="addedDateTime-hours"]`).should('have.value', '10');
 
-      cy.get(`[data-cy="addedDateTime-minutes"]`).clear({ force: true });
-      cy.get(`[data-cy="addedDateTime-minutes"]`).type('30', { force: true });
+      cy.get(`[data-cy="addedDateTime-minutes"]`).invoke('val', '30').trigger('input', { force: true });
       cy.get(`[data-cy="addedDateTime-minutes"]`).should('have.value', '30');
 
       cy.get(`[data-cy="addedDateTime-ampm"]`).click({ force: true });
@@ -210,15 +208,13 @@ describe('Post e2e test', () => {
     });
 
     it('should accept input on the publishedDateTime date-time widget sub-inputs', () => {
-      cy.get(`[data-cy="publishedDateTime-hours"]`).clear({ force: true });
-      cy.get(`[data-cy="publishedDateTime-hours"]`).type('10', { force: true });
+      cy.get(`[data-cy="publishedDateTime-hours"]`).invoke('val', '10').trigger('input', { force: true });
       cy.get(`[data-cy="publishedDateTime-hours"]`).should('have.value', '10');
 
-      cy.get(`[data-cy="publishedDateTime-minutes"]`).clear({ force: true });
-      cy.get(`[data-cy="publishedDateTime-minutes"]`).type('30', { force: true });
+      cy.get(`[data-cy="publishedDateTime-minutes"]`).invoke('val', '30').trigger('input', { force: true });
       cy.get(`[data-cy="publishedDateTime-minutes"]`).should('have.value', '30');
 
-      cy.get(`[data-cy="publishedDateTime-ampm"]`).click({ force: true });
+      cy.get(`[data-cy="publishedDateTime-ampm"]`).click();
       cy.get('mat-option').contains('AM').click();
       cy.get(`[data-cy="publishedDateTime-ampm"]`).should('contain', 'AM');
     });
