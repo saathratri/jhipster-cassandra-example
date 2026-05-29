@@ -1,30 +1,49 @@
+import dayjs from 'dayjs/esm';
+
 import { IAddOnsAvailableByOrganization, NewAddOnsAvailableByOrganization } from './add-ons-available-by-organization.model';
 
 export const sampleWithRequiredData: IAddOnsAvailableByOrganization = {
-  organizationId: 'aef962cf-f8f9-482d-aa2a-7b2c9d20cc57',
+  compositeId: {
+    organizationId: 'sample-organizationId-1',
+    entityType: 'sample-entityType-1',
+    entityId: 'sample-entityId-1',
+    addOnId: 'sample-addOnId-1',
+  },
 };
 
 export const sampleWithPartialData: IAddOnsAvailableByOrganization = {
-  organizationId: '048427b0-9f2a-4360-bf35-ade270f91499',
-  entityType: 'overconfidently defiantly boohoo',
-  entityId: 'd3198528-35ca-4a0f-83dd-f648c63cf039',
-  addOnDetailsText: 'geez',
+  compositeId: {
+    organizationId: 'sample-organizationId-2',
+    entityType: 'sample-entityType-2',
+    entityId: 'sample-entityId-2',
+    addOnId: 'sample-addOnId-2',
+  },
+  addOnType: 'sample-addOnType-2',
+  addOnDetailsText: { key2: 'val-2' },
+  addOnDetailsDecimal: { key2: 2 },
 };
 
 export const sampleWithFullData: IAddOnsAvailableByOrganization = {
-  organizationId: '863567cc-20fe-48aa-8860-31a928d4fa9e',
-  entityType: 'into hygienic cripple',
-  entityId: '21709217-05ba-4260-9a37-fd341329acb8',
-  addOnId: '35921b1c-0301-4db5-9ae1-46e2b5c76335',
-  addOnType: 'gosh ack',
-  addOnDetailsText: 'light affiliate ack',
-  addOnDetailsDecimal: 5729.17,
-  addOnDetailsBoolean: false,
-  addOnDetailsBigInt: 12102,
+  compositeId: {
+    organizationId: 'sample-organizationId-3',
+    entityType: 'sample-entityType-3',
+    entityId: 'sample-entityId-3',
+    addOnId: 'sample-addOnId-3',
+  },
+  addOnType: 'sample-addOnType-3',
+  addOnDetailsText: { key3: 'val-3' },
+  addOnDetailsDecimal: { key3: 3 },
+  addOnDetailsBoolean: { key3: false },
+  addOnDetailsBigInt: { key3: dayjs('2024-01-04T12:00:00Z') },
 };
 
 export const sampleWithNewData: NewAddOnsAvailableByOrganization = {
-  organizationId: null,
+  compositeId: {
+    organizationId: 'sample-organizationId-4',
+    entityType: 'sample-entityType-4',
+    entityId: 'sample-entityId-4',
+    addOnId: 'sample-addOnId-4',
+  },
 };
 
 Object.freeze(sampleWithNewData);

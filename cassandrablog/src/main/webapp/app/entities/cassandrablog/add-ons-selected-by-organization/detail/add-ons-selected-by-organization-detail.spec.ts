@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { AddOnsSelectedByOrganizationDetail } from './add-ons-selected-by-organization-detail';
+import { sampleWithRequiredData } from '../add-ons-selected-by-organization.test-samples';
+
+import { AddOnsSelectedByOrganizationDetailComponent } from './add-ons-selected-by-organization-detail';
 
 describe('AddOnsSelectedByOrganization Management Detail Component', () => {
-  let comp: AddOnsSelectedByOrganizationDetail;
-  let fixture: ComponentFixture<AddOnsSelectedByOrganizationDetail>;
+  let comp: AddOnsSelectedByOrganizationDetailComponent;
+  let fixture: ComponentFixture<AddOnsSelectedByOrganizationDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,8 +24,9 @@ describe('AddOnsSelectedByOrganization Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./add-ons-selected-by-organization-detail').then(m => m.AddOnsSelectedByOrganizationDetail),
-              resolve: { addOnsSelectedByOrganization: () => of({ organizationId: '5d2569e7-278f-4572-8beb-b3497c54caf8' }) },
+              loadComponent: () =>
+                import('./add-ons-selected-by-organization-detail').then(m => m.AddOnsSelectedByOrganizationDetailComponent),
+              resolve: { addOnsSelectedByOrganization: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,19 +39,17 @@ describe('AddOnsSelectedByOrganization Management Detail Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddOnsSelectedByOrganizationDetail);
+    fixture = TestBed.createComponent(AddOnsSelectedByOrganizationDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load addOnsSelectedByOrganization on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', AddOnsSelectedByOrganizationDetail);
+      const instance = await harness.navigateByUrl('/', AddOnsSelectedByOrganizationDetailComponent);
 
       // THEN
-      expect(instance.addOnsSelectedByOrganization()).toEqual(
-        expect.objectContaining({ organizationId: '5d2569e7-278f-4572-8beb-b3497c54caf8' }),
-      );
+      expect(instance.addOnsSelectedByOrganization()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 

@@ -19,7 +19,7 @@
     "blueprints": [
       {
         "name": "generator-jhipster-cassandra",
-        "version": "1.0.15"
+        "version": "1.0.16"
       }
     ],
     "buildTool": "maven",
@@ -27,7 +27,7 @@
     "devServerPort": 4200,
     "entities": [],
     "jhipsterVersion": "9.0.0",
-    "jwtSecretKey": "ZjdjNWQ3NzVkZDdlNTRmMDk4NzVjOTQyOTMzNmY1N2VjYzM1OGRiOGVlZGE3MmM4MzI2NzM1MDU4YzZhNjU5MGYzZGZhMjdlOWQzZWNjNWVlYmE2YzJlZTFhZjlmMDAxYzQ5YmQ0OWZmMzc4MGU4NzYzNDZiZDM0YzEwMmRmNjU=",
+    "jwtSecretKey": "NTk4ODE2YzljMTczMGQ2ODdiZmU5OTBkZGQ3YTM1OGRjNWZmYmE4ZTIxYjI0YjA2NDEwNmY4YWNjNzdmZWNkYmEwYzdkZmQxMDlkNmY2ZDU0NzcxNDI2YjA0MDk3OGNhODU3ZjE5ZWQ5NTE2NTc3ZWE0NjQwNTYyYjQwODlkNmI=",
     "languages": ["en"],
     "microfrontends": [
       {

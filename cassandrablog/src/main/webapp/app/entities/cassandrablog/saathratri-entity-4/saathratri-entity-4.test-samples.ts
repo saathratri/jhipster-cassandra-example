@@ -1,22 +1,21 @@
 import { ISaathratriEntity4, NewSaathratriEntity4 } from './saathratri-entity-4.model';
 
 export const sampleWithRequiredData: ISaathratriEntity4 = {
-  organizationId: 'acfa3502-9b1d-4af1-9821-e9fc560aed23',
+  compositeId: { organizationId: 'sample-organizationId-1', attributeKey: 'sample-attributeKey-1' },
 };
 
 export const sampleWithPartialData: ISaathratriEntity4 = {
-  organizationId: '14cefa85-8aac-4d69-ad06-f728a3ebd8d5',
-  attributeKey: 'till gut comparison',
+  compositeId: { organizationId: 'sample-organizationId-2', attributeKey: 'sample-attributeKey-2' },
+  attributeValue: 'sample-attributeValue-2',
 };
 
 export const sampleWithFullData: ISaathratriEntity4 = {
-  organizationId: '64c88438-f57c-457f-bf6a-4b2d2fe80991',
-  attributeKey: 'twist down',
-  attributeValue: 'as till construe',
+  compositeId: { organizationId: 'sample-organizationId-3', attributeKey: 'sample-attributeKey-3' },
+  attributeValue: 'sample-attributeValue-3',
 };
 
 export const sampleWithNewData: NewSaathratriEntity4 = {
-  organizationId: null,
+  compositeId: { organizationId: 'sample-organizationId-4', attributeKey: 'sample-attributeKey-4' },
 };
 
 Object.freeze(sampleWithNewData);

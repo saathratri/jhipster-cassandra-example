@@ -70,8 +70,8 @@ describe('Product Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing IProduct should not enable id FormControl', () => {
-        const formGroup = service.createProductFormGroup();
+      it('passing IProduct should keep the key control disabled', () => {
+        const formGroup = service.createProductFormGroup(sampleWithRequiredData);
         expect(formGroup.controls.id.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
@@ -79,11 +79,10 @@ describe('Product Form Service', () => {
         expect(formGroup.controls.id.disabled).toBe(true);
       });
 
-      it('passing NewProduct should disable id FormControl', () => {
-        const formGroup = service.createProductFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.id.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createProductFormGroup();
 
-        service.resetForm(formGroup, { id: null });
+        service.resetForm(formGroup, sampleWithRequiredData);
 
         expect(formGroup.controls.id.disabled).toBe(true);
       });

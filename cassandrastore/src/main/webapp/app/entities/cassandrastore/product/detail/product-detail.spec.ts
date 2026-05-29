@@ -8,14 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { DataUtils } from 'app/core/util/data-util.service';
+import { sampleWithRequiredData } from '../product.test-samples';
 
-import { ProductDetail } from './product-detail';
+import { ProductDetailComponent } from './product-detail';
 
 describe('Product Management Detail Component', () => {
-  let comp: ProductDetail;
-  let fixture: ComponentFixture<ProductDetail>;
-  let dataUtils: DataUtils;
+  let comp: ProductDetailComponent;
+  let fixture: ComponentFixture<ProductDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,8 +24,8 @@ describe('Product Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./product-detail').then(m => m.ProductDetail),
-              resolve: { product: () => of({ id: 'a5dc69bb-51bc-4769-ba92-05d11fd5c316' }) },
+              loadComponent: () => import('./product-detail').then(m => m.ProductDetailComponent),
+              resolve: { product: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,22 +35,20 @@ describe('Product Management Detail Component', () => {
     const library = TestBed.inject(FaIconLibrary);
     library.addIcons(faArrowLeft);
     library.addIcons(faPencilAlt);
-    dataUtils = TestBed.inject(DataUtils);
-    vitest.spyOn(window, 'open').mockImplementation(() => null);
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductDetail);
+    fixture = TestBed.createComponent(ProductDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load product on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', ProductDetail);
+      const instance = await harness.navigateByUrl('/', ProductDetailComponent);
 
       // THEN
-      expect(instance.product()).toEqual(expect.objectContaining({ id: 'a5dc69bb-51bc-4769-ba92-05d11fd5c316' }));
+      expect(instance.product()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 
@@ -60,42 +57,6 @@ describe('Product Management Detail Component', () => {
       vitest.spyOn(globalThis.history, 'back');
       comp.previousState();
       expect(globalThis.history.back).toHaveBeenCalled();
-    });
-  });
-
-  describe('byteSize', () => {
-    it('should call byteSize from DataUtils', () => {
-      // GIVEN
-      vitest.spyOn(dataUtils, 'byteSize');
-      const fakeBase64 = 'fake base64';
-
-      // WHEN
-      comp.byteSize(fakeBase64);
-
-      // THEN
-      expect(dataUtils.byteSize).toHaveBeenCalledWith(fakeBase64);
-    });
-  });
-
-  describe('openFile', () => {
-    it('should call openFile from DataUtils', () => {
-      const newWindow = { ...window };
-      vitest.stubGlobal(
-        'open',
-        vitest.fn(() => newWindow),
-      );
-      window.onload = vitest.fn(() => newWindow) as any;
-      window.URL.createObjectURL = vitest.fn() as any;
-      // GIVEN
-      vitest.spyOn(dataUtils, 'openFile');
-      const fakeContentType = 'fake content type';
-      const fakeBase64 = 'fake base64';
-
-      // WHEN
-      comp.openFile(fakeBase64, fakeContentType);
-
-      // THEN
-      expect(dataUtils.openFile).toHaveBeenCalledWith(fakeBase64, fakeContentType);
     });
   });
 });

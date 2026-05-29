@@ -64,7 +64,6 @@ export class LandingPageByOrganizationUpdateComponent implements OnInit {
   protected router = inject(Router);
 
   protected isResetDisabled: Record<string, boolean> = {}; // Track reset button states
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   private lastSavedValues: Record<string, any> = {}; // Store last valid values
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -126,10 +125,7 @@ export class LandingPageByOrganizationUpdateComponent implements OnInit {
   get areAllDateTimeFieldsValid(): boolean {
     const detailsBigIntControl = this.editForm.get('detailsBigInt');
 
-    return (
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      !detailsBigIntControl?.hasError('required') || this.isDateTimeValid.detailsBigInt
-    );
+    return !detailsBigIntControl?.hasError('required') || this.isDateTimeValid.detailsBigInt;
   }
 
   // Generate today's date and current time

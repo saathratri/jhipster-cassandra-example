@@ -250,4 +250,11 @@ describe('SaathratriEntity3 e2e test', () => {
       cy.get(`[data-cy="tags-row-0-edit"]`).should('not.exist');
     });
   });
+
+  it('should toggle the Cassandra search form', () => {
+    cy.visit('/');
+    cy.clickOnEntityMenuItem(saathratriEntity3PageUrl.substring(1));
+    cy.get('[data-cy="searchFormToggle"]', { timeout: 30000 }).click();
+    cy.get('[data-cy="searchButton"]').should('be.visible');
+  });
 });

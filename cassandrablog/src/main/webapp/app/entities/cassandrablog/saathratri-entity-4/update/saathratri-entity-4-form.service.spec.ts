@@ -19,8 +19,7 @@ describe('SaathratriEntity4 Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            organizationId: expect.any(Object),
-            attributeKey: expect.any(Object),
+            compositeId: expect.any(Object),
             attributeValue: expect.any(Object),
           }),
         );
@@ -31,8 +30,7 @@ describe('SaathratriEntity4 Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            organizationId: expect.any(Object),
-            attributeKey: expect.any(Object),
+            compositeId: expect.any(Object),
             attributeValue: expect.any(Object),
           }),
         );
@@ -66,22 +64,21 @@ describe('SaathratriEntity4 Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing ISaathratriEntity4 should not enable organizationId FormControl', () => {
-        const formGroup = service.createSaathratriEntity4FormGroup();
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+      it('passing ISaathratriEntity4 should keep the key control disabled', () => {
+        const formGroup = service.createSaathratriEntity4FormGroup(sampleWithRequiredData);
+        expect(formGroup.controls.compositeId.controls.organizationId.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
 
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+        expect(formGroup.controls.compositeId.controls.organizationId.disabled).toBe(true);
       });
 
-      it('passing NewSaathratriEntity4 should disable organizationId FormControl', () => {
-        const formGroup = service.createSaathratriEntity4FormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createSaathratriEntity4FormGroup();
 
-        service.resetForm(formGroup, { organizationId: null });
+        service.resetForm(formGroup, { compositeId: { organizationId: null, attributeKey: null } });
 
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+        expect(formGroup.controls.compositeId.controls.organizationId.disabled).toBe(true);
       });
     });
   });

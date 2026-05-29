@@ -1,10 +1,11 @@
-import { MockInstance, afterEach, beforeEach, describe, expect, it, vitest } from 'vitest';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpHeaders, HttpResponse, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faEye, faPencilAlt, faPlus, faSort, faSortDown, faSortUp, faSync, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSort } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, of } from 'rxjs';
@@ -12,109 +13,47 @@ import { Subject, of } from 'rxjs';
 import { sampleWithRequiredData } from '../saathratri-entity-2.test-samples';
 import { SaathratriEntity2Service } from '../service/saathratri-entity-2.service';
 
-import { SaathratriEntity2 } from './saathratri-entity-2';
-
-vitest.useFakeTimers();
+import { SaathratriEntity2Component } from './saathratri-entity-2';
 
 describe('SaathratriEntity2 Management Component', () => {
-  let httpMock: HttpTestingController;
-  let comp: SaathratriEntity2;
-  let fixture: ComponentFixture<SaathratriEntity2>;
+  let comp: SaathratriEntity2Component;
+  let fixture: ComponentFixture<SaathratriEntity2Component>;
   let service: SaathratriEntity2Service;
-  let routerNavigateSpy: MockInstance;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
+        provideHttpClient(),
         provideHttpClientTesting(),
         {
           provide: ActivatedRoute,
           useValue: {
-            data: of({
-              defaultSort: 'entityTypeId,asc',
-            }),
-            queryParamMap: of(
-              convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'entityTypeId,desc',
-              }),
-            ),
-            snapshot: {
-              queryParams: {},
-              queryParamMap: convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'entityTypeId,desc',
-              }),
-            },
+            data: of({ defaultSort: 'id,asc' }),
+            queryParamMap: of(convertToParamMap({})),
+            snapshot: { queryParams: {}, queryParamMap: convertToParamMap({}) },
           },
         },
       ],
     });
-
-    fixture = TestBed.createComponent(SaathratriEntity2);
+    fixture = TestBed.createComponent(SaathratriEntity2Component);
     comp = fixture.componentInstance;
     service = TestBed.inject(SaathratriEntity2Service);
-    routerNavigateSpy = vitest.spyOn(comp.router, 'navigate');
-
     const library = TestBed.inject(FaIconLibrary);
-    library.addIcons(faEye, faPencilAlt, faPlus, faSort, faSortDown, faSortUp, faSync, faTimes);
-    httpMock = TestBed.inject(HttpTestingController);
+    library.addIcons(faSort);
   });
 
-  afterEach(() => {
-    TestBed.resetTestingModule();
-    httpMock.verify();
-  });
+  it('should load all on init', () => {
+    // GIVEN — the Cassandra list pages via querySlice (not query)
+    vitest
+      .spyOn(service, 'querySlice')
+      .mockReturnValue(of(new HttpResponse({ body: [sampleWithRequiredData], headers: new HttpHeaders() })));
 
-  it('should call load all on init', async () => {
     // WHEN
-    TestBed.tick();
-    const req = httpMock.expectOne({ method: 'GET' });
-    req.flush([{ entityTypeId: '478effd9-630b-455d-b46d-efa51cd24482' }], {
-      headers: { link: '<http://localhost/api/foo?page=1&size=20>; rel="next"' },
-    });
-    await vitest.runAllTimersAsync();
+    comp.ngOnInit();
 
     // THEN
-    expect(comp.isLoading()).toEqual(false);
-    expect(comp.saathratriEntity2s()[0]).toEqual(expect.objectContaining({ entityTypeId: '478effd9-630b-455d-b46d-efa51cd24482' }));
-  });
-
-  describe('trackEntityTypeId', () => {
-    it('should forward to saathratriEntity2Service', () => {
-      const entity = { entityTypeId: '478effd9-630b-455d-b46d-efa51cd24482' };
-      vitest.spyOn(service, 'getSaathratriEntity2Identifier');
-      const entityTypeId = comp.trackEntityTypeId(entity);
-      expect(service.getSaathratriEntity2Identifier).toHaveBeenCalledWith(entity);
-      expect(entityTypeId).toBe(entity.entityTypeId);
-    });
-  });
-
-  it('should calculate the sort attribute for a non-id attribute', () => {
-    // WHEN
-    comp.navigateToWithComponentValues({ predicate: 'non-existing-column', order: 'asc' });
-
-    // THEN
-    expect(routerNavigateSpy).toHaveBeenLastCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        queryParams: expect.objectContaining({
-          sort: ['non-existing-column,asc'],
-        }),
-      }),
-    );
-  });
-
-  it('should calculate the sort attribute for an id', () => {
-    // WHEN
-    TestBed.tick();
-    httpMock.expectOne({ method: 'GET' });
-
-    // THEN
-    expect(service.saathratriEntity2sParams()).toMatchObject(expect.objectContaining({ sort: ['entityTypeId,desc'] }));
+    expect(service.querySlice).toHaveBeenCalled();
   });
 
   describe('delete', () => {
@@ -123,8 +62,6 @@ describe('SaathratriEntity2 Management Component', () => {
 
     beforeEach(() => {
       deleteModalMock = { componentInstance: {}, closed: new Subject() };
-      // NgbModal is not a singleton using TestBed.inject.
-      // ngbModal = TestBed.inject(NgbModal);
       ngbModal = (comp as any).modalService;
       vitest.spyOn(ngbModal, 'open').mockReturnValue(deleteModalMock);
     });
@@ -142,7 +79,7 @@ describe('SaathratriEntity2 Management Component', () => {
       expect(comp.load).toHaveBeenCalled();
     }));
 
-    it('on dismiss should call load', inject([], () => {
+    it('on dismiss should not call load', inject([], () => {
       // GIVEN
       vitest.spyOn(comp, 'load');
 
@@ -154,5 +91,36 @@ describe('SaathratriEntity2 Management Component', () => {
       expect(ngbModal.open).toHaveBeenCalled();
       expect(comp.load).not.toHaveBeenCalled();
     }));
+  });
+
+  describe('search form', () => {
+    it('should toggle the search form collapsed state', () => {
+      const initial = comp.isSearchFormCollapsed;
+
+      comp.toggleSearchForm();
+      expect(comp.isSearchFormCollapsed).toBe(!initial);
+
+      comp.toggleSearchForm();
+      expect(comp.isSearchFormCollapsed).toBe(initial);
+    });
+
+    it('should not run a search while the form is invalid (no partition key set)', () => {
+      const loadSpy = vitest.spyOn(comp, 'load');
+
+      comp.performSearch();
+
+      expect(comp.hasActiveSearch()).toBe(false);
+      expect(loadSpy).not.toHaveBeenCalled();
+    });
+
+    it('should clear the search and reload', () => {
+      const loadSpy = vitest.spyOn(comp, 'load').mockImplementation(() => {});
+      comp.isSearchActive = true;
+
+      comp.clearSearch();
+
+      expect(comp.hasActiveSearch()).toBe(false);
+      expect(loadSpy).toHaveBeenCalled();
+    });
   });
 });

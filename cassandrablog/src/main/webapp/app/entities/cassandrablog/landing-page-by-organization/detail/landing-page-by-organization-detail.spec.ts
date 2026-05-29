@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { LandingPageByOrganizationDetail } from './landing-page-by-organization-detail';
+import { sampleWithRequiredData } from '../landing-page-by-organization.test-samples';
+
+import { LandingPageByOrganizationDetailComponent } from './landing-page-by-organization-detail';
 
 describe('LandingPageByOrganization Management Detail Component', () => {
-  let comp: LandingPageByOrganizationDetail;
-  let fixture: ComponentFixture<LandingPageByOrganizationDetail>;
+  let comp: LandingPageByOrganizationDetailComponent;
+  let fixture: ComponentFixture<LandingPageByOrganizationDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,8 +24,8 @@ describe('LandingPageByOrganization Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./landing-page-by-organization-detail').then(m => m.LandingPageByOrganizationDetail),
-              resolve: { landingPageByOrganization: () => of({ organizationId: '4a853e3a-594b-457b-8718-d64275e96ad2' }) },
+              loadComponent: () => import('./landing-page-by-organization-detail').then(m => m.LandingPageByOrganizationDetailComponent),
+              resolve: { landingPageByOrganization: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,19 +38,17 @@ describe('LandingPageByOrganization Management Detail Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LandingPageByOrganizationDetail);
+    fixture = TestBed.createComponent(LandingPageByOrganizationDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load landingPageByOrganization on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', LandingPageByOrganizationDetail);
+      const instance = await harness.navigateByUrl('/', LandingPageByOrganizationDetailComponent);
 
       // THEN
-      expect(instance.landingPageByOrganization()).toEqual(
-        expect.objectContaining({ organizationId: '4a853e3a-594b-457b-8718-d64275e96ad2' }),
-      );
+      expect(instance.landingPageByOrganization()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 

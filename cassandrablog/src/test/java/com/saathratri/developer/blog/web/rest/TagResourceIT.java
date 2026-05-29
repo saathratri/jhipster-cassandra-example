@@ -4,23 +4,29 @@ import static com.saathratri.developer.blog.domain.TagAsserts.*;
 import static com.saathratri.developer.blog.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.datastax.oss.driver.api.core.data.CqlVector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saathratri.developer.blog.IntegrationTest;
 import com.saathratri.developer.blog.domain.Tag;
 import com.saathratri.developer.blog.repository.TagRepository;
 import com.saathratri.developer.blog.service.dto.TagDTO;
 import com.saathratri.developer.blog.service.mapper.TagMapper;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
@@ -108,19 +114,19 @@ class TagResourceIT {
 
     @Test
     void createTagWithExistingId() throws Exception {
-        // Create the Tag with an existing ID
-        tag.setId(UUID.randomUUID());
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         TagDTO tagDTO = tagMapper.toDto(tag);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restTagMockMvc
             .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(tagDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the Tag in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the Tag was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -166,9 +172,9 @@ class TagResourceIT {
             .perform(get(ENTITY_API_URL_ID, tag.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tag.getId().toString())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
+            .andExpect(jsonPath("$.id").value(tag.getId().toString()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
     @Test
@@ -187,7 +193,7 @@ class TagResourceIT {
 
         // Update the tag
         Tag updatedTag = tagRepository.findById(tag.getId()).orElseThrow();
-        updatedTag.id(UPDATED_ID).name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        updatedTag.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
         TagDTO tagDTO = tagMapper.toDto(updatedTag);
 
         restTagMockMvc
@@ -426,5 +432,51 @@ class TagResourceIT {
 
     protected void assertPersistedTagToMatchUpdatableProperties(Tag expectedTag) {
         assertTagAllUpdatablePropertiesEquals(expectedTag, getPersistedTag(expectedTag));
+    }
+
+    // ==================== AI-search (ANN vector similarity) integration test (Saathratri) ====================
+
+    @MockitoBean
+    private EmbeddingModel embeddingModelSaathratriMock;
+
+    /** Deterministic, non-zero embedding so the stored row and the mocked query embed to the same vector. */
+    private static float[] sampleFloatsSaathratri(int dimension) {
+        float[] vector = new float[dimension];
+        for (int i = 0; i < dimension; i++) {
+            vector[i] = 0.10f + ((i % 8) * 0.01f);
+        }
+        return vector;
+    }
+
+    private static CqlVector<Float> sampleCqlVectorSaathratri(int dimension) {
+        float[] floats = sampleFloatsSaathratri(dimension);
+        java.util.List<Float> values = new java.util.ArrayList<>(dimension);
+        for (float f : floats) {
+            values.add(f);
+        }
+        return CqlVector.newInstance(values);
+    }
+
+    @Test
+    void aiSearchReturnsSemanticMatchesWhenEmbeddingModelIsAvailable() throws Exception {
+        // Store a row whose nameEmbedding equals the query vector (ANN distance 0 -> top hit).
+        tag.setNameEmbedding(sampleCqlVectorSaathratri(1536));
+        tagRepository.save(tag);
+        when(embeddingModelSaathratriMock.embed(anyString())).thenReturn(sampleFloatsSaathratri(1536));
+
+        restTagMockMvc
+            .perform(get(ENTITY_API_URL + "/ai-search").param("query", "find similar rows").param("limit", "10"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tag.getId().toString())));
+    }
+
+    @Test
+    void aiSearchReturnsEmptyForBlankQuery() throws Exception {
+        restTagMockMvc
+            .perform(get(ENTITY_API_URL + "/ai-search").param("query", "  ").param("limit", "10"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$.length()").value(0));
     }
 }

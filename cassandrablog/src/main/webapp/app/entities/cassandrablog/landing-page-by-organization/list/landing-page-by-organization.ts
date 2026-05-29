@@ -58,13 +58,12 @@ export class LandingPageByOrganizationComponent implements OnInit {
   protected readonly landingPageByOrganizationService = inject(LandingPageByOrganizationService);
   // Cassandra entities use Observable-based loading (plain boolean, not signal,
   // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
-  constructor() {}
 
   // Saathratri: Single-value Primary Key Code
   trackOrganizationId = (item: ILandingPageByOrganization): string =>
@@ -182,7 +181,7 @@ export class LandingPageByOrganizationComponent implements OnInit {
       return data;
     }
 
-    return predicate && order ? data.sort(this.sortService.startSort({ predicate, order })) : data;
+    return data.sort(this.sortService.startSort({ predicate, order }));
   }
 
   protected fillComponentAttributesFromResponseBody(data: ILandingPageByOrganization[] | null): ILandingPageByOrganization[] {
@@ -194,16 +193,17 @@ export class LandingPageByOrganizationComponent implements OnInit {
     this.hasNextPage = hasNextPage === 'true';
 
     const pagingStateHeader = headers.get('X-Paging-State');
-    this.pagingState = pagingStateHeader || null;
+    this.pagingState = pagingStateHeader ?? null;
 
     const totalCountHeader = headers.get('X-Total-Count');
     this.totalItems = totalCountHeader !== null ? Number(totalCountHeader) : null;
   }
 
   private getEntityKey(item: ILandingPageByOrganization): string {
-    return String(this.landingPageByOrganizationService.getLandingPageByOrganizationIdentifier(item));
+    return JSON.stringify(this.landingPageByOrganizationService.getLandingPageByOrganizationIdentifier(item));
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected queryBackend(): Observable<EntityArrayResponseType> {
     const queryObject: any = {
       pagingState: this.pagingState,
@@ -214,6 +214,7 @@ export class LandingPageByOrganizationComponent implements OnInit {
     return this.landingPageByOrganizationService.querySlice(queryObject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected handleNavigation(sortState: SortState): void {
     this.pagingState = null;
     this.hasNextPage = false;

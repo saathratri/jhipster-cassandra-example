@@ -72,8 +72,8 @@ describe('Report Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing IReport should not enable id FormControl', () => {
-        const formGroup = service.createReportFormGroup();
+      it('passing IReport should keep the key control disabled', () => {
+        const formGroup = service.createReportFormGroup(sampleWithRequiredData);
         expect(formGroup.controls.id.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
@@ -81,11 +81,10 @@ describe('Report Form Service', () => {
         expect(formGroup.controls.id.disabled).toBe(true);
       });
 
-      it('passing NewReport should disable id FormControl', () => {
-        const formGroup = service.createReportFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.id.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createReportFormGroup();
 
-        service.resetForm(formGroup, { id: null });
+        service.resetForm(formGroup, sampleWithRequiredData);
 
         expect(formGroup.controls.id.disabled).toBe(true);
       });

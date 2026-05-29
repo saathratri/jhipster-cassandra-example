@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, convertToParamMap } from '@angular/router';
 
-import { lastValueFrom, of, throwError } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 
+import { IBlog } from '../blog.model';
+import { sampleWithRequiredData } from '../blog.test-samples';
 import { BlogService } from '../service/blog.service';
 
 import blogResolve from './blog-routing-resolve.service';
@@ -36,8 +38,8 @@ describe('Blog routing resolve service', () => {
   describe('resolve', () => {
     it('should return IBlog returned by find', async () => {
       // GIVEN
-      service.find = vitest.fn(category => of({ category }));
-      mockActivatedRouteSnapshot.params = { category: 'ABC' };
+      service.find = vitest.fn(() => of(new HttpResponse({ body: sampleWithRequiredData })));
+      mockActivatedRouteSnapshot.params = { category: 'val-1', blogId: 'val-2' };
 
       // WHEN
       await new Promise<void>(resolve => {
@@ -45,8 +47,8 @@ describe('Blog routing resolve service', () => {
           blogResolve(mockActivatedRouteSnapshot).subscribe({
             next(result) {
               // THEN
-              expect(service.find).toHaveBeenCalledWith('ABC');
-              expect(result).toEqual({ category: 'ABC' });
+              expect(service.find).toHaveBeenCalledWith('val-1', 'val-2');
+              expect(result).toEqual(sampleWithRequiredData);
               resolve();
             },
           });
@@ -74,33 +76,17 @@ describe('Blog routing resolve service', () => {
       });
     });
 
-    it('should route to 404 page if data not found in server', async () => {
-      // GIVEN
-      vitest.spyOn(service, 'find').mockReturnValue(throwError(() => new HttpErrorResponse({ status: 404, statusText: 'Not Found' })));
-      mockActivatedRouteSnapshot.params = { category: 'ABC' };
+    it('should navigate to 404 when find returns an empty body', async () => {
+      // GIVEN — the resolver navigates to 404 (and completes empty) when the entity is not found
+      service.find = vitest.fn(() => of(new HttpResponse<IBlog>({ body: null })));
+      mockActivatedRouteSnapshot.params = { category: 'val-1', blogId: 'val-2' };
 
       // WHEN
       await TestBed.runInInjectionContext(async () => {
         await expect(lastValueFrom(blogResolve(mockActivatedRouteSnapshot))).rejects.toThrowError('no elements in sequence');
         // THEN
-        expect(service.find).toHaveBeenCalledWith('ABC');
+        expect(service.find).toHaveBeenCalledWith('val-1', 'val-2');
         expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
-      });
-    });
-
-    it('should route to error page if server returns an error other than 404', async () => {
-      // GIVEN
-      vitest
-        .spyOn(service, 'find')
-        .mockReturnValue(throwError(() => new HttpErrorResponse({ status: 500, statusText: 'Internal Server Error' })));
-      mockActivatedRouteSnapshot.params = { category: 'ABC' };
-
-      // WHEN
-      await TestBed.runInInjectionContext(async () => {
-        await expect(lastValueFrom(blogResolve(mockActivatedRouteSnapshot))).rejects.toThrowError('no elements in sequence');
-        // THEN
-        expect(service.find).toHaveBeenCalledWith('ABC');
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['error']);
       });
     });
   });

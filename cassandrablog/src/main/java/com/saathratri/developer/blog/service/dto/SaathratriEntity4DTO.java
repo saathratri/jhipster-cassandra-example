@@ -48,6 +48,9 @@ public class SaathratriEntity4DTO implements Serializable {
         if (!(o instanceof SaathratriEntity4DTO)) return false;
 
         SaathratriEntity4DTO that = (SaathratriEntity4DTO) o;
+        if (this.getCompositeId() == null) {
+            return false;
+        }
         return Objects.equals(getCompositeId(), that.getCompositeId());
     }
 

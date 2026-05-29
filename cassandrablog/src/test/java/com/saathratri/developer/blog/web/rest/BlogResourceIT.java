@@ -70,8 +70,8 @@ class BlogResourceIT {
     public static Blog createEntity() {
         Blog blog = new Blog()
             .compositeId(new BlogId().category(DEFAULT_CATEGORY).blogId(DEFAULT_BLOG_ID))
-            .handle("handle1")
-            .content("content1");
+            .handle(DEFAULT_HANDLE)
+            .content(DEFAULT_CONTENT);
         blog.setCompositeId(new BlogId(DEFAULT_CATEGORY, DEFAULT_BLOG_ID));
         return blog;
     }
@@ -85,8 +85,8 @@ class BlogResourceIT {
     public static Blog createUpdatedEntity() {
         Blog blog = new Blog()
             .compositeId(new BlogId().category(UPDATED_CATEGORY).blogId(UPDATED_BLOG_ID))
-            .handle("handle1")
-            .content("content1");
+            .handle(UPDATED_HANDLE)
+            .content(UPDATED_CONTENT);
         blog.setCompositeId(new BlogId(UPDATED_CATEGORY, UPDATED_BLOG_ID));
         return blog;
     }
@@ -120,19 +120,19 @@ class BlogResourceIT {
 
     @Test
     void createBlogWithExistingId() throws Exception {
-        // Create the Blog with an existing ID
-        blogRepository.save(blog);
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         BlogDTO blogDTO = blogMapper.toDto(blog);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restBlogMockMvc
             .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(blogDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the Blog in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the Blog was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -194,20 +194,28 @@ class BlogResourceIT {
 
         // Get the blog
         restBlogMockMvc
-            .perform(get(ENTITY_API_URL_ID, blog.getCompositeId().getCategory() + "/" + blog.getCompositeId().getBlogId()))
+            .perform(
+                get(ENTITY_API_URL + "/get")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+            )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].compositeId.category").value(hasItem(blog.getCompositeId().getCategory().toString())))
-            .andExpect(jsonPath("$.[*].compositeId.blogId").value(hasItem(blog.getCompositeId().getBlogId().toString())))
-            .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
-            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT)));
+            .andExpect(jsonPath("$.compositeId.category").value(blog.getCompositeId().getCategory().toString()))
+            .andExpect(jsonPath("$.compositeId.blogId").value(blog.getCompositeId().getBlogId().toString()))
+            .andExpect(jsonPath("$.handle").value(DEFAULT_HANDLE))
+            .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT));
     }
 
     @Test
     void getNonExistingBlog() throws Exception {
         // Get the blog
         restBlogMockMvc
-            .perform(get(ENTITY_API_URL_ID, blog.getCompositeId().getCategory() + "/" + blog.getCompositeId().getBlogId()))
+            .perform(
+                get(ENTITY_API_URL + "/get")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+            )
             .andExpect(status().isNotFound());
     }
 
@@ -227,7 +235,10 @@ class BlogResourceIT {
 
         restBlogMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, blogDTO).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(blogDTO))
+                put(ENTITY_API_URL + "/{category}/{blogId}", blogDTO.getCompositeId().getCategory(), blogDTO.getCompositeId().getBlogId())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(om.writeValueAsBytes(blogDTO))
             )
             .andExpect(status().isOk());
 
@@ -247,7 +258,7 @@ class BlogResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBlogMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, blog.getCompositeId().getCategory() + "/" + blog.getCompositeId().getBlogId())
+                put(ENTITY_API_URL + "/{category}/{blogId}", blogDTO.getCompositeId().getCategory(), blogDTO.getCompositeId().getBlogId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(blogDTO))
@@ -268,7 +279,7 @@ class BlogResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restBlogMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
+                put(ENTITY_API_URL + "/{category}/{blogId}", UUID.randomUUID().toString(), UUID.randomUUID())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(blogDTO))
@@ -313,7 +324,11 @@ class BlogResourceIT {
 
         restBlogMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedBlog.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{category}/{blogId}",
+                    partialUpdatedBlog.getCompositeId().getCategory(),
+                    partialUpdatedBlog.getCompositeId().getBlogId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedBlog))
@@ -343,7 +358,11 @@ class BlogResourceIT {
 
         restBlogMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedBlog.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{category}/{blogId}",
+                    partialUpdatedBlog.getCompositeId().getCategory(),
+                    partialUpdatedBlog.getCompositeId().getBlogId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedBlog))
@@ -367,7 +386,7 @@ class BlogResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBlogMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, blogDTO)
+                patch(ENTITY_API_URL + "/{category}/{blogId}", blogDTO.getCompositeId().getCategory(), blogDTO.getCompositeId().getBlogId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(blogDTO))
@@ -389,7 +408,7 @@ class BlogResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restBlogMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, blogDTO)
+                patch(ENTITY_API_URL + "/{category}/{blogId}", UUID.randomUUID().toString(), UUID.randomUUID())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(blogDTO))
@@ -420,7 +439,6 @@ class BlogResourceIT {
     @Test
     void deleteBlog() throws Exception {
         // Initialize the database
-        blog.setCompositeId(new BlogId());
         blog.getCompositeId().setCategory(UUID.randomUUID().toString());
         blog.getCompositeId().setBlogId(UUID.randomUUID());
         blogRepository.save(blog);
@@ -429,7 +447,11 @@ class BlogResourceIT {
 
         // Delete the blog
         restBlogMockMvc
-            .perform(delete(ENTITY_API_URL_ID, blog.getCompositeId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(
+                delete(ENTITY_API_URL + "/{category}/{blogId}", blog.getCompositeId().getCategory(), blog.getCompositeId().getBlogId())
+                    .with(csrf())
+                    .accept(MediaType.APPLICATION_JSON)
+            )
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

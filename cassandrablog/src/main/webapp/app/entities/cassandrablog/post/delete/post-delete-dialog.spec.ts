@@ -1,16 +1,18 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { of } from 'rxjs';
 
+import { sampleWithRequiredData } from '../post.test-samples';
 import { PostService } from '../service/post.service';
 
-import { PostDeleteDialog } from './post-delete-dialog';
+import { PostDeleteDialogComponent } from './post-delete-dialog';
 
 describe('Post Management Delete Component', () => {
-  let comp: PostDeleteDialog;
-  let fixture: ComponentFixture<PostDeleteDialog>;
+  let comp: PostDeleteDialogComponent;
+  let fixture: ComponentFixture<PostDeleteDialogComponent>;
   let service: PostService;
   let mockActiveModal: NgbActiveModal;
 
@@ -18,7 +20,7 @@ describe('Post Management Delete Component', () => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
     });
-    fixture = TestBed.createComponent(PostDeleteDialog);
+    fixture = TestBed.createComponent(PostDeleteDialogComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(PostService);
     mockActiveModal = TestBed.inject(NgbActiveModal);
@@ -27,14 +29,14 @@ describe('Post Management Delete Component', () => {
   describe('confirmDelete', () => {
     it('should call delete service on confirmDelete', () => {
       // GIVEN
-      vitest.spyOn(service, 'delete').mockReturnValue(of(undefined));
+      vitest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse<{}>()));
       vitest.spyOn(mockActiveModal, 'close');
 
       // WHEN
-      comp.confirmDelete(123);
+      comp.confirmDelete(sampleWithRequiredData);
 
       // THEN
-      expect(service.delete).toHaveBeenCalledWith(123);
+      expect(service.delete).toHaveBeenCalledWith(sampleWithRequiredData);
       expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
     });
 

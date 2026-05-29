@@ -22,8 +22,6 @@ describe('Tag Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),
-            nameEmbedding: expect.any(Object),
-            descriptionEmbedding: expect.any(Object),
           }),
         );
       });
@@ -36,8 +34,6 @@ describe('Tag Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),
-            nameEmbedding: expect.any(Object),
-            descriptionEmbedding: expect.any(Object),
           }),
         );
       });
@@ -70,8 +66,8 @@ describe('Tag Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing ITag should not enable id FormControl', () => {
-        const formGroup = service.createTagFormGroup();
+      it('passing ITag should keep the key control disabled', () => {
+        const formGroup = service.createTagFormGroup(sampleWithRequiredData);
         expect(formGroup.controls.id.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
@@ -79,11 +75,10 @@ describe('Tag Form Service', () => {
         expect(formGroup.controls.id.disabled).toBe(true);
       });
 
-      it('passing NewTag should disable id FormControl', () => {
-        const formGroup = service.createTagFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.id.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createTagFormGroup();
 
-        service.resetForm(formGroup, { id: null });
+        service.resetForm(formGroup, sampleWithRequiredData);
 
         expect(formGroup.controls.id.disabled).toBe(true);
       });

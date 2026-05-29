@@ -135,19 +135,19 @@ class ReportResourceIT {
 
     @Test
     void createReportWithExistingId() throws Exception {
-        // Create the Report with an existing ID
-        report.setId(UUID.randomUUID());
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         ReportDTO reportDTO = reportMapper.toDto(report);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restReportMockMvc
             .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(reportDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the Report in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the Report was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -229,13 +229,13 @@ class ReportResourceIT {
             .perform(get(ENTITY_API_URL_ID, report.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(report.getId().toString())))
-            .andExpect(jsonPath("$.[*].fileName").value(hasItem(DEFAULT_FILE_NAME)))
-            .andExpect(jsonPath("$.[*].fileExtension").value(hasItem(DEFAULT_FILE_EXTENSION)))
-            .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.intValue())))
-            .andExpect(jsonPath("$.[*].fileContentType").value(hasItem(DEFAULT_FILE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].file").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_FILE.array()))))
-            .andExpect(jsonPath("$.[*].approved").value(hasItem(DEFAULT_APPROVED.booleanValue())));
+            .andExpect(jsonPath("$.id").value(report.getId().toString()))
+            .andExpect(jsonPath("$.fileName").value(DEFAULT_FILE_NAME))
+            .andExpect(jsonPath("$.fileExtension").value(DEFAULT_FILE_EXTENSION))
+            .andExpect(jsonPath("$.createDate").value(DEFAULT_CREATE_DATE.intValue()))
+            .andExpect(jsonPath("$.fileContentType").value(DEFAULT_FILE_CONTENT_TYPE))
+            .andExpect(jsonPath("$.file").value(Base64.getEncoder().encodeToString(DEFAULT_FILE.array())))
+            .andExpect(jsonPath("$.approved").value(DEFAULT_APPROVED.booleanValue()));
     }
 
     @Test
@@ -255,7 +255,6 @@ class ReportResourceIT {
         // Update the report
         Report updatedReport = reportRepository.findById(report.getId()).orElseThrow();
         updatedReport
-            .id(UPDATED_ID)
             .fileName(UPDATED_FILE_NAME)
             .fileExtension(UPDATED_FILE_EXTENSION)
             .createDate(UPDATED_CREATE_DATE)

@@ -19,8 +19,7 @@ describe('SaathratriEntity3 Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            entityType: expect.any(Object),
-            createdTimeId: expect.any(Object),
+            compositeId: expect.any(Object),
             entityName: expect.any(Object),
             entityDescription: expect.any(Object),
             entityCost: expect.any(Object),
@@ -35,8 +34,7 @@ describe('SaathratriEntity3 Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            entityType: expect.any(Object),
-            createdTimeId: expect.any(Object),
+            compositeId: expect.any(Object),
             entityName: expect.any(Object),
             entityDescription: expect.any(Object),
             entityCost: expect.any(Object),
@@ -70,6 +68,25 @@ describe('SaathratriEntity3 Form Service', () => {
         const saathratriEntity3 = service.getSaathratriEntity3(formGroup);
 
         expect(saathratriEntity3).toMatchObject(sampleWithRequiredData);
+      });
+    });
+
+    describe('resetForm', () => {
+      it('passing ISaathratriEntity3 should keep the key control disabled', () => {
+        const formGroup = service.createSaathratriEntity3FormGroup(sampleWithRequiredData);
+        expect(formGroup.controls.compositeId.controls.entityType.disabled).toBe(true);
+
+        service.resetForm(formGroup, sampleWithRequiredData);
+
+        expect(formGroup.controls.compositeId.controls.entityType.disabled).toBe(true);
+      });
+
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createSaathratriEntity3FormGroup();
+
+        service.resetForm(formGroup, { compositeId: { entityType: null, createdTimeId: null } });
+
+        expect(formGroup.controls.compositeId.controls.entityType.disabled).toBe(true);
       });
     });
   });

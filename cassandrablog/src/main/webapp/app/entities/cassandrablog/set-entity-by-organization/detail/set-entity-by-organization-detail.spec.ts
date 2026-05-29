@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { SetEntityByOrganizationDetail } from './set-entity-by-organization-detail';
+import { sampleWithRequiredData } from '../set-entity-by-organization.test-samples';
+
+import { SetEntityByOrganizationDetailComponent } from './set-entity-by-organization-detail';
 
 describe('SetEntityByOrganization Management Detail Component', () => {
-  let comp: SetEntityByOrganizationDetail;
-  let fixture: ComponentFixture<SetEntityByOrganizationDetail>;
+  let comp: SetEntityByOrganizationDetailComponent;
+  let fixture: ComponentFixture<SetEntityByOrganizationDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,8 +24,8 @@ describe('SetEntityByOrganization Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./set-entity-by-organization-detail').then(m => m.SetEntityByOrganizationDetail),
-              resolve: { setEntityByOrganization: () => of({ organizationId: '40935352-8287-4b7d-a817-6dac8e5db644' }) },
+              loadComponent: () => import('./set-entity-by-organization-detail').then(m => m.SetEntityByOrganizationDetailComponent),
+              resolve: { setEntityByOrganization: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,19 +38,17 @@ describe('SetEntityByOrganization Management Detail Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SetEntityByOrganizationDetail);
+    fixture = TestBed.createComponent(SetEntityByOrganizationDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load setEntityByOrganization on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', SetEntityByOrganizationDetail);
+      const instance = await harness.navigateByUrl('/', SetEntityByOrganizationDetailComponent);
 
       // THEN
-      expect(instance.setEntityByOrganization()).toEqual(
-        expect.objectContaining({ organizationId: '40935352-8287-4b7d-a817-6dac8e5db644' }),
-      );
+      expect(instance.setEntityByOrganization()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 

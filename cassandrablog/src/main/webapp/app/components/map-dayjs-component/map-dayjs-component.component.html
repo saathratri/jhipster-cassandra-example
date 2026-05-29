@@ -20,7 +20,12 @@
       </app-date-time>
 
       <div class="action-buttons">
-        <button type="button" mat-icon-button (click)="openEditDayjsDialog(entry.key, entry.value)" [attr.data-cy]="fieldName + '-row-' + entry.key + '-edit'">
+        <button
+          type="button"
+          mat-icon-button
+          (click)="openEditDayjsDialog(entry.key, entry.value)"
+          [attr.data-cy]="fieldName + '-row-' + entry.key + '-edit'"
+        >
           <mat-icon>edit</mat-icon>
         </button>
         <button type="button" mat-icon-button (click)="deleteRow(entry.key)" [attr.data-cy]="fieldName + '-row-' + entry.key + '-delete'">

@@ -19,9 +19,7 @@ describe('Post Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            createdDate: expect.any(Object),
-            addedDateTime: expect.any(Object),
-            postId: expect.any(Object),
+            compositeId: expect.any(Object),
             title: expect.any(Object),
             content: expect.any(Object),
             publishedDateTime: expect.any(Object),
@@ -35,9 +33,7 @@ describe('Post Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            createdDate: expect.any(Object),
-            addedDateTime: expect.any(Object),
-            postId: expect.any(Object),
+            compositeId: expect.any(Object),
             title: expect.any(Object),
             content: expect.any(Object),
             publishedDateTime: expect.any(Object),
@@ -74,22 +70,21 @@ describe('Post Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing IPost should not enable createdDate FormControl', () => {
-        const formGroup = service.createPostFormGroup();
-        expect(formGroup.controls.createdDate.disabled).toBe(true);
+      it('passing IPost should keep the key control disabled', () => {
+        const formGroup = service.createPostFormGroup(sampleWithRequiredData);
+        expect(formGroup.controls.compositeId.controls.createdDate.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
 
-        expect(formGroup.controls.createdDate.disabled).toBe(true);
+        expect(formGroup.controls.compositeId.controls.createdDate.disabled).toBe(true);
       });
 
-      it('passing NewPost should disable createdDate FormControl', () => {
-        const formGroup = service.createPostFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.createdDate.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createPostFormGroup();
 
-        service.resetForm(formGroup, { createdDate: null });
+        service.resetForm(formGroup, { compositeId: { createdDate: null, addedDateTime: null, postId: null } });
 
-        expect(formGroup.controls.createdDate.disabled).toBe(true);
+        expect(formGroup.controls.compositeId.controls.createdDate.disabled).toBe(true);
       });
     });
   });

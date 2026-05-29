@@ -107,19 +107,19 @@ class TajUserResourceIT {
 
     @Test
     void createTajUserWithExistingId() throws Exception {
-        // Create the TajUser with an existing ID
-        tajUser.setId(UUID.randomUUID());
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         TajUserDTO tajUserDTO = tajUserMapper.toDto(tajUser);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restTajUserMockMvc
             .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(tajUserDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the TajUser in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the TajUser was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -164,8 +164,8 @@ class TajUserResourceIT {
             .perform(get(ENTITY_API_URL_ID, tajUser.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tajUser.getId().toString())))
-            .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)));
+            .andExpect(jsonPath("$.id").value(tajUser.getId().toString()))
+            .andExpect(jsonPath("$.login").value(DEFAULT_LOGIN));
     }
 
     @Test
@@ -184,7 +184,7 @@ class TajUserResourceIT {
 
         // Update the tajUser
         TajUser updatedTajUser = tajUserRepository.findById(tajUser.getId()).orElseThrow();
-        updatedTajUser.id(UPDATED_ID).login(UPDATED_LOGIN);
+        updatedTajUser.login(UPDATED_LOGIN);
         TajUserDTO tajUserDTO = tajUserMapper.toDto(updatedTajUser);
 
         restTajUserMockMvc

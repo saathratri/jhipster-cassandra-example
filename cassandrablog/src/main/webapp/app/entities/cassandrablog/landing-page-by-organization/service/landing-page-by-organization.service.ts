@@ -54,8 +54,7 @@ export class LandingPageByOrganizationsService {
     return {
       ...restLandingPageByOrganization,
       detailsBigInt: restLandingPageByOrganization.detailsBigInt
-        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          Object.fromEntries(Object.entries(restLandingPageByOrganization.detailsBigInt).map(([k, v]) => [k, dayjs(v)]))
+        ? Object.fromEntries(Object.entries(restLandingPageByOrganization.detailsBigInt).map(([k, v]) => [k, dayjs(v)]))
         : {},
     };
   }

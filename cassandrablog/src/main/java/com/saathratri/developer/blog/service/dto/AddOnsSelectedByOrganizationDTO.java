@@ -205,6 +205,9 @@ public class AddOnsSelectedByOrganizationDTO implements Serializable {
         if (!(o instanceof AddOnsSelectedByOrganizationDTO)) return false;
 
         AddOnsSelectedByOrganizationDTO that = (AddOnsSelectedByOrganizationDTO) o;
+        if (this.getCompositeId() == null) {
+            return false;
+        }
         return Objects.equals(getCompositeId(), that.getCompositeId());
     }
 

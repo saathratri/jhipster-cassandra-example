@@ -7,7 +7,7 @@ export const DATE_FORMAT_2 = 'YYYY-MM-DD';
 export const DATE_FORMAT_3 = 'MM/DD/YYYY';
 
 // This is the format compatible with the date time widget in angular.
-//export const DATE_TIME_FORMAT_2 = "YYYY-MM-DDTHH:mm:ss"; // Example: 2022-04-16T02:31:30
+// export const DATE_TIME_FORMAT_2 = "YYYY-MM-DDTHH:mm:ss"; // Example: 2022-04-16T02:31:30
 export const DATE_TIME_FORMAT_2 = 'D MMM YYYY HH:mm:ss';
 
 export const DATE_TIME_FORMAT_3 = 'MM-DD-YYYY, hh:mm A'; // Format 04-15-2022, 10:31 PM
@@ -136,6 +136,6 @@ export function utcDayjsToLocalDayjs(utcDate: dayjs.Dayjs | null | undefined): d
     return null;
   }
   // Get the UTC date parts and create a local dayjs with the same year/month/date
-  const utc = utcDate.utc();
-  return dayjs().year(utc.year()).month(utc.month()).date(utc.date()).startOf('day');
+  const utcParts = utcDate.utc();
+  return dayjs().year(utcParts.year()).month(utcParts.month()).date(utcParts.date()).startOf('day');
 }

@@ -19,10 +19,7 @@ describe('SaathratriEntity2 Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            entityTypeId: expect.any(Object),
-            yearOfDateAdded: expect.any(Object),
-            arrivalDate: expect.any(Object),
-            blogId: expect.any(Object),
+            compositeId: expect.any(Object),
             entityName: expect.any(Object),
             entityDescription: expect.any(Object),
             entityCost: expect.any(Object),
@@ -36,10 +33,7 @@ describe('SaathratriEntity2 Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            entityTypeId: expect.any(Object),
-            yearOfDateAdded: expect.any(Object),
-            arrivalDate: expect.any(Object),
-            blogId: expect.any(Object),
+            compositeId: expect.any(Object),
             entityName: expect.any(Object),
             entityDescription: expect.any(Object),
             entityCost: expect.any(Object),
@@ -76,22 +70,21 @@ describe('SaathratriEntity2 Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing ISaathratriEntity2 should not enable entityTypeId FormControl', () => {
-        const formGroup = service.createSaathratriEntity2FormGroup();
-        expect(formGroup.controls.entityTypeId.disabled).toBe(true);
+      it('passing ISaathratriEntity2 should keep the key control disabled', () => {
+        const formGroup = service.createSaathratriEntity2FormGroup(sampleWithRequiredData);
+        expect(formGroup.controls.compositeId.controls.entityTypeId.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
 
-        expect(formGroup.controls.entityTypeId.disabled).toBe(true);
+        expect(formGroup.controls.compositeId.controls.entityTypeId.disabled).toBe(true);
       });
 
-      it('passing NewSaathratriEntity2 should disable entityTypeId FormControl', () => {
-        const formGroup = service.createSaathratriEntity2FormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.entityTypeId.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createSaathratriEntity2FormGroup();
 
-        service.resetForm(formGroup, { entityTypeId: null });
+        service.resetForm(formGroup, { compositeId: { entityTypeId: null, yearOfDateAdded: null, arrivalDate: null, blogId: null } });
 
-        expect(formGroup.controls.entityTypeId.disabled).toBe(true);
+        expect(formGroup.controls.compositeId.controls.entityTypeId.disabled).toBe(true);
       });
     });
   });

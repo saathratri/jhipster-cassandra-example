@@ -214,9 +214,16 @@ describe('Post e2e test', () => {
       cy.get(`[data-cy="publishedDateTime-minutes"]`).invoke('val', '30').trigger('input', { force: true });
       cy.get(`[data-cy="publishedDateTime-minutes"]`).should('have.value', '30');
 
-      cy.get(`[data-cy="publishedDateTime-ampm"]`).click();
+      cy.get(`[data-cy="publishedDateTime-ampm"]`).click({ force: true });
       cy.get('mat-option').contains('AM').click();
       cy.get(`[data-cy="publishedDateTime-ampm"]`).should('contain', 'AM');
     });
+  });
+
+  it('should toggle the Cassandra search form', () => {
+    cy.visit('/');
+    cy.clickOnEntityMenuItem(postPageUrl.substring(1));
+    cy.get('[data-cy="searchFormToggle"]', { timeout: 30000 }).click();
+    cy.get('[data-cy="searchButton"]').should('be.visible');
   });
 });

@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { SaathratriEntity3Detail } from './saathratri-entity-3-detail';
+import { sampleWithRequiredData } from '../saathratri-entity-3.test-samples';
+
+import { SaathratriEntity3DetailComponent } from './saathratri-entity-3-detail';
 
 describe('SaathratriEntity3 Management Detail Component', () => {
-  let comp: SaathratriEntity3Detail;
-  let fixture: ComponentFixture<SaathratriEntity3Detail>;
+  let comp: SaathratriEntity3DetailComponent;
+  let fixture: ComponentFixture<SaathratriEntity3DetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,8 +24,8 @@ describe('SaathratriEntity3 Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./saathratri-entity-3-detail').then(m => m.SaathratriEntity3Detail),
-              resolve: { saathratriEntity3: () => of({ entityType: 'b211e691-84ee-487a-888a-c6d141e895e8' }) },
+              loadComponent: () => import('./saathratri-entity-3-detail').then(m => m.SaathratriEntity3DetailComponent),
+              resolve: { saathratriEntity3: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,17 +38,17 @@ describe('SaathratriEntity3 Management Detail Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SaathratriEntity3Detail);
+    fixture = TestBed.createComponent(SaathratriEntity3DetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load saathratriEntity3 on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', SaathratriEntity3Detail);
+      const instance = await harness.navigateByUrl('/', SaathratriEntity3DetailComponent);
 
       // THEN
-      expect(instance.saathratriEntity3()).toEqual(expect.objectContaining({ entityType: 'b211e691-84ee-487a-888a-c6d141e895e8' }));
+      expect(instance.saathratriEntity3()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 

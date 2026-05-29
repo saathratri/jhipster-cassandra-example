@@ -38,7 +38,6 @@ export class SaathratriEntity2UpdateComponent implements OnInit {
   protected router = inject(Router);
 
   protected isResetDisabled: Record<string, boolean> = {}; // Track reset button states
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   private lastSavedValues: Record<string, any> = {}; // Store last valid values
 
   // eslint-disable-next-line @typescript-eslint/member-ordering

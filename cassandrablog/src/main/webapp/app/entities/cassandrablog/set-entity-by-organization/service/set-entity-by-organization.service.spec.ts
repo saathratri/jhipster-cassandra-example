@@ -35,7 +35,7 @@ describe('SetEntityByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.find('9fec3727-3421-4967-b213-ba36557ca194').subscribe(resp => (expectedResult = resp));
+      service.find('organizationId').subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -47,7 +47,7 @@ describe('SetEntityByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.create(setEntityByOrganization).subscribe(resp => (expectedResult = resp));
+      service.create(setEntityByOrganization).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'POST' });
       req.flush(returnedFromService);
@@ -59,7 +59,7 @@ describe('SetEntityByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.update(setEntityByOrganization).subscribe(resp => (expectedResult = resp));
+      service.update(setEntityByOrganization).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PUT' });
       req.flush(returnedFromService);
@@ -71,7 +71,7 @@ describe('SetEntityByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp));
+      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PATCH' });
       req.flush(returnedFromService);
@@ -92,7 +92,7 @@ describe('SetEntityByOrganization Service', () => {
     });
 
     it('should delete a SetEntityByOrganization', () => {
-      service.delete('9fec3727-3421-4967-b213-ba36557ca194').subscribe();
+      service.delete(sampleWithRequiredData.organizationId).subscribe();
 
       const requests = httpMock.match({ method: 'DELETE' });
       expect(requests.length).toBe(1);
@@ -176,7 +176,7 @@ describe('SetEntityByOrganization Service', () => {
       });
 
       it('should return false if one entity is null', () => {
-        const entity1 = { organizationId: '40935352-8287-4b7d-a817-6dac8e5db644' };
+        const entity1 = { organizationId: sampleWithRequiredData.organizationId };
         const entity2 = null;
 
         const compareResult1 = service.compareSetEntityByOrganization(entity1, entity2);
@@ -187,8 +187,8 @@ describe('SetEntityByOrganization Service', () => {
       });
 
       it('should return false if primaryKey differs', () => {
-        const entity1 = { organizationId: '40935352-8287-4b7d-a817-6dac8e5db644' };
-        const entity2 = { organizationId: '90a1766b-ca13-4352-a797-d9f366eeaec2' };
+        const entity1 = { organizationId: sampleWithRequiredData.organizationId };
+        const entity2 = { organizationId: sampleWithPartialData.organizationId };
 
         const compareResult1 = service.compareSetEntityByOrganization(entity1, entity2);
         const compareResult2 = service.compareSetEntityByOrganization(entity2, entity1);
@@ -197,9 +197,9 @@ describe('SetEntityByOrganization Service', () => {
         expect(compareResult2).toEqual(false);
       });
 
-      it('should return false if primaryKey matches', () => {
-        const entity1 = { organizationId: '40935352-8287-4b7d-a817-6dac8e5db644' };
-        const entity2 = { organizationId: '40935352-8287-4b7d-a817-6dac8e5db644' };
+      it('should return true if primaryKey matches', () => {
+        const entity1 = { organizationId: sampleWithRequiredData.organizationId };
+        const entity2 = { organizationId: sampleWithRequiredData.organizationId };
 
         const compareResult1 = service.compareSetEntityByOrganization(entity1, entity2);
         const compareResult2 = service.compareSetEntityByOrganization(entity2, entity1);

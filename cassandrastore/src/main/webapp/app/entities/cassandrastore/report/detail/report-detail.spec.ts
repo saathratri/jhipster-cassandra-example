@@ -8,14 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { DataUtils } from 'app/core/util/data-util.service';
+import { sampleWithRequiredData } from '../report.test-samples';
 
-import { ReportDetail } from './report-detail';
+import { ReportDetailComponent } from './report-detail';
 
 describe('Report Management Detail Component', () => {
-  let comp: ReportDetail;
-  let fixture: ComponentFixture<ReportDetail>;
-  let dataUtils: DataUtils;
+  let comp: ReportDetailComponent;
+  let fixture: ComponentFixture<ReportDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,8 +24,8 @@ describe('Report Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./report-detail').then(m => m.ReportDetail),
-              resolve: { report: () => of({ id: 'e885ed53-a9f8-46c5-9db7-aa4b52344422' }) },
+              loadComponent: () => import('./report-detail').then(m => m.ReportDetailComponent),
+              resolve: { report: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,22 +35,20 @@ describe('Report Management Detail Component', () => {
     const library = TestBed.inject(FaIconLibrary);
     library.addIcons(faArrowLeft);
     library.addIcons(faPencilAlt);
-    dataUtils = TestBed.inject(DataUtils);
-    vitest.spyOn(window, 'open').mockImplementation(() => null);
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReportDetail);
+    fixture = TestBed.createComponent(ReportDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load report on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', ReportDetail);
+      const instance = await harness.navigateByUrl('/', ReportDetailComponent);
 
       // THEN
-      expect(instance.report()).toEqual(expect.objectContaining({ id: 'e885ed53-a9f8-46c5-9db7-aa4b52344422' }));
+      expect(instance.report()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 
@@ -60,42 +57,6 @@ describe('Report Management Detail Component', () => {
       vitest.spyOn(globalThis.history, 'back');
       comp.previousState();
       expect(globalThis.history.back).toHaveBeenCalled();
-    });
-  });
-
-  describe('byteSize', () => {
-    it('should call byteSize from DataUtils', () => {
-      // GIVEN
-      vitest.spyOn(dataUtils, 'byteSize');
-      const fakeBase64 = 'fake base64';
-
-      // WHEN
-      comp.byteSize(fakeBase64);
-
-      // THEN
-      expect(dataUtils.byteSize).toHaveBeenCalledWith(fakeBase64);
-    });
-  });
-
-  describe('openFile', () => {
-    it('should call openFile from DataUtils', () => {
-      const newWindow = { ...window };
-      vitest.stubGlobal(
-        'open',
-        vitest.fn(() => newWindow),
-      );
-      window.onload = vitest.fn(() => newWindow) as any;
-      window.URL.createObjectURL = vitest.fn() as any;
-      // GIVEN
-      vitest.spyOn(dataUtils, 'openFile');
-      const fakeContentType = 'fake content type';
-      const fakeBase64 = 'fake base64';
-
-      // WHEN
-      comp.openFile(fakeBase64, fakeContentType);
-
-      // THEN
-      expect(dataUtils.openFile).toHaveBeenCalledWith(fakeBase64, fakeContentType);
     });
   });
 });

@@ -30,7 +30,7 @@ describe('Blog Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.find('ABC').subscribe(resp => (expectedResult = resp));
+      service.find('category', 'blogId').subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -42,7 +42,7 @@ describe('Blog Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.create(blog).subscribe(resp => (expectedResult = resp));
+      service.create(blog).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'POST' });
       req.flush(returnedFromService);
@@ -54,7 +54,7 @@ describe('Blog Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.update(blog).subscribe(resp => (expectedResult = resp));
+      service.update(blog).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PUT' });
       req.flush(returnedFromService);
@@ -66,7 +66,7 @@ describe('Blog Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp));
+      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PATCH' });
       req.flush(returnedFromService);
@@ -87,7 +87,7 @@ describe('Blog Service', () => {
     });
 
     it('should delete a Blog', () => {
-      service.delete('ABC').subscribe();
+      service.delete(sampleWithRequiredData).subscribe();
 
       const requests = httpMock.match({ method: 'DELETE' });
       expect(requests.length).toBe(1);
@@ -158,7 +158,7 @@ describe('Blog Service', () => {
       });
 
       it('should return false if one entity is null', () => {
-        const entity1 = { category: 'd97e55e3-ad93-4a91-b761-e2d09b7c888e' };
+        const entity1 = { compositeId: sampleWithRequiredData.compositeId };
         const entity2 = null;
 
         const compareResult1 = service.compareBlog(entity1, entity2);
@@ -169,8 +169,8 @@ describe('Blog Service', () => {
       });
 
       it('should return false if primaryKey differs', () => {
-        const entity1 = { category: 'd97e55e3-ad93-4a91-b761-e2d09b7c888e' };
-        const entity2 = { category: '0b7b7e1b-829e-42cc-b398-3eae2463fe73' };
+        const entity1 = { compositeId: sampleWithRequiredData.compositeId };
+        const entity2 = { compositeId: sampleWithPartialData.compositeId };
 
         const compareResult1 = service.compareBlog(entity1, entity2);
         const compareResult2 = service.compareBlog(entity2, entity1);
@@ -179,9 +179,9 @@ describe('Blog Service', () => {
         expect(compareResult2).toEqual(false);
       });
 
-      it('should return false if primaryKey matches', () => {
-        const entity1 = { category: 'd97e55e3-ad93-4a91-b761-e2d09b7c888e' };
-        const entity2 = { category: 'd97e55e3-ad93-4a91-b761-e2d09b7c888e' };
+      it('should return true if primaryKey matches', () => {
+        const entity1 = { compositeId: sampleWithRequiredData.compositeId };
+        const entity2 = { compositeId: sampleWithRequiredData.compositeId };
 
         const compareResult1 = service.compareBlog(entity1, entity2);
         const compareResult2 = service.compareBlog(entity2, entity1);

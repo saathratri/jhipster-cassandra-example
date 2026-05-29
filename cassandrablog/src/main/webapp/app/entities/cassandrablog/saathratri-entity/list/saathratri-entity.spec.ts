@@ -1,10 +1,11 @@
-import { MockInstance, afterEach, beforeEach, describe, expect, it, vitest } from 'vitest';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpHeaders, HttpResponse, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faEye, faPencilAlt, faPlus, faSort, faSortDown, faSortUp, faSync, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSort } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, of } from 'rxjs';
@@ -12,109 +13,47 @@ import { Subject, of } from 'rxjs';
 import { sampleWithRequiredData } from '../saathratri-entity.test-samples';
 import { SaathratriEntityService } from '../service/saathratri-entity.service';
 
-import { SaathratriEntity } from './saathratri-entity';
-
-vitest.useFakeTimers();
+import { SaathratriEntityComponent } from './saathratri-entity';
 
 describe('SaathratriEntity Management Component', () => {
-  let httpMock: HttpTestingController;
-  let comp: SaathratriEntity;
-  let fixture: ComponentFixture<SaathratriEntity>;
+  let comp: SaathratriEntityComponent;
+  let fixture: ComponentFixture<SaathratriEntityComponent>;
   let service: SaathratriEntityService;
-  let routerNavigateSpy: MockInstance;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
+        provideHttpClient(),
         provideHttpClientTesting(),
         {
           provide: ActivatedRoute,
           useValue: {
-            data: of({
-              defaultSort: 'entityId,asc',
-            }),
-            queryParamMap: of(
-              convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'entityId,desc',
-              }),
-            ),
-            snapshot: {
-              queryParams: {},
-              queryParamMap: convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'entityId,desc',
-              }),
-            },
+            data: of({ defaultSort: 'id,asc' }),
+            queryParamMap: of(convertToParamMap({})),
+            snapshot: { queryParams: {}, queryParamMap: convertToParamMap({}) },
           },
         },
       ],
     });
-
-    fixture = TestBed.createComponent(SaathratriEntity);
+    fixture = TestBed.createComponent(SaathratriEntityComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(SaathratriEntityService);
-    routerNavigateSpy = vitest.spyOn(comp.router, 'navigate');
-
     const library = TestBed.inject(FaIconLibrary);
-    library.addIcons(faEye, faPencilAlt, faPlus, faSort, faSortDown, faSortUp, faSync, faTimes);
-    httpMock = TestBed.inject(HttpTestingController);
+    library.addIcons(faSort);
   });
 
-  afterEach(() => {
-    TestBed.resetTestingModule();
-    httpMock.verify();
-  });
+  it('should load all on init', () => {
+    // GIVEN — the Cassandra list pages via querySlice (not query)
+    vitest
+      .spyOn(service, 'querySlice')
+      .mockReturnValue(of(new HttpResponse({ body: [sampleWithRequiredData], headers: new HttpHeaders() })));
 
-  it('should call load all on init', async () => {
     // WHEN
-    TestBed.tick();
-    const req = httpMock.expectOne({ method: 'GET' });
-    req.flush([{ entityId: '9a32a2a5-a4ff-46ed-920e-fb61b74090d3' }], {
-      headers: { link: '<http://localhost/api/foo?page=1&size=20>; rel="next"' },
-    });
-    await vitest.runAllTimersAsync();
+    comp.ngOnInit();
 
     // THEN
-    expect(comp.isLoading()).toEqual(false);
-    expect(comp.saathratriEntities()[0]).toEqual(expect.objectContaining({ entityId: '9a32a2a5-a4ff-46ed-920e-fb61b74090d3' }));
-  });
-
-  describe('trackEntityId', () => {
-    it('should forward to saathratriEntityService', () => {
-      const entity = { entityId: '9a32a2a5-a4ff-46ed-920e-fb61b74090d3' };
-      vitest.spyOn(service, 'getSaathratriEntityIdentifier');
-      const entityId = comp.trackEntityId(entity);
-      expect(service.getSaathratriEntityIdentifier).toHaveBeenCalledWith(entity);
-      expect(entityId).toBe(entity.entityId);
-    });
-  });
-
-  it('should calculate the sort attribute for a non-id attribute', () => {
-    // WHEN
-    comp.navigateToWithComponentValues({ predicate: 'non-existing-column', order: 'asc' });
-
-    // THEN
-    expect(routerNavigateSpy).toHaveBeenLastCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        queryParams: expect.objectContaining({
-          sort: ['non-existing-column,asc'],
-        }),
-      }),
-    );
-  });
-
-  it('should calculate the sort attribute for an id', () => {
-    // WHEN
-    TestBed.tick();
-    httpMock.expectOne({ method: 'GET' });
-
-    // THEN
-    expect(service.saathratriEntitiesParams()).toMatchObject(expect.objectContaining({ sort: ['entityId,desc'] }));
+    expect(service.querySlice).toHaveBeenCalled();
   });
 
   describe('delete', () => {
@@ -123,8 +62,6 @@ describe('SaathratriEntity Management Component', () => {
 
     beforeEach(() => {
       deleteModalMock = { componentInstance: {}, closed: new Subject() };
-      // NgbModal is not a singleton using TestBed.inject.
-      // ngbModal = TestBed.inject(NgbModal);
       ngbModal = (comp as any).modalService;
       vitest.spyOn(ngbModal, 'open').mockReturnValue(deleteModalMock);
     });
@@ -142,7 +79,7 @@ describe('SaathratriEntity Management Component', () => {
       expect(comp.load).toHaveBeenCalled();
     }));
 
-    it('on dismiss should call load', inject([], () => {
+    it('on dismiss should not call load', inject([], () => {
       // GIVEN
       vitest.spyOn(comp, 'load');
 

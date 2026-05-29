@@ -19,10 +19,7 @@ describe('AddOnsSelectedByOrganization Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            organizationId: expect.any(Object),
-            arrivalDate: expect.any(Object),
-            accountNumber: expect.any(Object),
-            createdTimeId: expect.any(Object),
+            compositeId: expect.any(Object),
             departureDate: expect.any(Object),
             customerId: expect.any(Object),
             customerFirstName: expect.any(Object),
@@ -44,10 +41,7 @@ describe('AddOnsSelectedByOrganization Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            organizationId: expect.any(Object),
-            arrivalDate: expect.any(Object),
-            accountNumber: expect.any(Object),
-            createdTimeId: expect.any(Object),
+            compositeId: expect.any(Object),
             departureDate: expect.any(Object),
             customerId: expect.any(Object),
             customerFirstName: expect.any(Object),
@@ -92,22 +86,23 @@ describe('AddOnsSelectedByOrganization Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing IAddOnsSelectedByOrganization should not enable organizationId FormControl', () => {
-        const formGroup = service.createAddOnsSelectedByOrganizationFormGroup();
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+      it('passing IAddOnsSelectedByOrganization should keep the key control disabled', () => {
+        const formGroup = service.createAddOnsSelectedByOrganizationFormGroup(sampleWithRequiredData);
+        expect(formGroup.controls.compositeId.controls.organizationId.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
 
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+        expect(formGroup.controls.compositeId.controls.organizationId.disabled).toBe(true);
       });
 
-      it('passing NewAddOnsSelectedByOrganization should disable organizationId FormControl', () => {
-        const formGroup = service.createAddOnsSelectedByOrganizationFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createAddOnsSelectedByOrganizationFormGroup();
 
-        service.resetForm(formGroup, { organizationId: null });
+        service.resetForm(formGroup, {
+          compositeId: { organizationId: null, arrivalDate: null, accountNumber: null, createdTimeId: null },
+        });
 
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+        expect(formGroup.controls.compositeId.controls.organizationId.disabled).toBe(true);
       });
     });
   });

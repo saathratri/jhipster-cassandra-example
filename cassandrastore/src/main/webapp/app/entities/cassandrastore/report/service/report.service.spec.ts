@@ -30,7 +30,7 @@ describe('Report Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.find('9fec3727-3421-4967-b213-ba36557ca194').subscribe(resp => (expectedResult = resp));
+      service.find('id').subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -42,7 +42,7 @@ describe('Report Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.create(report).subscribe(resp => (expectedResult = resp));
+      service.create(report).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'POST' });
       req.flush(returnedFromService);
@@ -54,7 +54,7 @@ describe('Report Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.update(report).subscribe(resp => (expectedResult = resp));
+      service.update(report).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PUT' });
       req.flush(returnedFromService);
@@ -66,7 +66,7 @@ describe('Report Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp));
+      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PATCH' });
       req.flush(returnedFromService);
@@ -87,7 +87,7 @@ describe('Report Service', () => {
     });
 
     it('should delete a Report', () => {
-      service.delete('9fec3727-3421-4967-b213-ba36557ca194').subscribe();
+      service.delete(sampleWithRequiredData.id).subscribe();
 
       const requests = httpMock.match({ method: 'DELETE' });
       expect(requests.length).toBe(1);
@@ -158,7 +158,7 @@ describe('Report Service', () => {
       });
 
       it('should return false if one entity is null', () => {
-        const entity1 = { id: 'e885ed53-a9f8-46c5-9db7-aa4b52344422' };
+        const entity1 = { id: sampleWithRequiredData.id };
         const entity2 = null;
 
         const compareResult1 = service.compareReport(entity1, entity2);
@@ -169,8 +169,8 @@ describe('Report Service', () => {
       });
 
       it('should return false if primaryKey differs', () => {
-        const entity1 = { id: 'e885ed53-a9f8-46c5-9db7-aa4b52344422' };
-        const entity2 = { id: '4dddf5e7-444e-42ae-bf41-a8a5c3c01676' };
+        const entity1 = { id: sampleWithRequiredData.id };
+        const entity2 = { id: sampleWithPartialData.id };
 
         const compareResult1 = service.compareReport(entity1, entity2);
         const compareResult2 = service.compareReport(entity2, entity1);
@@ -179,9 +179,9 @@ describe('Report Service', () => {
         expect(compareResult2).toEqual(false);
       });
 
-      it('should return false if primaryKey matches', () => {
-        const entity1 = { id: 'e885ed53-a9f8-46c5-9db7-aa4b52344422' };
-        const entity2 = { id: 'e885ed53-a9f8-46c5-9db7-aa4b52344422' };
+      it('should return true if primaryKey matches', () => {
+        const entity1 = { id: sampleWithRequiredData.id };
+        const entity2 = { id: sampleWithRequiredData.id };
 
         const compareResult1 = service.compareReport(entity1, entity2);
         const compareResult2 = service.compareReport(entity2, entity1);

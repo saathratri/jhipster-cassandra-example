@@ -288,7 +288,10 @@
             >Add On Details Text</label
           >
           <app-map-string-component
-        fieldName="addOnDetailsText" [inputFields]="inputFieldsAddOnDetailsText" (dataChange)="handleAddOnDetailsTextInputChange($event)">
+            fieldName="addOnDetailsText"
+            [inputFields]="inputFieldsAddOnDetailsText"
+            (dataChange)="handleAddOnDetailsTextInputChange($event)"
+          >
           </app-map-string-component>
         </div>
 
@@ -300,7 +303,7 @@
             >Add On Details Decimal</label
           >
           <app-map-number-component
-        fieldName="addOnDetailsDecimal"
+            fieldName="addOnDetailsDecimal"
             [inputFields]="inputFieldsAddOnDetailsDecimal"
             (dataChange)="handleAddOnDetailsDecimalInputChange($event)"
           >
@@ -315,7 +318,7 @@
             >Add On Details Boolean</label
           >
           <app-map-boolean-component
-        fieldName="addOnDetailsBoolean"
+            fieldName="addOnDetailsBoolean"
             [inputFields]="inputFieldsAddOnDetailsBoolean"
             (dataChange)="handleAddOnDetailsBooleanInputChange($event)"
           >
@@ -330,7 +333,10 @@
             >Add On Details Big Int</label
           >
           <app-map-dayjs-component
-        fieldName="addOnDetailsBigInt" [inputFields]="inputFieldsAddOnDetailsBigInt" (dataChange)="handleAddOnDetailsBigIntInputChange($event)">
+            fieldName="addOnDetailsBigInt"
+            [inputFields]="inputFieldsAddOnDetailsBigInt"
+            (dataChange)="handleAddOnDetailsBigIntInputChange($event)"
+          >
           </app-map-dayjs-component>
         </div>
       </div>

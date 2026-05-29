@@ -191,4 +191,11 @@ describe('Blog e2e test', () => {
       cy.url().should('match', blogPageUrlPattern);
     });
   });
+
+  it('should toggle the Cassandra search form', () => {
+    cy.visit('/');
+    cy.clickOnEntityMenuItem(blogPageUrl.substring(1));
+    cy.get('[data-cy="searchFormToggle"]', { timeout: 30000 }).click();
+    cy.get('[data-cy="searchButton"]').should('be.visible');
+  });
 });

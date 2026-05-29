@@ -95,10 +95,10 @@ class SaathratriEntity2ResourceIT {
                     .arrivalDate(DEFAULT_ARRIVAL_DATE)
                     .blogId(DEFAULT_BLOG_ID)
             )
-            .entityName("entityName1")
-            .entityDescription("entityDescription1")
-            .entityCost(new BigDecimal(1))
-            .departureDate(1L);
+            .entityName(DEFAULT_ENTITY_NAME)
+            .entityDescription(DEFAULT_ENTITY_DESCRIPTION)
+            .entityCost(DEFAULT_ENTITY_COST)
+            .departureDate(DEFAULT_DEPARTURE_DATE);
         saathratriEntity2.setCompositeId(
             new SaathratriEntity2Id(DEFAULT_ENTITY_TYPE_ID, DEFAULT_YEAR_OF_DATE_ADDED, DEFAULT_ARRIVAL_DATE, DEFAULT_BLOG_ID)
         );
@@ -120,10 +120,10 @@ class SaathratriEntity2ResourceIT {
                     .arrivalDate(UPDATED_ARRIVAL_DATE)
                     .blogId(UPDATED_BLOG_ID)
             )
-            .entityName("entityName1")
-            .entityDescription("entityDescription1")
-            .entityCost(new BigDecimal(1))
-            .departureDate(1L);
+            .entityName(UPDATED_ENTITY_NAME)
+            .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+            .entityCost(UPDATED_ENTITY_COST)
+            .departureDate(UPDATED_DEPARTURE_DATE);
         saathratriEntity2.setCompositeId(
             new SaathratriEntity2Id(UPDATED_ENTITY_TYPE_ID, UPDATED_YEAR_OF_DATE_ADDED, UPDATED_ARRIVAL_DATE, UPDATED_BLOG_ID)
         );
@@ -164,15 +164,13 @@ class SaathratriEntity2ResourceIT {
 
     @Test
     void createSaathratriEntity2WithExistingId() throws Exception {
-        // Create the SaathratriEntity2 with an existing ID
-        saathratriEntity2.setCompositeId(
-            new SaathratriEntity2Id(DEFAULT_ENTITY_TYPE_ID, DEFAULT_YEAR_OF_DATE_ADDED, DEFAULT_ARRIVAL_DATE, DEFAULT_BLOG_ID)
-        );
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         SaathratriEntity2DTO saathratriEntity2DTO = saathratriEntity2Mapper.toDto(saathratriEntity2);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restSaathratriEntity2MockMvc
             .perform(
                 post(ENTITY_API_URL)
@@ -180,10 +178,10 @@ class SaathratriEntity2ResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(saathratriEntity2DTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the SaathratriEntity2 in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the SaathratriEntity2 was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -230,35 +228,22 @@ class SaathratriEntity2ResourceIT {
         // Get the saathratriEntity2
         restSaathratriEntity2MockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    saathratriEntity2.getCompositeId().getEntityTypeId() +
-                        "/" +
-                        saathratriEntity2.getCompositeId().getYearOfDateAdded() +
-                        "/" +
-                        saathratriEntity2.getCompositeId().getArrivalDate() +
-                        "/" +
-                        saathratriEntity2.getCompositeId().getBlogId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(
-                jsonPath("$.[*].compositeId.entityTypeId").value(hasItem(saathratriEntity2.getCompositeId().getEntityTypeId().toString()))
-            )
-            .andExpect(
-                jsonPath("$.[*].compositeId.yearOfDateAdded").value(
-                    hasItem(saathratriEntity2.getCompositeId().getYearOfDateAdded().intValue())
-                )
-            )
-            .andExpect(
-                jsonPath("$.[*].compositeId.arrivalDate").value(hasItem(saathratriEntity2.getCompositeId().getArrivalDate().intValue()))
-            )
-            .andExpect(jsonPath("$.[*].compositeId.blogId").value(hasItem(saathratriEntity2.getCompositeId().getBlogId().toString())))
-            .andExpect(jsonPath("$.[*].entityName").value(hasItem(DEFAULT_ENTITY_NAME)))
-            .andExpect(jsonPath("$.[*].entityDescription").value(hasItem(DEFAULT_ENTITY_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].entityCost").value(hasItem(sameNumber(DEFAULT_ENTITY_COST))))
-            .andExpect(jsonPath("$.[*].departureDate").value(hasItem(DEFAULT_DEPARTURE_DATE.intValue())));
+            .andExpect(jsonPath("$.compositeId.entityTypeId").value(saathratriEntity2.getCompositeId().getEntityTypeId().toString()))
+            .andExpect(jsonPath("$.compositeId.yearOfDateAdded").value(saathratriEntity2.getCompositeId().getYearOfDateAdded().intValue()))
+            .andExpect(jsonPath("$.compositeId.arrivalDate").value(saathratriEntity2.getCompositeId().getArrivalDate().intValue()))
+            .andExpect(jsonPath("$.compositeId.blogId").value(saathratriEntity2.getCompositeId().getBlogId().toString()))
+            .andExpect(jsonPath("$.entityName").value(DEFAULT_ENTITY_NAME))
+            .andExpect(jsonPath("$.entityDescription").value(DEFAULT_ENTITY_DESCRIPTION))
+            .andExpect(jsonPath("$.entityCost").value(sameNumber(DEFAULT_ENTITY_COST)))
+            .andExpect(jsonPath("$.departureDate").value(DEFAULT_DEPARTURE_DATE.intValue()));
     }
 
     @Test
@@ -266,16 +251,11 @@ class SaathratriEntity2ResourceIT {
         // Get the saathratriEntity2
         restSaathratriEntity2MockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    saathratriEntity2.getCompositeId().getEntityTypeId() +
-                        "/" +
-                        saathratriEntity2.getCompositeId().getYearOfDateAdded() +
-                        "/" +
-                        saathratriEntity2.getCompositeId().getArrivalDate() +
-                        "/" +
-                        saathratriEntity2.getCompositeId().getBlogId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
             )
             .andExpect(status().isNotFound());
     }
@@ -302,7 +282,13 @@ class SaathratriEntity2ResourceIT {
 
         restSaathratriEntity2MockMvc
             .perform(
-                put(ENTITY_API_URL_ID, saathratriEntity2DTO)
+                put(
+                    ENTITY_API_URL + "/{entityTypeId}/{yearOfDateAdded}/{arrivalDate}/{blogId}",
+                    saathratriEntity2DTO.getCompositeId().getEntityTypeId(),
+                    saathratriEntity2DTO.getCompositeId().getYearOfDateAdded(),
+                    saathratriEntity2DTO.getCompositeId().getArrivalDate(),
+                    saathratriEntity2DTO.getCompositeId().getBlogId()
+                )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(saathratriEntity2DTO))
@@ -333,14 +319,11 @@ class SaathratriEntity2ResourceIT {
         restSaathratriEntity2MockMvc
             .perform(
                 put(
-                    ENTITY_API_URL_ID,
-                    saathratriEntity2.getCompositeId().getEntityTypeId() +
-                        "/" +
-                        saathratriEntity2.getCompositeId().getYearOfDateAdded() +
-                        "/" +
-                        saathratriEntity2.getCompositeId().getArrivalDate() +
-                        "/" +
-                        saathratriEntity2.getCompositeId().getBlogId()
+                    ENTITY_API_URL + "/{entityTypeId}/{yearOfDateAdded}/{arrivalDate}/{blogId}",
+                    saathratriEntity2DTO.getCompositeId().getEntityTypeId(),
+                    saathratriEntity2DTO.getCompositeId().getYearOfDateAdded(),
+                    saathratriEntity2DTO.getCompositeId().getArrivalDate(),
+                    saathratriEntity2DTO.getCompositeId().getBlogId()
                 )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -369,7 +352,13 @@ class SaathratriEntity2ResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSaathratriEntity2MockMvc
             .perform(
-                put(ENTITY_API_URL_ID, UUID.randomUUID())
+                put(
+                    ENTITY_API_URL + "/{entityTypeId}/{yearOfDateAdded}/{arrivalDate}/{blogId}",
+                    UUID.randomUUID(),
+                    longCount.incrementAndGet(),
+                    longCount.incrementAndGet(),
+                    UUID.randomUUID()
+                )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(saathratriEntity2DTO))
@@ -429,7 +418,13 @@ class SaathratriEntity2ResourceIT {
 
         restSaathratriEntity2MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedSaathratriEntity2.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{entityTypeId}/{yearOfDateAdded}/{arrivalDate}/{blogId}",
+                    partialUpdatedSaathratriEntity2.getCompositeId().getEntityTypeId(),
+                    partialUpdatedSaathratriEntity2.getCompositeId().getYearOfDateAdded(),
+                    partialUpdatedSaathratriEntity2.getCompositeId().getArrivalDate(),
+                    partialUpdatedSaathratriEntity2.getCompositeId().getBlogId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedSaathratriEntity2))
@@ -468,7 +463,13 @@ class SaathratriEntity2ResourceIT {
 
         restSaathratriEntity2MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedSaathratriEntity2.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{entityTypeId}/{yearOfDateAdded}/{arrivalDate}/{blogId}",
+                    partialUpdatedSaathratriEntity2.getCompositeId().getEntityTypeId(),
+                    partialUpdatedSaathratriEntity2.getCompositeId().getYearOfDateAdded(),
+                    partialUpdatedSaathratriEntity2.getCompositeId().getArrivalDate(),
+                    partialUpdatedSaathratriEntity2.getCompositeId().getBlogId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedSaathratriEntity2))
@@ -502,7 +503,13 @@ class SaathratriEntity2ResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSaathratriEntity2MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, saathratriEntity2DTO)
+                patch(
+                    ENTITY_API_URL + "/{entityTypeId}/{yearOfDateAdded}/{arrivalDate}/{blogId}",
+                    saathratriEntity2DTO.getCompositeId().getEntityTypeId(),
+                    saathratriEntity2DTO.getCompositeId().getYearOfDateAdded(),
+                    saathratriEntity2DTO.getCompositeId().getArrivalDate(),
+                    saathratriEntity2DTO.getCompositeId().getBlogId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(saathratriEntity2DTO))
@@ -531,7 +538,13 @@ class SaathratriEntity2ResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSaathratriEntity2MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, saathratriEntity2DTO)
+                patch(
+                    ENTITY_API_URL + "/{entityTypeId}/{yearOfDateAdded}/{arrivalDate}/{blogId}",
+                    UUID.randomUUID(),
+                    longCount.incrementAndGet(),
+                    longCount.incrementAndGet(),
+                    UUID.randomUUID()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(saathratriEntity2DTO))
@@ -574,7 +587,6 @@ class SaathratriEntity2ResourceIT {
     @Test
     void deleteSaathratriEntity2() throws Exception {
         // Initialize the database
-        saathratriEntity2.setCompositeId(new SaathratriEntity2Id());
         saathratriEntity2.getCompositeId().setEntityTypeId(UUID.randomUUID());
         saathratriEntity2.getCompositeId().setYearOfDateAdded(longCount.incrementAndGet());
         saathratriEntity2.getCompositeId().setArrivalDate(longCount.incrementAndGet());
@@ -585,7 +597,17 @@ class SaathratriEntity2ResourceIT {
 
         // Delete the saathratriEntity2
         restSaathratriEntity2MockMvc
-            .perform(delete(ENTITY_API_URL_ID, saathratriEntity2.getCompositeId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(
+                delete(
+                    ENTITY_API_URL + "/{entityTypeId}/{yearOfDateAdded}/{arrivalDate}/{blogId}",
+                    saathratriEntity2.getCompositeId().getEntityTypeId(),
+                    saathratriEntity2.getCompositeId().getYearOfDateAdded(),
+                    saathratriEntity2.getCompositeId().getArrivalDate(),
+                    saathratriEntity2.getCompositeId().getBlogId()
+                )
+                    .with(csrf())
+                    .accept(MediaType.APPLICATION_JSON)
+            )
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

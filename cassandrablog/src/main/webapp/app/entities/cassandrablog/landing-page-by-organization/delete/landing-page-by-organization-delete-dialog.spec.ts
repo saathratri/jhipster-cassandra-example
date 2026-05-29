@@ -1,16 +1,18 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { of } from 'rxjs';
 
+import { sampleWithRequiredData } from '../landing-page-by-organization.test-samples';
 import { LandingPageByOrganizationService } from '../service/landing-page-by-organization.service';
 
-import { LandingPageByOrganizationDeleteDialog } from './landing-page-by-organization-delete-dialog';
+import { LandingPageByOrganizationDeleteDialogComponent } from './landing-page-by-organization-delete-dialog';
 
 describe('LandingPageByOrganization Management Delete Component', () => {
-  let comp: LandingPageByOrganizationDeleteDialog;
-  let fixture: ComponentFixture<LandingPageByOrganizationDeleteDialog>;
+  let comp: LandingPageByOrganizationDeleteDialogComponent;
+  let fixture: ComponentFixture<LandingPageByOrganizationDeleteDialogComponent>;
   let service: LandingPageByOrganizationService;
   let mockActiveModal: NgbActiveModal;
 
@@ -18,7 +20,7 @@ describe('LandingPageByOrganization Management Delete Component', () => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
     });
-    fixture = TestBed.createComponent(LandingPageByOrganizationDeleteDialog);
+    fixture = TestBed.createComponent(LandingPageByOrganizationDeleteDialogComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(LandingPageByOrganizationService);
     mockActiveModal = TestBed.inject(NgbActiveModal);
@@ -27,14 +29,14 @@ describe('LandingPageByOrganization Management Delete Component', () => {
   describe('confirmDelete', () => {
     it('should call delete service on confirmDelete', () => {
       // GIVEN
-      vitest.spyOn(service, 'delete').mockReturnValue(of(undefined));
+      vitest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse<{}>()));
       vitest.spyOn(mockActiveModal, 'close');
 
       // WHEN
-      comp.confirmDelete('9fec3727-3421-4967-b213-ba36557ca194');
+      comp.confirmDelete(sampleWithRequiredData.organizationId);
 
       // THEN
-      expect(service.delete).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
+      expect(service.delete).toHaveBeenCalledWith(sampleWithRequiredData.organizationId);
       expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
     });
 

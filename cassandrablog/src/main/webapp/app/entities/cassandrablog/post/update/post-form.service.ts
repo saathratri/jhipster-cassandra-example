@@ -143,7 +143,7 @@ export class PostFormService {
       ...post,
       compositeId: {
         ...post.compositeId,
-        addedDateTime: post.compositeId.addedDateTime ? post.compositeId.addedDateTime : null,
+        addedDateTime: post.compositeId.addedDateTime ?? null,
       },
       publishedDateTime: post.publishedDateTime ? post.publishedDateTime.format(DATE_TIME_FORMAT) : undefined,
     };

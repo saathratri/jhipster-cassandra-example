@@ -11,7 +11,12 @@ import java.util.Objects;
 public class BlogDTO implements Serializable {
 
     private BlogDTOId compositeId;
+
+    @NotNull
+    @Size(min = 3)
     private String handle;
+
+    @NotNull
     private String content;
 
     public BlogDTO() {
@@ -63,6 +68,9 @@ public class BlogDTO implements Serializable {
         if (!(o instanceof BlogDTO)) return false;
 
         BlogDTO that = (BlogDTO) o;
+        if (this.getCompositeId() == null) {
+            return false;
+        }
         return Objects.equals(getCompositeId(), that.getCompositeId());
     }
 

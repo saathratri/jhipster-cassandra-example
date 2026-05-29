@@ -13,9 +13,16 @@ import java.util.UUID;
 public class ReportDTO implements Serializable {
 
     private UUID id;
+
+    @NotNull
     private String fileName;
+
+    @NotNull
     private String fileExtension;
+
+    @NotNull
     private Long createDate;
+
     private ByteBuffer file;
     private Boolean approved;
     private String fileContentType;
@@ -121,6 +128,9 @@ public class ReportDTO implements Serializable {
         if (!(o instanceof ReportDTO)) return false;
 
         ReportDTO that = (ReportDTO) o;
+        if (this.getId() == null) {
+            return false;
+        }
         return Objects.equals(getId(), that.getId());
     }
 

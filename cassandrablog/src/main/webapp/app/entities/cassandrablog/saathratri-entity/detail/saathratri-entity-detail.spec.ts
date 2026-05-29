@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { SaathratriEntityDetail } from './saathratri-entity-detail';
+import { sampleWithRequiredData } from '../saathratri-entity.test-samples';
+
+import { SaathratriEntityDetailComponent } from './saathratri-entity-detail';
 
 describe('SaathratriEntity Management Detail Component', () => {
-  let comp: SaathratriEntityDetail;
-  let fixture: ComponentFixture<SaathratriEntityDetail>;
+  let comp: SaathratriEntityDetailComponent;
+  let fixture: ComponentFixture<SaathratriEntityDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,8 +24,8 @@ describe('SaathratriEntity Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./saathratri-entity-detail').then(m => m.SaathratriEntityDetail),
-              resolve: { saathratriEntity: () => of({ entityId: '9a32a2a5-a4ff-46ed-920e-fb61b74090d3' }) },
+              loadComponent: () => import('./saathratri-entity-detail').then(m => m.SaathratriEntityDetailComponent),
+              resolve: { saathratriEntity: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,17 +38,17 @@ describe('SaathratriEntity Management Detail Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SaathratriEntityDetail);
+    fixture = TestBed.createComponent(SaathratriEntityDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load saathratriEntity on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', SaathratriEntityDetail);
+      const instance = await harness.navigateByUrl('/', SaathratriEntityDetailComponent);
 
       // THEN
-      expect(instance.saathratriEntity()).toEqual(expect.objectContaining({ entityId: '9a32a2a5-a4ff-46ed-920e-fb61b74090d3' }));
+      expect(instance.saathratriEntity()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 

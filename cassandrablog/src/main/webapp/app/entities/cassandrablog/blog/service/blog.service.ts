@@ -67,7 +67,7 @@ export class BlogService extends BlogsService {
 
   findAllByCompositeIdCategoryPageable(category: string, req?: any): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('category', String(category));
+    options = options.set('category', category);
     return this.http.get<IBlog[]>(`${this.resourceUrl}/find-all-by-composite-id-category-pageable`, {
       params: options,
       observe: 'response',
@@ -80,8 +80,8 @@ export class BlogService extends BlogsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('category', String(category));
-    options = options.set('blogId', String(blogId));
+    options = options.set('category', category);
+    options = options.set('blogId', blogId);
     return this.http.get<IBlog[]>(`${this.resourceUrl}/find-all-by-composite-id-category-and-composite-id-blog-id-pageable`, {
       params: options,
       observe: 'response',
@@ -94,8 +94,8 @@ export class BlogService extends BlogsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('category', String(category));
-    options = options.set('blogId', String(blogId));
+    options = options.set('category', category);
+    options = options.set('blogId', blogId);
     return this.http.get<IBlog[]>(`${this.resourceUrl}/find-all-by-composite-id-category-and-composite-id-blog-id-less-than-pageable`, {
       params: options,
       observe: 'response',
@@ -108,8 +108,8 @@ export class BlogService extends BlogsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('category', String(category));
-    options = options.set('blogId', String(blogId));
+    options = options.set('category', category);
+    options = options.set('blogId', blogId);
     return this.http.get<IBlog[]>(
       `${this.resourceUrl}/find-all-by-composite-id-category-and-composite-id-blog-id-less-than-equal-pageable`,
       { params: options, observe: 'response' },
@@ -122,8 +122,8 @@ export class BlogService extends BlogsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('category', String(category));
-    options = options.set('blogId', String(blogId));
+    options = options.set('category', category);
+    options = options.set('blogId', blogId);
     return this.http.get<IBlog[]>(`${this.resourceUrl}/find-all-by-composite-id-category-and-composite-id-blog-id-greater-than-pageable`, {
       params: options,
       observe: 'response',
@@ -136,8 +136,8 @@ export class BlogService extends BlogsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('category', String(category));
-    options = options.set('blogId', String(blogId));
+    options = options.set('category', category);
+    options = options.set('blogId', blogId);
     return this.http.get<IBlog[]>(
       `${this.resourceUrl}/find-all-by-composite-id-category-and-composite-id-blog-id-greater-than-equal-pageable`,
       { params: options, observe: 'response' },
@@ -146,8 +146,8 @@ export class BlogService extends BlogsService {
 
   findByCompositeIdCategoryAndCompositeIdBlogId(category: string, blogId: string): Observable<EntityResponseType> {
     let options = new HttpParams();
-    options = options.set('category', String(category));
-    options = options.set('blogId', String(blogId));
+    options = options.set('category', category);
+    options = options.set('blogId', blogId);
     return this.http.get<IBlog>(`${this.resourceUrl}/find-by-composite-id-category-and-composite-id-blog-id`, {
       params: options,
       observe: 'response',

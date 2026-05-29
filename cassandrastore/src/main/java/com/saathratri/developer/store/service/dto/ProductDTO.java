@@ -14,10 +14,19 @@ import java.util.UUID;
 public class ProductDTO implements Serializable {
 
     private UUID id;
+
+    @NotNull
     private String title;
+
+    @NotNull
+    @DecimalMin(value = "0")
     private BigDecimal price;
+
     private ByteBuffer image;
+
+    @NotNull
     private Long addedDate;
+
     private String imageContentType;
 
     public ProductDTO() {
@@ -108,6 +117,9 @@ public class ProductDTO implements Serializable {
         if (!(o instanceof ProductDTO)) return false;
 
         ProductDTO that = (ProductDTO) o;
+        if (this.getId() == null) {
+            return false;
+        }
         return Objects.equals(getId(), that.getId());
     }
 

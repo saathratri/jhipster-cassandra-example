@@ -12,6 +12,9 @@ import java.util.UUID;
 public class TajUserDTO implements Serializable {
 
     private UUID id;
+
+    @NotNull
+    @Size(min = 6)
     private String login;
 
     public TajUserDTO() {
@@ -50,6 +53,9 @@ public class TajUserDTO implements Serializable {
         if (!(o instanceof TajUserDTO)) return false;
 
         TajUserDTO that = (TajUserDTO) o;
+        if (this.getId() == null) {
+            return false;
+        }
         return Objects.equals(getId(), that.getId());
     }
 

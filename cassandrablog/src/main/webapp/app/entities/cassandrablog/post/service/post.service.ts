@@ -116,7 +116,7 @@ export class PostService extends PostsService {
 
   findAllByCompositeIdCreatedDatePageable(createdDate: number, req?: any): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('createdDate', String(createdDate));
+    options = options.set('createdDate', createdDate);
     return this.http
       .get<RestPost[]>(`${this.resourceUrl}/find-all-by-composite-id-created-date-pageable`, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
@@ -128,8 +128,8 @@ export class PostService extends PostsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('createdDate', String(createdDate));
-    options = options.set('addedDateTime', String(addedDateTime));
+    options = options.set('createdDate', createdDate);
+    options = options.set('addedDateTime', addedDateTime);
     return this.http
       .get<
         RestPost[]
@@ -144,9 +144,9 @@ export class PostService extends PostsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('createdDate', String(createdDate));
-    options = options.set('addedDateTime', String(addedDateTime));
-    options = options.set('postId', String(postId));
+    options = options.set('createdDate', createdDate);
+    options = options.set('addedDateTime', addedDateTime);
+    options = options.set('postId', postId);
     return this.http
       .get<
         RestPost[]
@@ -160,8 +160,8 @@ export class PostService extends PostsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('createdDate', String(createdDate));
-    options = options.set('addedDateTime', String(addedDateTime));
+    options = options.set('createdDate', createdDate);
+    options = options.set('addedDateTime', addedDateTime);
     return this.http
       .get<
         RestPost[]
@@ -175,8 +175,8 @@ export class PostService extends PostsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('createdDate', String(createdDate));
-    options = options.set('addedDateTime', String(addedDateTime));
+    options = options.set('createdDate', createdDate);
+    options = options.set('addedDateTime', addedDateTime);
     return this.http
       .get<
         RestPost[]
@@ -190,8 +190,8 @@ export class PostService extends PostsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('createdDate', String(createdDate));
-    options = options.set('addedDateTime', String(addedDateTime));
+    options = options.set('createdDate', createdDate);
+    options = options.set('addedDateTime', addedDateTime);
     return this.http
       .get<
         RestPost[]
@@ -205,8 +205,8 @@ export class PostService extends PostsService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('createdDate', String(createdDate));
-    options = options.set('addedDateTime', String(addedDateTime));
+    options = options.set('createdDate', createdDate);
+    options = options.set('addedDateTime', addedDateTime);
     return this.http
       .get<
         RestPost[]
@@ -220,9 +220,9 @@ export class PostService extends PostsService {
     postId: string,
   ): Observable<EntityResponseType> {
     let options = new HttpParams();
-    options = options.set('createdDate', String(createdDate));
-    options = options.set('addedDateTime', String(addedDateTime));
-    options = options.set('postId', String(postId));
+    options = options.set('createdDate', createdDate);
+    options = options.set('addedDateTime', addedDateTime);
+    options = options.set('postId', postId);
     return this.http
       .get<RestPost>(`${this.resourceUrl}/find-by-composite-id-created-date-and-composite-id-added-date-time-and-composite-id-post-id`, {
         params: options,

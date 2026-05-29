@@ -35,7 +35,7 @@ describe('AddOnsSelectedByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.find('9fec3727-3421-4967-b213-ba36557ca194').subscribe(resp => (expectedResult = resp));
+      service.find('organizationId', 1, 'accountNumber', 'createdTimeId').subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -47,7 +47,7 @@ describe('AddOnsSelectedByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.create(addOnsSelectedByOrganization).subscribe(resp => (expectedResult = resp));
+      service.create(addOnsSelectedByOrganization).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'POST' });
       req.flush(returnedFromService);
@@ -59,7 +59,7 @@ describe('AddOnsSelectedByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.update(addOnsSelectedByOrganization).subscribe(resp => (expectedResult = resp));
+      service.update(addOnsSelectedByOrganization).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PUT' });
       req.flush(returnedFromService);
@@ -71,7 +71,7 @@ describe('AddOnsSelectedByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp));
+      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PATCH' });
       req.flush(returnedFromService);
@@ -92,7 +92,7 @@ describe('AddOnsSelectedByOrganization Service', () => {
     });
 
     it('should delete a AddOnsSelectedByOrganization', () => {
-      service.delete('9fec3727-3421-4967-b213-ba36557ca194').subscribe();
+      service.delete(sampleWithRequiredData).subscribe();
 
       const requests = httpMock.match({ method: 'DELETE' });
       expect(requests.length).toBe(1);
@@ -184,7 +184,7 @@ describe('AddOnsSelectedByOrganization Service', () => {
       });
 
       it('should return false if one entity is null', () => {
-        const entity1 = { organizationId: '5d2569e7-278f-4572-8beb-b3497c54caf8' };
+        const entity1 = { compositeId: sampleWithRequiredData.compositeId };
         const entity2 = null;
 
         const compareResult1 = service.compareAddOnsSelectedByOrganization(entity1, entity2);
@@ -195,8 +195,8 @@ describe('AddOnsSelectedByOrganization Service', () => {
       });
 
       it('should return false if primaryKey differs', () => {
-        const entity1 = { organizationId: '5d2569e7-278f-4572-8beb-b3497c54caf8' };
-        const entity2 = { organizationId: '327f5417-09c8-4f5c-b313-117201e1d0b5' };
+        const entity1 = { compositeId: sampleWithRequiredData.compositeId };
+        const entity2 = { compositeId: sampleWithPartialData.compositeId };
 
         const compareResult1 = service.compareAddOnsSelectedByOrganization(entity1, entity2);
         const compareResult2 = service.compareAddOnsSelectedByOrganization(entity2, entity1);
@@ -205,9 +205,9 @@ describe('AddOnsSelectedByOrganization Service', () => {
         expect(compareResult2).toEqual(false);
       });
 
-      it('should return false if primaryKey matches', () => {
-        const entity1 = { organizationId: '5d2569e7-278f-4572-8beb-b3497c54caf8' };
-        const entity2 = { organizationId: '5d2569e7-278f-4572-8beb-b3497c54caf8' };
+      it('should return true if primaryKey matches', () => {
+        const entity1 = { compositeId: sampleWithRequiredData.compositeId };
+        const entity2 = { compositeId: sampleWithRequiredData.compositeId };
 
         const compareResult1 = service.compareAddOnsSelectedByOrganization(entity1, entity2);
         const compareResult2 = service.compareAddOnsSelectedByOrganization(entity2, entity1);

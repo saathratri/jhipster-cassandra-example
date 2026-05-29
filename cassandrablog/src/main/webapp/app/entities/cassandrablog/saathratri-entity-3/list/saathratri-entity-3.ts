@@ -75,13 +75,12 @@ export class SaathratriEntity3Component implements OnInit {
   protected readonly saathratriEntity3Service = inject(SaathratriEntity3Service);
   // Cassandra entities use Observable-based loading (plain boolean, not signal,
   // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
-  constructor() {}
 
   // Saathratri: Composite Primary Key Code
   trackCompositeId = (item: ISaathratriEntity3): ISaathratriEntity3Id => this.saathratriEntity3Service.getSaathratriEntity3Identifier(item);
@@ -168,7 +167,7 @@ export class SaathratriEntity3Component implements OnInit {
   }
 
   isSearchFormValid(): boolean {
-    if (this.searchCriteria.entityType === null || this.searchCriteria.entityType === undefined || this.searchCriteria.entityType === '') {
+    if (this.searchCriteria.entityType === null || this.searchCriteria.entityType === '') {
       return false;
     }
     return true;
@@ -248,7 +247,7 @@ export class SaathratriEntity3Component implements OnInit {
     this.load();
   }
 
-  onSearchDateChange(fieldName: string, isDateTime: boolean = false): void {
+  onSearchDateChange(fieldName: string, isDateTime = false): void {
     const criteria = this.searchCriteria as any;
     const dateValue: Date | null = criteria[`${fieldName}Date`];
 
@@ -370,7 +369,7 @@ export class SaathratriEntity3Component implements OnInit {
     this.hasNextPage = hasNextPage === 'true';
 
     const pagingStateHeader = headers.get('X-Paging-State');
-    this.pagingState = pagingStateHeader || null;
+    this.pagingState = pagingStateHeader ?? null;
 
     const totalCountHeader = headers.get('X-Total-Count');
     this.totalItems = totalCountHeader !== null ? Number(totalCountHeader) : null;
@@ -385,6 +384,7 @@ export class SaathratriEntity3Component implements OnInit {
     return [compositeId.entityType, compositeId.createdTimeId].join('|');
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected queryBackend(): Observable<EntityArrayResponseType> {
     const queryObject: any = {
       pagingState: this.pagingState,
@@ -399,10 +399,10 @@ export class SaathratriEntity3Component implements OnInit {
         this.searchCriteria.createdTimeId &&
         this.searchCriteria.createdTimeId.trim() !== ''
       ) {
-        const operatorCreatedTimeId = this.searchCriteria.createdTimeIdOperator || 'eq';
+        const operatorCreatedTimeId = this.searchCriteria.createdTimeIdOperator ?? 'eq';
         if (operatorCreatedTimeId === 'eq') {
           return this.saathratriEntity3Service
-            .findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(this.searchCriteria.entityType!, this.searchCriteria.createdTimeId!)
+            .findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(this.searchCriteria.entityType, this.searchCriteria.createdTimeId)
             .pipe(
               map((res: EntityResponseType) => {
                 const entity = res.body;
@@ -415,31 +415,31 @@ export class SaathratriEntity3Component implements OnInit {
             );
         } else if (operatorCreatedTimeId === 'lt') {
           return this.saathratriEntity3Service.findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanPageable(
-            this.searchCriteria.entityType!,
-            this.searchCriteria.createdTimeId!,
+            this.searchCriteria.entityType,
+            this.searchCriteria.createdTimeId,
             queryObject,
           );
         } else if (operatorCreatedTimeId === 'lte') {
           return this.saathratriEntity3Service.findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanEqualPageable(
-            this.searchCriteria.entityType!,
-            this.searchCriteria.createdTimeId!,
+            this.searchCriteria.entityType,
+            this.searchCriteria.createdTimeId,
             queryObject,
           );
         } else if (operatorCreatedTimeId === 'gt') {
           return this.saathratriEntity3Service.findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanPageable(
-            this.searchCriteria.entityType!,
-            this.searchCriteria.createdTimeId!,
+            this.searchCriteria.entityType,
+            this.searchCriteria.createdTimeId,
             queryObject,
           );
         } else if (operatorCreatedTimeId === 'gte') {
           return this.saathratriEntity3Service.findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanEqualPageable(
-            this.searchCriteria.entityType!,
-            this.searchCriteria.createdTimeId!,
+            this.searchCriteria.entityType,
+            this.searchCriteria.createdTimeId,
             queryObject,
           );
         }
         return this.saathratriEntity3Service
-          .findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(this.searchCriteria.entityType!, this.searchCriteria.createdTimeId!)
+          .findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(this.searchCriteria.entityType, this.searchCriteria.createdTimeId)
           .pipe(
             map((res: EntityResponseType) => {
               const entity = res.body;
@@ -451,13 +451,14 @@ export class SaathratriEntity3Component implements OnInit {
             }),
           );
       } else if (this.searchCriteria.entityType && this.searchCriteria.entityType.trim() !== '') {
-        return this.saathratriEntity3Service.findAllByCompositeIdEntityTypePageable(this.searchCriteria.entityType!, queryObject);
+        return this.saathratriEntity3Service.findAllByCompositeIdEntityTypePageable(this.searchCriteria.entityType, queryObject);
       }
     }
     // Fallback: no valid criteria
     return this.saathratriEntity3Service.querySlice(queryObject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected handleNavigation(sortState: SortState): void {
     this.pagingState = null;
     this.hasNextPage = false;

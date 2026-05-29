@@ -30,7 +30,7 @@ describe('Product e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', /^\/services\/cassandrastore\/api\/products\b/).as('entitiesRequest');
+    cy.intercept('GET', '/services/cassandrastore/api/products+(?*|)').as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrastore/api/products').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrastore/api/products/*').as('deleteEntityRequest');
   });
@@ -92,7 +92,7 @@ describe('Product e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: /^\/services\/cassandrastore\/api\/products\b/,
+              url: '/services/cassandrastore/api/products+(?*|)',
               times: 1,
             },
             {

@@ -11,8 +11,13 @@ import java.util.Objects;
 public class PostDTO implements Serializable {
 
     private PostDTOId compositeId;
+
+    @NotNull
     private String title;
+
+    @NotNull
     private String content;
+
     private Long publishedDateTime;
     private Long sentDate;
 
@@ -91,6 +96,9 @@ public class PostDTO implements Serializable {
         if (!(o instanceof PostDTO)) return false;
 
         PostDTO that = (PostDTO) o;
+        if (this.getCompositeId() == null) {
+            return false;
+        }
         return Objects.equals(getCompositeId(), that.getCompositeId());
     }
 

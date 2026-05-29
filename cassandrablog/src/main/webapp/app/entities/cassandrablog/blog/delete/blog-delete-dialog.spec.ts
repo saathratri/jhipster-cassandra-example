@@ -1,16 +1,18 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { of } from 'rxjs';
 
+import { sampleWithRequiredData } from '../blog.test-samples';
 import { BlogService } from '../service/blog.service';
 
-import { BlogDeleteDialog } from './blog-delete-dialog';
+import { BlogDeleteDialogComponent } from './blog-delete-dialog';
 
 describe('Blog Management Delete Component', () => {
-  let comp: BlogDeleteDialog;
-  let fixture: ComponentFixture<BlogDeleteDialog>;
+  let comp: BlogDeleteDialogComponent;
+  let fixture: ComponentFixture<BlogDeleteDialogComponent>;
   let service: BlogService;
   let mockActiveModal: NgbActiveModal;
 
@@ -18,7 +20,7 @@ describe('Blog Management Delete Component', () => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
     });
-    fixture = TestBed.createComponent(BlogDeleteDialog);
+    fixture = TestBed.createComponent(BlogDeleteDialogComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(BlogService);
     mockActiveModal = TestBed.inject(NgbActiveModal);
@@ -27,14 +29,14 @@ describe('Blog Management Delete Component', () => {
   describe('confirmDelete', () => {
     it('should call delete service on confirmDelete', () => {
       // GIVEN
-      vitest.spyOn(service, 'delete').mockReturnValue(of(undefined));
+      vitest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse<{}>()));
       vitest.spyOn(mockActiveModal, 'close');
 
       // WHEN
-      comp.confirmDelete('ABC');
+      comp.confirmDelete(sampleWithRequiredData);
 
       // THEN
-      expect(service.delete).toHaveBeenCalledWith('ABC');
+      expect(service.delete).toHaveBeenCalledWith(sampleWithRequiredData);
       expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
     });
 

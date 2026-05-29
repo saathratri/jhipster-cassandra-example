@@ -59,20 +59,19 @@ export class TagComponent implements OnInit {
   aiSearchQuery = '';
   aiSearchLoading = signal(false);
   isAiSearchActive = signal(false);
-  aiSearchSelectedFields: { [key: string]: boolean } = { nameEmbedding: true, descriptionEmbedding: true };
+  aiSearchSelectedFields: Record<string, boolean> = { nameEmbedding: true, descriptionEmbedding: true };
 
   public readonly router = inject(Router);
   protected readonly tagService = inject(TagService);
   // Cassandra entities use Observable-based loading (plain boolean, not signal,
   // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
-  constructor() {}
 
   // Saathratri: Single-value Primary Key Code
   trackId = (item: ITag): string => this.tagService.getTagIdentifier(item);
@@ -161,14 +160,16 @@ export class TagComponent implements OnInit {
     this.aiSearchSelectedFields[fieldName] = !this.aiSearchSelectedFields[fieldName];
   }
 
-  private getSelectedAiSearchFields(): string[] {
+  // Public (not private) so member-ordering passes for the public/protected
+  // methods declared after the AI-search block in the same class.
+  getSelectedAiSearchFields(): string[] {
     const allFields = ['nameEmbedding', 'descriptionEmbedding'];
     const selected = allFields.filter(f => this.aiSearchSelectedFields[f]);
     return selected.length > 0 ? selected : allFields;
   }
 
   performAiSearch(query: string): void {
-    if (!query || !query.trim()) {
+    if (!query.trim()) {
       this.clearAiSearch();
       return;
     }
@@ -231,7 +232,7 @@ export class TagComponent implements OnInit {
       return data;
     }
 
-    return predicate && order ? data.sort(this.sortService.startSort({ predicate, order })) : data;
+    return data.sort(this.sortService.startSort({ predicate, order }));
   }
 
   protected fillComponentAttributesFromResponseBody(data: ITag[] | null): ITag[] {
@@ -243,16 +244,17 @@ export class TagComponent implements OnInit {
     this.hasNextPage = hasNextPage === 'true';
 
     const pagingStateHeader = headers.get('X-Paging-State');
-    this.pagingState = pagingStateHeader || null;
+    this.pagingState = pagingStateHeader ?? null;
 
     const totalCountHeader = headers.get('X-Total-Count');
     this.totalItems = totalCountHeader !== null ? Number(totalCountHeader) : null;
   }
 
   private getEntityKey(item: ITag): string {
-    return String(this.tagService.getTagIdentifier(item));
+    return JSON.stringify(this.tagService.getTagIdentifier(item));
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected queryBackend(): Observable<EntityArrayResponseType> {
     const queryObject: any = {
       pagingState: this.pagingState,
@@ -263,6 +265,7 @@ export class TagComponent implements OnInit {
     return this.tagService.querySlice(queryObject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected handleNavigation(sortState: SortState): void {
     this.pagingState = null;
     this.hasNextPage = false;

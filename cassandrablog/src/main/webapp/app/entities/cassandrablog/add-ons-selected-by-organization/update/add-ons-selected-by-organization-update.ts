@@ -68,7 +68,6 @@ export class AddOnsSelectedByOrganizationUpdateComponent implements OnInit {
   protected router = inject(Router);
 
   protected isResetDisabled: Record<string, boolean> = {}; // Track reset button states
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   private lastSavedValues: Record<string, any> = {}; // Store last valid values
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -131,10 +130,7 @@ export class AddOnsSelectedByOrganizationUpdateComponent implements OnInit {
   get areAllDateTimeFieldsValid(): boolean {
     const addOnDetailsBigIntControl = this.editForm.get('addOnDetailsBigInt');
 
-    return (
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      !addOnDetailsBigIntControl?.hasError('required') || this.isDateTimeValid.addOnDetailsBigInt
-    );
+    return !addOnDetailsBigIntControl?.hasError('required') || this.isDateTimeValid.addOnDetailsBigInt;
   }
 
   // Generate today's date and current time

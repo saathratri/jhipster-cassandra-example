@@ -30,7 +30,7 @@ describe('SaathratriEntity3 Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.find('ABC').subscribe(resp => (expectedResult = resp));
+      service.find('entityType', 'createdTimeId').subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -42,7 +42,7 @@ describe('SaathratriEntity3 Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.create(saathratriEntity3).subscribe(resp => (expectedResult = resp));
+      service.create(saathratriEntity3).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'POST' });
       req.flush(returnedFromService);
@@ -54,7 +54,7 @@ describe('SaathratriEntity3 Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.update(saathratriEntity3).subscribe(resp => (expectedResult = resp));
+      service.update(saathratriEntity3).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PUT' });
       req.flush(returnedFromService);
@@ -66,7 +66,7 @@ describe('SaathratriEntity3 Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp));
+      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PATCH' });
       req.flush(returnedFromService);
@@ -87,7 +87,7 @@ describe('SaathratriEntity3 Service', () => {
     });
 
     it('should delete a SaathratriEntity3', () => {
-      service.delete('ABC').subscribe();
+      service.delete(sampleWithRequiredData).subscribe();
 
       const requests = httpMock.match({ method: 'DELETE' });
       expect(requests.length).toBe(1);
@@ -158,7 +158,7 @@ describe('SaathratriEntity3 Service', () => {
       });
 
       it('should return false if one entity is null', () => {
-        const entity1 = { entityType: 'b211e691-84ee-487a-888a-c6d141e895e8' };
+        const entity1 = { compositeId: sampleWithRequiredData.compositeId };
         const entity2 = null;
 
         const compareResult1 = service.compareSaathratriEntity3(entity1, entity2);
@@ -169,8 +169,8 @@ describe('SaathratriEntity3 Service', () => {
       });
 
       it('should return false if primaryKey differs', () => {
-        const entity1 = { entityType: 'b211e691-84ee-487a-888a-c6d141e895e8' };
-        const entity2 = { entityType: 'a8b4fb97-a92e-4ff7-90af-c8ae72476ab0' };
+        const entity1 = { compositeId: sampleWithRequiredData.compositeId };
+        const entity2 = { compositeId: sampleWithPartialData.compositeId };
 
         const compareResult1 = service.compareSaathratriEntity3(entity1, entity2);
         const compareResult2 = service.compareSaathratriEntity3(entity2, entity1);
@@ -179,9 +179,9 @@ describe('SaathratriEntity3 Service', () => {
         expect(compareResult2).toEqual(false);
       });
 
-      it('should return false if primaryKey matches', () => {
-        const entity1 = { entityType: 'b211e691-84ee-487a-888a-c6d141e895e8' };
-        const entity2 = { entityType: 'b211e691-84ee-487a-888a-c6d141e895e8' };
+      it('should return true if primaryKey matches', () => {
+        const entity1 = { compositeId: sampleWithRequiredData.compositeId };
+        const entity2 = { compositeId: sampleWithRequiredData.compositeId };
 
         const compareResult1 = service.compareSaathratriEntity3(entity1, entity2);
         const compareResult2 = service.compareSaathratriEntity3(entity2, entity1);

@@ -1,16 +1,18 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { of } from 'rxjs';
 
 import { SetEntityByOrganizationService } from '../service/set-entity-by-organization.service';
+import { sampleWithRequiredData } from '../set-entity-by-organization.test-samples';
 
-import { SetEntityByOrganizationDeleteDialog } from './set-entity-by-organization-delete-dialog';
+import { SetEntityByOrganizationDeleteDialogComponent } from './set-entity-by-organization-delete-dialog';
 
 describe('SetEntityByOrganization Management Delete Component', () => {
-  let comp: SetEntityByOrganizationDeleteDialog;
-  let fixture: ComponentFixture<SetEntityByOrganizationDeleteDialog>;
+  let comp: SetEntityByOrganizationDeleteDialogComponent;
+  let fixture: ComponentFixture<SetEntityByOrganizationDeleteDialogComponent>;
   let service: SetEntityByOrganizationService;
   let mockActiveModal: NgbActiveModal;
 
@@ -18,7 +20,7 @@ describe('SetEntityByOrganization Management Delete Component', () => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
     });
-    fixture = TestBed.createComponent(SetEntityByOrganizationDeleteDialog);
+    fixture = TestBed.createComponent(SetEntityByOrganizationDeleteDialogComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(SetEntityByOrganizationService);
     mockActiveModal = TestBed.inject(NgbActiveModal);
@@ -27,14 +29,14 @@ describe('SetEntityByOrganization Management Delete Component', () => {
   describe('confirmDelete', () => {
     it('should call delete service on confirmDelete', () => {
       // GIVEN
-      vitest.spyOn(service, 'delete').mockReturnValue(of(undefined));
+      vitest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse<{}>()));
       vitest.spyOn(mockActiveModal, 'close');
 
       // WHEN
-      comp.confirmDelete('9fec3727-3421-4967-b213-ba36557ca194');
+      comp.confirmDelete(sampleWithRequiredData.organizationId);
 
       // THEN
-      expect(service.delete).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
+      expect(service.delete).toHaveBeenCalledWith(sampleWithRequiredData.organizationId);
       expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
     });
 

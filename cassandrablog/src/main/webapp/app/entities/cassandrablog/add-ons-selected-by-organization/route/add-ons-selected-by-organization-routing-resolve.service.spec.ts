@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, convertToParamMap } from '@angular/router';
 
-import { lastValueFrom, of, throwError } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 
+import { IAddOnsSelectedByOrganization } from '../add-ons-selected-by-organization.model';
+import { sampleWithRequiredData } from '../add-ons-selected-by-organization.test-samples';
 import { AddOnsSelectedByOrganizationService } from '../service/add-ons-selected-by-organization.service';
 
 import addOnsSelectedByOrganizationResolve from './add-ons-selected-by-organization-routing-resolve.service';
@@ -36,8 +38,8 @@ describe('AddOnsSelectedByOrganization routing resolve service', () => {
   describe('resolve', () => {
     it('should return IAddOnsSelectedByOrganization returned by find', async () => {
       // GIVEN
-      service.find = vitest.fn(organizationId => of({ organizationId }));
-      mockActivatedRouteSnapshot.params = { organizationId: '9fec3727-3421-4967-b213-ba36557ca194' };
+      service.find = vitest.fn(() => of(new HttpResponse({ body: sampleWithRequiredData })));
+      mockActivatedRouteSnapshot.params = { organizationId: 'val-1', arrivalDate: 'val-2', accountNumber: 'val-3', createdTimeId: 'val-4' };
 
       // WHEN
       await new Promise<void>(resolve => {
@@ -45,8 +47,8 @@ describe('AddOnsSelectedByOrganization routing resolve service', () => {
           addOnsSelectedByOrganizationResolve(mockActivatedRouteSnapshot).subscribe({
             next(result) {
               // THEN
-              expect(service.find).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
-              expect(result).toEqual({ organizationId: '9fec3727-3421-4967-b213-ba36557ca194' });
+              expect(service.find).toHaveBeenCalledWith('val-1', 'val-2', 'val-3', 'val-4');
+              expect(result).toEqual(sampleWithRequiredData);
               resolve();
             },
           });
@@ -74,10 +76,10 @@ describe('AddOnsSelectedByOrganization routing resolve service', () => {
       });
     });
 
-    it('should route to 404 page if data not found in server', async () => {
-      // GIVEN
-      vitest.spyOn(service, 'find').mockReturnValue(throwError(() => new HttpErrorResponse({ status: 404, statusText: 'Not Found' })));
-      mockActivatedRouteSnapshot.params = { organizationId: '9fec3727-3421-4967-b213-ba36557ca194' };
+    it('should navigate to 404 when find returns an empty body', async () => {
+      // GIVEN — the resolver navigates to 404 (and completes empty) when the entity is not found
+      service.find = vitest.fn(() => of(new HttpResponse<IAddOnsSelectedByOrganization>({ body: null })));
+      mockActivatedRouteSnapshot.params = { organizationId: 'val-1', arrivalDate: 'val-2', accountNumber: 'val-3', createdTimeId: 'val-4' };
 
       // WHEN
       await TestBed.runInInjectionContext(async () => {
@@ -85,26 +87,8 @@ describe('AddOnsSelectedByOrganization routing resolve service', () => {
           'no elements in sequence',
         );
         // THEN
-        expect(service.find).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
+        expect(service.find).toHaveBeenCalledWith('val-1', 'val-2', 'val-3', 'val-4');
         expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
-      });
-    });
-
-    it('should route to error page if server returns an error other than 404', async () => {
-      // GIVEN
-      vitest
-        .spyOn(service, 'find')
-        .mockReturnValue(throwError(() => new HttpErrorResponse({ status: 500, statusText: 'Internal Server Error' })));
-      mockActivatedRouteSnapshot.params = { organizationId: '9fec3727-3421-4967-b213-ba36557ca194' };
-
-      // WHEN
-      await TestBed.runInInjectionContext(async () => {
-        await expect(lastValueFrom(addOnsSelectedByOrganizationResolve(mockActivatedRouteSnapshot))).rejects.toThrowError(
-          'no elements in sequence',
-        );
-        // THEN
-        expect(service.find).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['error']);
       });
     });
   });

@@ -8,14 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { DataUtils } from 'app/core/util/data-util.service';
+import { sampleWithRequiredData } from '../tag.test-samples';
 
-import { TagDetail } from './tag-detail';
+import { TagDetailComponent } from './tag-detail';
 
 describe('Tag Management Detail Component', () => {
-  let comp: TagDetail;
-  let fixture: ComponentFixture<TagDetail>;
-  let dataUtils: DataUtils;
+  let comp: TagDetailComponent;
+  let fixture: ComponentFixture<TagDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,8 +24,8 @@ describe('Tag Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./tag-detail').then(m => m.TagDetail),
-              resolve: { tag: () => of({ id: '98ee8ea3-644a-40e1-a41d-945852ec36b4' }) },
+              loadComponent: () => import('./tag-detail').then(m => m.TagDetailComponent),
+              resolve: { tag: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,22 +35,20 @@ describe('Tag Management Detail Component', () => {
     const library = TestBed.inject(FaIconLibrary);
     library.addIcons(faArrowLeft);
     library.addIcons(faPencilAlt);
-    dataUtils = TestBed.inject(DataUtils);
-    vitest.spyOn(window, 'open').mockImplementation(() => null);
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TagDetail);
+    fixture = TestBed.createComponent(TagDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load tag on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', TagDetail);
+      const instance = await harness.navigateByUrl('/', TagDetailComponent);
 
       // THEN
-      expect(instance.tag()).toEqual(expect.objectContaining({ id: '98ee8ea3-644a-40e1-a41d-945852ec36b4' }));
+      expect(instance.tag()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 
@@ -60,42 +57,6 @@ describe('Tag Management Detail Component', () => {
       vitest.spyOn(globalThis.history, 'back');
       comp.previousState();
       expect(globalThis.history.back).toHaveBeenCalled();
-    });
-  });
-
-  describe('byteSize', () => {
-    it('should call byteSize from DataUtils', () => {
-      // GIVEN
-      vitest.spyOn(dataUtils, 'byteSize');
-      const fakeBase64 = 'fake base64';
-
-      // WHEN
-      comp.byteSize(fakeBase64);
-
-      // THEN
-      expect(dataUtils.byteSize).toHaveBeenCalledWith(fakeBase64);
-    });
-  });
-
-  describe('openFile', () => {
-    it('should call openFile from DataUtils', () => {
-      const newWindow = { ...window };
-      vitest.stubGlobal(
-        'open',
-        vitest.fn(() => newWindow),
-      );
-      window.onload = vitest.fn(() => newWindow) as any;
-      window.URL.createObjectURL = vitest.fn() as any;
-      // GIVEN
-      vitest.spyOn(dataUtils, 'openFile');
-      const fakeContentType = 'fake content type';
-      const fakeBase64 = 'fake base64';
-
-      // WHEN
-      comp.openFile(fakeBase64, fakeContentType);
-
-      // THEN
-      expect(dataUtils.openFile).toHaveBeenCalledWith(fakeBase64, fakeContentType);
     });
   });
 });

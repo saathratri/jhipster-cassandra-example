@@ -1,16 +1,18 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { of } from 'rxjs';
 
+import { sampleWithRequiredData } from '../product.test-samples';
 import { ProductService } from '../service/product.service';
 
-import { ProductDeleteDialog } from './product-delete-dialog';
+import { ProductDeleteDialogComponent } from './product-delete-dialog';
 
 describe('Product Management Delete Component', () => {
-  let comp: ProductDeleteDialog;
-  let fixture: ComponentFixture<ProductDeleteDialog>;
+  let comp: ProductDeleteDialogComponent;
+  let fixture: ComponentFixture<ProductDeleteDialogComponent>;
   let service: ProductService;
   let mockActiveModal: NgbActiveModal;
 
@@ -18,7 +20,7 @@ describe('Product Management Delete Component', () => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
     });
-    fixture = TestBed.createComponent(ProductDeleteDialog);
+    fixture = TestBed.createComponent(ProductDeleteDialogComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(ProductService);
     mockActiveModal = TestBed.inject(NgbActiveModal);
@@ -27,14 +29,14 @@ describe('Product Management Delete Component', () => {
   describe('confirmDelete', () => {
     it('should call delete service on confirmDelete', () => {
       // GIVEN
-      vitest.spyOn(service, 'delete').mockReturnValue(of(undefined));
+      vitest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse<{}>()));
       vitest.spyOn(mockActiveModal, 'close');
 
       // WHEN
-      comp.confirmDelete('9fec3727-3421-4967-b213-ba36557ca194');
+      comp.confirmDelete(sampleWithRequiredData.id);
 
       // THEN
-      expect(service.delete).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
+      expect(service.delete).toHaveBeenCalledWith(sampleWithRequiredData.id);
       expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
     });
 

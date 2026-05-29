@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { PostDetail } from './post-detail';
+import { sampleWithRequiredData } from '../post.test-samples';
+
+import { PostDetailComponent } from './post-detail';
 
 describe('Post Management Detail Component', () => {
-  let comp: PostDetail;
-  let fixture: ComponentFixture<PostDetail>;
+  let comp: PostDetailComponent;
+  let fixture: ComponentFixture<PostDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,8 +24,8 @@ describe('Post Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./post-detail').then(m => m.PostDetail),
-              resolve: { post: () => of({ createdDate: 21634 }) },
+              loadComponent: () => import('./post-detail').then(m => m.PostDetailComponent),
+              resolve: { post: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,17 +38,17 @@ describe('Post Management Detail Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PostDetail);
+    fixture = TestBed.createComponent(PostDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load post on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', PostDetail);
+      const instance = await harness.navigateByUrl('/', PostDetailComponent);
 
       // THEN
-      expect(instance.post()).toEqual(expect.objectContaining({ createdDate: 21634 }));
+      expect(instance.post()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 

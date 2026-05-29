@@ -50,6 +50,9 @@ public class SetEntityByOrganizationDTO implements Serializable {
         if (!(o instanceof SetEntityByOrganizationDTO)) return false;
 
         SetEntityByOrganizationDTO that = (SetEntityByOrganizationDTO) o;
+        if (this.getOrganizationId() == null) {
+            return false;
+        }
         return Objects.equals(getOrganizationId(), that.getOrganizationId());
     }
 

@@ -5,7 +5,7 @@ useTabs: false
 arrowParens: avoid
 bracketSameLine: false
 overrides:
-  - files: '*.html'
+  - files: "*.html"
     options:
       parser: angular
 plugins:

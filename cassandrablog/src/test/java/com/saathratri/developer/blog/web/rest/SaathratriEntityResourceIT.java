@@ -136,21 +136,21 @@ class SaathratriEntityResourceIT {
 
     @Test
     void createSaathratriEntityWithExistingId() throws Exception {
-        // Create the SaathratriEntity with an existing ID
-        saathratriEntity.setEntityId(UUID.randomUUID());
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         SaathratriEntityDTO saathratriEntityDTO = saathratriEntityMapper.toDto(saathratriEntity);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restSaathratriEntityMockMvc
             .perform(
                 post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(saathratriEntityDTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the SaathratriEntity in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the SaathratriEntity was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -183,12 +183,12 @@ class SaathratriEntityResourceIT {
             .perform(get(ENTITY_API_URL_ID, saathratriEntity.getEntityId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].entityId").value(hasItem(saathratriEntity.getEntityId().toString())))
-            .andExpect(jsonPath("$.[*].entityName").value(hasItem(DEFAULT_ENTITY_NAME)))
-            .andExpect(jsonPath("$.[*].entityDescription").value(hasItem(DEFAULT_ENTITY_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].entityCost").value(hasItem(sameNumber(DEFAULT_ENTITY_COST))))
-            .andExpect(jsonPath("$.[*].createdId").value(hasItem(DEFAULT_CREATED_ID.toString())))
-            .andExpect(jsonPath("$.[*].createdTimeId").value(hasItem(DEFAULT_CREATED_TIME_ID.toString())));
+            .andExpect(jsonPath("$.entityId").value(saathratriEntity.getEntityId().toString()))
+            .andExpect(jsonPath("$.entityName").value(DEFAULT_ENTITY_NAME))
+            .andExpect(jsonPath("$.entityDescription").value(DEFAULT_ENTITY_DESCRIPTION))
+            .andExpect(jsonPath("$.entityCost").value(sameNumber(DEFAULT_ENTITY_COST)))
+            .andExpect(jsonPath("$.createdId").value(DEFAULT_CREATED_ID.toString()))
+            .andExpect(jsonPath("$.createdTimeId").value(DEFAULT_CREATED_TIME_ID.toString()));
     }
 
     @Test
@@ -208,7 +208,6 @@ class SaathratriEntityResourceIT {
         // Update the saathratriEntity
         SaathratriEntity updatedSaathratriEntity = saathratriEntityRepository.findById(saathratriEntity.getEntityId()).orElseThrow();
         updatedSaathratriEntity
-            .entityId(UPDATED_ENTITY_ID)
             .entityName(UPDATED_ENTITY_NAME)
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
             .entityCost(UPDATED_ENTITY_COST)

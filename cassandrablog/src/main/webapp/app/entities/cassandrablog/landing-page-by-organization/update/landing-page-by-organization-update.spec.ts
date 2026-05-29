@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpResponse } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
@@ -7,14 +8,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Subject, from, of } from 'rxjs';
 
 import { ILandingPageByOrganization } from '../landing-page-by-organization.model';
+import { sampleWithRequiredData } from '../landing-page-by-organization.test-samples';
 import { LandingPageByOrganizationService } from '../service/landing-page-by-organization.service';
 
 import { LandingPageByOrganizationFormService } from './landing-page-by-organization-form.service';
-import { LandingPageByOrganizationUpdate } from './landing-page-by-organization-update';
+import { LandingPageByOrganizationUpdateComponent } from './landing-page-by-organization-update';
 
 describe('LandingPageByOrganization Management Update Component', () => {
-  let comp: LandingPageByOrganizationUpdate;
-  let fixture: ComponentFixture<LandingPageByOrganizationUpdate>;
+  let comp: LandingPageByOrganizationUpdateComponent;
+  let fixture: ComponentFixture<LandingPageByOrganizationUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let landingPageByOrganizationFormService: LandingPageByOrganizationFormService;
   let landingPageByOrganizationService: LandingPageByOrganizationService;
@@ -28,12 +30,14 @@ describe('LandingPageByOrganization Management Update Component', () => {
           provide: ActivatedRoute,
           useValue: {
             params: from([{}]),
+            // ngOnInit reads snapshot.routeConfig?.path to decide isNew
+            snapshot: { routeConfig: { path: '' } },
           },
         },
       ],
     });
 
-    fixture = TestBed.createComponent(LandingPageByOrganizationUpdate);
+    fixture = TestBed.createComponent(LandingPageByOrganizationUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     landingPageByOrganizationFormService = TestBed.inject(LandingPageByOrganizationFormService);
     landingPageByOrganizationService = TestBed.inject(LandingPageByOrganizationService);
@@ -43,7 +47,7 @@ describe('LandingPageByOrganization Management Update Component', () => {
 
   describe('ngOnInit', () => {
     it('should update editForm', () => {
-      const landingPageByOrganization: ILandingPageByOrganization = { organizationId: 'f319edc2-1bbe-4417-b29a-f3f11f94b1a7' };
+      const landingPageByOrganization: ILandingPageByOrganization = { ...sampleWithRequiredData };
 
       activatedRoute.data = of({ landingPageByOrganization });
       comp.ngOnInit();
@@ -55,8 +59,8 @@ describe('LandingPageByOrganization Management Update Component', () => {
   describe('save', () => {
     it('should call update service on save for existing entity', () => {
       // GIVEN
-      const saveSubject = new Subject<ILandingPageByOrganization>();
-      const landingPageByOrganization = { organizationId: '4a853e3a-594b-457b-8718-d64275e96ad2' };
+      const saveSubject = new Subject<HttpResponse<ILandingPageByOrganization>>();
+      const landingPageByOrganization = { ...sampleWithRequiredData };
       vitest.spyOn(landingPageByOrganizationFormService, 'getLandingPageByOrganization').mockReturnValue(landingPageByOrganization);
       vitest.spyOn(landingPageByOrganizationService, 'update').mockReturnValue(saveSubject);
       vitest.spyOn(comp, 'previousState');
@@ -65,44 +69,46 @@ describe('LandingPageByOrganization Management Update Component', () => {
 
       // WHEN
       comp.save();
-      expect(comp.isSaving()).toEqual(true);
-      saveSubject.next(landingPageByOrganization);
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.next(new HttpResponse({ body: landingPageByOrganization }));
       saveSubject.complete();
 
       // THEN
       expect(landingPageByOrganizationFormService.getLandingPageByOrganization).toHaveBeenCalled();
       expect(comp.previousState).toHaveBeenCalled();
       expect(landingPageByOrganizationService.update).toHaveBeenCalledWith(expect.objectContaining(landingPageByOrganization));
-      expect(comp.isSaving()).toEqual(false);
+      expect(comp.isSaving).toEqual(false);
     });
 
     it('should call create service on save for new entity', () => {
       // GIVEN
-      const saveSubject = new Subject<ILandingPageByOrganization>();
-      const landingPageByOrganization = { organizationId: '4a853e3a-594b-457b-8718-d64275e96ad2' };
-      vitest.spyOn(landingPageByOrganizationFormService, 'getLandingPageByOrganization').mockReturnValue({ organizationId: null });
+      const saveSubject = new Subject<HttpResponse<ILandingPageByOrganization>>();
+      const landingPageByOrganization = { ...sampleWithRequiredData };
+      vitest.spyOn(landingPageByOrganizationFormService, 'getLandingPageByOrganization').mockReturnValue(landingPageByOrganization);
       vitest.spyOn(landingPageByOrganizationService, 'create').mockReturnValue(saveSubject);
       vitest.spyOn(comp, 'previousState');
+      // routeConfig.path === 'new' makes the component treat this as a create
+      (activatedRoute as unknown as { snapshot: unknown }).snapshot = { routeConfig: { path: 'new' } };
       activatedRoute.data = of({ landingPageByOrganization: null });
       comp.ngOnInit();
 
       // WHEN
       comp.save();
-      expect(comp.isSaving()).toEqual(true);
-      saveSubject.next(landingPageByOrganization);
+      expect(comp.isSaving).toEqual(true);
+      saveSubject.next(new HttpResponse({ body: landingPageByOrganization }));
       saveSubject.complete();
 
       // THEN
       expect(landingPageByOrganizationFormService.getLandingPageByOrganization).toHaveBeenCalled();
       expect(landingPageByOrganizationService.create).toHaveBeenCalled();
-      expect(comp.isSaving()).toEqual(false);
+      expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).toHaveBeenCalled();
     });
 
     it('should set isSaving to false on error', () => {
       // GIVEN
-      const saveSubject = new Subject<ILandingPageByOrganization>();
-      const landingPageByOrganization = { organizationId: '4a853e3a-594b-457b-8718-d64275e96ad2' };
+      const saveSubject = new Subject<HttpResponse<ILandingPageByOrganization>>();
+      const landingPageByOrganization = { ...sampleWithRequiredData };
       vitest.spyOn(landingPageByOrganizationService, 'update').mockReturnValue(saveSubject);
       vitest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ landingPageByOrganization });
@@ -110,12 +116,12 @@ describe('LandingPageByOrganization Management Update Component', () => {
 
       // WHEN
       comp.save();
-      expect(comp.isSaving()).toEqual(true);
+      expect(comp.isSaving).toEqual(true);
       saveSubject.error('This is an error!');
 
       // THEN
       expect(landingPageByOrganizationService.update).toHaveBeenCalled();
-      expect(comp.isSaving()).toEqual(false);
+      expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
     });
   });

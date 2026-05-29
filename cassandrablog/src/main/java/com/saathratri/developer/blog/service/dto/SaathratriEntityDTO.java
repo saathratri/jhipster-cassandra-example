@@ -106,6 +106,9 @@ public class SaathratriEntityDTO implements Serializable {
         if (!(o instanceof SaathratriEntityDTO)) return false;
 
         SaathratriEntityDTO that = (SaathratriEntityDTO) o;
+        if (this.getEntityId() == null) {
+            return false;
+        }
         return Objects.equals(getEntityId(), that.getEntityId());
     }
 

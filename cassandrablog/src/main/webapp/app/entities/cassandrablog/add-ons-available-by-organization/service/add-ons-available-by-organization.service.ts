@@ -68,8 +68,7 @@ export class AddOnsAvailableByOrganizationsService {
         addOnId: restAddOnsAvailableByOrganization.compositeId.addOnId,
       },
       addOnDetailsBigInt: restAddOnsAvailableByOrganization.addOnDetailsBigInt
-        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          Object.fromEntries(Object.entries(restAddOnsAvailableByOrganization.addOnDetailsBigInt).map(([k, v]) => [k, dayjs(v)]))
+        ? Object.fromEntries(Object.entries(restAddOnsAvailableByOrganization.addOnDetailsBigInt).map(([k, v]) => [k, dayjs(v)]))
         : {},
     };
   }
@@ -131,7 +130,7 @@ export class AddOnsAvailableByOrganizationService extends AddOnsAvailableByOrgan
 
   findAllByCompositeIdOrganizationIdPageable(organizationId: string, req?: any): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
+    options = options.set('organizationId', organizationId);
     return this.http
       .get<
         RestAddOnsAvailableByOrganization[]
@@ -145,8 +144,8 @@ export class AddOnsAvailableByOrganizationService extends AddOnsAvailableByOrgan
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('entityType', String(entityType));
+    options = options.set('organizationId', organizationId);
+    options = options.set('entityType', entityType);
     return this.http
       .get<
         RestAddOnsAvailableByOrganization[]
@@ -161,9 +160,9 @@ export class AddOnsAvailableByOrganizationService extends AddOnsAvailableByOrgan
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('entityType', String(entityType));
-    options = options.set('entityId', String(entityId));
+    options = options.set('organizationId', organizationId);
+    options = options.set('entityType', entityType);
+    options = options.set('entityId', entityId);
     return this.http
       .get<
         RestAddOnsAvailableByOrganization[]
@@ -179,10 +178,10 @@ export class AddOnsAvailableByOrganizationService extends AddOnsAvailableByOrgan
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('entityType', String(entityType));
-    options = options.set('entityId', String(entityId));
-    options = options.set('addOnId', String(addOnId));
+    options = options.set('organizationId', organizationId);
+    options = options.set('entityType', entityType);
+    options = options.set('entityId', entityId);
+    options = options.set('addOnId', addOnId);
     return this.http
       .get<
         RestAddOnsAvailableByOrganization[]
@@ -197,10 +196,10 @@ export class AddOnsAvailableByOrganizationService extends AddOnsAvailableByOrgan
     addOnId: string,
   ): Observable<EntityResponseType> {
     let options = new HttpParams();
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('entityType', String(entityType));
-    options = options.set('entityId', String(entityId));
-    options = options.set('addOnId', String(addOnId));
+    options = options.set('organizationId', organizationId);
+    options = options.set('entityType', entityType);
+    options = options.set('entityId', entityId);
+    options = options.set('addOnId', addOnId);
     return this.http
       .get<RestAddOnsAvailableByOrganization>(
         `${this.resourceUrl}/find-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id-and-composite-id-add-on-id`,

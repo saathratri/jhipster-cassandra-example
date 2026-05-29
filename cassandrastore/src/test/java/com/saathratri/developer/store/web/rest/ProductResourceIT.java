@@ -134,19 +134,19 @@ class ProductResourceIT {
 
     @Test
     void createProductWithExistingId() throws Exception {
-        // Create the Product with an existing ID
-        product.setId(UUID.randomUUID());
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         ProductDTO productDTO = productMapper.toDto(product);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restProductMockMvc
             .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the Product in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the Product was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -227,12 +227,12 @@ class ProductResourceIT {
             .perform(get(ENTITY_API_URL_ID, product.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().toString())))
-            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
-            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_IMAGE.array()))))
-            .andExpect(jsonPath("$.[*].addedDate").value(hasItem(DEFAULT_ADDED_DATE.intValue())));
+            .andExpect(jsonPath("$.id").value(product.getId().toString()))
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
+            .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
+            .andExpect(jsonPath("$.image").value(Base64.getEncoder().encodeToString(DEFAULT_IMAGE.array())))
+            .andExpect(jsonPath("$.addedDate").value(DEFAULT_ADDED_DATE.intValue()));
     }
 
     @Test
@@ -252,7 +252,6 @@ class ProductResourceIT {
         // Update the product
         Product updatedProduct = productRepository.findById(product.getId()).orElseThrow();
         updatedProduct
-            .id(UPDATED_ID)
             .title(UPDATED_TITLE)
             .price(UPDATED_PRICE)
             .image(UPDATED_IMAGE)

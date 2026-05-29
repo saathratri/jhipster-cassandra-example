@@ -1,32 +1,27 @@
+import dayjs from 'dayjs/esm';
+
 import { IPost, NewPost } from './post.model';
 
 export const sampleWithRequiredData: IPost = {
-  createdDate: 8730,
-  title: 'lawful above unless',
-  content: 'save',
+  compositeId: { createdDate: dayjs('2024-01-02T12:00:00Z'), addedDateTime: dayjs('2024-01-02T12:00:00Z'), postId: 'sample-postId-1' },
 };
 
 export const sampleWithPartialData: IPost = {
-  createdDate: 8720,
-  title: 'trick ugh',
-  content: 'vivaciously including replicate',
-  publishedDateTime: 19879,
+  compositeId: { createdDate: dayjs('2024-01-03T12:00:00Z'), addedDateTime: dayjs('2024-01-03T12:00:00Z'), postId: 'sample-postId-2' },
+  title: 'sample-title-2',
+  content: 'sample-content-2',
 };
 
 export const sampleWithFullData: IPost = {
-  createdDate: 9917,
-  addedDateTime: 32632,
-  postId: '9013c01b-47f4-4c3c-b6f7-5f65ddd7eff0',
-  title: 'daily infinite',
-  content: 'gloat',
-  publishedDateTime: 23544,
-  sentDate: 2539,
+  compositeId: { createdDate: dayjs('2024-01-04T12:00:00Z'), addedDateTime: dayjs('2024-01-04T12:00:00Z'), postId: 'sample-postId-3' },
+  title: 'sample-title-3',
+  content: 'sample-content-3',
+  publishedDateTime: dayjs('2024-01-04T12:00:00Z'),
+  sentDate: dayjs('2024-01-04T12:00:00Z'),
 };
 
 export const sampleWithNewData: NewPost = {
-  title: 'willfully settler',
-  content: 'consequently',
-  createdDate: null,
+  compositeId: { createdDate: dayjs('2024-01-05T12:00:00Z'), addedDateTime: dayjs('2024-01-05T12:00:00Z'), postId: 'sample-postId-4' },
 };
 
 Object.freeze(sampleWithNewData);

@@ -93,6 +93,9 @@ public class LandingPageByOrganizationDTO implements Serializable {
         if (!(o instanceof LandingPageByOrganizationDTO)) return false;
 
         LandingPageByOrganizationDTO that = (LandingPageByOrganizationDTO) o;
+        if (this.getOrganizationId() == null) {
+            return false;
+        }
         return Objects.equals(getOrganizationId(), that.getOrganizationId());
     }
 

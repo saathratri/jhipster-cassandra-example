@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { TajUserDetail } from './taj-user-detail';
+import { sampleWithRequiredData } from '../taj-user.test-samples';
+
+import { TajUserDetailComponent } from './taj-user-detail';
 
 describe('TajUser Management Detail Component', () => {
-  let comp: TajUserDetail;
-  let fixture: ComponentFixture<TajUserDetail>;
+  let comp: TajUserDetailComponent;
+  let fixture: ComponentFixture<TajUserDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,8 +24,8 @@ describe('TajUser Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./taj-user-detail').then(m => m.TajUserDetail),
-              resolve: { tajUser: () => of({ id: 'a30298cf-223f-4185-9984-7ec30e626f17' }) },
+              loadComponent: () => import('./taj-user-detail').then(m => m.TajUserDetailComponent),
+              resolve: { tajUser: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,17 +38,17 @@ describe('TajUser Management Detail Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TajUserDetail);
+    fixture = TestBed.createComponent(TajUserDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load tajUser on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', TajUserDetail);
+      const instance = await harness.navigateByUrl('/', TajUserDetailComponent);
 
       // THEN
-      expect(instance.tajUser()).toEqual(expect.objectContaining({ id: 'a30298cf-223f-4185-9984-7ec30e626f17' }));
+      expect(instance.tajUser()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 

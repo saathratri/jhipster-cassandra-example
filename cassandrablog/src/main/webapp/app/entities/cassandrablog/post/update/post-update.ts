@@ -51,7 +51,6 @@ export class PostUpdateComponent implements OnInit {
   protected router = inject(Router);
 
   protected isResetDisabled: Record<string, boolean> = {}; // Track reset button states
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   private lastSavedValues: Record<string, any> = {}; // Store last valid values
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -109,9 +108,7 @@ export class PostUpdateComponent implements OnInit {
     const publishedDateTimeControl = this.editForm.get('publishedDateTime');
 
     return (
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (!addedDateTimeControl?.hasError('required') || this.isDateTimeValid.addedDateTime) &&
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (!publishedDateTimeControl?.hasError('required') || this.isDateTimeValid.publishedDateTime)
     );
   }

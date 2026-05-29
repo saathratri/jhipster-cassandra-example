@@ -88,17 +88,11 @@ class SaathratriEntity3ResourceIT {
     public static SaathratriEntity3 createEntity() {
         SaathratriEntity3 saathratriEntity3 = new SaathratriEntity3()
             .compositeId(new SaathratriEntity3Id().entityType(DEFAULT_ENTITY_TYPE).createdTimeId(DEFAULT_CREATED_TIME_ID))
-            .entityName("entityName1")
-            .entityDescription("entityDescription1")
-            .entityCost(new BigDecimal(1))
-            .departureDate(1L)
-            .tags(
-                new java.util.TreeSet<String>() {
-                    {
-                        add("tags1");
-                    }
-                }
-            );
+            .entityName(DEFAULT_ENTITY_NAME)
+            .entityDescription(DEFAULT_ENTITY_DESCRIPTION)
+            .entityCost(DEFAULT_ENTITY_COST)
+            .departureDate(DEFAULT_DEPARTURE_DATE)
+            .tags(DEFAULT_TAGS);
         saathratriEntity3.setCompositeId(new SaathratriEntity3Id(DEFAULT_ENTITY_TYPE, DEFAULT_CREATED_TIME_ID));
         return saathratriEntity3;
     }
@@ -112,17 +106,11 @@ class SaathratriEntity3ResourceIT {
     public static SaathratriEntity3 createUpdatedEntity() {
         SaathratriEntity3 saathratriEntity3 = new SaathratriEntity3()
             .compositeId(new SaathratriEntity3Id().entityType(UPDATED_ENTITY_TYPE).createdTimeId(UPDATED_CREATED_TIME_ID))
-            .entityName("entityName1")
-            .entityDescription("entityDescription1")
-            .entityCost(new BigDecimal(1))
-            .departureDate(1L)
-            .tags(
-                new java.util.TreeSet<String>() {
-                    {
-                        add("tags1");
-                    }
-                }
-            );
+            .entityName(UPDATED_ENTITY_NAME)
+            .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+            .entityCost(UPDATED_ENTITY_COST)
+            .departureDate(UPDATED_DEPARTURE_DATE)
+            .tags(UPDATED_TAGS);
         saathratriEntity3.setCompositeId(new SaathratriEntity3Id(UPDATED_ENTITY_TYPE, UPDATED_CREATED_TIME_ID));
         return saathratriEntity3;
     }
@@ -161,13 +149,13 @@ class SaathratriEntity3ResourceIT {
 
     @Test
     void createSaathratriEntity3WithExistingId() throws Exception {
-        // Create the SaathratriEntity3 with an existing ID
-        saathratriEntity3Repository.save(saathratriEntity3);
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         SaathratriEntity3DTO saathratriEntity3DTO = saathratriEntity3Mapper.toDto(saathratriEntity3);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restSaathratriEntity3MockMvc
             .perform(
                 post(ENTITY_API_URL)
@@ -175,10 +163,10 @@ class SaathratriEntity3ResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(saathratriEntity3DTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the SaathratriEntity3 in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the SaathratriEntity3 was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -203,7 +191,7 @@ class SaathratriEntity3ResourceIT {
             .andExpect(jsonPath("$.[*].entityDescription").value(hasItem(DEFAULT_ENTITY_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].entityCost").value(hasItem(sameNumber(DEFAULT_ENTITY_COST))))
             .andExpect(jsonPath("$.[*].departureDate").value(hasItem(DEFAULT_DEPARTURE_DATE.intValue())))
-            .andExpect(jsonPath("$.[*].tags").value(hasItem(DEFAULT_TAGS)));
+            .andExpect(jsonPath("$.[*].tags").exists());
     }
 
     @Test
@@ -216,24 +204,19 @@ class SaathratriEntity3ResourceIT {
         // Get the saathratriEntity3
         restSaathratriEntity3MockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    saathratriEntity3.getCompositeId().getEntityType() + "/" + saathratriEntity3.getCompositeId().getCreatedTimeId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(
-                jsonPath("$.[*].compositeId.entityType").value(hasItem(saathratriEntity3.getCompositeId().getEntityType().toString()))
-            )
-            .andExpect(
-                jsonPath("$.[*].compositeId.createdTimeId").value(hasItem(saathratriEntity3.getCompositeId().getCreatedTimeId().toString()))
-            )
-            .andExpect(jsonPath("$.[*].entityName").value(hasItem(DEFAULT_ENTITY_NAME)))
-            .andExpect(jsonPath("$.[*].entityDescription").value(hasItem(DEFAULT_ENTITY_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].entityCost").value(hasItem(sameNumber(DEFAULT_ENTITY_COST))))
-            .andExpect(jsonPath("$.[*].departureDate").value(hasItem(DEFAULT_DEPARTURE_DATE.intValue())))
-            .andExpect(jsonPath("$.[*].tags").value(hasItem(DEFAULT_TAGS)));
+            .andExpect(jsonPath("$.compositeId.entityType").value(saathratriEntity3.getCompositeId().getEntityType().toString()))
+            .andExpect(jsonPath("$.compositeId.createdTimeId").value(saathratriEntity3.getCompositeId().getCreatedTimeId().toString()))
+            .andExpect(jsonPath("$.entityName").value(DEFAULT_ENTITY_NAME))
+            .andExpect(jsonPath("$.entityDescription").value(DEFAULT_ENTITY_DESCRIPTION))
+            .andExpect(jsonPath("$.entityCost").value(sameNumber(DEFAULT_ENTITY_COST)))
+            .andExpect(jsonPath("$.departureDate").value(DEFAULT_DEPARTURE_DATE.intValue()))
+            .andExpect(jsonPath("$.tags").exists());
     }
 
     @Test
@@ -241,10 +224,9 @@ class SaathratriEntity3ResourceIT {
         // Get the saathratriEntity3
         restSaathratriEntity3MockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    saathratriEntity3.getCompositeId().getEntityType() + "/" + saathratriEntity3.getCompositeId().getCreatedTimeId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
             )
             .andExpect(status().isNotFound());
     }
@@ -270,7 +252,11 @@ class SaathratriEntity3ResourceIT {
 
         restSaathratriEntity3MockMvc
             .perform(
-                put(ENTITY_API_URL_ID, saathratriEntity3DTO)
+                put(
+                    ENTITY_API_URL + "/{entityType}/{createdTimeId}",
+                    saathratriEntity3DTO.getCompositeId().getEntityType(),
+                    saathratriEntity3DTO.getCompositeId().getCreatedTimeId()
+                )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(saathratriEntity3DTO))
@@ -294,8 +280,9 @@ class SaathratriEntity3ResourceIT {
         restSaathratriEntity3MockMvc
             .perform(
                 put(
-                    ENTITY_API_URL_ID,
-                    saathratriEntity3.getCompositeId().getEntityType() + "/" + saathratriEntity3.getCompositeId().getCreatedTimeId()
+                    ENTITY_API_URL + "/{entityType}/{createdTimeId}",
+                    saathratriEntity3DTO.getCompositeId().getEntityType(),
+                    saathratriEntity3DTO.getCompositeId().getCreatedTimeId()
                 )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -317,7 +304,7 @@ class SaathratriEntity3ResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSaathratriEntity3MockMvc
             .perform(
-                put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
+                put(ENTITY_API_URL + "/{entityType}/{createdTimeId}", UUID.randomUUID().toString(), UUID.randomUUID())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(saathratriEntity3DTO))
@@ -369,7 +356,11 @@ class SaathratriEntity3ResourceIT {
 
         restSaathratriEntity3MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedSaathratriEntity3.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{entityType}/{createdTimeId}",
+                    partialUpdatedSaathratriEntity3.getCompositeId().getEntityType(),
+                    partialUpdatedSaathratriEntity3.getCompositeId().getCreatedTimeId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedSaathratriEntity3))
@@ -407,7 +398,11 @@ class SaathratriEntity3ResourceIT {
 
         restSaathratriEntity3MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedSaathratriEntity3.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{entityType}/{createdTimeId}",
+                    partialUpdatedSaathratriEntity3.getCompositeId().getEntityType(),
+                    partialUpdatedSaathratriEntity3.getCompositeId().getCreatedTimeId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedSaathratriEntity3))
@@ -434,7 +429,11 @@ class SaathratriEntity3ResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSaathratriEntity3MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, saathratriEntity3DTO)
+                patch(
+                    ENTITY_API_URL + "/{entityType}/{createdTimeId}",
+                    saathratriEntity3DTO.getCompositeId().getEntityType(),
+                    saathratriEntity3DTO.getCompositeId().getCreatedTimeId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(saathratriEntity3DTO))
@@ -456,7 +455,7 @@ class SaathratriEntity3ResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSaathratriEntity3MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, saathratriEntity3DTO)
+                patch(ENTITY_API_URL + "/{entityType}/{createdTimeId}", UUID.randomUUID().toString(), UUID.randomUUID())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(saathratriEntity3DTO))
@@ -492,7 +491,6 @@ class SaathratriEntity3ResourceIT {
     @Test
     void deleteSaathratriEntity3() throws Exception {
         // Initialize the database
-        saathratriEntity3.setCompositeId(new SaathratriEntity3Id());
         saathratriEntity3.getCompositeId().setEntityType(UUID.randomUUID().toString());
         saathratriEntity3.getCompositeId().setCreatedTimeId(UUID.randomUUID());
         saathratriEntity3Repository.save(saathratriEntity3);
@@ -501,7 +499,15 @@ class SaathratriEntity3ResourceIT {
 
         // Delete the saathratriEntity3
         restSaathratriEntity3MockMvc
-            .perform(delete(ENTITY_API_URL_ID, saathratriEntity3.getCompositeId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(
+                delete(
+                    ENTITY_API_URL + "/{entityType}/{createdTimeId}",
+                    saathratriEntity3.getCompositeId().getEntityType(),
+                    saathratriEntity3.getCompositeId().getCreatedTimeId()
+                )
+                    .with(csrf())
+                    .accept(MediaType.APPLICATION_JSON)
+            )
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

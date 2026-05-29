@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { BlogDetail } from './blog-detail';
+import { sampleWithRequiredData } from '../blog.test-samples';
+
+import { BlogDetailComponent } from './blog-detail';
 
 describe('Blog Management Detail Component', () => {
-  let comp: BlogDetail;
-  let fixture: ComponentFixture<BlogDetail>;
+  let comp: BlogDetailComponent;
+  let fixture: ComponentFixture<BlogDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,8 +24,8 @@ describe('Blog Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./blog-detail').then(m => m.BlogDetail),
-              resolve: { blog: () => of({ category: 'd97e55e3-ad93-4a91-b761-e2d09b7c888e' }) },
+              loadComponent: () => import('./blog-detail').then(m => m.BlogDetailComponent),
+              resolve: { blog: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,17 +38,17 @@ describe('Blog Management Detail Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BlogDetail);
+    fixture = TestBed.createComponent(BlogDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load blog on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', BlogDetail);
+      const instance = await harness.navigateByUrl('/', BlogDetailComponent);
 
       // THEN
-      expect(instance.blog()).toEqual(expect.objectContaining({ category: 'd97e55e3-ad93-4a91-b761-e2d09b7c888e' }));
+      expect(instance.blog()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 

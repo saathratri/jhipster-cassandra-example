@@ -75,13 +75,12 @@ export class BlogComponent implements OnInit {
   protected readonly blogService = inject(BlogService);
   // Cassandra entities use Observable-based loading (plain boolean, not signal,
   // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
-  constructor() {}
 
   // Saathratri: Composite Primary Key Code
   trackCompositeId = (item: IBlog): IBlogId => this.blogService.getBlogIdentifier(item);
@@ -168,7 +167,7 @@ export class BlogComponent implements OnInit {
   }
 
   isSearchFormValid(): boolean {
-    if (this.searchCriteria.category === null || this.searchCriteria.category === undefined || this.searchCriteria.category === '') {
+    if (this.searchCriteria.category === null || this.searchCriteria.category === '') {
       return false;
     }
     return true;
@@ -248,7 +247,7 @@ export class BlogComponent implements OnInit {
     this.load();
   }
 
-  onSearchDateChange(fieldName: string, isDateTime: boolean = false): void {
+  onSearchDateChange(fieldName: string, isDateTime = false): void {
     const criteria = this.searchCriteria as any;
     const dateValue: Date | null = criteria[`${fieldName}Date`];
 
@@ -366,7 +365,7 @@ export class BlogComponent implements OnInit {
     this.hasNextPage = hasNextPage === 'true';
 
     const pagingStateHeader = headers.get('X-Paging-State');
-    this.pagingState = pagingStateHeader || null;
+    this.pagingState = pagingStateHeader ?? null;
 
     const totalCountHeader = headers.get('X-Total-Count');
     this.totalItems = totalCountHeader !== null ? Number(totalCountHeader) : null;
@@ -381,6 +380,7 @@ export class BlogComponent implements OnInit {
     return [compositeId.category, compositeId.blogId].join('|');
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected queryBackend(): Observable<EntityArrayResponseType> {
     const queryObject: any = {
       pagingState: this.pagingState,
@@ -395,10 +395,10 @@ export class BlogComponent implements OnInit {
         this.searchCriteria.blogId &&
         this.searchCriteria.blogId.trim() !== ''
       ) {
-        const operatorBlogId = this.searchCriteria.blogIdOperator || 'eq';
+        const operatorBlogId = this.searchCriteria.blogIdOperator ?? 'eq';
         if (operatorBlogId === 'eq') {
           return this.blogService
-            .findByCompositeIdCategoryAndCompositeIdBlogId(this.searchCriteria.category!, this.searchCriteria.blogId!)
+            .findByCompositeIdCategoryAndCompositeIdBlogId(this.searchCriteria.category, this.searchCriteria.blogId)
             .pipe(
               map((res: EntityResponseType) => {
                 const entity = res.body;
@@ -411,31 +411,31 @@ export class BlogComponent implements OnInit {
             );
         } else if (operatorBlogId === 'lt') {
           return this.blogService.findAllByCompositeIdCategoryAndCompositeIdBlogIdLessThanPageable(
-            this.searchCriteria.category!,
-            this.searchCriteria.blogId!,
+            this.searchCriteria.category,
+            this.searchCriteria.blogId,
             queryObject,
           );
         } else if (operatorBlogId === 'lte') {
           return this.blogService.findAllByCompositeIdCategoryAndCompositeIdBlogIdLessThanEqualPageable(
-            this.searchCriteria.category!,
-            this.searchCriteria.blogId!,
+            this.searchCriteria.category,
+            this.searchCriteria.blogId,
             queryObject,
           );
         } else if (operatorBlogId === 'gt') {
           return this.blogService.findAllByCompositeIdCategoryAndCompositeIdBlogIdGreaterThanPageable(
-            this.searchCriteria.category!,
-            this.searchCriteria.blogId!,
+            this.searchCriteria.category,
+            this.searchCriteria.blogId,
             queryObject,
           );
         } else if (operatorBlogId === 'gte') {
           return this.blogService.findAllByCompositeIdCategoryAndCompositeIdBlogIdGreaterThanEqualPageable(
-            this.searchCriteria.category!,
-            this.searchCriteria.blogId!,
+            this.searchCriteria.category,
+            this.searchCriteria.blogId,
             queryObject,
           );
         }
         return this.blogService
-          .findByCompositeIdCategoryAndCompositeIdBlogId(this.searchCriteria.category!, this.searchCriteria.blogId!)
+          .findByCompositeIdCategoryAndCompositeIdBlogId(this.searchCriteria.category, this.searchCriteria.blogId)
           .pipe(
             map((res: EntityResponseType) => {
               const entity = res.body;
@@ -447,13 +447,14 @@ export class BlogComponent implements OnInit {
             }),
           );
       } else if (this.searchCriteria.category && this.searchCriteria.category.trim() !== '') {
-        return this.blogService.findAllByCompositeIdCategoryPageable(this.searchCriteria.category!, queryObject);
+        return this.blogService.findAllByCompositeIdCategoryPageable(this.searchCriteria.category, queryObject);
       }
     }
     // Fallback: no valid criteria
     return this.blogService.querySlice(queryObject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected handleNavigation(sortState: SortState): void {
     this.pagingState = null;
     this.hasNextPage = false;

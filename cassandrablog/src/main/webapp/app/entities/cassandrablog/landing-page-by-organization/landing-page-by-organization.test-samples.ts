@@ -1,26 +1,27 @@
+import dayjs from 'dayjs/esm';
+
 import { ILandingPageByOrganization, NewLandingPageByOrganization } from './landing-page-by-organization.model';
 
 export const sampleWithRequiredData: ILandingPageByOrganization = {
-  organizationId: 'edd1e483-8b17-48c0-b8b2-b31ec8d9b4f2',
+  organizationId: 'sample-organizationId-1',
 };
 
 export const sampleWithPartialData: ILandingPageByOrganization = {
-  organizationId: 'd929d523-b01b-4219-b1d7-accf53caa37f',
-  detailsText: 'provider till',
-  detailsDecimal: 2926.34,
-  detailsBigInt: 14670,
+  organizationId: 'sample-organizationId-2',
+  detailsText: { key2: 'val-2' },
+  detailsDecimal: { key2: 2 },
 };
 
 export const sampleWithFullData: ILandingPageByOrganization = {
-  organizationId: '188d714d-a9a0-448a-b6ba-3fed40feedb0',
-  detailsText: 'unless masculinize so',
-  detailsDecimal: 18372.01,
-  detailsBoolean: false,
-  detailsBigInt: 11132,
+  organizationId: 'sample-organizationId-3',
+  detailsText: { key3: 'val-3' },
+  detailsDecimal: { key3: 3 },
+  detailsBoolean: { key3: false },
+  detailsBigInt: { key3: dayjs('2024-01-04T12:00:00Z') },
 };
 
 export const sampleWithNewData: NewLandingPageByOrganization = {
-  organizationId: null,
+  organizationId: 'sample-organizationId-4',
 };
 
 Object.freeze(sampleWithNewData);

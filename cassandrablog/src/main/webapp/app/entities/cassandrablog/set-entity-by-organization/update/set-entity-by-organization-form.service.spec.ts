@@ -64,8 +64,8 @@ describe('SetEntityByOrganization Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing ISetEntityByOrganization should not enable organizationId FormControl', () => {
-        const formGroup = service.createSetEntityByOrganizationFormGroup();
+      it('passing ISetEntityByOrganization should keep the key control disabled', () => {
+        const formGroup = service.createSetEntityByOrganizationFormGroup(sampleWithRequiredData);
         expect(formGroup.controls.organizationId.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
@@ -73,11 +73,10 @@ describe('SetEntityByOrganization Form Service', () => {
         expect(formGroup.controls.organizationId.disabled).toBe(true);
       });
 
-      it('passing NewSetEntityByOrganization should disable organizationId FormControl', () => {
-        const formGroup = service.createSetEntityByOrganizationFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createSetEntityByOrganizationFormGroup();
 
-        service.resetForm(formGroup, { organizationId: null });
+        service.resetForm(formGroup, sampleWithRequiredData);
 
         expect(formGroup.controls.organizationId.disabled).toBe(true);
       });

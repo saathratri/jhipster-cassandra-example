@@ -1,16 +1,18 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { of } from 'rxjs';
 
+import { sampleWithRequiredData } from '../saathratri-entity-3.test-samples';
 import { SaathratriEntity3Service } from '../service/saathratri-entity-3.service';
 
-import { SaathratriEntity3DeleteDialog } from './saathratri-entity-3-delete-dialog';
+import { SaathratriEntity3DeleteDialogComponent } from './saathratri-entity-3-delete-dialog';
 
 describe('SaathratriEntity3 Management Delete Component', () => {
-  let comp: SaathratriEntity3DeleteDialog;
-  let fixture: ComponentFixture<SaathratriEntity3DeleteDialog>;
+  let comp: SaathratriEntity3DeleteDialogComponent;
+  let fixture: ComponentFixture<SaathratriEntity3DeleteDialogComponent>;
   let service: SaathratriEntity3Service;
   let mockActiveModal: NgbActiveModal;
 
@@ -18,7 +20,7 @@ describe('SaathratriEntity3 Management Delete Component', () => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
     });
-    fixture = TestBed.createComponent(SaathratriEntity3DeleteDialog);
+    fixture = TestBed.createComponent(SaathratriEntity3DeleteDialogComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(SaathratriEntity3Service);
     mockActiveModal = TestBed.inject(NgbActiveModal);
@@ -27,14 +29,14 @@ describe('SaathratriEntity3 Management Delete Component', () => {
   describe('confirmDelete', () => {
     it('should call delete service on confirmDelete', () => {
       // GIVEN
-      vitest.spyOn(service, 'delete').mockReturnValue(of(undefined));
+      vitest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse<{}>()));
       vitest.spyOn(mockActiveModal, 'close');
 
       // WHEN
-      comp.confirmDelete('ABC');
+      comp.confirmDelete(sampleWithRequiredData);
 
       // THEN
-      expect(service.delete).toHaveBeenCalledWith('ABC');
+      expect(service.delete).toHaveBeenCalledWith(sampleWithRequiredData);
       expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
     });
 

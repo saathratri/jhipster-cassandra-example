@@ -73,7 +73,7 @@ export class SaathratriEntity4Service extends SaathratriEntity4sService {
 
   findAllByCompositeIdOrganizationIdPageable(organizationId: string, req?: any): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
+    options = options.set('organizationId', organizationId);
     return this.http.get<ISaathratriEntity4[]>(`${this.resourceUrl}/find-all-by-composite-id-organization-id-pageable`, {
       params: options,
       observe: 'response',
@@ -86,8 +86,8 @@ export class SaathratriEntity4Service extends SaathratriEntity4sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('attributeKey', String(attributeKey));
+    options = options.set('organizationId', organizationId);
+    options = options.set('attributeKey', attributeKey);
     return this.http.get<ISaathratriEntity4[]>(
       `${this.resourceUrl}/find-all-by-composite-id-organization-id-and-composite-id-attribute-key-pageable`,
       { params: options, observe: 'response' },
@@ -96,8 +96,8 @@ export class SaathratriEntity4Service extends SaathratriEntity4sService {
 
   findByCompositeIdOrganizationIdAndCompositeIdAttributeKey(organizationId: string, attributeKey: string): Observable<EntityResponseType> {
     let options = new HttpParams();
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('attributeKey', String(attributeKey));
+    options = options.set('organizationId', organizationId);
+    options = options.set('attributeKey', attributeKey);
     return this.http.get<ISaathratriEntity4>(`${this.resourceUrl}/find-by-composite-id-organization-id-and-composite-id-attribute-key`, {
       params: options,
       observe: 'response',

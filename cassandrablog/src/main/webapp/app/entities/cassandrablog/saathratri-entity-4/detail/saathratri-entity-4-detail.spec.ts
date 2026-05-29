@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { SaathratriEntity4Detail } from './saathratri-entity-4-detail';
+import { sampleWithRequiredData } from '../saathratri-entity-4.test-samples';
+
+import { SaathratriEntity4DetailComponent } from './saathratri-entity-4-detail';
 
 describe('SaathratriEntity4 Management Detail Component', () => {
-  let comp: SaathratriEntity4Detail;
-  let fixture: ComponentFixture<SaathratriEntity4Detail>;
+  let comp: SaathratriEntity4DetailComponent;
+  let fixture: ComponentFixture<SaathratriEntity4DetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,8 +24,8 @@ describe('SaathratriEntity4 Management Detail Component', () => {
           [
             {
               path: '**',
-              loadComponent: () => import('./saathratri-entity-4-detail').then(m => m.SaathratriEntity4Detail),
-              resolve: { saathratriEntity4: () => of({ organizationId: 'f84082d7-31a6-42c6-a2c0-915e5221b32b' }) },
+              loadComponent: () => import('./saathratri-entity-4-detail').then(m => m.SaathratriEntity4DetailComponent),
+              resolve: { saathratriEntity4: () => of(sampleWithRequiredData) },
             },
           ],
           withComponentInputBinding(),
@@ -36,17 +38,17 @@ describe('SaathratriEntity4 Management Detail Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SaathratriEntity4Detail);
+    fixture = TestBed.createComponent(SaathratriEntity4DetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
     it('should load saathratriEntity4 on init', async () => {
       const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', SaathratriEntity4Detail);
+      const instance = await harness.navigateByUrl('/', SaathratriEntity4DetailComponent);
 
       // THEN
-      expect(instance.saathratriEntity4()).toEqual(expect.objectContaining({ organizationId: 'f84082d7-31a6-42c6-a2c0-915e5221b32b' }));
+      expect(instance.saathratriEntity4()).toEqual(expect.objectContaining(sampleWithRequiredData));
     });
   });
 

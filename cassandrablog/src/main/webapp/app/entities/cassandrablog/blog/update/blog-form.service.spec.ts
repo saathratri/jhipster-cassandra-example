@@ -19,8 +19,7 @@ describe('Blog Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            category: expect.any(Object),
-            blogId: expect.any(Object),
+            compositeId: expect.any(Object),
             handle: expect.any(Object),
             content: expect.any(Object),
           }),
@@ -32,8 +31,7 @@ describe('Blog Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
-            category: expect.any(Object),
-            blogId: expect.any(Object),
+            compositeId: expect.any(Object),
             handle: expect.any(Object),
             content: expect.any(Object),
           }),
@@ -64,6 +62,25 @@ describe('Blog Form Service', () => {
         const blog = service.getBlog(formGroup);
 
         expect(blog).toMatchObject(sampleWithRequiredData);
+      });
+    });
+
+    describe('resetForm', () => {
+      it('passing IBlog should keep the key control disabled', () => {
+        const formGroup = service.createBlogFormGroup(sampleWithRequiredData);
+        expect(formGroup.controls.compositeId.controls.category.disabled).toBe(true);
+
+        service.resetForm(formGroup, sampleWithRequiredData);
+
+        expect(formGroup.controls.compositeId.controls.category.disabled).toBe(true);
+      });
+
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createBlogFormGroup();
+
+        service.resetForm(formGroup, { compositeId: { category: null, blogId: null } });
+
+        expect(formGroup.controls.compositeId.controls.category.disabled).toBe(true);
       });
     });
   });

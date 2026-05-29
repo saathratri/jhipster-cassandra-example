@@ -70,8 +70,8 @@ describe('LandingPageByOrganization Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing ILandingPageByOrganization should not enable organizationId FormControl', () => {
-        const formGroup = service.createLandingPageByOrganizationFormGroup();
+      it('passing ILandingPageByOrganization should keep the key control disabled', () => {
+        const formGroup = service.createLandingPageByOrganizationFormGroup(sampleWithRequiredData);
         expect(formGroup.controls.organizationId.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
@@ -79,11 +79,10 @@ describe('LandingPageByOrganization Form Service', () => {
         expect(formGroup.controls.organizationId.disabled).toBe(true);
       });
 
-      it('passing NewLandingPageByOrganization should disable organizationId FormControl', () => {
-        const formGroup = service.createLandingPageByOrganizationFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.organizationId.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createLandingPageByOrganizationFormGroup();
 
-        service.resetForm(formGroup, { organizationId: null });
+        service.resetForm(formGroup, sampleWithRequiredData);
 
         expect(formGroup.controls.organizationId.disabled).toBe(true);
       });

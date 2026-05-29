@@ -57,7 +57,6 @@ export class ReportUpdateComponent implements OnInit {
   protected router = inject(Router);
 
   protected isResetDisabled: Record<string, boolean> = {}; // Track reset button states
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   private lastSavedValues: Record<string, any> = {}; // Store last valid values
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -131,10 +130,7 @@ export class ReportUpdateComponent implements OnInit {
   get areAllDateTimeFieldsValid(): boolean {
     const createDateControl = this.editForm.get('createDate');
 
-    return (
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      !createDateControl?.hasError('required') || this.isDateTimeValid.createDate
-    );
+    return !createDateControl?.hasError('required') || this.isDateTimeValid.createDate;
   }
 
   // Generate today's date and current time

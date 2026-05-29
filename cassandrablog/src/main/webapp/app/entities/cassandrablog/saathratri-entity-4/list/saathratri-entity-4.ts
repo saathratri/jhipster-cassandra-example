@@ -73,13 +73,12 @@ export class SaathratriEntity4Component implements OnInit {
   protected readonly saathratriEntity4Service = inject(SaathratriEntity4Service);
   // Cassandra entities use Observable-based loading (plain boolean, not signal,
   // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
-  constructor() {}
 
   // Saathratri: Composite Primary Key Code
   trackCompositeId = (item: ISaathratriEntity4): ISaathratriEntity4Id => this.saathratriEntity4Service.getSaathratriEntity4Identifier(item);
@@ -166,7 +165,7 @@ export class SaathratriEntity4Component implements OnInit {
   }
 
   isSearchFormValid(): boolean {
-    if (this.searchCriteria.organizationId === null || this.searchCriteria.organizationId === undefined) {
+    if (this.searchCriteria.organizationId === null) {
       return false;
     }
     return true;
@@ -245,7 +244,7 @@ export class SaathratriEntity4Component implements OnInit {
     this.load();
   }
 
-  onSearchDateChange(fieldName: string, isDateTime: boolean = false): void {
+  onSearchDateChange(fieldName: string, isDateTime = false): void {
     const criteria = this.searchCriteria as any;
     const dateValue: Date | null = criteria[`${fieldName}Date`];
 
@@ -363,7 +362,7 @@ export class SaathratriEntity4Component implements OnInit {
     this.hasNextPage = hasNextPage === 'true';
 
     const pagingStateHeader = headers.get('X-Paging-State');
-    this.pagingState = pagingStateHeader || null;
+    this.pagingState = pagingStateHeader ?? null;
 
     const totalCountHeader = headers.get('X-Total-Count');
     this.totalItems = totalCountHeader !== null ? Number(totalCountHeader) : null;
@@ -378,6 +377,7 @@ export class SaathratriEntity4Component implements OnInit {
     return [compositeId.organizationId, compositeId.attributeKey].join('|');
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected queryBackend(): Observable<EntityArrayResponseType> {
     const queryObject: any = {
       pagingState: this.pagingState,
@@ -393,7 +393,7 @@ export class SaathratriEntity4Component implements OnInit {
         this.searchCriteria.attributeKey.trim() !== ''
       ) {
         return this.saathratriEntity4Service
-          .findByCompositeIdOrganizationIdAndCompositeIdAttributeKey(this.searchCriteria.organizationId!, this.searchCriteria.attributeKey!)
+          .findByCompositeIdOrganizationIdAndCompositeIdAttributeKey(this.searchCriteria.organizationId, this.searchCriteria.attributeKey)
           .pipe(
             map((res: EntityResponseType) => {
               const entity = res.body;
@@ -405,13 +405,14 @@ export class SaathratriEntity4Component implements OnInit {
             }),
           );
       } else if (this.searchCriteria.organizationId && this.searchCriteria.organizationId.trim() !== '') {
-        return this.saathratriEntity4Service.findAllByCompositeIdOrganizationIdPageable(this.searchCriteria.organizationId!, queryObject);
+        return this.saathratriEntity4Service.findAllByCompositeIdOrganizationIdPageable(this.searchCriteria.organizationId, queryObject);
       }
     }
     // Fallback: no valid criteria
     return this.saathratriEntity4Service.querySlice(queryObject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected handleNavigation(sortState: SortState): void {
     this.pagingState = null;
     this.hasNextPage = false;

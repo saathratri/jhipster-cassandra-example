@@ -121,7 +121,7 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
 
   findAllByCompositeIdEntityTypeIdPageable(entityTypeId: string, req?: any): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
+    options = options.set('entityTypeId', entityTypeId);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -135,8 +135,8 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -151,9 +151,9 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -169,10 +169,10 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('blogId', String(blogId));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('blogId', blogId);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -187,9 +187,9 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -204,9 +204,9 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -221,9 +221,9 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -238,9 +238,9 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -256,10 +256,10 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('blogId', String(blogId));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('blogId', blogId);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -275,10 +275,10 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('blogId', String(blogId));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('blogId', blogId);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -294,10 +294,10 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('blogId', String(blogId));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('blogId', blogId);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -313,10 +313,10 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('blogId', String(blogId));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('blogId', blogId);
     return this.http
       .get<
         RestSaathratriEntity2[]
@@ -331,10 +331,10 @@ export class SaathratriEntity2Service extends SaathratriEntity2sService {
     blogId: string,
   ): Observable<EntityResponseType> {
     let options = new HttpParams();
-    options = options.set('entityTypeId', String(entityTypeId));
-    options = options.set('yearOfDateAdded', String(yearOfDateAdded));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('blogId', String(blogId));
+    options = options.set('entityTypeId', entityTypeId);
+    options = options.set('yearOfDateAdded', yearOfDateAdded);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('blogId', blogId);
     return this.http
       .get<RestSaathratriEntity2>(
         `${this.resourceUrl}/find-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id`,

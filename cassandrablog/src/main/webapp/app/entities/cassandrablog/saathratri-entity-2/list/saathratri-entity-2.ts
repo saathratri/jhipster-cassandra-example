@@ -83,13 +83,12 @@ export class SaathratriEntity2Component implements OnInit {
   protected readonly saathratriEntity2Service = inject(SaathratriEntity2Service);
   // Cassandra entities use Observable-based loading (plain boolean, not signal,
   // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
-  constructor() {}
 
   // Saathratri: Composite Primary Key Code
   trackCompositeId = (item: ISaathratriEntity2): ISaathratriEntity2Id => this.saathratriEntity2Service.getSaathratriEntity2Identifier(item);
@@ -176,10 +175,10 @@ export class SaathratriEntity2Component implements OnInit {
   }
 
   isSearchFormValid(): boolean {
-    if (this.searchCriteria.entityTypeId === null || this.searchCriteria.entityTypeId === undefined) {
+    if (this.searchCriteria.entityTypeId === null) {
       return false;
     }
-    if (this.searchCriteria.yearOfDateAdded === null || this.searchCriteria.yearOfDateAdded === undefined) {
+    if (this.searchCriteria.yearOfDateAdded === null) {
       return false;
     }
     return true;
@@ -263,7 +262,7 @@ export class SaathratriEntity2Component implements OnInit {
     this.load();
   }
 
-  onSearchDateChange(fieldName: string, isDateTime: boolean = false): void {
+  onSearchDateChange(fieldName: string, isDateTime = false): void {
     const criteria = this.searchCriteria as any;
     const dateValue: Date | null = criteria[`${fieldName}Date`];
 
@@ -381,7 +380,7 @@ export class SaathratriEntity2Component implements OnInit {
     this.hasNextPage = hasNextPage === 'true';
 
     const pagingStateHeader = headers.get('X-Paging-State');
-    this.pagingState = pagingStateHeader || null;
+    this.pagingState = pagingStateHeader ?? null;
 
     const totalCountHeader = headers.get('X-Total-Count');
     this.totalItems = totalCountHeader !== null ? Number(totalCountHeader) : null;
@@ -396,6 +395,7 @@ export class SaathratriEntity2Component implements OnInit {
     return [compositeId.entityTypeId, compositeId.yearOfDateAdded, compositeId.arrivalDate, compositeId.blogId].join('|');
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected queryBackend(): Observable<EntityArrayResponseType> {
     const queryObject: any = {
       pagingState: this.pagingState,
@@ -408,20 +408,18 @@ export class SaathratriEntity2Component implements OnInit {
         this.searchCriteria.entityTypeId &&
         this.searchCriteria.entityTypeId.trim() !== '' &&
         this.searchCriteria.yearOfDateAdded !== null &&
-        this.searchCriteria.yearOfDateAdded !== undefined &&
         this.searchCriteria.arrivalDate !== null &&
-        this.searchCriteria.arrivalDate !== undefined &&
         this.searchCriteria.blogId &&
         this.searchCriteria.blogId.trim() !== ''
       ) {
-        const operatorBlogId = this.searchCriteria.blogIdOperator || 'eq';
+        const operatorBlogId = this.searchCriteria.blogIdOperator ?? 'eq';
         if (operatorBlogId === 'eq') {
           return this.saathratriEntity2Service
             .findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(
-              this.searchCriteria.entityTypeId!,
-              this.searchCriteria.yearOfDateAdded!,
-              this.searchCriteria.arrivalDate!,
-              this.searchCriteria.blogId!,
+              this.searchCriteria.entityTypeId,
+              this.searchCriteria.yearOfDateAdded,
+              this.searchCriteria.arrivalDate,
+              this.searchCriteria.blogId,
             )
             .pipe(
               map((res: EntityResponseType) => {
@@ -435,43 +433,43 @@ export class SaathratriEntity2Component implements OnInit {
             );
         } else if (operatorBlogId === 'lt') {
           return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThanPageable(
-            this.searchCriteria.entityTypeId!,
-            this.searchCriteria.yearOfDateAdded!,
-            this.searchCriteria.arrivalDate!,
-            this.searchCriteria.blogId!,
+            this.searchCriteria.entityTypeId,
+            this.searchCriteria.yearOfDateAdded,
+            this.searchCriteria.arrivalDate,
+            this.searchCriteria.blogId,
             queryObject,
           );
         } else if (operatorBlogId === 'lte') {
           return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThanEqualPageable(
-            this.searchCriteria.entityTypeId!,
-            this.searchCriteria.yearOfDateAdded!,
-            this.searchCriteria.arrivalDate!,
-            this.searchCriteria.blogId!,
+            this.searchCriteria.entityTypeId,
+            this.searchCriteria.yearOfDateAdded,
+            this.searchCriteria.arrivalDate,
+            this.searchCriteria.blogId,
             queryObject,
           );
         } else if (operatorBlogId === 'gt') {
           return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThanPageable(
-            this.searchCriteria.entityTypeId!,
-            this.searchCriteria.yearOfDateAdded!,
-            this.searchCriteria.arrivalDate!,
-            this.searchCriteria.blogId!,
+            this.searchCriteria.entityTypeId,
+            this.searchCriteria.yearOfDateAdded,
+            this.searchCriteria.arrivalDate,
+            this.searchCriteria.blogId,
             queryObject,
           );
         } else if (operatorBlogId === 'gte') {
           return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThanEqualPageable(
-            this.searchCriteria.entityTypeId!,
-            this.searchCriteria.yearOfDateAdded!,
-            this.searchCriteria.arrivalDate!,
-            this.searchCriteria.blogId!,
+            this.searchCriteria.entityTypeId,
+            this.searchCriteria.yearOfDateAdded,
+            this.searchCriteria.arrivalDate,
+            this.searchCriteria.blogId,
             queryObject,
           );
         }
         return this.saathratriEntity2Service
           .findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(
-            this.searchCriteria.entityTypeId!,
-            this.searchCriteria.yearOfDateAdded!,
-            this.searchCriteria.arrivalDate!,
-            this.searchCriteria.blogId!,
+            this.searchCriteria.entityTypeId,
+            this.searchCriteria.yearOfDateAdded,
+            this.searchCriteria.arrivalDate,
+            this.searchCriteria.blogId,
           )
           .pipe(
             map((res: EntityResponseType) => {
@@ -487,65 +485,63 @@ export class SaathratriEntity2Component implements OnInit {
         this.searchCriteria.entityTypeId &&
         this.searchCriteria.entityTypeId.trim() !== '' &&
         this.searchCriteria.yearOfDateAdded !== null &&
-        this.searchCriteria.yearOfDateAdded !== undefined &&
-        this.searchCriteria.arrivalDate !== null &&
-        this.searchCriteria.arrivalDate !== undefined
+        this.searchCriteria.arrivalDate !== null
       ) {
-        const operatorArrivalDate = this.searchCriteria.arrivalDateOperator || 'eq';
+        const operatorArrivalDate = this.searchCriteria.arrivalDateOperator ?? 'eq';
         if (operatorArrivalDate === 'lt') {
           return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThanPageable(
-            this.searchCriteria.entityTypeId!,
-            this.searchCriteria.yearOfDateAdded!,
-            this.searchCriteria.arrivalDate!,
+            this.searchCriteria.entityTypeId,
+            this.searchCriteria.yearOfDateAdded,
+            this.searchCriteria.arrivalDate,
             queryObject,
           );
         } else if (operatorArrivalDate === 'lte') {
           return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThanEqualPageable(
-            this.searchCriteria.entityTypeId!,
-            this.searchCriteria.yearOfDateAdded!,
-            this.searchCriteria.arrivalDate!,
+            this.searchCriteria.entityTypeId,
+            this.searchCriteria.yearOfDateAdded,
+            this.searchCriteria.arrivalDate,
             queryObject,
           );
         } else if (operatorArrivalDate === 'gt') {
           return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThanPageable(
-            this.searchCriteria.entityTypeId!,
-            this.searchCriteria.yearOfDateAdded!,
-            this.searchCriteria.arrivalDate!,
+            this.searchCriteria.entityTypeId,
+            this.searchCriteria.yearOfDateAdded,
+            this.searchCriteria.arrivalDate,
             queryObject,
           );
         } else if (operatorArrivalDate === 'gte') {
           return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThanEqualPageable(
-            this.searchCriteria.entityTypeId!,
-            this.searchCriteria.yearOfDateAdded!,
-            this.searchCriteria.arrivalDate!,
+            this.searchCriteria.entityTypeId,
+            this.searchCriteria.yearOfDateAdded,
+            this.searchCriteria.arrivalDate,
             queryObject,
           );
         }
         return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDatePageable(
-          this.searchCriteria.entityTypeId!,
-          this.searchCriteria.yearOfDateAdded!,
-          this.searchCriteria.arrivalDate!,
+          this.searchCriteria.entityTypeId,
+          this.searchCriteria.yearOfDateAdded,
+          this.searchCriteria.arrivalDate,
           queryObject,
         );
       } else if (
         this.searchCriteria.entityTypeId &&
         this.searchCriteria.entityTypeId.trim() !== '' &&
-        this.searchCriteria.yearOfDateAdded !== null &&
-        this.searchCriteria.yearOfDateAdded !== undefined
+        this.searchCriteria.yearOfDateAdded !== null
       ) {
         return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedPageable(
-          this.searchCriteria.entityTypeId!,
-          this.searchCriteria.yearOfDateAdded!,
+          this.searchCriteria.entityTypeId,
+          this.searchCriteria.yearOfDateAdded,
           queryObject,
         );
       } else if (this.searchCriteria.entityTypeId && this.searchCriteria.entityTypeId.trim() !== '') {
-        return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdPageable(this.searchCriteria.entityTypeId!, queryObject);
+        return this.saathratriEntity2Service.findAllByCompositeIdEntityTypeIdPageable(this.searchCriteria.entityTypeId, queryObject);
       }
     }
     // Fallback: no valid criteria
     return this.saathratriEntity2Service.querySlice(queryObject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected handleNavigation(sortState: SortState): void {
     this.pagingState = null;
     this.hasNextPage = false;

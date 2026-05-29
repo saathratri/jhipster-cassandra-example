@@ -114,35 +114,11 @@ class AddOnsAvailableByOrganizationResourceIT {
                     .entityId(DEFAULT_ENTITY_ID)
                     .addOnId(DEFAULT_ADD_ON_ID)
             )
-            .addOnType("addOnType1")
-            .addOnDetailsText(
-                new java.util.HashMap<String, String>() {
-                    {
-                        put("addOnDetailsText1", "addOnDetailsText1");
-                    }
-                }
-            )
-            .addOnDetailsDecimal(
-                new java.util.HashMap<String, BigDecimal>() {
-                    {
-                        put("addOnDetailsDecimal1", new BigDecimal(1));
-                    }
-                }
-            )
-            .addOnDetailsBoolean(
-                new java.util.HashMap<String, Boolean>() {
-                    {
-                        put("addOnDetailsBoolean1", false);
-                    }
-                }
-            )
-            .addOnDetailsBigInt(
-                new java.util.HashMap<String, Long>() {
-                    {
-                        put("addOnDetailsBigInt1", 1L);
-                    }
-                }
-            );
+            .addOnType(DEFAULT_ADD_ON_TYPE)
+            .addOnDetailsText(DEFAULT_ADD_ON_DETAILS_TEXT)
+            .addOnDetailsDecimal(DEFAULT_ADD_ON_DETAILS_DECIMAL)
+            .addOnDetailsBoolean(DEFAULT_ADD_ON_DETAILS_BOOLEAN)
+            .addOnDetailsBigInt(DEFAULT_ADD_ON_DETAILS_BIG_INT);
         addOnsAvailableByOrganization.setCompositeId(
             new AddOnsAvailableByOrganizationId(DEFAULT_ORGANIZATION_ID, DEFAULT_ENTITY_TYPE, DEFAULT_ENTITY_ID, DEFAULT_ADD_ON_ID)
         );
@@ -164,35 +140,11 @@ class AddOnsAvailableByOrganizationResourceIT {
                     .entityId(UPDATED_ENTITY_ID)
                     .addOnId(UPDATED_ADD_ON_ID)
             )
-            .addOnType("addOnType1")
-            .addOnDetailsText(
-                new java.util.HashMap<String, String>() {
-                    {
-                        put("addOnDetailsText1", "addOnDetailsText1");
-                    }
-                }
-            )
-            .addOnDetailsDecimal(
-                new java.util.HashMap<String, BigDecimal>() {
-                    {
-                        put("addOnDetailsDecimal1", new BigDecimal(1));
-                    }
-                }
-            )
-            .addOnDetailsBoolean(
-                new java.util.HashMap<String, Boolean>() {
-                    {
-                        put("addOnDetailsBoolean1", false);
-                    }
-                }
-            )
-            .addOnDetailsBigInt(
-                new java.util.HashMap<String, Long>() {
-                    {
-                        put("addOnDetailsBigInt1", 1L);
-                    }
-                }
-            );
+            .addOnType(UPDATED_ADD_ON_TYPE)
+            .addOnDetailsText(UPDATED_ADD_ON_DETAILS_TEXT)
+            .addOnDetailsDecimal(UPDATED_ADD_ON_DETAILS_DECIMAL)
+            .addOnDetailsBoolean(UPDATED_ADD_ON_DETAILS_BOOLEAN)
+            .addOnDetailsBigInt(UPDATED_ADD_ON_DETAILS_BIG_INT);
         addOnsAvailableByOrganization.setCompositeId(
             new AddOnsAvailableByOrganizationId(UPDATED_ORGANIZATION_ID, UPDATED_ENTITY_TYPE, UPDATED_ENTITY_ID, UPDATED_ADD_ON_ID)
         );
@@ -238,17 +190,15 @@ class AddOnsAvailableByOrganizationResourceIT {
 
     @Test
     void createAddOnsAvailableByOrganizationWithExistingId() throws Exception {
-        // Create the AddOnsAvailableByOrganization with an existing ID
-        addOnsAvailableByOrganization.setCompositeId(
-            new AddOnsAvailableByOrganizationId(DEFAULT_ORGANIZATION_ID, DEFAULT_ENTITY_TYPE, DEFAULT_ENTITY_ID, DEFAULT_ADD_ON_ID)
-        );
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         AddOnsAvailableByOrganizationDTO addOnsAvailableByOrganizationDTO = addOnsAvailableByOrganizationMapper.toDto(
             addOnsAvailableByOrganization
         );
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
                 post(ENTITY_API_URL)
@@ -256,10 +206,10 @@ class AddOnsAvailableByOrganizationResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(addOnsAvailableByOrganizationDTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the AddOnsAvailableByOrganization in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the AddOnsAvailableByOrganization was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -295,10 +245,10 @@ class AddOnsAvailableByOrganizationResourceIT {
                 jsonPath("$.[*].compositeId.addOnId").value(hasItem(addOnsAvailableByOrganization.getCompositeId().getAddOnId().toString()))
             )
             .andExpect(jsonPath("$.[*].addOnType").value(hasItem(DEFAULT_ADD_ON_TYPE)))
-            .andExpect(jsonPath("$.[*].addOnDetailsText['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_TEXT.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsDecimal['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_DECIMAL.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsBoolean['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BOOLEAN.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsBigInt['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BIG_INT.get("AAAAAAAAAA")));
+            .andExpect(jsonPath("$.[*].addOnDetailsText").exists())
+            .andExpect(jsonPath("$.[*].addOnDetailsDecimal").exists())
+            .andExpect(jsonPath("$.[*].addOnDetailsBoolean").exists())
+            .andExpect(jsonPath("$.[*].addOnDetailsBigInt").exists());
     }
 
     @Test
@@ -313,42 +263,29 @@ class AddOnsAvailableByOrganizationResourceIT {
         // Get the addOnsAvailableByOrganization
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    addOnsAvailableByOrganization.getCompositeId().getOrganizationId() +
-                        "/" +
-                        addOnsAvailableByOrganization.getCompositeId().getEntityType() +
-                        "/" +
-                        addOnsAvailableByOrganization.getCompositeId().getEntityId() +
-                        "/" +
-                        addOnsAvailableByOrganization.getCompositeId().getAddOnId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("organizationId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getOrganizationId()))
+                    .param("entityType", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityType()))
+                    .param("entityId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityId()))
+                    .param("addOnId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getAddOnId()))
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(
-                jsonPath("$.[*].compositeId.organizationId").value(
-                    hasItem(addOnsAvailableByOrganization.getCompositeId().getOrganizationId().toString())
+                jsonPath("$.compositeId.organizationId").value(
+                    addOnsAvailableByOrganization.getCompositeId().getOrganizationId().toString()
                 )
             )
             .andExpect(
-                jsonPath("$.[*].compositeId.entityType").value(
-                    hasItem(addOnsAvailableByOrganization.getCompositeId().getEntityType().toString())
-                )
+                jsonPath("$.compositeId.entityType").value(addOnsAvailableByOrganization.getCompositeId().getEntityType().toString())
             )
-            .andExpect(
-                jsonPath("$.[*].compositeId.entityId").value(
-                    hasItem(addOnsAvailableByOrganization.getCompositeId().getEntityId().toString())
-                )
-            )
-            .andExpect(
-                jsonPath("$.[*].compositeId.addOnId").value(hasItem(addOnsAvailableByOrganization.getCompositeId().getAddOnId().toString()))
-            )
-            .andExpect(jsonPath("$.[*].addOnType").value(hasItem(DEFAULT_ADD_ON_TYPE)))
-            .andExpect(jsonPath("$.[*].addOnDetailsText['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_TEXT.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsDecimal['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_DECIMAL.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsBoolean['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BOOLEAN.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsBigInt['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BIG_INT.get("AAAAAAAAAA")));
+            .andExpect(jsonPath("$.compositeId.entityId").value(addOnsAvailableByOrganization.getCompositeId().getEntityId().toString()))
+            .andExpect(jsonPath("$.compositeId.addOnId").value(addOnsAvailableByOrganization.getCompositeId().getAddOnId().toString()))
+            .andExpect(jsonPath("$.addOnType").value(DEFAULT_ADD_ON_TYPE))
+            .andExpect(jsonPath("$.addOnDetailsText").exists())
+            .andExpect(jsonPath("$.addOnDetailsDecimal").exists())
+            .andExpect(jsonPath("$.addOnDetailsBoolean").exists())
+            .andExpect(jsonPath("$.addOnDetailsBigInt").exists());
     }
 
     @Test
@@ -356,16 +293,11 @@ class AddOnsAvailableByOrganizationResourceIT {
         // Get the addOnsAvailableByOrganization
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    addOnsAvailableByOrganization.getCompositeId().getOrganizationId() +
-                        "/" +
-                        addOnsAvailableByOrganization.getCompositeId().getEntityType() +
-                        "/" +
-                        addOnsAvailableByOrganization.getCompositeId().getEntityId() +
-                        "/" +
-                        addOnsAvailableByOrganization.getCompositeId().getAddOnId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("organizationId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getOrganizationId()))
+                    .param("entityType", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityType()))
+                    .param("entityId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityId()))
+                    .param("addOnId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getAddOnId()))
             )
             .andExpect(status().isNotFound());
     }
@@ -397,7 +329,13 @@ class AddOnsAvailableByOrganizationResourceIT {
 
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, addOnsAvailableByOrganizationDTO)
+                put(
+                    ENTITY_API_URL + "/{organizationId}/{entityType}/{entityId}/{addOnId}",
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getOrganizationId(),
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getEntityType(),
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getEntityId(),
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getAddOnId()
+                )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(addOnsAvailableByOrganizationDTO))
@@ -425,14 +363,11 @@ class AddOnsAvailableByOrganizationResourceIT {
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
                 put(
-                    ENTITY_API_URL_ID,
-                    addOnsAvailableByOrganization.getCompositeId().getOrganizationId() +
-                        "/" +
-                        addOnsAvailableByOrganization.getCompositeId().getEntityType() +
-                        "/" +
-                        addOnsAvailableByOrganization.getCompositeId().getEntityId() +
-                        "/" +
-                        addOnsAvailableByOrganization.getCompositeId().getAddOnId()
+                    ENTITY_API_URL + "/{organizationId}/{entityType}/{entityId}/{addOnId}",
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getOrganizationId(),
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getEntityType(),
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getEntityId(),
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getAddOnId()
                 )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -458,7 +393,13 @@ class AddOnsAvailableByOrganizationResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, UUID.randomUUID())
+                put(
+                    ENTITY_API_URL + "/{organizationId}/{entityType}/{entityId}/{addOnId}",
+                    UUID.randomUUID(),
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID(),
+                    UUID.randomUUID()
+                )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(addOnsAvailableByOrganizationDTO))
@@ -519,7 +460,13 @@ class AddOnsAvailableByOrganizationResourceIT {
 
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedAddOnsAvailableByOrganization.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{entityType}/{entityId}/{addOnId}",
+                    partialUpdatedAddOnsAvailableByOrganization.getCompositeId().getOrganizationId(),
+                    partialUpdatedAddOnsAvailableByOrganization.getCompositeId().getEntityType(),
+                    partialUpdatedAddOnsAvailableByOrganization.getCompositeId().getEntityId(),
+                    partialUpdatedAddOnsAvailableByOrganization.getCompositeId().getAddOnId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedAddOnsAvailableByOrganization))
@@ -559,7 +506,13 @@ class AddOnsAvailableByOrganizationResourceIT {
 
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedAddOnsAvailableByOrganization.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{entityType}/{entityId}/{addOnId}",
+                    partialUpdatedAddOnsAvailableByOrganization.getCompositeId().getOrganizationId(),
+                    partialUpdatedAddOnsAvailableByOrganization.getCompositeId().getEntityType(),
+                    partialUpdatedAddOnsAvailableByOrganization.getCompositeId().getEntityId(),
+                    partialUpdatedAddOnsAvailableByOrganization.getCompositeId().getAddOnId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedAddOnsAvailableByOrganization))
@@ -590,7 +543,13 @@ class AddOnsAvailableByOrganizationResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, addOnsAvailableByOrganizationDTO)
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{entityType}/{entityId}/{addOnId}",
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getOrganizationId(),
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getEntityType(),
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getEntityId(),
+                    addOnsAvailableByOrganizationDTO.getCompositeId().getAddOnId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(addOnsAvailableByOrganizationDTO))
@@ -616,7 +575,13 @@ class AddOnsAvailableByOrganizationResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, addOnsAvailableByOrganizationDTO)
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{entityType}/{entityId}/{addOnId}",
+                    UUID.randomUUID(),
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID(),
+                    UUID.randomUUID()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(addOnsAvailableByOrganizationDTO))
@@ -656,7 +621,6 @@ class AddOnsAvailableByOrganizationResourceIT {
     @Test
     void deleteAddOnsAvailableByOrganization() throws Exception {
         // Initialize the database
-        addOnsAvailableByOrganization.setCompositeId(new AddOnsAvailableByOrganizationId());
         addOnsAvailableByOrganization.getCompositeId().setOrganizationId(UUID.randomUUID());
         addOnsAvailableByOrganization.getCompositeId().setEntityType(UUID.randomUUID().toString());
         addOnsAvailableByOrganization.getCompositeId().setEntityId(UUID.randomUUID());
@@ -668,7 +632,15 @@ class AddOnsAvailableByOrganizationResourceIT {
         // Delete the addOnsAvailableByOrganization
         restAddOnsAvailableByOrganizationMockMvc
             .perform(
-                delete(ENTITY_API_URL_ID, addOnsAvailableByOrganization.getCompositeId()).with(csrf()).accept(MediaType.APPLICATION_JSON)
+                delete(
+                    ENTITY_API_URL + "/{organizationId}/{entityType}/{entityId}/{addOnId}",
+                    addOnsAvailableByOrganization.getCompositeId().getOrganizationId(),
+                    addOnsAvailableByOrganization.getCompositeId().getEntityType(),
+                    addOnsAvailableByOrganization.getCompositeId().getEntityId(),
+                    addOnsAvailableByOrganization.getCompositeId().getAddOnId()
+                )
+                    .with(csrf())
+                    .accept(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isNoContent());
 

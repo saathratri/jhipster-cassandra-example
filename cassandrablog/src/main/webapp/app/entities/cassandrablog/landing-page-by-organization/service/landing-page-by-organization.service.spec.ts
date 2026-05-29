@@ -35,7 +35,7 @@ describe('LandingPageByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.find('9fec3727-3421-4967-b213-ba36557ca194').subscribe(resp => (expectedResult = resp));
+      service.find('organizationId').subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -47,7 +47,7 @@ describe('LandingPageByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.create(landingPageByOrganization).subscribe(resp => (expectedResult = resp));
+      service.create(landingPageByOrganization).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'POST' });
       req.flush(returnedFromService);
@@ -59,7 +59,7 @@ describe('LandingPageByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.update(landingPageByOrganization).subscribe(resp => (expectedResult = resp));
+      service.update(landingPageByOrganization).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PUT' });
       req.flush(returnedFromService);
@@ -71,7 +71,7 @@ describe('LandingPageByOrganization Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp));
+      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'PATCH' });
       req.flush(returnedFromService);
@@ -92,7 +92,7 @@ describe('LandingPageByOrganization Service', () => {
     });
 
     it('should delete a LandingPageByOrganization', () => {
-      service.delete('9fec3727-3421-4967-b213-ba36557ca194').subscribe();
+      service.delete(sampleWithRequiredData.organizationId).subscribe();
 
       const requests = httpMock.match({ method: 'DELETE' });
       expect(requests.length).toBe(1);
@@ -180,7 +180,7 @@ describe('LandingPageByOrganization Service', () => {
       });
 
       it('should return false if one entity is null', () => {
-        const entity1 = { organizationId: '4a853e3a-594b-457b-8718-d64275e96ad2' };
+        const entity1 = { organizationId: sampleWithRequiredData.organizationId };
         const entity2 = null;
 
         const compareResult1 = service.compareLandingPageByOrganization(entity1, entity2);
@@ -191,8 +191,8 @@ describe('LandingPageByOrganization Service', () => {
       });
 
       it('should return false if primaryKey differs', () => {
-        const entity1 = { organizationId: '4a853e3a-594b-457b-8718-d64275e96ad2' };
-        const entity2 = { organizationId: 'f319edc2-1bbe-4417-b29a-f3f11f94b1a7' };
+        const entity1 = { organizationId: sampleWithRequiredData.organizationId };
+        const entity2 = { organizationId: sampleWithPartialData.organizationId };
 
         const compareResult1 = service.compareLandingPageByOrganization(entity1, entity2);
         const compareResult2 = service.compareLandingPageByOrganization(entity2, entity1);
@@ -201,9 +201,9 @@ describe('LandingPageByOrganization Service', () => {
         expect(compareResult2).toEqual(false);
       });
 
-      it('should return false if primaryKey matches', () => {
-        const entity1 = { organizationId: '4a853e3a-594b-457b-8718-d64275e96ad2' };
-        const entity2 = { organizationId: '4a853e3a-594b-457b-8718-d64275e96ad2' };
+      it('should return true if primaryKey matches', () => {
+        const entity1 = { organizationId: sampleWithRequiredData.organizationId };
+        const entity2 = { organizationId: sampleWithRequiredData.organizationId };
 
         const compareResult1 = service.compareLandingPageByOrganization(entity1, entity2);
         const compareResult2 = service.compareLandingPageByOrganization(entity2, entity1);

@@ -87,13 +87,12 @@ export class PostComponent implements OnInit {
   protected readonly postService = inject(PostService);
   // Cassandra entities use Observable-based loading (plain boolean, not signal,
   // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
-  constructor() {}
 
   // Saathratri: Composite Primary Key Code
   trackCompositeId = (item: IPost): IPostId => this.postService.getPostIdentifier(item);
@@ -180,7 +179,7 @@ export class PostComponent implements OnInit {
   }
 
   isSearchFormValid(): boolean {
-    if (this.searchCriteria.createdDate === null || this.searchCriteria.createdDate === undefined) {
+    if (this.searchCriteria.createdDate === null) {
       return false;
     }
     return true;
@@ -266,7 +265,7 @@ export class PostComponent implements OnInit {
     this.load();
   }
 
-  onSearchDateChange(fieldName: string, isDateTime: boolean = false): void {
+  onSearchDateChange(fieldName: string, isDateTime = false): void {
     const criteria = this.searchCriteria as any;
     const dateValue: Date | null = criteria[`${fieldName}Date`];
 
@@ -384,7 +383,7 @@ export class PostComponent implements OnInit {
     this.hasNextPage = hasNextPage === 'true';
 
     const pagingStateHeader = headers.get('X-Paging-State');
-    this.pagingState = pagingStateHeader || null;
+    this.pagingState = pagingStateHeader ?? null;
 
     const totalCountHeader = headers.get('X-Total-Count');
     this.totalItems = totalCountHeader !== null ? Number(totalCountHeader) : null;
@@ -399,6 +398,7 @@ export class PostComponent implements OnInit {
     return [compositeId.createdDate, compositeId.addedDateTime, compositeId.postId].join('|');
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected queryBackend(): Observable<EntityArrayResponseType> {
     const queryObject: any = {
       pagingState: this.pagingState,
@@ -409,17 +409,15 @@ export class PostComponent implements OnInit {
     if (this.isSearchActive) {
       if (
         this.searchCriteria.createdDate !== null &&
-        this.searchCriteria.createdDate !== undefined &&
         this.searchCriteria.addedDateTime !== null &&
-        this.searchCriteria.addedDateTime !== undefined &&
         this.searchCriteria.postId &&
         this.searchCriteria.postId.trim() !== ''
       ) {
         return this.postService
           .findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId(
-            this.searchCriteria.createdDate!,
-            this.searchCriteria.addedDateTime!,
-            this.searchCriteria.postId!,
+            this.searchCriteria.createdDate,
+            this.searchCriteria.addedDateTime,
+            this.searchCriteria.postId,
           )
           .pipe(
             map((res: EntityResponseType) => {
@@ -431,51 +429,47 @@ export class PostComponent implements OnInit {
               });
             }),
           );
-      } else if (
-        this.searchCriteria.createdDate !== null &&
-        this.searchCriteria.createdDate !== undefined &&
-        this.searchCriteria.addedDateTime !== null &&
-        this.searchCriteria.addedDateTime !== undefined
-      ) {
-        const operatorAddedDateTime = this.searchCriteria.addedDateTimeOperator || 'eq';
+      } else if (this.searchCriteria.createdDate !== null && this.searchCriteria.addedDateTime !== null) {
+        const operatorAddedDateTime = this.searchCriteria.addedDateTimeOperator ?? 'eq';
         if (operatorAddedDateTime === 'lt') {
           return this.postService.findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeLessThanPageable(
-            this.searchCriteria.createdDate!,
-            this.searchCriteria.addedDateTime!,
+            this.searchCriteria.createdDate,
+            this.searchCriteria.addedDateTime,
             queryObject,
           );
         } else if (operatorAddedDateTime === 'lte') {
           return this.postService.findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeLessThanEqualPageable(
-            this.searchCriteria.createdDate!,
-            this.searchCriteria.addedDateTime!,
+            this.searchCriteria.createdDate,
+            this.searchCriteria.addedDateTime,
             queryObject,
           );
         } else if (operatorAddedDateTime === 'gt') {
           return this.postService.findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThanPageable(
-            this.searchCriteria.createdDate!,
-            this.searchCriteria.addedDateTime!,
+            this.searchCriteria.createdDate,
+            this.searchCriteria.addedDateTime,
             queryObject,
           );
         } else if (operatorAddedDateTime === 'gte') {
           return this.postService.findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThanEqualPageable(
-            this.searchCriteria.createdDate!,
-            this.searchCriteria.addedDateTime!,
+            this.searchCriteria.createdDate,
+            this.searchCriteria.addedDateTime,
             queryObject,
           );
         }
         return this.postService.findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimePageable(
-          this.searchCriteria.createdDate!,
-          this.searchCriteria.addedDateTime!,
+          this.searchCriteria.createdDate,
+          this.searchCriteria.addedDateTime,
           queryObject,
         );
-      } else if (this.searchCriteria.createdDate !== null && this.searchCriteria.createdDate !== undefined) {
-        return this.postService.findAllByCompositeIdCreatedDatePageable(this.searchCriteria.createdDate!, queryObject);
+      } else if (this.searchCriteria.createdDate !== null) {
+        return this.postService.findAllByCompositeIdCreatedDatePageable(this.searchCriteria.createdDate, queryObject);
       }
     }
     // Fallback: no valid criteria
     return this.postService.querySlice(queryObject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected handleNavigation(sortState: SortState): void {
     this.pagingState = null;
     this.hasNextPage = false;

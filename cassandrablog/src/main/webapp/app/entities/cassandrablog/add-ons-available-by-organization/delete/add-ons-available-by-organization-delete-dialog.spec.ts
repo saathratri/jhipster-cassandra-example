@@ -1,16 +1,18 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { of } from 'rxjs';
 
+import { sampleWithRequiredData } from '../add-ons-available-by-organization.test-samples';
 import { AddOnsAvailableByOrganizationService } from '../service/add-ons-available-by-organization.service';
 
-import { AddOnsAvailableByOrganizationDeleteDialog } from './add-ons-available-by-organization-delete-dialog';
+import { AddOnsAvailableByOrganizationDeleteDialogComponent } from './add-ons-available-by-organization-delete-dialog';
 
 describe('AddOnsAvailableByOrganization Management Delete Component', () => {
-  let comp: AddOnsAvailableByOrganizationDeleteDialog;
-  let fixture: ComponentFixture<AddOnsAvailableByOrganizationDeleteDialog>;
+  let comp: AddOnsAvailableByOrganizationDeleteDialogComponent;
+  let fixture: ComponentFixture<AddOnsAvailableByOrganizationDeleteDialogComponent>;
   let service: AddOnsAvailableByOrganizationService;
   let mockActiveModal: NgbActiveModal;
 
@@ -18,7 +20,7 @@ describe('AddOnsAvailableByOrganization Management Delete Component', () => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
     });
-    fixture = TestBed.createComponent(AddOnsAvailableByOrganizationDeleteDialog);
+    fixture = TestBed.createComponent(AddOnsAvailableByOrganizationDeleteDialogComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(AddOnsAvailableByOrganizationService);
     mockActiveModal = TestBed.inject(NgbActiveModal);
@@ -27,14 +29,14 @@ describe('AddOnsAvailableByOrganization Management Delete Component', () => {
   describe('confirmDelete', () => {
     it('should call delete service on confirmDelete', () => {
       // GIVEN
-      vitest.spyOn(service, 'delete').mockReturnValue(of(undefined));
+      vitest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse<{}>()));
       vitest.spyOn(mockActiveModal, 'close');
 
       // WHEN
-      comp.confirmDelete('9fec3727-3421-4967-b213-ba36557ca194');
+      comp.confirmDelete(sampleWithRequiredData);
 
       // THEN
-      expect(service.delete).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
+      expect(service.delete).toHaveBeenCalledWith(sampleWithRequiredData);
       expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
     });
 

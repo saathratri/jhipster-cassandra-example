@@ -352,4 +352,11 @@ describe('AddOnsAvailableByOrganization e2e test', () => {
       cy.get(`[data-cy="addOnDetailsBigInt-row-del-addOnDetailsBigInt-key-edit"]`).should('not.exist');
     });
   });
+
+  it('should toggle the Cassandra search form', () => {
+    cy.visit('/');
+    cy.clickOnEntityMenuItem(addOnsAvailableByOrganizationPageUrl.substring(1));
+    cy.get('[data-cy="searchFormToggle"]', { timeout: 30000 }).click();
+    cy.get('[data-cy="searchButton"]').should('be.visible');
+  });
 });

@@ -118,7 +118,7 @@ export class SaathratriEntity3Service extends SaathratriEntity3sService {
 
   findAllByCompositeIdEntityTypePageable(entityType: string, req?: any): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityType', String(entityType));
+    options = options.set('entityType', entityType);
     return this.http
       .get<
         RestSaathratriEntity3[]
@@ -132,8 +132,8 @@ export class SaathratriEntity3Service extends SaathratriEntity3sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityType', String(entityType));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('entityType', entityType);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestSaathratriEntity3[]
@@ -147,8 +147,8 @@ export class SaathratriEntity3Service extends SaathratriEntity3sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityType', String(entityType));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('entityType', entityType);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestSaathratriEntity3[]
@@ -162,8 +162,8 @@ export class SaathratriEntity3Service extends SaathratriEntity3sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityType', String(entityType));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('entityType', entityType);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestSaathratriEntity3[]
@@ -177,8 +177,8 @@ export class SaathratriEntity3Service extends SaathratriEntity3sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityType', String(entityType));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('entityType', entityType);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestSaathratriEntity3[]
@@ -192,8 +192,8 @@ export class SaathratriEntity3Service extends SaathratriEntity3sService {
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('entityType', String(entityType));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('entityType', entityType);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestSaathratriEntity3[]
@@ -203,8 +203,8 @@ export class SaathratriEntity3Service extends SaathratriEntity3sService {
 
   findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId(entityType: string, createdTimeId: string): Observable<EntityResponseType> {
     let options = new HttpParams();
-    options = options.set('entityType', String(entityType));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('entityType', entityType);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<RestSaathratriEntity3>(`${this.resourceUrl}/find-by-composite-id-entity-type-and-composite-id-created-time-id`, {
         params: options,

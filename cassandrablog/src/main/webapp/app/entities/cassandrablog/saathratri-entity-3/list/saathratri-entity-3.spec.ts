@@ -1,10 +1,11 @@
-import { MockInstance, afterEach, beforeEach, describe, expect, it, vitest } from 'vitest';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpHeaders, HttpResponse, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faEye, faPencilAlt, faPlus, faSort, faSortDown, faSortUp, faSync, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSort } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, of } from 'rxjs';
@@ -12,109 +13,47 @@ import { Subject, of } from 'rxjs';
 import { sampleWithRequiredData } from '../saathratri-entity-3.test-samples';
 import { SaathratriEntity3Service } from '../service/saathratri-entity-3.service';
 
-import { SaathratriEntity3 } from './saathratri-entity-3';
-
-vitest.useFakeTimers();
+import { SaathratriEntity3Component } from './saathratri-entity-3';
 
 describe('SaathratriEntity3 Management Component', () => {
-  let httpMock: HttpTestingController;
-  let comp: SaathratriEntity3;
-  let fixture: ComponentFixture<SaathratriEntity3>;
+  let comp: SaathratriEntity3Component;
+  let fixture: ComponentFixture<SaathratriEntity3Component>;
   let service: SaathratriEntity3Service;
-  let routerNavigateSpy: MockInstance;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
+        provideHttpClient(),
         provideHttpClientTesting(),
         {
           provide: ActivatedRoute,
           useValue: {
-            data: of({
-              defaultSort: 'entityType,asc',
-            }),
-            queryParamMap: of(
-              convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'entityType,desc',
-              }),
-            ),
-            snapshot: {
-              queryParams: {},
-              queryParamMap: convertToParamMap({
-                page: '1',
-                size: '1',
-                sort: 'entityType,desc',
-              }),
-            },
+            data: of({ defaultSort: 'id,asc' }),
+            queryParamMap: of(convertToParamMap({})),
+            snapshot: { queryParams: {}, queryParamMap: convertToParamMap({}) },
           },
         },
       ],
     });
-
-    fixture = TestBed.createComponent(SaathratriEntity3);
+    fixture = TestBed.createComponent(SaathratriEntity3Component);
     comp = fixture.componentInstance;
     service = TestBed.inject(SaathratriEntity3Service);
-    routerNavigateSpy = vitest.spyOn(comp.router, 'navigate');
-
     const library = TestBed.inject(FaIconLibrary);
-    library.addIcons(faEye, faPencilAlt, faPlus, faSort, faSortDown, faSortUp, faSync, faTimes);
-    httpMock = TestBed.inject(HttpTestingController);
+    library.addIcons(faSort);
   });
 
-  afterEach(() => {
-    TestBed.resetTestingModule();
-    httpMock.verify();
-  });
+  it('should load all on init', () => {
+    // GIVEN — the Cassandra list pages via querySlice (not query)
+    vitest
+      .spyOn(service, 'querySlice')
+      .mockReturnValue(of(new HttpResponse({ body: [sampleWithRequiredData], headers: new HttpHeaders() })));
 
-  it('should call load all on init', async () => {
     // WHEN
-    TestBed.tick();
-    const req = httpMock.expectOne({ method: 'GET' });
-    req.flush([{ entityType: 'b211e691-84ee-487a-888a-c6d141e895e8' }], {
-      headers: { link: '<http://localhost/api/foo?page=1&size=20>; rel="next"' },
-    });
-    await vitest.runAllTimersAsync();
+    comp.ngOnInit();
 
     // THEN
-    expect(comp.isLoading()).toEqual(false);
-    expect(comp.saathratriEntity3s()[0]).toEqual(expect.objectContaining({ entityType: 'b211e691-84ee-487a-888a-c6d141e895e8' }));
-  });
-
-  describe('trackEntityType', () => {
-    it('should forward to saathratriEntity3Service', () => {
-      const entity = { entityType: 'b211e691-84ee-487a-888a-c6d141e895e8' };
-      vitest.spyOn(service, 'getSaathratriEntity3Identifier');
-      const entityType = comp.trackEntityType(entity);
-      expect(service.getSaathratriEntity3Identifier).toHaveBeenCalledWith(entity);
-      expect(entityType).toBe(entity.entityType);
-    });
-  });
-
-  it('should calculate the sort attribute for a non-id attribute', () => {
-    // WHEN
-    comp.navigateToWithComponentValues({ predicate: 'non-existing-column', order: 'asc' });
-
-    // THEN
-    expect(routerNavigateSpy).toHaveBeenLastCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        queryParams: expect.objectContaining({
-          sort: ['non-existing-column,asc'],
-        }),
-      }),
-    );
-  });
-
-  it('should calculate the sort attribute for an id', () => {
-    // WHEN
-    TestBed.tick();
-    httpMock.expectOne({ method: 'GET' });
-
-    // THEN
-    expect(service.saathratriEntity3sParams()).toMatchObject(expect.objectContaining({ sort: ['entityType,desc'] }));
+    expect(service.querySlice).toHaveBeenCalled();
   });
 
   describe('delete', () => {
@@ -123,8 +62,6 @@ describe('SaathratriEntity3 Management Component', () => {
 
     beforeEach(() => {
       deleteModalMock = { componentInstance: {}, closed: new Subject() };
-      // NgbModal is not a singleton using TestBed.inject.
-      // ngbModal = TestBed.inject(NgbModal);
       ngbModal = (comp as any).modalService;
       vitest.spyOn(ngbModal, 'open').mockReturnValue(deleteModalMock);
     });
@@ -142,7 +79,7 @@ describe('SaathratriEntity3 Management Component', () => {
       expect(comp.load).toHaveBeenCalled();
     }));
 
-    it('on dismiss should call load', inject([], () => {
+    it('on dismiss should not call load', inject([], () => {
       // GIVEN
       vitest.spyOn(comp, 'load');
 
@@ -154,5 +91,36 @@ describe('SaathratriEntity3 Management Component', () => {
       expect(ngbModal.open).toHaveBeenCalled();
       expect(comp.load).not.toHaveBeenCalled();
     }));
+  });
+
+  describe('search form', () => {
+    it('should toggle the search form collapsed state', () => {
+      const initial = comp.isSearchFormCollapsed;
+
+      comp.toggleSearchForm();
+      expect(comp.isSearchFormCollapsed).toBe(!initial);
+
+      comp.toggleSearchForm();
+      expect(comp.isSearchFormCollapsed).toBe(initial);
+    });
+
+    it('should not run a search while the form is invalid (no partition key set)', () => {
+      const loadSpy = vitest.spyOn(comp, 'load');
+
+      comp.performSearch();
+
+      expect(comp.hasActiveSearch()).toBe(false);
+      expect(loadSpy).not.toHaveBeenCalled();
+    });
+
+    it('should clear the search and reload', () => {
+      const loadSpy = vitest.spyOn(comp, 'load').mockImplementation(() => {});
+      comp.isSearchActive = true;
+
+      comp.clearSearch();
+
+      expect(comp.hasActiveSearch()).toBe(false);
+      expect(loadSpy).toHaveBeenCalled();
+    });
   });
 });

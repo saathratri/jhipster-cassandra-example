@@ -1,36 +1,29 @@
+import dayjs from 'dayjs/esm';
+
 import { IReport, NewReport } from './report.model';
 
 export const sampleWithRequiredData: IReport = {
-  id: '49428f42-cbc0-4f30-8a83-27dae5b5d5a5',
-  fileName: 'than gosh',
-  fileExtension: 'radiant brr',
-  createDate: 12851,
+  id: 'sample-id-1',
 };
 
 export const sampleWithPartialData: IReport = {
-  id: 'd55c438e-22da-4b11-99de-d57a6bed80db',
-  fileName: 'whether unaccountably riser',
-  fileExtension: 'stunt handsome',
-  createDate: 14400,
-  file: '../fake-data/blob/hipster.png',
-  fileContentType: 'unknown',
+  id: 'sample-id-2',
+  fileName: 'sample-fileName-2',
+  fileExtension: 'sample-fileExtension-2',
+  createDate: dayjs('2024-01-03T12:00:00Z'),
 };
 
 export const sampleWithFullData: IReport = {
-  id: 'f239ef39-ffd7-44d7-92fa-771d957cc0be',
-  fileName: 'so miserable indeed',
-  fileExtension: 'till though',
-  createDate: 7734,
-  file: '../fake-data/blob/hipster.png',
-  fileContentType: 'unknown',
+  id: 'sample-id-3',
+  fileName: 'sample-fileName-3',
+  fileExtension: 'sample-fileExtension-3',
+  createDate: dayjs('2024-01-04T12:00:00Z'),
+  file: 'sample-file-3',
   approved: false,
 };
 
 export const sampleWithNewData: NewReport = {
-  fileName: 'grass',
-  fileExtension: 'provided beneath while',
-  createDate: 20057,
-  id: null,
+  id: 'sample-id-4',
 };
 
 Object.freeze(sampleWithNewData);

@@ -1,16 +1,18 @@
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
+import { HttpResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { of } from 'rxjs';
 
+import { sampleWithRequiredData } from '../saathratri-entity-2.test-samples';
 import { SaathratriEntity2Service } from '../service/saathratri-entity-2.service';
 
-import { SaathratriEntity2DeleteDialog } from './saathratri-entity-2-delete-dialog';
+import { SaathratriEntity2DeleteDialogComponent } from './saathratri-entity-2-delete-dialog';
 
 describe('SaathratriEntity2 Management Delete Component', () => {
-  let comp: SaathratriEntity2DeleteDialog;
-  let fixture: ComponentFixture<SaathratriEntity2DeleteDialog>;
+  let comp: SaathratriEntity2DeleteDialogComponent;
+  let fixture: ComponentFixture<SaathratriEntity2DeleteDialogComponent>;
   let service: SaathratriEntity2Service;
   let mockActiveModal: NgbActiveModal;
 
@@ -18,7 +20,7 @@ describe('SaathratriEntity2 Management Delete Component', () => {
     TestBed.configureTestingModule({
       providers: [NgbActiveModal],
     });
-    fixture = TestBed.createComponent(SaathratriEntity2DeleteDialog);
+    fixture = TestBed.createComponent(SaathratriEntity2DeleteDialogComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(SaathratriEntity2Service);
     mockActiveModal = TestBed.inject(NgbActiveModal);
@@ -27,14 +29,14 @@ describe('SaathratriEntity2 Management Delete Component', () => {
   describe('confirmDelete', () => {
     it('should call delete service on confirmDelete', () => {
       // GIVEN
-      vitest.spyOn(service, 'delete').mockReturnValue(of(undefined));
+      vitest.spyOn(service, 'delete').mockReturnValue(of(new HttpResponse<{}>()));
       vitest.spyOn(mockActiveModal, 'close');
 
       // WHEN
-      comp.confirmDelete('9fec3727-3421-4967-b213-ba36557ca194');
+      comp.confirmDelete(sampleWithRequiredData);
 
       // THEN
-      expect(service.delete).toHaveBeenCalledWith('9fec3727-3421-4967-b213-ba36557ca194');
+      expect(service.delete).toHaveBeenCalledWith(sampleWithRequiredData);
       expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
     });
 

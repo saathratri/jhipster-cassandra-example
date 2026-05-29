@@ -19,5 +19,7 @@
 
 <mat-dialog-actions align="end" class="dialog-actions">
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="onSave()" [attr.data-cy]="'dialog-save-button'">Save Changes</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="onSave()" [attr.data-cy]="'dialog-save-button'">
+    Save Changes
+  </button>
 </mat-dialog-actions>

@@ -64,8 +64,8 @@ describe('TajUser Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing ITajUser should not enable id FormControl', () => {
-        const formGroup = service.createTajUserFormGroup();
+      it('passing ITajUser should keep the key control disabled', () => {
+        const formGroup = service.createTajUserFormGroup(sampleWithRequiredData);
         expect(formGroup.controls.id.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
@@ -73,11 +73,10 @@ describe('TajUser Form Service', () => {
         expect(formGroup.controls.id.disabled).toBe(true);
       });
 
-      it('passing NewTajUser should disable id FormControl', () => {
-        const formGroup = service.createTajUserFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.id.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createTajUserFormGroup();
 
-        service.resetForm(formGroup, { id: null });
+        service.resetForm(formGroup, sampleWithRequiredData);
 
         expect(formGroup.controls.id.disabled).toBe(true);
       });

@@ -67,7 +67,7 @@ class SaathratriEntity4ResourceIT {
     public static SaathratriEntity4 createEntity() {
         SaathratriEntity4 saathratriEntity4 = new SaathratriEntity4()
             .compositeId(new SaathratriEntity4Id().organizationId(DEFAULT_ORGANIZATION_ID).attributeKey(DEFAULT_ATTRIBUTE_KEY))
-            .attributeValue("attributeValue1");
+            .attributeValue(DEFAULT_ATTRIBUTE_VALUE);
         saathratriEntity4.setCompositeId(new SaathratriEntity4Id(DEFAULT_ORGANIZATION_ID, DEFAULT_ATTRIBUTE_KEY));
         return saathratriEntity4;
     }
@@ -81,7 +81,7 @@ class SaathratriEntity4ResourceIT {
     public static SaathratriEntity4 createUpdatedEntity() {
         SaathratriEntity4 saathratriEntity4 = new SaathratriEntity4()
             .compositeId(new SaathratriEntity4Id().organizationId(UPDATED_ORGANIZATION_ID).attributeKey(UPDATED_ATTRIBUTE_KEY))
-            .attributeValue("attributeValue1");
+            .attributeValue(UPDATED_ATTRIBUTE_VALUE);
         saathratriEntity4.setCompositeId(new SaathratriEntity4Id(UPDATED_ORGANIZATION_ID, UPDATED_ATTRIBUTE_KEY));
         return saathratriEntity4;
     }
@@ -120,13 +120,13 @@ class SaathratriEntity4ResourceIT {
 
     @Test
     void createSaathratriEntity4WithExistingId() throws Exception {
-        // Create the SaathratriEntity4 with an existing ID
-        saathratriEntity4.setCompositeId(new SaathratriEntity4Id(DEFAULT_ORGANIZATION_ID, DEFAULT_ATTRIBUTE_KEY));
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         SaathratriEntity4DTO saathratriEntity4DTO = saathratriEntity4Mapper.toDto(saathratriEntity4);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restSaathratriEntity4MockMvc
             .perform(
                 post(ENTITY_API_URL)
@@ -134,10 +134,10 @@ class SaathratriEntity4ResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(saathratriEntity4DTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the SaathratriEntity4 in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the SaathratriEntity4 was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -173,22 +173,15 @@ class SaathratriEntity4ResourceIT {
         // Get the saathratriEntity4
         restSaathratriEntity4MockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    saathratriEntity4.getCompositeId().getOrganizationId() + "/" + saathratriEntity4.getCompositeId().getAttributeKey()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("organizationId", String.valueOf(saathratriEntity4.getCompositeId().getOrganizationId()))
+                    .param("attributeKey", String.valueOf(saathratriEntity4.getCompositeId().getAttributeKey()))
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(
-                jsonPath("$.[*].compositeId.organizationId").value(
-                    hasItem(saathratriEntity4.getCompositeId().getOrganizationId().toString())
-                )
-            )
-            .andExpect(
-                jsonPath("$.[*].compositeId.attributeKey").value(hasItem(saathratriEntity4.getCompositeId().getAttributeKey().toString()))
-            )
-            .andExpect(jsonPath("$.[*].attributeValue").value(hasItem(DEFAULT_ATTRIBUTE_VALUE)));
+            .andExpect(jsonPath("$.compositeId.organizationId").value(saathratriEntity4.getCompositeId().getOrganizationId().toString()))
+            .andExpect(jsonPath("$.compositeId.attributeKey").value(saathratriEntity4.getCompositeId().getAttributeKey().toString()))
+            .andExpect(jsonPath("$.attributeValue").value(DEFAULT_ATTRIBUTE_VALUE));
     }
 
     @Test
@@ -196,10 +189,9 @@ class SaathratriEntity4ResourceIT {
         // Get the saathratriEntity4
         restSaathratriEntity4MockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    saathratriEntity4.getCompositeId().getOrganizationId() + "/" + saathratriEntity4.getCompositeId().getAttributeKey()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("organizationId", String.valueOf(saathratriEntity4.getCompositeId().getOrganizationId()))
+                    .param("attributeKey", String.valueOf(saathratriEntity4.getCompositeId().getAttributeKey()))
             )
             .andExpect(status().isNotFound());
     }
@@ -220,7 +212,11 @@ class SaathratriEntity4ResourceIT {
 
         restSaathratriEntity4MockMvc
             .perform(
-                put(ENTITY_API_URL_ID, saathratriEntity4DTO)
+                put(
+                    ENTITY_API_URL + "/{organizationId}/{attributeKey}",
+                    saathratriEntity4DTO.getCompositeId().getOrganizationId(),
+                    saathratriEntity4DTO.getCompositeId().getAttributeKey()
+                )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(saathratriEntity4DTO))
@@ -244,8 +240,9 @@ class SaathratriEntity4ResourceIT {
         restSaathratriEntity4MockMvc
             .perform(
                 put(
-                    ENTITY_API_URL_ID,
-                    saathratriEntity4.getCompositeId().getOrganizationId() + "/" + saathratriEntity4.getCompositeId().getAttributeKey()
+                    ENTITY_API_URL + "/{organizationId}/{attributeKey}",
+                    saathratriEntity4DTO.getCompositeId().getOrganizationId(),
+                    saathratriEntity4DTO.getCompositeId().getAttributeKey()
                 )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -267,7 +264,7 @@ class SaathratriEntity4ResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSaathratriEntity4MockMvc
             .perform(
-                put(ENTITY_API_URL_ID, UUID.randomUUID())
+                put(ENTITY_API_URL + "/{organizationId}/{attributeKey}", UUID.randomUUID(), UUID.randomUUID().toString())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(saathratriEntity4DTO))
@@ -314,7 +311,11 @@ class SaathratriEntity4ResourceIT {
 
         restSaathratriEntity4MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedSaathratriEntity4.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{attributeKey}",
+                    partialUpdatedSaathratriEntity4.getCompositeId().getOrganizationId(),
+                    partialUpdatedSaathratriEntity4.getCompositeId().getAttributeKey()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedSaathratriEntity4))
@@ -347,7 +348,11 @@ class SaathratriEntity4ResourceIT {
 
         restSaathratriEntity4MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedSaathratriEntity4.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{attributeKey}",
+                    partialUpdatedSaathratriEntity4.getCompositeId().getOrganizationId(),
+                    partialUpdatedSaathratriEntity4.getCompositeId().getAttributeKey()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedSaathratriEntity4))
@@ -374,7 +379,11 @@ class SaathratriEntity4ResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSaathratriEntity4MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, saathratriEntity4DTO)
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{attributeKey}",
+                    saathratriEntity4DTO.getCompositeId().getOrganizationId(),
+                    saathratriEntity4DTO.getCompositeId().getAttributeKey()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(saathratriEntity4DTO))
@@ -396,7 +405,7 @@ class SaathratriEntity4ResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSaathratriEntity4MockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, saathratriEntity4DTO)
+                patch(ENTITY_API_URL + "/{organizationId}/{attributeKey}", UUID.randomUUID(), UUID.randomUUID().toString())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(saathratriEntity4DTO))
@@ -432,7 +441,6 @@ class SaathratriEntity4ResourceIT {
     @Test
     void deleteSaathratriEntity4() throws Exception {
         // Initialize the database
-        saathratriEntity4.setCompositeId(new SaathratriEntity4Id());
         saathratriEntity4.getCompositeId().setOrganizationId(UUID.randomUUID());
         saathratriEntity4.getCompositeId().setAttributeKey(UUID.randomUUID().toString());
         saathratriEntity4Repository.save(saathratriEntity4);
@@ -441,7 +449,15 @@ class SaathratriEntity4ResourceIT {
 
         // Delete the saathratriEntity4
         restSaathratriEntity4MockMvc
-            .perform(delete(ENTITY_API_URL_ID, saathratriEntity4.getCompositeId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(
+                delete(
+                    ENTITY_API_URL + "/{organizationId}/{attributeKey}",
+                    saathratriEntity4.getCompositeId().getOrganizationId(),
+                    saathratriEntity4.getCompositeId().getAttributeKey()
+                )
+                    .with(csrf())
+                    .accept(MediaType.APPLICATION_JSON)
+            )
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

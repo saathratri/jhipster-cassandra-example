@@ -1,42 +1,59 @@
+import dayjs from 'dayjs/esm';
+
 import { IAddOnsSelectedByOrganization, NewAddOnsSelectedByOrganization } from './add-ons-selected-by-organization.model';
 
 export const sampleWithRequiredData: IAddOnsSelectedByOrganization = {
-  organizationId: 'ba939e9a-9477-43c1-b6d8-d3e17aafc279',
+  compositeId: {
+    organizationId: 'sample-organizationId-1',
+    arrivalDate: dayjs('2024-01-02T12:00:00Z'),
+    accountNumber: 'sample-accountNumber-1',
+    createdTimeId: 'sample-createdTimeId-1',
+  },
 };
 
 export const sampleWithPartialData: IAddOnsSelectedByOrganization = {
-  organizationId: '15c16cf6-c42a-43b7-bc95-6d49d57ad12a',
-  createdTimeId: '51b8dad7-2378-4c45-a60d-8e6600df3c5f',
-  departureDate: 11720,
-  customerLastName: 'mmm ick ah',
-  customerUpdatedEmail: 'ick ethyl alongside',
-  customerUpdatedPhoneNumber: 'unless which wherever',
-  customerEstimatedArrivalTime: 'makeover till intensely',
-  addOnDetailsText: 'in less',
-  addOnDetailsBigInt: 20789,
+  compositeId: {
+    organizationId: 'sample-organizationId-2',
+    arrivalDate: dayjs('2024-01-03T12:00:00Z'),
+    accountNumber: 'sample-accountNumber-2',
+    createdTimeId: 'sample-createdTimeId-2',
+  },
+  departureDate: dayjs('2024-01-03T12:00:00Z'),
+  customerId: 'sample-customerId-2',
+  customerFirstName: 'sample-customerFirstName-2',
+  customerLastName: 'sample-customerLastName-2',
+  customerUpdatedEmail: 'sample-customerUpdatedEmail-2',
+  customerUpdatedPhoneNumber: 'sample-customerUpdatedPhoneNumber-2',
 };
 
 export const sampleWithFullData: IAddOnsSelectedByOrganization = {
-  organizationId: 'f7abdb9a-f638-47a9-8cad-1062ebe0b817',
-  arrivalDate: 7377,
-  accountNumber: 'vague',
-  createdTimeId: '4de1cd8f-1ae1-42b0-b36d-ef770134c749',
-  departureDate: 18181,
-  customerId: '2414fb94-dd22-4856-b2ee-24d4690a44d9',
-  customerFirstName: 'esteemed verbally',
-  customerLastName: 'happily better',
-  customerUpdatedEmail: 'unfortunate archive relative',
-  customerUpdatedPhoneNumber: 'aw hence edge',
-  customerEstimatedArrivalTime: 'linseed important so',
-  tinyUrlShortCode: 'writ horn',
-  addOnDetailsText: 'keenly internalise whose',
-  addOnDetailsDecimal: 15106.59,
-  addOnDetailsBoolean: false,
-  addOnDetailsBigInt: 24064,
+  compositeId: {
+    organizationId: 'sample-organizationId-3',
+    arrivalDate: dayjs('2024-01-04T12:00:00Z'),
+    accountNumber: 'sample-accountNumber-3',
+    createdTimeId: 'sample-createdTimeId-3',
+  },
+  departureDate: dayjs('2024-01-04T12:00:00Z'),
+  customerId: 'sample-customerId-3',
+  customerFirstName: 'sample-customerFirstName-3',
+  customerLastName: 'sample-customerLastName-3',
+  customerUpdatedEmail: 'sample-customerUpdatedEmail-3',
+  customerUpdatedPhoneNumber: 'sample-customerUpdatedPhoneNumber-3',
+  customerEstimatedArrivalTime: 'sample-customerEstimatedArrivalTime-3',
+  tinyUrlShortCode: 'sample-tinyUrlShortCode-3',
+  addOnDetailsText: { key3: 'val-3' },
+  addOnDetailsDecimal: { key3: 3 },
+  addOnDetailsBoolean: { key3: false },
+  addOnDetailsBigInt: { key3: dayjs('2024-01-04T12:00:00Z') },
 };
 
 export const sampleWithNewData: NewAddOnsSelectedByOrganization = {
-  organizationId: null,
+  compositeId: {
+    organizationId: 'sample-organizationId-4',
+    arrivalDate: dayjs('2024-01-05T12:00:00Z'),
+    accountNumber: 'sample-accountNumber-4',
+    createdTimeId: 'sample-createdTimeId-4',
+  },
 };
 
 Object.freeze(sampleWithNewData);

@@ -72,8 +72,8 @@ describe('SaathratriEntity Form Service', () => {
     });
 
     describe('resetForm', () => {
-      it('passing ISaathratriEntity should not enable entityId FormControl', () => {
-        const formGroup = service.createSaathratriEntityFormGroup();
+      it('passing ISaathratriEntity should keep the key control disabled', () => {
+        const formGroup = service.createSaathratriEntityFormGroup(sampleWithRequiredData);
         expect(formGroup.controls.entityId.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
@@ -81,11 +81,10 @@ describe('SaathratriEntity Form Service', () => {
         expect(formGroup.controls.entityId.disabled).toBe(true);
       });
 
-      it('passing NewSaathratriEntity should disable entityId FormControl', () => {
-        const formGroup = service.createSaathratriEntityFormGroup(sampleWithRequiredData);
-        expect(formGroup.controls.entityId.disabled).toBe(true);
+      it('resetForm disables the key control even for a new entity', () => {
+        const formGroup = service.createSaathratriEntityFormGroup();
 
-        service.resetForm(formGroup, { entityId: null });
+        service.resetForm(formGroup, sampleWithRequiredData);
 
         expect(formGroup.controls.entityId.disabled).toBe(true);
       });

@@ -140,42 +140,18 @@ class AddOnsSelectedByOrganizationResourceIT {
                     .accountNumber(DEFAULT_ACCOUNT_NUMBER)
                     .createdTimeId(DEFAULT_CREATED_TIME_ID)
             )
-            .departureDate(1L)
-            .customerId(UUID.fromString("23d8dc04-a48b-45d9-a01d-4b728f0ad4aa"))
-            .customerFirstName("customerFirstName1")
-            .customerLastName("customerLastName1")
-            .customerUpdatedEmail("customerUpdatedEmail1")
-            .customerUpdatedPhoneNumber("customerUpdatedPhoneNumber1")
-            .customerEstimatedArrivalTime("customerEstimatedArrivalTime1")
-            .tinyUrlShortCode("tinyUrlShortCode1")
-            .addOnDetailsText(
-                new java.util.HashMap<String, String>() {
-                    {
-                        put("addOnDetailsText1", "addOnDetailsText1");
-                    }
-                }
-            )
-            .addOnDetailsDecimal(
-                new java.util.HashMap<String, BigDecimal>() {
-                    {
-                        put("addOnDetailsDecimal1", new BigDecimal(1));
-                    }
-                }
-            )
-            .addOnDetailsBoolean(
-                new java.util.HashMap<String, Boolean>() {
-                    {
-                        put("addOnDetailsBoolean1", false);
-                    }
-                }
-            )
-            .addOnDetailsBigInt(
-                new java.util.HashMap<String, Long>() {
-                    {
-                        put("addOnDetailsBigInt1", 1L);
-                    }
-                }
-            );
+            .departureDate(DEFAULT_DEPARTURE_DATE)
+            .customerId(DEFAULT_CUSTOMER_ID)
+            .customerFirstName(DEFAULT_CUSTOMER_FIRST_NAME)
+            .customerLastName(DEFAULT_CUSTOMER_LAST_NAME)
+            .customerUpdatedEmail(DEFAULT_CUSTOMER_UPDATED_EMAIL)
+            .customerUpdatedPhoneNumber(DEFAULT_CUSTOMER_UPDATED_PHONE_NUMBER)
+            .customerEstimatedArrivalTime(DEFAULT_CUSTOMER_ESTIMATED_ARRIVAL_TIME)
+            .tinyUrlShortCode(DEFAULT_TINY_URL_SHORT_CODE)
+            .addOnDetailsText(DEFAULT_ADD_ON_DETAILS_TEXT)
+            .addOnDetailsDecimal(DEFAULT_ADD_ON_DETAILS_DECIMAL)
+            .addOnDetailsBoolean(DEFAULT_ADD_ON_DETAILS_BOOLEAN)
+            .addOnDetailsBigInt(DEFAULT_ADD_ON_DETAILS_BIG_INT);
         addOnsSelectedByOrganization.setCompositeId(
             new AddOnsSelectedByOrganizationId(
                 DEFAULT_ORGANIZATION_ID,
@@ -202,42 +178,18 @@ class AddOnsSelectedByOrganizationResourceIT {
                     .accountNumber(UPDATED_ACCOUNT_NUMBER)
                     .createdTimeId(UPDATED_CREATED_TIME_ID)
             )
-            .departureDate(1L)
-            .customerId(UUID.fromString("23d8dc04-a48b-45d9-a01d-4b728f0ad4aa"))
-            .customerFirstName("customerFirstName1")
-            .customerLastName("customerLastName1")
-            .customerUpdatedEmail("customerUpdatedEmail1")
-            .customerUpdatedPhoneNumber("customerUpdatedPhoneNumber1")
-            .customerEstimatedArrivalTime("customerEstimatedArrivalTime1")
-            .tinyUrlShortCode("tinyUrlShortCode1")
-            .addOnDetailsText(
-                new java.util.HashMap<String, String>() {
-                    {
-                        put("addOnDetailsText1", "addOnDetailsText1");
-                    }
-                }
-            )
-            .addOnDetailsDecimal(
-                new java.util.HashMap<String, BigDecimal>() {
-                    {
-                        put("addOnDetailsDecimal1", new BigDecimal(1));
-                    }
-                }
-            )
-            .addOnDetailsBoolean(
-                new java.util.HashMap<String, Boolean>() {
-                    {
-                        put("addOnDetailsBoolean1", false);
-                    }
-                }
-            )
-            .addOnDetailsBigInt(
-                new java.util.HashMap<String, Long>() {
-                    {
-                        put("addOnDetailsBigInt1", 1L);
-                    }
-                }
-            );
+            .departureDate(UPDATED_DEPARTURE_DATE)
+            .customerId(UPDATED_CUSTOMER_ID)
+            .customerFirstName(UPDATED_CUSTOMER_FIRST_NAME)
+            .customerLastName(UPDATED_CUSTOMER_LAST_NAME)
+            .customerUpdatedEmail(UPDATED_CUSTOMER_UPDATED_EMAIL)
+            .customerUpdatedPhoneNumber(UPDATED_CUSTOMER_UPDATED_PHONE_NUMBER)
+            .customerEstimatedArrivalTime(UPDATED_CUSTOMER_ESTIMATED_ARRIVAL_TIME)
+            .tinyUrlShortCode(UPDATED_TINY_URL_SHORT_CODE)
+            .addOnDetailsText(UPDATED_ADD_ON_DETAILS_TEXT)
+            .addOnDetailsDecimal(UPDATED_ADD_ON_DETAILS_DECIMAL)
+            .addOnDetailsBoolean(UPDATED_ADD_ON_DETAILS_BOOLEAN)
+            .addOnDetailsBigInt(UPDATED_ADD_ON_DETAILS_BIG_INT);
         addOnsSelectedByOrganization.setCompositeId(
             new AddOnsSelectedByOrganizationId(
                 UPDATED_ORGANIZATION_ID,
@@ -288,22 +240,15 @@ class AddOnsSelectedByOrganizationResourceIT {
 
     @Test
     void createAddOnsSelectedByOrganizationWithExistingId() throws Exception {
-        // Create the AddOnsSelectedByOrganization with an existing ID
-        addOnsSelectedByOrganization.setCompositeId(
-            new AddOnsSelectedByOrganizationId(
-                DEFAULT_ORGANIZATION_ID,
-                DEFAULT_ARRIVAL_DATE,
-                DEFAULT_ACCOUNT_NUMBER,
-                DEFAULT_CREATED_TIME_ID
-            )
-        );
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         AddOnsSelectedByOrganizationDTO addOnsSelectedByOrganizationDTO = addOnsSelectedByOrganizationMapper.toDto(
             addOnsSelectedByOrganization
         );
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
                 post(ENTITY_API_URL)
@@ -311,10 +256,10 @@ class AddOnsSelectedByOrganizationResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(addOnsSelectedByOrganizationDTO))
             )
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the AddOnsSelectedByOrganization in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the AddOnsSelectedByOrganization was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -359,10 +304,10 @@ class AddOnsSelectedByOrganizationResourceIT {
             .andExpect(jsonPath("$.[*].customerUpdatedPhoneNumber").value(hasItem(DEFAULT_CUSTOMER_UPDATED_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].customerEstimatedArrivalTime").value(hasItem(DEFAULT_CUSTOMER_ESTIMATED_ARRIVAL_TIME)))
             .andExpect(jsonPath("$.[*].tinyUrlShortCode").value(hasItem(DEFAULT_TINY_URL_SHORT_CODE)))
-            .andExpect(jsonPath("$.[*].addOnDetailsText['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_TEXT.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsDecimal['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_DECIMAL.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsBoolean['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BOOLEAN.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsBigInt['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BIG_INT.get("AAAAAAAAAA")));
+            .andExpect(jsonPath("$.[*].addOnDetailsText").exists())
+            .andExpect(jsonPath("$.[*].addOnDetailsDecimal").exists())
+            .andExpect(jsonPath("$.[*].addOnDetailsBoolean").exists())
+            .andExpect(jsonPath("$.[*].addOnDetailsBigInt").exists());
     }
 
     @Test
@@ -377,51 +322,38 @@ class AddOnsSelectedByOrganizationResourceIT {
         // Get the addOnsSelectedByOrganization
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    addOnsSelectedByOrganization.getCompositeId().getOrganizationId() +
-                        "/" +
-                        addOnsSelectedByOrganization.getCompositeId().getArrivalDate() +
-                        "/" +
-                        addOnsSelectedByOrganization.getCompositeId().getAccountNumber() +
-                        "/" +
-                        addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(
-                jsonPath("$.[*].compositeId.organizationId").value(
-                    hasItem(addOnsSelectedByOrganization.getCompositeId().getOrganizationId().toString())
-                )
+                jsonPath("$.compositeId.organizationId").value(addOnsSelectedByOrganization.getCompositeId().getOrganizationId().toString())
             )
             .andExpect(
-                jsonPath("$.[*].compositeId.arrivalDate").value(
-                    hasItem(addOnsSelectedByOrganization.getCompositeId().getArrivalDate().intValue())
-                )
+                jsonPath("$.compositeId.arrivalDate").value(addOnsSelectedByOrganization.getCompositeId().getArrivalDate().intValue())
             )
             .andExpect(
-                jsonPath("$.[*].compositeId.accountNumber").value(
-                    hasItem(addOnsSelectedByOrganization.getCompositeId().getAccountNumber().toString())
-                )
+                jsonPath("$.compositeId.accountNumber").value(addOnsSelectedByOrganization.getCompositeId().getAccountNumber().toString())
             )
             .andExpect(
-                jsonPath("$.[*].compositeId.createdTimeId").value(
-                    hasItem(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId().toString())
-                )
+                jsonPath("$.compositeId.createdTimeId").value(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId().toString())
             )
-            .andExpect(jsonPath("$.[*].departureDate").value(hasItem(DEFAULT_DEPARTURE_DATE.intValue())))
-            .andExpect(jsonPath("$.[*].customerId").value(hasItem(DEFAULT_CUSTOMER_ID.toString())))
-            .andExpect(jsonPath("$.[*].customerFirstName").value(hasItem(DEFAULT_CUSTOMER_FIRST_NAME)))
-            .andExpect(jsonPath("$.[*].customerLastName").value(hasItem(DEFAULT_CUSTOMER_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].customerUpdatedEmail").value(hasItem(DEFAULT_CUSTOMER_UPDATED_EMAIL)))
-            .andExpect(jsonPath("$.[*].customerUpdatedPhoneNumber").value(hasItem(DEFAULT_CUSTOMER_UPDATED_PHONE_NUMBER)))
-            .andExpect(jsonPath("$.[*].customerEstimatedArrivalTime").value(hasItem(DEFAULT_CUSTOMER_ESTIMATED_ARRIVAL_TIME)))
-            .andExpect(jsonPath("$.[*].tinyUrlShortCode").value(hasItem(DEFAULT_TINY_URL_SHORT_CODE)))
-            .andExpect(jsonPath("$.[*].addOnDetailsText['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_TEXT.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsDecimal['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_DECIMAL.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsBoolean['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BOOLEAN.get("AAAAAAAAAA")))
-            .andExpect(jsonPath("$.[*].addOnDetailsBigInt['AAAAAAAAAA']").value(DEFAULT_ADD_ON_DETAILS_BIG_INT.get("AAAAAAAAAA")));
+            .andExpect(jsonPath("$.departureDate").value(DEFAULT_DEPARTURE_DATE.intValue()))
+            .andExpect(jsonPath("$.customerId").value(DEFAULT_CUSTOMER_ID.toString()))
+            .andExpect(jsonPath("$.customerFirstName").value(DEFAULT_CUSTOMER_FIRST_NAME))
+            .andExpect(jsonPath("$.customerLastName").value(DEFAULT_CUSTOMER_LAST_NAME))
+            .andExpect(jsonPath("$.customerUpdatedEmail").value(DEFAULT_CUSTOMER_UPDATED_EMAIL))
+            .andExpect(jsonPath("$.customerUpdatedPhoneNumber").value(DEFAULT_CUSTOMER_UPDATED_PHONE_NUMBER))
+            .andExpect(jsonPath("$.customerEstimatedArrivalTime").value(DEFAULT_CUSTOMER_ESTIMATED_ARRIVAL_TIME))
+            .andExpect(jsonPath("$.tinyUrlShortCode").value(DEFAULT_TINY_URL_SHORT_CODE))
+            .andExpect(jsonPath("$.addOnDetailsText").exists())
+            .andExpect(jsonPath("$.addOnDetailsDecimal").exists())
+            .andExpect(jsonPath("$.addOnDetailsBoolean").exists())
+            .andExpect(jsonPath("$.addOnDetailsBigInt").exists());
     }
 
     @Test
@@ -429,16 +361,11 @@ class AddOnsSelectedByOrganizationResourceIT {
         // Get the addOnsSelectedByOrganization
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    addOnsSelectedByOrganization.getCompositeId().getOrganizationId() +
-                        "/" +
-                        addOnsSelectedByOrganization.getCompositeId().getArrivalDate() +
-                        "/" +
-                        addOnsSelectedByOrganization.getCompositeId().getAccountNumber() +
-                        "/" +
-                        addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
             )
             .andExpect(status().isNotFound());
     }
@@ -477,7 +404,13 @@ class AddOnsSelectedByOrganizationResourceIT {
 
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, addOnsSelectedByOrganizationDTO)
+                put(
+                    ENTITY_API_URL + "/{organizationId}/{arrivalDate}/{accountNumber}/{createdTimeId}",
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getOrganizationId(),
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getArrivalDate(),
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getAccountNumber(),
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getCreatedTimeId()
+                )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(addOnsSelectedByOrganizationDTO))
@@ -510,14 +443,11 @@ class AddOnsSelectedByOrganizationResourceIT {
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
                 put(
-                    ENTITY_API_URL_ID,
-                    addOnsSelectedByOrganization.getCompositeId().getOrganizationId() +
-                        "/" +
-                        addOnsSelectedByOrganization.getCompositeId().getArrivalDate() +
-                        "/" +
-                        addOnsSelectedByOrganization.getCompositeId().getAccountNumber() +
-                        "/" +
-                        addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()
+                    ENTITY_API_URL + "/{organizationId}/{arrivalDate}/{accountNumber}/{createdTimeId}",
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getOrganizationId(),
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getArrivalDate(),
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getAccountNumber(),
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getCreatedTimeId()
                 )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -548,7 +478,13 @@ class AddOnsSelectedByOrganizationResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, UUID.randomUUID())
+                put(
+                    ENTITY_API_URL + "/{organizationId}/{arrivalDate}/{accountNumber}/{createdTimeId}",
+                    UUID.randomUUID(),
+                    longCount.incrementAndGet(),
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID()
+                )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(addOnsSelectedByOrganizationDTO))
@@ -621,7 +557,13 @@ class AddOnsSelectedByOrganizationResourceIT {
 
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedAddOnsSelectedByOrganization.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{arrivalDate}/{accountNumber}/{createdTimeId}",
+                    partialUpdatedAddOnsSelectedByOrganization.getCompositeId().getOrganizationId(),
+                    partialUpdatedAddOnsSelectedByOrganization.getCompositeId().getArrivalDate(),
+                    partialUpdatedAddOnsSelectedByOrganization.getCompositeId().getAccountNumber(),
+                    partialUpdatedAddOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedAddOnsSelectedByOrganization))
@@ -668,7 +610,13 @@ class AddOnsSelectedByOrganizationResourceIT {
 
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedAddOnsSelectedByOrganization.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{arrivalDate}/{accountNumber}/{createdTimeId}",
+                    partialUpdatedAddOnsSelectedByOrganization.getCompositeId().getOrganizationId(),
+                    partialUpdatedAddOnsSelectedByOrganization.getCompositeId().getArrivalDate(),
+                    partialUpdatedAddOnsSelectedByOrganization.getCompositeId().getAccountNumber(),
+                    partialUpdatedAddOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedAddOnsSelectedByOrganization))
@@ -704,7 +652,13 @@ class AddOnsSelectedByOrganizationResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, addOnsSelectedByOrganizationDTO)
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{arrivalDate}/{accountNumber}/{createdTimeId}",
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getOrganizationId(),
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getArrivalDate(),
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getAccountNumber(),
+                    addOnsSelectedByOrganizationDTO.getCompositeId().getCreatedTimeId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(addOnsSelectedByOrganizationDTO))
@@ -735,7 +689,13 @@ class AddOnsSelectedByOrganizationResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, addOnsSelectedByOrganizationDTO)
+                patch(
+                    ENTITY_API_URL + "/{organizationId}/{arrivalDate}/{accountNumber}/{createdTimeId}",
+                    UUID.randomUUID(),
+                    longCount.incrementAndGet(),
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(addOnsSelectedByOrganizationDTO))
@@ -780,7 +740,6 @@ class AddOnsSelectedByOrganizationResourceIT {
     @Test
     void deleteAddOnsSelectedByOrganization() throws Exception {
         // Initialize the database
-        addOnsSelectedByOrganization.setCompositeId(new AddOnsSelectedByOrganizationId());
         addOnsSelectedByOrganization.getCompositeId().setOrganizationId(UUID.randomUUID());
         addOnsSelectedByOrganization.getCompositeId().setArrivalDate(longCount.incrementAndGet());
         addOnsSelectedByOrganization.getCompositeId().setAccountNumber(UUID.randomUUID().toString());
@@ -792,7 +751,15 @@ class AddOnsSelectedByOrganizationResourceIT {
         // Delete the addOnsSelectedByOrganization
         restAddOnsSelectedByOrganizationMockMvc
             .perform(
-                delete(ENTITY_API_URL_ID, addOnsSelectedByOrganization.getCompositeId()).with(csrf()).accept(MediaType.APPLICATION_JSON)
+                delete(
+                    ENTITY_API_URL + "/{organizationId}/{arrivalDate}/{accountNumber}/{createdTimeId}",
+                    addOnsSelectedByOrganization.getCompositeId().getOrganizationId(),
+                    addOnsSelectedByOrganization.getCompositeId().getArrivalDate(),
+                    addOnsSelectedByOrganization.getCompositeId().getAccountNumber(),
+                    addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()
+                )
+                    .with(csrf())
+                    .accept(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isNoContent());
 

@@ -76,8 +76,7 @@ export class AddOnsSelectedByOrganizationsService {
       },
       departureDate: restAddOnsSelectedByOrganization.departureDate ? dayjs(restAddOnsSelectedByOrganization.departureDate) : null,
       addOnDetailsBigInt: restAddOnsSelectedByOrganization.addOnDetailsBigInt
-        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          Object.fromEntries(Object.entries(restAddOnsSelectedByOrganization.addOnDetailsBigInt).map(([k, v]) => [k, dayjs(v)]))
+        ? Object.fromEntries(Object.entries(restAddOnsSelectedByOrganization.addOnDetailsBigInt).map(([k, v]) => [k, dayjs(v)]))
         : {},
     };
   }
@@ -139,7 +138,7 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
 
   findAllByCompositeIdOrganizationIdPageable(organizationId: string, req?: any): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
+    options = options.set('organizationId', organizationId);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -153,8 +152,8 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -169,9 +168,9 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('accountNumber', String(accountNumber));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('accountNumber', accountNumber);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -187,10 +186,10 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('accountNumber', String(accountNumber));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('accountNumber', accountNumber);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -204,8 +203,8 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -219,8 +218,8 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -234,8 +233,8 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -249,8 +248,8 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -266,10 +265,10 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('accountNumber', String(accountNumber));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('accountNumber', accountNumber);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -285,10 +284,10 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('accountNumber', String(accountNumber));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('accountNumber', accountNumber);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -304,10 +303,10 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('accountNumber', String(accountNumber));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('accountNumber', accountNumber);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -323,10 +322,10 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     req?: any,
   ): Observable<EntityArrayResponseType> {
     let options = createRequestOption(req);
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('accountNumber', String(accountNumber));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('accountNumber', accountNumber);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<
         RestAddOnsSelectedByOrganization[]
@@ -341,10 +340,10 @@ export class AddOnsSelectedByOrganizationService extends AddOnsSelectedByOrganiz
     createdTimeId: string,
   ): Observable<EntityResponseType> {
     let options = new HttpParams();
-    options = options.set('organizationId', String(organizationId));
-    options = options.set('arrivalDate', String(arrivalDate));
-    options = options.set('accountNumber', String(accountNumber));
-    options = options.set('createdTimeId', String(createdTimeId));
+    options = options.set('organizationId', organizationId);
+    options = options.set('arrivalDate', arrivalDate);
+    options = options.set('accountNumber', accountNumber);
+    options = options.set('createdTimeId', createdTimeId);
     return this.http
       .get<RestAddOnsSelectedByOrganization>(
         `${this.resourceUrl}/find-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id`,

@@ -84,10 +84,10 @@ class PostResourceIT {
     public static Post createEntity() {
         Post post = new Post()
             .compositeId(new PostId().createdDate(DEFAULT_CREATED_DATE).addedDateTime(DEFAULT_ADDED_DATE_TIME).postId(DEFAULT_POST_ID))
-            .title("title1")
-            .content("content1")
-            .publishedDateTime(1L)
-            .sentDate(1L);
+            .title(DEFAULT_TITLE)
+            .content(DEFAULT_CONTENT)
+            .publishedDateTime(DEFAULT_PUBLISHED_DATE_TIME)
+            .sentDate(DEFAULT_SENT_DATE);
         post.setCompositeId(new PostId(DEFAULT_CREATED_DATE, DEFAULT_ADDED_DATE_TIME, DEFAULT_POST_ID));
         return post;
     }
@@ -101,10 +101,10 @@ class PostResourceIT {
     public static Post createUpdatedEntity() {
         Post post = new Post()
             .compositeId(new PostId().createdDate(UPDATED_CREATED_DATE).addedDateTime(UPDATED_ADDED_DATE_TIME).postId(UPDATED_POST_ID))
-            .title("title1")
-            .content("content1")
-            .publishedDateTime(1L)
-            .sentDate(1L);
+            .title(UPDATED_TITLE)
+            .content(UPDATED_CONTENT)
+            .publishedDateTime(UPDATED_PUBLISHED_DATE_TIME)
+            .sentDate(UPDATED_SENT_DATE);
         post.setCompositeId(new PostId(UPDATED_CREATED_DATE, UPDATED_ADDED_DATE_TIME, UPDATED_POST_ID));
         return post;
     }
@@ -138,19 +138,19 @@ class PostResourceIT {
 
     @Test
     void createPostWithExistingId() throws Exception {
-        // Create the Post with an existing ID
-        post.setCompositeId(new PostId(DEFAULT_CREATED_DATE, DEFAULT_ADDED_DATE_TIME, DEFAULT_POST_ID));
+        // In Cassandra the primary key is always supplied by the client (there is no
+        // server-generated surrogate id to reject), so an entity that already carries its id
+        // is a valid create — POSTing it succeeds and inserts the row.
         PostDTO postDTO = postMapper.toDto(post);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
-        // An entity with an existing ID cannot be created, so this API call must fail
         restPostMockMvc
             .perform(post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(postDTO)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the Post in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        // Validate the Post was created in the database
+        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -216,24 +216,20 @@ class PostResourceIT {
         // Get the post
         restPostMockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    post.getCompositeId().getCreatedDate() +
-                        "/" +
-                        post.getCompositeId().getAddedDateTime() +
-                        "/" +
-                        post.getCompositeId().getPostId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+                    .param("postId", String.valueOf(post.getCompositeId().getPostId()))
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].compositeId.createdDate").value(hasItem(post.getCompositeId().getCreatedDate().intValue())))
-            .andExpect(jsonPath("$.[*].compositeId.addedDateTime").value(hasItem(post.getCompositeId().getAddedDateTime().intValue())))
-            .andExpect(jsonPath("$.[*].compositeId.postId").value(hasItem(post.getCompositeId().getPostId().toString())))
-            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT)))
-            .andExpect(jsonPath("$.[*].publishedDateTime").value(hasItem(DEFAULT_PUBLISHED_DATE_TIME.intValue())))
-            .andExpect(jsonPath("$.[*].sentDate").value(hasItem(DEFAULT_SENT_DATE.intValue())));
+            .andExpect(jsonPath("$.compositeId.createdDate").value(post.getCompositeId().getCreatedDate().intValue()))
+            .andExpect(jsonPath("$.compositeId.addedDateTime").value(post.getCompositeId().getAddedDateTime().intValue()))
+            .andExpect(jsonPath("$.compositeId.postId").value(post.getCompositeId().getPostId().toString()))
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
+            .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT))
+            .andExpect(jsonPath("$.publishedDateTime").value(DEFAULT_PUBLISHED_DATE_TIME.intValue()))
+            .andExpect(jsonPath("$.sentDate").value(DEFAULT_SENT_DATE.intValue()));
     }
 
     @Test
@@ -241,14 +237,10 @@ class PostResourceIT {
         // Get the post
         restPostMockMvc
             .perform(
-                get(
-                    ENTITY_API_URL_ID,
-                    post.getCompositeId().getCreatedDate() +
-                        "/" +
-                        post.getCompositeId().getAddedDateTime() +
-                        "/" +
-                        post.getCompositeId().getPostId()
-                )
+                get(ENTITY_API_URL + "/get")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+                    .param("postId", String.valueOf(post.getCompositeId().getPostId()))
             )
             .andExpect(status().isNotFound());
     }
@@ -273,7 +265,15 @@ class PostResourceIT {
 
         restPostMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, postDTO).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(postDTO))
+                put(
+                    ENTITY_API_URL + "/{createdDate}/{addedDateTime}/{postId}",
+                    postDTO.getCompositeId().getCreatedDate(),
+                    postDTO.getCompositeId().getAddedDateTime(),
+                    postDTO.getCompositeId().getPostId()
+                )
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(om.writeValueAsBytes(postDTO))
             )
             .andExpect(status().isOk());
 
@@ -294,12 +294,10 @@ class PostResourceIT {
         restPostMockMvc
             .perform(
                 put(
-                    ENTITY_API_URL_ID,
-                    post.getCompositeId().getCreatedDate() +
-                        "/" +
-                        post.getCompositeId().getAddedDateTime() +
-                        "/" +
-                        post.getCompositeId().getPostId()
+                    ENTITY_API_URL + "/{createdDate}/{addedDateTime}/{postId}",
+                    postDTO.getCompositeId().getCreatedDate(),
+                    postDTO.getCompositeId().getAddedDateTime(),
+                    postDTO.getCompositeId().getPostId()
                 )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -321,7 +319,12 @@ class PostResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPostMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, longCount.incrementAndGet())
+                put(
+                    ENTITY_API_URL + "/{createdDate}/{addedDateTime}/{postId}",
+                    longCount.incrementAndGet(),
+                    longCount.incrementAndGet(),
+                    UUID.randomUUID()
+                )
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsBytes(postDTO))
@@ -370,7 +373,12 @@ class PostResourceIT {
 
         restPostMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedPost.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{createdDate}/{addedDateTime}/{postId}",
+                    partialUpdatedPost.getCompositeId().getCreatedDate(),
+                    partialUpdatedPost.getCompositeId().getAddedDateTime(),
+                    partialUpdatedPost.getCompositeId().getPostId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedPost))
@@ -404,7 +412,12 @@ class PostResourceIT {
 
         restPostMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedPost.getCompositeId())
+                patch(
+                    ENTITY_API_URL + "/{createdDate}/{addedDateTime}/{postId}",
+                    partialUpdatedPost.getCompositeId().getCreatedDate(),
+                    partialUpdatedPost.getCompositeId().getAddedDateTime(),
+                    partialUpdatedPost.getCompositeId().getPostId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(partialUpdatedPost))
@@ -428,7 +441,12 @@ class PostResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPostMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, postDTO)
+                patch(
+                    ENTITY_API_URL + "/{createdDate}/{addedDateTime}/{postId}",
+                    postDTO.getCompositeId().getCreatedDate(),
+                    postDTO.getCompositeId().getAddedDateTime(),
+                    postDTO.getCompositeId().getPostId()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(postDTO))
@@ -450,7 +468,12 @@ class PostResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPostMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, postDTO)
+                patch(
+                    ENTITY_API_URL + "/{createdDate}/{addedDateTime}/{postId}",
+                    longCount.incrementAndGet(),
+                    longCount.incrementAndGet(),
+                    UUID.randomUUID()
+                )
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(om.writeValueAsBytes(postDTO))
@@ -481,7 +504,6 @@ class PostResourceIT {
     @Test
     void deletePost() throws Exception {
         // Initialize the database
-        post.setCompositeId(new PostId());
         post.getCompositeId().setAddedDateTime(longCount.incrementAndGet());
         post.getCompositeId().setPostId(UUID.randomUUID());
         postRepository.save(post);
@@ -490,7 +512,16 @@ class PostResourceIT {
 
         // Delete the post
         restPostMockMvc
-            .perform(delete(ENTITY_API_URL_ID, post.getCompositeId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(
+                delete(
+                    ENTITY_API_URL + "/{createdDate}/{addedDateTime}/{postId}",
+                    post.getCompositeId().getCreatedDate(),
+                    post.getCompositeId().getAddedDateTime(),
+                    post.getCompositeId().getPostId()
+                )
+                    .with(csrf())
+                    .accept(MediaType.APPLICATION_JSON)
+            )
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

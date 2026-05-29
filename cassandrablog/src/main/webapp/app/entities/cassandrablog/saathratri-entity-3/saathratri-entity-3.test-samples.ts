@@ -1,29 +1,29 @@
+import dayjs from 'dayjs/esm';
+
 import { ISaathratriEntity3, NewSaathratriEntity3 } from './saathratri-entity-3.model';
 
 export const sampleWithRequiredData: ISaathratriEntity3 = {
-  entityType: 'f93614b0-6a8e-4b38-9738-6fdb8873f739',
+  compositeId: { entityType: 'sample-entityType-1', createdTimeId: 'sample-createdTimeId-1' },
 };
 
 export const sampleWithPartialData: ISaathratriEntity3 = {
-  entityType: 'cbad1b6c-5648-480d-8480-9001d31676db',
-  entityName: 'musty geez whoever',
-  entityDescription: 'whether which',
-  departureDate: 18659,
-  tags: 'gadzooks especially meaningfully',
+  compositeId: { entityType: 'sample-entityType-2', createdTimeId: 'sample-createdTimeId-2' },
+  entityName: 'sample-entityName-2',
+  entityDescription: 'sample-entityDescription-2',
+  entityCost: 1002,
 };
 
 export const sampleWithFullData: ISaathratriEntity3 = {
-  entityType: 'f8cdf7f0-b68e-4a60-8d6e-08bd3aecf846',
-  createdTimeId: '811a0692-91cd-4dee-a709-a6fba2c142cd',
-  entityName: 'supplier absentmindedly yellowish',
-  entityDescription: 'duh',
-  entityCost: 8008.05,
-  departureDate: 21117,
-  tags: 'agile coolly tricky',
+  compositeId: { entityType: 'sample-entityType-3', createdTimeId: 'sample-createdTimeId-3' },
+  entityName: 'sample-entityName-3',
+  entityDescription: 'sample-entityDescription-3',
+  entityCost: 1003,
+  departureDate: dayjs('2024-01-04T12:00:00Z'),
+  tags: new Set(['sample-3']),
 };
 
 export const sampleWithNewData: NewSaathratriEntity3 = {
-  entityType: null,
+  compositeId: { entityType: 'sample-entityType-4', createdTimeId: 'sample-createdTimeId-4' },
 };
 
 Object.freeze(sampleWithNewData);

@@ -12,7 +12,11 @@ import java.util.UUID;
 public class TagDTO implements Serializable {
 
     private UUID id;
+
+    @NotNull
+    @Size(min = 2)
     private String name;
+
     private String description;
     private java.util.List<Float> nameEmbedding;
     private java.util.List<Float> descriptionEmbedding;
@@ -82,6 +86,9 @@ public class TagDTO implements Serializable {
         if (!(o instanceof TagDTO)) return false;
 
         TagDTO that = (TagDTO) o;
+        if (this.getId() == null) {
+            return false;
+        }
         return Objects.equals(getId(), that.getId());
     }
 

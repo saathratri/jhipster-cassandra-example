@@ -1,33 +1,27 @@
+import dayjs from 'dayjs/esm';
+
 import { IProduct, NewProduct } from './product.model';
 
 export const sampleWithRequiredData: IProduct = {
-  id: '58da63fd-5d5c-49c2-bb80-c36259f193a1',
-  title: 'mortally loftily',
-  price: 15836.77,
-  addedDate: 24896,
+  id: 'sample-id-1',
 };
 
 export const sampleWithPartialData: IProduct = {
-  id: '7bbfd778-fc20-42b7-97cc-d85abe337d3f',
-  title: 'woot',
-  price: 14290.15,
-  addedDate: 15070,
+  id: 'sample-id-2',
+  title: 'sample-title-2',
+  price: 1002,
 };
 
 export const sampleWithFullData: IProduct = {
-  id: '211a0cfe-1a07-4340-9f1a-3acd4260f789',
-  title: 'ugh exactly',
-  price: 7952.58,
-  image: '../fake-data/blob/hipster.png',
-  imageContentType: 'unknown',
-  addedDate: 24023,
+  id: 'sample-id-3',
+  title: 'sample-title-3',
+  price: 1003,
+  image: 'sample-image-3',
+  addedDate: dayjs('2024-01-04T12:00:00Z'),
 };
 
 export const sampleWithNewData: NewProduct = {
-  title: 'anti inject why',
-  price: 26562.23,
-  addedDate: 4718,
-  id: null,
+  id: 'sample-id-4',
 };
 
 Object.freeze(sampleWithNewData);

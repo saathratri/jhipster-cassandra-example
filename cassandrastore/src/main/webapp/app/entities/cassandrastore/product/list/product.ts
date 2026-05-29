@@ -57,14 +57,13 @@ export class ProductComponent implements OnInit {
   protected readonly productService = inject(ProductService);
   // Cassandra entities use Observable-based loading (plain boolean, not signal,
   // because signals don't reliably trigger change detection in Module Federation microfrontends)
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   isLoading = false;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
-  constructor() {}
 
   // Saathratri: Single-value Primary Key Code
   trackId = (item: IProduct): string => this.productService.getProductIdentifier(item);
@@ -189,7 +188,7 @@ export class ProductComponent implements OnInit {
       return data;
     }
 
-    return predicate && order ? data.sort(this.sortService.startSort({ predicate, order })) : data;
+    return data.sort(this.sortService.startSort({ predicate, order }));
   }
 
   protected fillComponentAttributesFromResponseBody(data: IProduct[] | null): IProduct[] {
@@ -201,16 +200,17 @@ export class ProductComponent implements OnInit {
     this.hasNextPage = hasNextPage === 'true';
 
     const pagingStateHeader = headers.get('X-Paging-State');
-    this.pagingState = pagingStateHeader || null;
+    this.pagingState = pagingStateHeader ?? null;
 
     const totalCountHeader = headers.get('X-Total-Count');
     this.totalItems = totalCountHeader !== null ? Number(totalCountHeader) : null;
   }
 
   private getEntityKey(item: IProduct): string {
-    return String(this.productService.getProductIdentifier(item));
+    return JSON.stringify(this.productService.getProductIdentifier(item));
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected queryBackend(): Observable<EntityArrayResponseType> {
     const queryObject: any = {
       pagingState: this.pagingState,
@@ -221,6 +221,7 @@ export class ProductComponent implements OnInit {
     return this.productService.querySlice(queryObject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   protected handleNavigation(sortState: SortState): void {
     this.pagingState = null;
     this.hasNextPage = false;

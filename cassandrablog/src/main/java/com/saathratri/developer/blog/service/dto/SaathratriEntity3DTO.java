@@ -106,6 +106,9 @@ public class SaathratriEntity3DTO implements Serializable {
         if (!(o instanceof SaathratriEntity3DTO)) return false;
 
         SaathratriEntity3DTO that = (SaathratriEntity3DTO) o;
+        if (this.getCompositeId() == null) {
+            return false;
+        }
         return Objects.equals(getCompositeId(), that.getCompositeId());
     }
 

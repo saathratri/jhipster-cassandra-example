@@ -1,30 +1,47 @@
+import dayjs from 'dayjs/esm';
+
 import { ISaathratriEntity2, NewSaathratriEntity2 } from './saathratri-entity-2.model';
 
 export const sampleWithRequiredData: ISaathratriEntity2 = {
-  entityTypeId: '5974f795-b16d-40ae-a874-7c5737f16b14',
+  compositeId: {
+    entityTypeId: 'sample-entityTypeId-1',
+    yearOfDateAdded: 1001,
+    arrivalDate: dayjs('2024-01-02T12:00:00Z'),
+    blogId: 'sample-blogId-1',
+  },
 };
 
 export const sampleWithPartialData: ISaathratriEntity2 = {
-  entityTypeId: '2f2aca45-cce6-4c6d-a2bd-94fc7e479a8d',
-  yearOfDateAdded: 29203,
-  arrivalDate: 8788,
-  entityName: 'luck',
-  departureDate: 14782,
+  compositeId: {
+    entityTypeId: 'sample-entityTypeId-2',
+    yearOfDateAdded: 1002,
+    arrivalDate: dayjs('2024-01-03T12:00:00Z'),
+    blogId: 'sample-blogId-2',
+  },
+  entityName: 'sample-entityName-2',
+  entityDescription: 'sample-entityDescription-2',
 };
 
 export const sampleWithFullData: ISaathratriEntity2 = {
-  entityTypeId: '5a2ce557-5df7-4a42-b07f-2ee244ac5d29',
-  yearOfDateAdded: 20695,
-  arrivalDate: 12535,
-  blogId: 'ebe19d89-7627-4642-b83a-898c4d86c540',
-  entityName: 'haul',
-  entityDescription: 'angle whereas hypothesize',
-  entityCost: 15059.87,
-  departureDate: 9824,
+  compositeId: {
+    entityTypeId: 'sample-entityTypeId-3',
+    yearOfDateAdded: 1003,
+    arrivalDate: dayjs('2024-01-04T12:00:00Z'),
+    blogId: 'sample-blogId-3',
+  },
+  entityName: 'sample-entityName-3',
+  entityDescription: 'sample-entityDescription-3',
+  entityCost: 1003,
+  departureDate: dayjs('2024-01-04T12:00:00Z'),
 };
 
 export const sampleWithNewData: NewSaathratriEntity2 = {
-  entityTypeId: null,
+  compositeId: {
+    entityTypeId: 'sample-entityTypeId-4',
+    yearOfDateAdded: 1004,
+    arrivalDate: dayjs('2024-01-05T12:00:00Z'),
+    blogId: 'sample-blogId-4',
+  },
 };
 
 Object.freeze(sampleWithNewData);
