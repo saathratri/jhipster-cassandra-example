@@ -18,19 +18,35 @@ backend (unit + IT) → frontend (vitest) → e2e (Cypress). The blueprint's own
 loop lives in `../generator-jhipster-cassandra/TESTING.md` (uses a throwaway sample); this
 doc is about the real example monorepo.
 
+> ✅ **Just want a reliable one-shot? Run `sh run-all-tests.sh`** (add `--regen` to regenerate
+> first). It encodes every step and gotcha below — kills/【frees ports, builds webapps, launches
+> backends once, gates on real readiness, runs e2e judged by exit code, tears down, prints a
+> per-app report, and exits non-zero on any failure. The manual steps below exist for when you
+> need to run one phase in isolation or debug a failure. Flags: `--regen`, `--skip-backend`,
+> `--skip-frontend`, `--no-e2e`. Logs land in `.test-logs/`.
+
 ---
 
 ## 0. The one discipline that prevents most pain
 
-This session's failures all came from **over-parallelizing tool calls** and **double-launching
-backends**. Two rules:
+Every failure in this work came from **over-parallelizing tool calls** or **a backend port
+collision**. Three rules:
 
 1. **Run long/stateful commands one at a time.** Don't batch a regen + health-poll + e2e
    launch in one message — if one errors, the harness cancels the siblings and you lose track
    of what actually ran. Launch, wait for the notification, then proceed.
-2. **Launch the 3 backends exactly once, as a single background job** (see §4). Never start a
-   second set over a running first set — you get `Port 8081 was already in use` and a half-up
-   stack that fails e2e confusingly.
+2. **Launch the 3 backends exactly once — AND free the ports first.** This is THE big one. The
+   "cassandrastore e2e flake" that cost hours was never a Cypress timing issue: a second backend
+   trio was launched while a prior one (or a straggler) still held 8080/8081/8082, so the new
+   gateway died with `Port 8080 was already in use` → store's Cypress hit a dead `:8080`
+   ("No request ever occurred" / "Cypress failed to verify your server"). **Before every launch:
+   kill example java procs, kill whoever holds 8080/8081/8082, then BLOCK until those ports
+   report zero listeners.** Killing-by-name alone is not enough — verify the ports actually
+   cleared (a killed JVM can linger a few seconds). `run-all-tests.sh` does this via
+   `wait_ports_free`; do the same if running manually.
+3. **Judge e2e by the Cypress exit code, not by grepping the log.** Cypress exits non-zero on
+   any failed spec; log-scraping for "All specs passed" can match a stale line and report a
+   false green. If you must summarize from the log, still gate pass/fail on `$?`.
 
 ---
 
@@ -147,7 +163,20 @@ done
 # verify: each app's target/classes/static/index.html now exists
 ```
 
-### 5c. Launch all 3 backends — ONE background job, never twice
+### 5c. Free the ports, THEN launch all 3 backends — ONE background job, never twice
+First make absolutely sure nothing holds the server ports (see §0 rule 2 — this is the
+store-"flake" root cause). Kill example java procs + whoever holds 8080/8081/8082, then block
+until clear:
+```bash
+# kill by name AND by port, then wait until 0 listeners on 8080/8081/8082
+powershell.exe -NoProfile -Command "
+  Get-CimInstance Win32_Process -Filter \"Name='java.exe'\" |
+    Where-Object { \$_.CommandLine -match 'jhipster-cassandra-example' -or \$_.CommandLine -match 'Cassandra(gateway|blog|store)App' } |
+    ForEach-Object { try { Stop-Process -Id \$_.ProcessId -Force } catch {} }
+  foreach (\$p in 8080,8081,8082) { Get-NetTCPConnection -State Listen -LocalPort \$p -EA SilentlyContinue | ForEach-Object { try { Stop-Process -Id \$_.OwningProcess -Force } catch {} } }"
+until [ "$(powershell.exe -NoProfile -Command '(Get-NetTCPConnection -State Listen -LocalPort 8080,8081,8082 -EA SilentlyContinue | Measure-Object).Count' | tr -dc 0-9)" = 0 ]; do sleep 2; done
+```
+Then launch once:
 ```bash
 export MAVEN_OPTS="-Djavax.net.ssl.trustStoreType=Windows-ROOT"
 ( ( cd cassandragateway && ./mvnw -ntp -Dskip.npm spring-boot:run -Dspring-boot.run.profiles=dev > /tmp/run-gateway.log 2>&1 ) &
@@ -155,6 +184,8 @@ export MAVEN_OPTS="-Djavax.net.ssl.trustStoreType=Windows-ROOT"
   ( cd cassandrastore  && ./mvnw -ntp -Dskip.npm spring-boot:run -Dspring-boot.run.profiles=dev > /tmp/run-store.log   2>&1 ) &
   wait )
 ```
+If a backend log ends in `APPLICATION FAILED TO START` / `Port 80xx was already in use`, you
+hit the collision — kill everything, free ports, relaunch. (Just use `run-all-tests.sh`.)
 
 ### 5d. Wait until all 3 are healthy on the CORRECT ports, then let Eureka settle
 ```bash
@@ -199,6 +230,15 @@ kill both. Confirm ports 8080/8081/8082 are free afterward.
   `npm run e2e:cypress` against a manually-started stack. See §5e.
 - **Health-check 808x, not 934x/924x.** 9342/9242 are Cassandra CQL Docker ports. See §1.
 - **Build the webapp before e2e** or you get the index.html 404. See §5b.
+- **Port collision is the #1 e2e killer (the real "store flake").** A backend launched over a
+  port still held by a prior/straggler JVM dies with `Port 80xx was already in use`; e2e then
+  hits a dead `:8080` and reports `No request ever occurred` / `Cypress failed to verify your
+  server`. It looks like a Cypress timing flake but it is NOT — it's a crashed backend. Always
+  kill-by-name **and** kill-by-port, then **block until 8080/8081/8082 have zero listeners**
+  before launching. See §0 rule 2 and §5c. Symptom check: `grep "APPLICATION FAILED TO START"
+  /tmp/run-*.log`.
+- **e2e pass/fail = Cypress exit code, never a log grep.** Grepping for "All specs passed" can
+  match a stale line and falsely report green. See §0 rule 3 / §5e.
 - **Single backend launch only.** Double-launch → `Port 8081 was already in use`. See §0/§5c.
 - **`--force` on regen** or it hangs on the overwrite prompt. See §2.
 - **Blueprint link staleness:** if a blueprint fix isn't showing up after regen, re-`npm link`
@@ -213,6 +253,12 @@ kill both. Confirm ports 8080/8081/8082 are free afterward.
 
 ## 7. Quick reference (full run, in order)
 
+**Preferred — the one-shot does all of the below, reliably:**
+```bash
+sh run-all-tests.sh --regen      # regen + backend + frontend + e2e, ALL GREEN or non-zero exit
+```
+
+**Manual equivalent (use to run a single phase or debug):**
 ```bash
 export NODE_OPTIONS=--use-system-ca MAVEN_OPTS="-Djavax.net.ssl.trustStoreType=Windows-ROOT"
 ( cd ../generator-jhipster-cassandra && npm link )                                   # link blueprint
