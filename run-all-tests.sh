@@ -59,10 +59,33 @@ say(){ echo; hr; echo ">>> $*"; hr; }
 
 # ---- 0. clean slate: kill any app backends from a prior run ---------------
 kill_backends() {
-  powershell.exe -NoProfile -Command "Get-CimInstance Win32_Process -Filter \"Name='java.exe'\" | Where-Object { \$_.CommandLine -match 'jhipster-cassandra-example' -or \$_.CommandLine -match 'Cassandra(gateway|blog|store)App' } | ForEach-Object { try { Stop-Process -Id \$_.ProcessId -Force -ErrorAction Stop } catch {} }" >/dev/null 2>&1 || true
+  # Kill example backends by command-line match AND by whoever currently holds 8080/8081/8082.
+  # The command-line match alone misses nothing of ours, but belt-and-suspenders we also free the
+  # ports — the real root cause of the store "flake" was a freshly launched gateway colliding with
+  # a straggler on 8080 and dying with "Port 8080 was already in use", which took the e2e run down.
+  powershell.exe -NoProfile -Command "
+    Get-CimInstance Win32_Process -Filter \"Name='java.exe'\" |
+      Where-Object { \$_.CommandLine -match 'jhipster-cassandra-example' -or \$_.CommandLine -match 'Cassandra(gateway|blog|store)App' } |
+      ForEach-Object { try { Stop-Process -Id \$_.ProcessId -Force -ErrorAction Stop } catch {} }
+    foreach (\$p in 8080,8081,8082) {
+      Get-NetTCPConnection -State Listen -LocalPort \$p -ErrorAction SilentlyContinue |
+        ForEach-Object { try { Stop-Process -Id \$_.OwningProcess -Force -ErrorAction Stop } catch {} }
+    }" >/dev/null 2>&1 || true
 }
-say "Clean slate: stopping any running example backends"
-kill_backends; sleep 3
+
+# Block until 8080/8081/8082 have no listener (max ~60s). Echoes status; returns 0 when free.
+wait_ports_free() {
+  for i in $(seq 1 30); do
+    busy=$(powershell.exe -NoProfile -Command "(Get-NetTCPConnection -State Listen -LocalPort 8080,8081,8082 -ErrorAction SilentlyContinue | Measure-Object).Count" 2>/dev/null | tr -dc '0-9')
+    [ "${busy:-0}" = "0" ] && return 0
+    sleep 2
+  done
+  echo "  ⚠ ports still busy after wait: ${busy:-?} listener(s)"; return 1
+}
+say "Clean slate: stopping any running example backends + freeing ports"
+kill_backends
+wait_ports_free || { echo "  could not free 8080/8081/8082 — aborting"; exit 1; }
+echo "  ports 8080/8081/8082 free"
 
 # ---- 1. regen (optional) --------------------------------------------------
 if [ "$REGEN" = 1 ]; then
@@ -111,6 +134,9 @@ if [ "$DO_E2E" = 1 ]; then
     [ -f "$app/target/classes/static/index.html" ] && echo "  ✔ $app index.html" || { echo "  ✖ $app index.html MISSING"; FAIL=1; }
   done
 
+  say "Ensuring ports free before launching backends"
+  kill_backends; wait_ports_free || { echo "  ports busy — aborting e2e"; FAIL=1; }
+
   say "Launching 3 backends (single job)"
   ( cd cassandragateway && ./mvnw -ntp -Dskip.npm spring-boot:run -Dspring-boot.run.profiles=dev > "$LOG/run-gateway.log" 2>&1 ) &
   ( cd cassandrablog   && ./mvnw -ntp -Dskip.npm spring-boot:run -Dspring-boot.run.profiles=dev > "$LOG/run-blog.log"    2>&1 ) &
@@ -143,30 +169,22 @@ if [ "$DO_E2E" = 1 ]; then
   done
   echo "  letting federation settle 20s"; sleep 20
 
-  # 6d. run each app's Cypress suite; retry the WHOLE suite once on flake
-  run_e2e(){ # $1=app
-    local app=$1
-    ( cd "$app" && npm run e2e:cypress ) > "$LOG/e2e-$app.log" 2>&1
-    return $?
-  }
+  # 6d. run each app's Cypress suite ONCE. Pass/fail is the cypress EXIT CODE (non-zero on any
+  # failed spec) — not log-grepping, which previously reported a pass while the run had failed.
+  # No whole-suite retry: with the hardened port-clearing above, the prior "flake" (a crashed
+  # gateway from a port collision) is gone, so a true one-shot must pass in one attempt; a retry
+  # would only mask a real regression.
   for app in $APPS; do
     say "E2E (Cypress): $app"
-    if run_e2e "$app"; then
-      R_E2E[$app]="$(grep -aE 'All specs passed' "$LOG/e2e-$app.log" | tr -d '\033' | sed -E 's/\x1b\[[0-9;]*m//g; s/^[[:space:]]*//' | tail -1)"
+    ( cd "$app" && npm run e2e:cypress ) > "$LOG/e2e-$app.log" 2>&1
+    rc=$?
+    summary="$(grep -aE 'All specs passed|[0-9]+ of [0-9]+ failed' "$LOG/e2e-$app.log" | tr -d '\033' | sed -E 's/\x1b\[[0-9;]*m//g; s/^[[:space:]]*//' | tail -1)"
+    if [ $rc -eq 0 ]; then
+      R_E2E[$app]="PASS — ${summary:-(no summary line)}"
       echo "  ✔ $app e2e passed"
     else
-      echo "  ⚠ $app e2e failed first pass — re-confirming route + retrying whole suite once"
-      if [ -n "${PROBE[$app]:-}" ]; then
-        for i in $(seq 1 24); do c=$(http "http://localhost:8080/${PROBE[$app]}"); case "$c" in 200|301|302|401) break;; esac; sleep 5; done
-      fi
-      sleep 10
-      if run_e2e "$app"; then
-        R_E2E[$app]="$(grep -aE 'All specs passed' "$LOG/e2e-$app.log" | tr -d '\033' | sed -E 's/\x1b\[[0-9;]*m//g; s/^[[:space:]]*//' | tail -1) (passed on retry)"
-        echo "  ✔ $app e2e passed on retry"
-      else
-        R_E2E[$app]="$(grep -aE '[0-9]+ of [0-9]+ failed' "$LOG/e2e-$app.log" | tr -d '\033' | sed -E 's/\x1b\[[0-9;]*m//g; s/^[[:space:]]*//' | tail -1)"
-        echo "  ✖ $app e2e FAILED after retry (see $LOG/e2e-$app.log)"; FAIL=1
-      fi
+      R_E2E[$app]="FAIL(rc=$rc) — ${summary:-(no cypress summary; see log)}"
+      echo "  ✖ $app e2e FAILED (rc=$rc, see $LOG/e2e-$app.log)"; FAIL=1
     fi
   done
 
