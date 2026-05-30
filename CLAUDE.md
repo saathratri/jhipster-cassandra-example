@@ -19,7 +19,7 @@ loop lives in `../generator-jhipster-cassandra/TESTING.md` (uses a throwaway sam
 doc is about the real example monorepo.
 
 > ✅ **Just want a reliable one-shot? Run `sh run-all-tests.sh`** (add `--regen` to regenerate
-> first). It encodes every step and gotcha below — kills/【frees ports, builds webapps, launches
+> first). It encodes every step and gotcha below — kills/frees ports, builds webapps, launches
 > backends once, gates on real readiness, runs e2e judged by exit code, tears down, prints a
 > per-app report, and exits non-zero on any failure. The manual steps below exist for when you
 > need to run one phase in isolation or debug a failure. Flags: `--regen`, `--skip-backend`,
