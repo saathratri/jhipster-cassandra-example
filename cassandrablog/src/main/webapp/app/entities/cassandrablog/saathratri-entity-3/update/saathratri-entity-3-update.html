@@ -78,10 +78,18 @@
               formControlName="createdTimeId"
             />
             @if (isNew) {
-              <button type="button" class="btn btn-primary" (click)="generateTimeUUID('compositeId.createdTimeId')">Generate</button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-cy="createdTimeId-generate"
+                (click)="generateTimeUUID('compositeId.createdTimeId')"
+              >
+                Generate
+              </button>
               <button
                 type="button"
                 class="btn btn-danger"
+                data-cy="createdTimeId-reset"
                 (click)="reset('compositeId.createdTimeId')"
                 [disabled]="isResetDisabled['compositeId.createdTimeId']"
               >

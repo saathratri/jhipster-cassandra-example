@@ -17,8 +17,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SaathratriEntity2Repository extends CassandraRepository<SaathratriEntity2, SaathratriEntity2Id> {
+    @org.springframework.data.cassandra.repository.AllowFiltering
     List<SaathratriEntity2> findAllByCompositeIdEntityTypeId(final UUID entityTypeId);
+
+    @org.springframework.data.cassandra.repository.AllowFiltering
     Slice<SaathratriEntity2> findAllByCompositeIdEntityTypeId(final UUID entityTypeId, Pageable pageable);
+
     List<SaathratriEntity2> findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAdded(
         final UUID entityTypeId,
         final Long yearOfDateAdded

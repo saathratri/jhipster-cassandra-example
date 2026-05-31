@@ -98,6 +98,184 @@ describe('AddOnsSelectedByOrganization Service', () => {
       expect(requests.length).toBe(1);
     });
 
+    describe('composite-key search methods', () => {
+      it('should call findAllByCompositeIdOrganizationIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service.findAllByCompositeIdOrganizationIdPageable('organizationId').subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDatePageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDatePageable('organizationId', 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberPageable(
+            'organizationId',
+            1,
+            'accountNumber',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdPageable(
+            'organizationId',
+            1,
+            'accountNumber',
+            'createdTimeId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanPageable('organizationId', 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateLessThanEqualPageable('organizationId', 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanPageable('organizationId', 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateGreaterThanEqualPageable('organizationId', 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanPageable(
+            'organizationId',
+            1,
+            'accountNumber',
+            'createdTimeId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdLessThanEqualPageable(
+            'organizationId',
+            1,
+            'accountNumber',
+            'createdTimeId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanPageable(
+            'organizationId',
+            1,
+            'accountNumber',
+            'createdTimeId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeIdGreaterThanEqualPageable(
+            'organizationId',
+            1,
+            'accountNumber',
+            'createdTimeId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findByCompositeIdOrganizationIdAndCompositeIdArrivalDateAndCompositeIdAccountNumberAndCompositeIdCreatedTimeId(
+            'organizationId',
+            1,
+            'accountNumber',
+            'createdTimeId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ ...sampleWithRequiredData });
+      });
+    });
+
     describe('addAddOnsSelectedByOrganizationToCollectionIfMissing', () => {
       it('should add a AddOnsSelectedByOrganization to an empty array', () => {
         const addOnsSelectedByOrganization: IAddOnsSelectedByOrganization = sampleWithRequiredData;

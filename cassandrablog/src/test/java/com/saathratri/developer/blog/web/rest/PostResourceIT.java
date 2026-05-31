@@ -233,6 +233,116 @@ class PostResourceIT {
     }
 
     @Test
+    void getAllPostsByCompositeKeySearches() throws Exception {
+        // Initialize the database
+        postRepository.save(post);
+
+        // Exercise every generated composite-key search endpoint (partial-partition findAllBy
+        // carry @AllowFiltering, clustering/comparison/findBy are plain valid queries), plus
+        // /slice. A 200 confirms the derived CQL + parameter binding executes against real
+        // Cassandra; body shape is covered by the get()/getAll() tests above.
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date").param(
+                    "createdDate",
+                    String.valueOf(post.getCompositeId().getCreatedDate())
+                )
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-pageable")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time-pageable")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time-less-than")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time-less-than-pageable")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time-less-than-equal")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time-less-than-equal-pageable")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time-greater-than")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time-greater-than-pageable")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time-greater-than-equal")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-created-date-and-composite-id-added-date-time-greater-than-equal-pageable")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-by-composite-id-created-date-and-composite-id-added-date-time-and-composite-id-post-id")
+                    .param("createdDate", String.valueOf(post.getCompositeId().getCreatedDate()))
+                    .param("addedDateTime", String.valueOf(post.getCompositeId().getAddedDateTime()))
+                    .param("postId", String.valueOf(post.getCompositeId().getPostId()))
+            )
+            .andExpect(status().isOk());
+        restPostMockMvc.perform(get(ENTITY_API_URL + "/slice").param("size", "20")).andExpect(status().isOk());
+    }
+
+    @Test
     void getNonExistingPost() throws Exception {
         // Get the post
         restPostMockMvc

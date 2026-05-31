@@ -54,8 +54,10 @@
           <label class="form-label" for="field_id" jhiTranslate="cassandrastoreApp.cassandrastoreProduct.id">Id</label>
           <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" />
           @if (isNew) {
-            <button type="button" class="btn btn-primary" (click)="generateUUID('id')">Generate</button>
-            <button type="button" class="btn btn-danger" (click)="reset('id')" [disabled]="isResetDisabled['id']">Reset</button>
+            <button type="button" class="btn btn-primary" data-cy="id-generate" (click)="generateUUID('id')">Generate</button>
+            <button type="button" class="btn btn-danger" data-cy="id-reset" (click)="reset('id')" [disabled]="isResetDisabled['id']">
+              Reset
+            </button>
           }
         </div>
 

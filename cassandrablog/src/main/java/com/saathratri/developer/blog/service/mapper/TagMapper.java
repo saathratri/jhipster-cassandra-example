@@ -20,6 +20,8 @@ public interface TagMapper extends EntityMapper<TagDTO, Tag> {
 
     @Mapping(target = "nameEmbedding", ignore = true)
     @Mapping(target = "descriptionEmbedding", ignore = true)
+    @Named("partialUpdate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void partialUpdate(@MappingTarget Tag entity, TagDTO dto);
 
     default Set<String> map(String value) {

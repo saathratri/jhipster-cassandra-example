@@ -186,4 +186,18 @@ describe('Tag e2e test', () => {
       cy.url().should('match', tagPageUrlPattern);
     });
   });
+
+  it('should generate and reset a UUID via the form buttons', () => {
+    cy.visit('/');
+    cy.clickOnEntityMenuItem(tagPageUrl.substring(1));
+    cy.get(entityCreateButtonSelector, { timeout: 30000 }).click();
+    // Generate fills a fresh UUID via the component's generateUUID()/generateTimeUUID().
+    cy.get(`[data-cy="id-generate"]`).click();
+    cy.get(`[data-cy="id"]`)
+      .invoke('val')
+      .should('match', /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+    // Reset restores the (empty) saved value, clearing the field.
+    cy.get(`[data-cy="id-reset"]`).click();
+    cy.get(`[data-cy="id"]`).should('have.value', '');
+  });
 });

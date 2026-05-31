@@ -185,6 +185,40 @@ class SaathratriEntity4ResourceIT {
     }
 
     @Test
+    void getAllSaathratriEntity4sByCompositeKeySearches() throws Exception {
+        // Initialize the database
+        saathratriEntity4Repository.save(saathratriEntity4);
+
+        // Exercise every generated composite-key search endpoint (partial-partition findAllBy
+        // carry @AllowFiltering, clustering/comparison/findBy are plain valid queries), plus
+        // /slice. A 200 confirms the derived CQL + parameter binding executes against real
+        // Cassandra; body shape is covered by the get()/getAll() tests above.
+        restSaathratriEntity4MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id").param(
+                    "organizationId",
+                    String.valueOf(saathratriEntity4.getCompositeId().getOrganizationId())
+                )
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity4MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-pageable")
+                    .param("organizationId", String.valueOf(saathratriEntity4.getCompositeId().getOrganizationId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity4MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-by-composite-id-organization-id-and-composite-id-attribute-key")
+                    .param("organizationId", String.valueOf(saathratriEntity4.getCompositeId().getOrganizationId()))
+                    .param("attributeKey", String.valueOf(saathratriEntity4.getCompositeId().getAttributeKey()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity4MockMvc.perform(get(ENTITY_API_URL + "/slice").param("size", "20")).andExpect(status().isOk());
+    }
+
+    @Test
     void getNonExistingSaathratriEntity4() throws Exception {
         // Get the saathratriEntity4
         restSaathratriEntity4MockMvc

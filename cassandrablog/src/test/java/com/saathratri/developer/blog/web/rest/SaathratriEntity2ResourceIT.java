@@ -247,6 +247,286 @@ class SaathratriEntity2ResourceIT {
     }
 
     @Test
+    void getAllSaathratriEntity2sByCompositeKeySearches() throws Exception {
+        // Initialize the database
+        saathratriEntity2Repository.save(saathratriEntity2);
+
+        // Exercise every generated composite-key search endpoint (partial-partition findAllBy
+        // carry @AllowFiltering, clustering/comparison/findBy are plain valid queries), plus
+        // /slice. A 200 confirms the derived CQL + parameter binding executes against real
+        // Cassandra; body shape is covered by the get()/getAll() tests above.
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-id").param(
+                    "entityTypeId",
+                    String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId())
+                )
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-id-pageable")
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added")
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-pageable")
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-pageable"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-less-than"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-less-than-pageable"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-less-than-equal"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-less-than-equal-pageable"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-greater-than"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-greater-than-pageable"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-greater-than-equal"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-greater-than-equal-pageable"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-less-than"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-less-than-pageable"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-less-than-equal"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-less-than-equal-pageable"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-greater-than"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-greater-than-pageable"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-greater-than-equal"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date-and-composite-id-blog-id-greater-than-equal-pageable"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+                    .param("blogId", String.valueOf(saathratriEntity2.getCompositeId().getBlogId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-latest-by-composite-id-entity-type-id-and-composite-id-year-of-date-added-and-composite-id-arrival-date"
+                )
+                    .param("entityTypeId", String.valueOf(saathratriEntity2.getCompositeId().getEntityTypeId()))
+                    .param("yearOfDateAdded", String.valueOf(saathratriEntity2.getCompositeId().getYearOfDateAdded()))
+                    .param("arrivalDate", String.valueOf(saathratriEntity2.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity2MockMvc.perform(get(ENTITY_API_URL + "/slice").param("size", "20")).andExpect(status().isOk());
+    }
+
+    @Test
     void getNonExistingSaathratriEntity2() throws Exception {
         // Get the saathratriEntity2
         restSaathratriEntity2MockMvc

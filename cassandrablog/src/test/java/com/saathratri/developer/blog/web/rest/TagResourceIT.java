@@ -479,4 +479,16 @@ class TagResourceIT {
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$.length()").value(0));
     }
+
+    @Test
+    void nameEmbeddingRoundTripsThroughTheVectorColumn() {
+        // Verify a CqlVector<Float> written to the vector<float, 1536> column
+        // reads back intact (the Cassandra vector type mapping, independent of ANN search).
+        CqlVector<Float> embedding = sampleCqlVectorSaathratri(1536);
+        tag.setNameEmbedding(embedding);
+        tagRepository.save(tag);
+
+        Tag persisted = getPersistedTag(tag);
+        assertThat(persisted.getNameEmbedding()).isEqualTo(embedding);
+    }
 }

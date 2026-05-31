@@ -17,17 +17,25 @@ import org.springframework.stereotype.Repository;
 public interface AddOnsAvailableByOrganizationRepository
     extends CassandraRepository<AddOnsAvailableByOrganization, AddOnsAvailableByOrganizationId>
 {
+    @org.springframework.data.cassandra.repository.AllowFiltering
     List<AddOnsAvailableByOrganization> findAllByCompositeIdOrganizationId(final UUID organizationId);
+
+    @org.springframework.data.cassandra.repository.AllowFiltering
     Slice<AddOnsAvailableByOrganization> findAllByCompositeIdOrganizationId(final UUID organizationId, Pageable pageable);
+
+    @org.springframework.data.cassandra.repository.AllowFiltering
     List<AddOnsAvailableByOrganization> findAllByCompositeIdOrganizationIdAndCompositeIdEntityType(
         final UUID organizationId,
         final String entityType
     );
+
+    @org.springframework.data.cassandra.repository.AllowFiltering
     Slice<AddOnsAvailableByOrganization> findAllByCompositeIdOrganizationIdAndCompositeIdEntityType(
         final UUID organizationId,
         final String entityType,
         Pageable pageable
     );
+
     List<AddOnsAvailableByOrganization> findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityId(
         final UUID organizationId,
         final String entityType,

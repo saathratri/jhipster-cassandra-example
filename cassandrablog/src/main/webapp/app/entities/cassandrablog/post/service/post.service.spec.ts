@@ -93,6 +93,93 @@ describe('Post Service', () => {
       expect(requests.length).toBe(1);
     });
 
+    describe('composite-key search methods', () => {
+      it('should call findAllByCompositeIdCreatedDatePageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service.findAllByCompositeIdCreatedDatePageable(1).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimePageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service.findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimePageable(1, 1).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostIdPageable(1, 1, 'postId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeLessThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeLessThanPageable(1, 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeLessThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeLessThanEqualPageable(1, 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThanPageable(1, 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCreatedDateAndCompositeIdAddedDateTimeGreaterThanEqualPageable(1, 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findByCompositeIdCreatedDateAndCompositeIdAddedDateTimeAndCompositeIdPostId(1, 1, 'postId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ ...sampleWithRequiredData });
+      });
+    });
+
     describe('addPostToCollectionIfMissing', () => {
       it('should add a Post to an empty array', () => {
         const post: IPost = sampleWithRequiredData;

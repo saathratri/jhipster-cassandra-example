@@ -289,6 +289,80 @@ class AddOnsAvailableByOrganizationResourceIT {
     }
 
     @Test
+    void getAllAddOnsAvailableByOrganizationsByCompositeKeySearches() throws Exception {
+        // Initialize the database
+        addOnsAvailableByOrganizationRepository.save(addOnsAvailableByOrganization);
+
+        // Exercise every generated composite-key search endpoint (partial-partition findAllBy
+        // carry @AllowFiltering, clustering/comparison/findBy are plain valid queries), plus
+        // /slice. A 200 confirms the derived CQL + parameter binding executes against real
+        // Cassandra; body shape is covered by the get()/getAll() tests above.
+        restAddOnsAvailableByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id").param(
+                    "organizationId",
+                    String.valueOf(addOnsAvailableByOrganization.getCompositeId().getOrganizationId())
+                )
+            )
+            .andExpect(status().isOk());
+        restAddOnsAvailableByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-pageable")
+                    .param("organizationId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getOrganizationId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsAvailableByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-entity-type")
+                    .param("organizationId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getOrganizationId()))
+                    .param("entityType", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityType()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsAvailableByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-entity-type-pageable")
+                    .param("organizationId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getOrganizationId()))
+                    .param("entityType", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityType()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsAvailableByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id")
+                    .param("organizationId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getOrganizationId()))
+                    .param("entityType", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityType()))
+                    .param("entityId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityId()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsAvailableByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id-pageable"
+                )
+                    .param("organizationId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getOrganizationId()))
+                    .param("entityType", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityType()))
+                    .param("entityId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsAvailableByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-by-composite-id-organization-id-and-composite-id-entity-type-and-composite-id-entity-id-and-composite-id-add-on-id"
+                )
+                    .param("organizationId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getOrganizationId()))
+                    .param("entityType", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityType()))
+                    .param("entityId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getEntityId()))
+                    .param("addOnId", String.valueOf(addOnsAvailableByOrganization.getCompositeId().getAddOnId()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsAvailableByOrganizationMockMvc.perform(get(ENTITY_API_URL + "/slice").param("size", "20")).andExpect(status().isOk());
+    }
+
+    @Test
     void getNonExistingAddOnsAvailableByOrganization() throws Exception {
         // Get the addOnsAvailableByOrganization
         restAddOnsAvailableByOrganizationMockMvc

@@ -203,7 +203,7 @@ describe('Post e2e test', () => {
       cy.get(`[data-cy="addedDateTime-minutes"]`).should('have.value', '30');
 
       cy.get(`[data-cy="addedDateTime-ampm"]`).click({ force: true });
-      cy.get('mat-option').contains('AM').click();
+      cy.get('mat-option').contains('AM').click({ force: true });
       cy.get(`[data-cy="addedDateTime-ampm"]`).should('contain', 'AM');
     });
 
@@ -215,7 +215,7 @@ describe('Post e2e test', () => {
       cy.get(`[data-cy="publishedDateTime-minutes"]`).should('have.value', '30');
 
       cy.get(`[data-cy="publishedDateTime-ampm"]`).click({ force: true });
-      cy.get('mat-option').contains('AM').click();
+      cy.get('mat-option').contains('AM').click({ force: true });
       cy.get(`[data-cy="publishedDateTime-ampm"]`).should('contain', 'AM');
     });
   });
@@ -225,5 +225,19 @@ describe('Post e2e test', () => {
     cy.clickOnEntityMenuItem(postPageUrl.substring(1));
     cy.get('[data-cy="searchFormToggle"]', { timeout: 30000 }).click();
     cy.get('[data-cy="searchButton"]').should('be.visible');
+  });
+
+  it('should generate and reset a UUID via the form buttons', () => {
+    cy.visit('/');
+    cy.clickOnEntityMenuItem(postPageUrl.substring(1));
+    cy.get(entityCreateButtonSelector, { timeout: 30000 }).click();
+    // Generate fills a fresh UUID via the component's generateUUID()/generateTimeUUID().
+    cy.get(`[data-cy="postId-generate"]`).click();
+    cy.get(`[data-cy="postId"]`)
+      .invoke('val')
+      .should('match', /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+    // Reset restores the (empty) saved value, clearing the field.
+    cy.get(`[data-cy="postId-reset"]`).click();
+    cy.get(`[data-cy="postId"]`).should('have.value', '');
   });
 });

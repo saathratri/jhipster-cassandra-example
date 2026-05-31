@@ -66,8 +66,16 @@
             formControlName="organizationId"
           />
           @if (isNew) {
-            <button type="button" class="btn btn-primary" (click)="generateUUID('organizationId')">Generate</button>
-            <button type="button" class="btn btn-danger" (click)="reset('organizationId')" [disabled]="isResetDisabled['organizationId']">
+            <button type="button" class="btn btn-primary" data-cy="organizationId-generate" (click)="generateUUID('organizationId')">
+              Generate
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-cy="organizationId-reset"
+              (click)="reset('organizationId')"
+              [disabled]="isResetDisabled['organizationId']"
+            >
               Reset
             </button>
           }

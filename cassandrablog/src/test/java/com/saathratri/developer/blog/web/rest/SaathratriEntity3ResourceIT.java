@@ -220,6 +220,108 @@ class SaathratriEntity3ResourceIT {
     }
 
     @Test
+    void getAllSaathratriEntity3sByCompositeKeySearches() throws Exception {
+        // Initialize the database
+        saathratriEntity3Repository.save(saathratriEntity3);
+
+        // Exercise every generated composite-key search endpoint (partial-partition findAllBy
+        // carry @AllowFiltering, clustering/comparison/findBy are plain valid queries), plus
+        // /slice. A 200 confirms the derived CQL + parameter binding executes against real
+        // Cassandra; body shape is covered by the get()/getAll() tests above.
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type").param(
+                    "entityType",
+                    String.valueOf(saathratriEntity3.getCompositeId().getEntityType())
+                )
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-pageable")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-by-composite-id-entity-type-and-composite-id-created-time-id")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-less-than")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-less-than-pageable")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-less-than-equal")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-less-than-equal-pageable")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-greater-than")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-greater-than-pageable")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-greater-than-equal")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-entity-type-and-composite-id-created-time-id-greater-than-equal-pageable")
+                    .param("entityType", String.valueOf(saathratriEntity3.getCompositeId().getEntityType()))
+                    .param("createdTimeId", String.valueOf(saathratriEntity3.getCompositeId().getCreatedTimeId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-latest-by-composite-id-entity-type").param(
+                    "entityType",
+                    String.valueOf(saathratriEntity3.getCompositeId().getEntityType())
+                )
+            )
+            .andExpect(status().isOk());
+        restSaathratriEntity3MockMvc.perform(get(ENTITY_API_URL + "/slice").param("size", "20")).andExpect(status().isOk());
+    }
+
+    @Test
     void getNonExistingSaathratriEntity3() throws Exception {
         // Get the saathratriEntity3
         restSaathratriEntity3MockMvc

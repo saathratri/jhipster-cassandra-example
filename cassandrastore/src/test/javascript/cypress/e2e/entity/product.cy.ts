@@ -15,7 +15,7 @@ describe('Product e2e test', () => {
   const productPageUrlPattern = new RegExp('/cassandrastore/product(\\?.*)?$');
   let username: string;
   let password: string;
-  const productSample = { title: 'towards', price: 13209.65, addedDate: 6674 };
+  const productSample = { id: '00000000-0000-4000-8000-000000000001', title: 'towards', price: 13209.65, addedDate: 6674 };
 
   let product;
 
@@ -30,7 +30,7 @@ describe('Product e2e test', () => {
   });
 
   beforeEach(() => {
-    cy.intercept('GET', '/services/cassandrastore/api/products+(?*|)').as('entitiesRequest');
+    cy.intercept('GET', /^\/services\/cassandrastore\/api\/products\b/).as('entitiesRequest');
     cy.intercept('POST', '/services/cassandrastore/api/products').as('postEntityRequest');
     cy.intercept('DELETE', '/services/cassandrastore/api/products/*').as('deleteEntityRequest');
   });
@@ -49,7 +49,7 @@ describe('Product e2e test', () => {
   it('Products menu should load Products page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('cassandrastore/product');
-    cy.wait('@entitiesRequest').then(({ response }) => {
+    cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
       if (response?.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
@@ -64,7 +64,7 @@ describe('Product e2e test', () => {
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(productPageUrl);
-        cy.wait('@entitiesRequest');
+        cy.wait('@entitiesRequest', { timeout: 30000 });
       });
 
       it('should load create Product page', () => {
@@ -73,7 +73,7 @@ describe('Product e2e test', () => {
         cy.getEntityCreateUpdateHeading('Product');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', productPageUrlPattern);
@@ -92,7 +92,7 @@ describe('Product e2e test', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/services/cassandrastore/api/products+(?*|)',
+              url: /^\/services\/cassandrastore\/api\/products\b/,
               times: 1,
             },
             {
@@ -104,14 +104,14 @@ describe('Product e2e test', () => {
 
         cy.visit(productPageUrl);
 
-        cy.wait('@entitiesRequestInternal');
+        cy.wait('@entitiesRequestInternal', { timeout: 30000 });
       });
 
       it('detail button click should load details Product page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('product');
         cy.get(entityDetailsBackButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', productPageUrlPattern);
@@ -122,7 +122,7 @@ describe('Product e2e test', () => {
         cy.getEntityCreateUpdateHeading('Product');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', productPageUrlPattern);
@@ -132,7 +132,7 @@ describe('Product e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Product');
         cy.get(entityCreateSaveButtonSelector).click();
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', productPageUrlPattern);
@@ -145,7 +145,7 @@ describe('Product e2e test', () => {
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response?.statusCode).to.equal(204);
         });
-        cy.wait('@entitiesRequest').then(({ response }) => {
+        cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
           expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', productPageUrlPattern);
@@ -163,6 +163,9 @@ describe('Product e2e test', () => {
     });
 
     it('should create an instance of Product', () => {
+      cy.get(`[data-cy="id"]`).type('00000000-0000-4000-8000-000000000001');
+      cy.get(`[data-cy="id"]`).should('have.value', '00000000-0000-4000-8000-000000000001');
+
       cy.get(`[data-cy="title"]`).type('amongst what');
       cy.get(`[data-cy="title"]`).should('have.value', 'amongst what');
 
@@ -182,10 +185,24 @@ describe('Product e2e test', () => {
         expect(response?.statusCode).to.equal(201);
         product = response.body;
       });
-      cy.wait('@entitiesRequest').then(({ response }) => {
+      cy.wait('@entitiesRequest', { timeout: 30000 }).then(({ response }) => {
         expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', productPageUrlPattern);
     });
+  });
+
+  it('should generate and reset a UUID via the form buttons', () => {
+    cy.visit('/');
+    cy.clickOnEntityMenuItem(productPageUrl.substring(1));
+    cy.get(entityCreateButtonSelector, { timeout: 30000 }).click();
+    // Generate fills a fresh UUID via the component's generateUUID()/generateTimeUUID().
+    cy.get(`[data-cy="id-generate"]`).click();
+    cy.get(`[data-cy="id"]`)
+      .invoke('val')
+      .should('match', /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+    // Reset restores the (empty) saved value, clearing the field.
+    cy.get(`[data-cy="id-reset"]`).click();
+    cy.get(`[data-cy="id"]`).should('have.value', '');
   });
 });

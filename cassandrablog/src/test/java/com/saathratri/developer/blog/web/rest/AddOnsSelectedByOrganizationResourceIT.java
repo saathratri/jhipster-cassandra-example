@@ -357,6 +357,254 @@ class AddOnsSelectedByOrganizationResourceIT {
     }
 
     @Test
+    void getAllAddOnsSelectedByOrganizationsByCompositeKeySearches() throws Exception {
+        // Initialize the database
+        addOnsSelectedByOrganizationRepository.save(addOnsSelectedByOrganization);
+
+        // Exercise every generated composite-key search endpoint (partial-partition findAllBy
+        // carry @AllowFiltering, clustering/comparison/findBy are plain valid queries), plus
+        // /slice. A 200 confirms the derived CQL + parameter binding executes against real
+        // Cassandra; body shape is covered by the get()/getAll() tests above.
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id").param(
+                    "organizationId",
+                    String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId())
+                )
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-pageable")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-pageable")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-less-than")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-less-than-pageable")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-less-than-equal")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-less-than-equal-pageable")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-greater-than")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-greater-than-pageable")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-greater-than-equal")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-greater-than-equal-pageable")
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-pageable"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-less-than"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-less-than-pageable"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-less-than-equal"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-less-than-equal-pageable"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-greater-than"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-greater-than-pageable"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-greater-than-equal"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-all-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number-and-composite-id-created-time-id-greater-than-equal-pageable"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+                    .param("createdTimeId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getCreatedTimeId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc
+            .perform(
+                get(
+                    ENTITY_API_URL +
+                        "/find-latest-by-composite-id-organization-id-and-composite-id-arrival-date-and-composite-id-account-number"
+                )
+                    .param("organizationId", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getOrganizationId()))
+                    .param("arrivalDate", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getArrivalDate()))
+                    .param("accountNumber", String.valueOf(addOnsSelectedByOrganization.getCompositeId().getAccountNumber()))
+            )
+            .andExpect(status().isOk());
+        restAddOnsSelectedByOrganizationMockMvc.perform(get(ENTITY_API_URL + "/slice").param("size", "20")).andExpect(status().isOk());
+    }
+
+    @Test
     void getNonExistingAddOnsSelectedByOrganization() throws Exception {
         // Get the addOnsSelectedByOrganization
         restAddOnsSelectedByOrganizationMockMvc

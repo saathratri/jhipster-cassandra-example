@@ -208,6 +208,108 @@ class BlogResourceIT {
     }
 
     @Test
+    void getAllBlogsByCompositeKeySearches() throws Exception {
+        // Initialize the database
+        blogRepository.save(blog);
+
+        // Exercise every generated composite-key search endpoint (partial-partition findAllBy
+        // carry @AllowFiltering, clustering/comparison/findBy are plain valid queries), plus
+        // /slice. A 200 confirms the derived CQL + parameter binding executes against real
+        // Cassandra; body shape is covered by the get()/getAll() tests above.
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category").param(
+                    "category",
+                    String.valueOf(blog.getCompositeId().getCategory())
+                )
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category-pageable")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-by-composite-id-category-and-composite-id-blog-id")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category-and-composite-id-blog-id-less-than")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category-and-composite-id-blog-id-less-than-pageable")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category-and-composite-id-blog-id-less-than-equal")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category-and-composite-id-blog-id-less-than-equal-pageable")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category-and-composite-id-blog-id-greater-than")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category-and-composite-id-blog-id-greater-than-pageable")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category-and-composite-id-blog-id-greater-than-equal")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-all-by-composite-id-category-and-composite-id-blog-id-greater-than-equal-pageable")
+                    .param("category", String.valueOf(blog.getCompositeId().getCategory()))
+                    .param("blogId", String.valueOf(blog.getCompositeId().getBlogId()))
+                    .param("size", "20")
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc
+            .perform(
+                get(ENTITY_API_URL + "/find-latest-by-composite-id-category").param(
+                    "category",
+                    String.valueOf(blog.getCompositeId().getCategory())
+                )
+            )
+            .andExpect(status().isOk());
+        restBlogMockMvc.perform(get(ENTITY_API_URL + "/slice").param("size", "20")).andExpect(status().isOk());
+    }
+
+    @Test
     void getNonExistingBlog() throws Exception {
         // Get the blog
         restBlogMockMvc

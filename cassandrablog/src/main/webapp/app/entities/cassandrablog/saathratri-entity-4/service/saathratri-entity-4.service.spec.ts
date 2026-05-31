@@ -93,6 +93,40 @@ describe('SaathratriEntity4 Service', () => {
       expect(requests.length).toBe(1);
     });
 
+    describe('composite-key search methods', () => {
+      it('should call findAllByCompositeIdOrganizationIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service.findAllByCompositeIdOrganizationIdPageable('organizationId').subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdAttributeKeyPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdAttributeKeyPageable('organizationId', 'attributeKey')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findByCompositeIdOrganizationIdAndCompositeIdAttributeKey', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findByCompositeIdOrganizationIdAndCompositeIdAttributeKey('organizationId', 'attributeKey')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ ...sampleWithRequiredData });
+      });
+    });
+
     describe('addSaathratriEntity4ToCollectionIfMissing', () => {
       it('should add a SaathratriEntity4 to an empty array', () => {
         const saathratriEntity4: ISaathratriEntity4 = sampleWithRequiredData;

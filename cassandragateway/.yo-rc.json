@@ -23,11 +23,11 @@
       }
     ],
     "buildTool": "maven",
-    "clientFramework": "angular",
+    "clientFramework": "angularX",
     "devServerPort": 4200,
     "entities": [],
     "jhipsterVersion": "9.0.0",
-    "jwtSecretKey": "NTk4ODE2YzljMTczMGQ2ODdiZmU5OTBkZGQ3YTM1OGRjNWZmYmE4ZTIxYjI0YjA2NDEwNmY4YWNjNzdmZWNkYmEwYzdkZmQxMDlkNmY2ZDU0NzcxNDI2YjA0MDk3OGNhODU3ZjE5ZWQ5NTE2NTc3ZWE0NjQwNTYyYjQwODlkNmI=",
+    "jwtSecretKey": "ZTUzZmQzYjUxMGUyZTU2YWU4MDBhYWU0MWRhNmQxMWE5OWM3ZTZjMDBkYTQxZmZiOTE1ZThlYzE5MzQ5YjJjOWM5ZTIzZDY0NWVkMzllNGQzOGQzZjE2ZTNiNTE3NGU2ZTEyODIyMzQzZjE0NWI1ZWQ3MmExNWI3M2JiYjIzMmY=",
     "languages": ["en"],
     "microfrontends": [
       {

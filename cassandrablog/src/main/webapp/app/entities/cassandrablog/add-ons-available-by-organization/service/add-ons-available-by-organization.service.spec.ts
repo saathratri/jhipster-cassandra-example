@@ -98,6 +98,76 @@ describe('AddOnsAvailableByOrganization Service', () => {
       expect(requests.length).toBe(1);
     });
 
+    describe('composite-key search methods', () => {
+      it('should call findAllByCompositeIdOrganizationIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service.findAllByCompositeIdOrganizationIdPageable('organizationId').subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypePageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypePageable('organizationId', 'entityType')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdPageable(
+            'organizationId',
+            'entityType',
+            'entityId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnIdPageable(
+            'organizationId',
+            'entityType',
+            'entityId',
+            'addOnId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findByCompositeIdOrganizationIdAndCompositeIdEntityTypeAndCompositeIdEntityIdAndCompositeIdAddOnId(
+            'organizationId',
+            'entityType',
+            'entityId',
+            'addOnId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ ...sampleWithRequiredData });
+      });
+    });
+
     describe('addAddOnsAvailableByOrganizationToCollectionIfMissing', () => {
       it('should add a AddOnsAvailableByOrganization to an empty array', () => {
         const addOnsAvailableByOrganization: IAddOnsAvailableByOrganization = sampleWithRequiredData;

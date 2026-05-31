@@ -218,4 +218,18 @@ describe('SetEntityByOrganization e2e test', () => {
       cy.get(`[data-cy="tags-row-0-edit"]`).should('not.exist');
     });
   });
+
+  it('should generate and reset a UUID via the form buttons', () => {
+    cy.visit('/');
+    cy.clickOnEntityMenuItem(setEntityByOrganizationPageUrl.substring(1));
+    cy.get(entityCreateButtonSelector, { timeout: 30000 }).click();
+    // Generate fills a fresh UUID via the component's generateUUID()/generateTimeUUID().
+    cy.get(`[data-cy="organizationId-generate"]`).click();
+    cy.get(`[data-cy="organizationId"]`)
+      .invoke('val')
+      .should('match', /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+    // Reset restores the (empty) saved value, clearing the field.
+    cy.get(`[data-cy="organizationId-reset"]`).click();
+    cy.get(`[data-cy="organizationId"]`).should('have.value', '');
+  });
 });

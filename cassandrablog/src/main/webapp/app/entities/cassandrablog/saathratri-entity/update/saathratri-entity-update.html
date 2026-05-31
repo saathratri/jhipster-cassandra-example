@@ -56,8 +56,16 @@
           >
           <input type="text" class="form-control" name="entityId" id="field_entityId" data-cy="entityId" formControlName="entityId" />
           @if (isNew) {
-            <button type="button" class="btn btn-primary" (click)="generateUUID('entityId')">Generate</button>
-            <button type="button" class="btn btn-danger" (click)="reset('entityId')" [disabled]="isResetDisabled['entityId']">Reset</button>
+            <button type="button" class="btn btn-primary" data-cy="entityId-generate" (click)="generateUUID('entityId')">Generate</button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-cy="entityId-reset"
+              (click)="reset('entityId')"
+              [disabled]="isResetDisabled['entityId']"
+            >
+              Reset
+            </button>
           }
         </div>
 

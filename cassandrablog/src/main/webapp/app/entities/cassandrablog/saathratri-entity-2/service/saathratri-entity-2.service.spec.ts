@@ -93,6 +93,184 @@ describe('SaathratriEntity2 Service', () => {
       expect(requests.length).toBe(1);
     });
 
+    describe('composite-key search methods', () => {
+      it('should call findAllByCompositeIdEntityTypeIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service.findAllByCompositeIdEntityTypeIdPageable('entityTypeId').subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedPageable('entityTypeId', 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDatePageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDatePageable('entityTypeId', 1, 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdPageable(
+            'entityTypeId',
+            1,
+            1,
+            'blogId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThanPageable('entityTypeId', 1, 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateLessThanEqualPageable('entityTypeId', 1, 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThanPageable('entityTypeId', 1, 1)
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateGreaterThanEqualPageable(
+            'entityTypeId',
+            1,
+            1,
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThanPageable(
+            'entityTypeId',
+            1,
+            1,
+            'blogId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdLessThanEqualPageable(
+            'entityTypeId',
+            1,
+            1,
+            'blogId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThanPageable(
+            'entityTypeId',
+            1,
+            1,
+            'blogId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogIdGreaterThanEqualPageable(
+            'entityTypeId',
+            1,
+            1,
+            'blogId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findByCompositeIdEntityTypeIdAndCompositeIdYearOfDateAddedAndCompositeIdArrivalDateAndCompositeIdBlogId(
+            'entityTypeId',
+            1,
+            1,
+            'blogId',
+          )
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ ...sampleWithRequiredData });
+      });
+    });
+
     describe('addSaathratriEntity2ToCollectionIfMissing', () => {
       it('should add a SaathratriEntity2 to an empty array', () => {
         const saathratriEntity2: ISaathratriEntity2 = sampleWithRequiredData;

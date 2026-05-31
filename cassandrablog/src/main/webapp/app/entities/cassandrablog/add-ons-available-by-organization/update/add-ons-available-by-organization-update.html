@@ -67,10 +67,18 @@
               formControlName="organizationId"
             />
             @if (isNew) {
-              <button type="button" class="btn btn-primary" (click)="generateUUID('compositeId.organizationId')">Generate</button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-cy="organizationId-generate"
+                (click)="generateUUID('compositeId.organizationId')"
+              >
+                Generate
+              </button>
               <button
                 type="button"
                 class="btn btn-danger"
+                data-cy="organizationId-reset"
                 (click)="reset('compositeId.organizationId')"
                 [disabled]="isResetDisabled['compositeId.organizationId']"
               >
@@ -105,10 +113,13 @@
             >
             <input type="text" class="form-control" name="entityId" id="field_entityId" data-cy="entityId" formControlName="entityId" />
             @if (isNew) {
-              <button type="button" class="btn btn-primary" (click)="generateUUID('compositeId.entityId')">Generate</button>
+              <button type="button" class="btn btn-primary" data-cy="entityId-generate" (click)="generateUUID('compositeId.entityId')">
+                Generate
+              </button>
               <button
                 type="button"
                 class="btn btn-danger"
+                data-cy="entityId-reset"
                 (click)="reset('compositeId.entityId')"
                 [disabled]="isResetDisabled['compositeId.entityId']"
               >
@@ -123,10 +134,13 @@
             >
             <input type="text" class="form-control" name="addOnId" id="field_addOnId" data-cy="addOnId" formControlName="addOnId" />
             @if (isNew) {
-              <button type="button" class="btn btn-primary" (click)="generateUUID('compositeId.addOnId')">Generate</button>
+              <button type="button" class="btn btn-primary" data-cy="addOnId-generate" (click)="generateUUID('compositeId.addOnId')">
+                Generate
+              </button>
               <button
                 type="button"
                 class="btn btn-danger"
+                data-cy="addOnId-reset"
                 (click)="reset('compositeId.addOnId')"
                 [disabled]="isResetDisabled['compositeId.addOnId']"
               >

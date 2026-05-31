@@ -193,4 +193,18 @@ describe('SaathratriEntity e2e test', () => {
       cy.url().should('match', saathratriEntityPageUrlPattern);
     });
   });
+
+  it('should generate and reset a UUID via the form buttons', () => {
+    cy.visit('/');
+    cy.clickOnEntityMenuItem(saathratriEntityPageUrl.substring(1));
+    cy.get(entityCreateButtonSelector, { timeout: 30000 }).click();
+    // Generate fills a fresh UUID via the component's generateUUID()/generateTimeUUID().
+    cy.get(`[data-cy="entityId-generate"]`).click();
+    cy.get(`[data-cy="entityId"]`)
+      .invoke('val')
+      .should('match', /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+    // Reset restores the (empty) saved value, clearing the field.
+    cy.get(`[data-cy="entityId-reset"]`).click();
+    cy.get(`[data-cy="entityId"]`).should('have.value', '');
+  });
 });

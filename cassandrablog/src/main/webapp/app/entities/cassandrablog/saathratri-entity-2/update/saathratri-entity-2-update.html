@@ -64,10 +64,18 @@
               formControlName="entityTypeId"
             />
             @if (isNew) {
-              <button type="button" class="btn btn-primary" (click)="generateUUID('compositeId.entityTypeId')">Generate</button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-cy="entityTypeId-generate"
+                (click)="generateUUID('compositeId.entityTypeId')"
+              >
+                Generate
+              </button>
               <button
                 type="button"
                 class="btn btn-danger"
+                data-cy="entityTypeId-reset"
                 (click)="reset('compositeId.entityTypeId')"
                 [disabled]="isResetDisabled['compositeId.entityTypeId']"
               >
@@ -115,10 +123,13 @@
             >
             <input type="text" class="form-control" name="blogId" id="field_blogId" data-cy="blogId" formControlName="blogId" />
             @if (isNew) {
-              <button type="button" class="btn btn-primary" (click)="generateTimeUUID('compositeId.blogId')">Generate</button>
+              <button type="button" class="btn btn-primary" data-cy="blogId-generate" (click)="generateTimeUUID('compositeId.blogId')">
+                Generate
+              </button>
               <button
                 type="button"
                 class="btn btn-danger"
+                data-cy="blogId-reset"
                 (click)="reset('compositeId.blogId')"
                 [disabled]="isResetDisabled['compositeId.blogId']"
               >

@@ -92,10 +92,13 @@
             <label class="form-label" for="field_postId" jhiTranslate="cassandrablogApp.cassandrablogPost.postId">Post Id</label>
             <input type="text" class="form-control" name="postId" id="field_postId" data-cy="postId" formControlName="postId" />
             @if (isNew) {
-              <button type="button" class="btn btn-primary" (click)="generateUUID('compositeId.postId')">Generate</button>
+              <button type="button" class="btn btn-primary" data-cy="postId-generate" (click)="generateUUID('compositeId.postId')">
+                Generate
+              </button>
               <button
                 type="button"
                 class="btn btn-danger"
+                data-cy="postId-reset"
                 (click)="reset('compositeId.postId')"
                 [disabled]="isResetDisabled['compositeId.postId']"
               >

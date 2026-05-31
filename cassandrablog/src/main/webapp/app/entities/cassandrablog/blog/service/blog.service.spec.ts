@@ -93,6 +93,82 @@ describe('Blog Service', () => {
       expect(requests.length).toBe(1);
     });
 
+    describe('composite-key search methods', () => {
+      it('should call findAllByCompositeIdCategoryPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service.findAllByCompositeIdCategoryPageable('category').subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCategoryAndCompositeIdBlogIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCategoryAndCompositeIdBlogIdPageable('category', 'blogId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCategoryAndCompositeIdBlogIdLessThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCategoryAndCompositeIdBlogIdLessThanPageable('category', 'blogId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCategoryAndCompositeIdBlogIdLessThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCategoryAndCompositeIdBlogIdLessThanEqualPageable('category', 'blogId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCategoryAndCompositeIdBlogIdGreaterThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCategoryAndCompositeIdBlogIdGreaterThanPageable('category', 'blogId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdCategoryAndCompositeIdBlogIdGreaterThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdCategoryAndCompositeIdBlogIdGreaterThanEqualPageable('category', 'blogId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findByCompositeIdCategoryAndCompositeIdBlogId', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service.findByCompositeIdCategoryAndCompositeIdBlogId('category', 'blogId').subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ ...sampleWithRequiredData });
+      });
+    });
+
     describe('addBlogToCollectionIfMissing', () => {
       it('should add a Blog to an empty array', () => {
         const blog: IBlog = sampleWithRequiredData;

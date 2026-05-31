@@ -93,6 +93,84 @@ describe('SaathratriEntity3 Service', () => {
       expect(requests.length).toBe(1);
     });
 
+    describe('composite-key search methods', () => {
+      it('should call findAllByCompositeIdEntityTypePageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service.findAllByCompositeIdEntityTypePageable('entityType').subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdPageable('entityType', 'createdTimeId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanPageable('entityType', 'createdTimeId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdLessThanEqualPageable('entityType', 'createdTimeId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanPageable('entityType', 'createdTimeId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanEqualPageable', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findAllByCompositeIdEntityTypeAndCompositeIdCreatedTimeIdGreaterThanEqualPageable('entityType', 'createdTimeId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        expect(expectedResult).toMatchObject([{ ...sampleWithRequiredData }]);
+      });
+      it('should call findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId', () => {
+        const returnedFromService = { ...requireRestSample };
+
+        service
+          .findByCompositeIdEntityTypeAndCompositeIdCreatedTimeId('entityType', 'createdTimeId')
+          .subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ ...sampleWithRequiredData });
+      });
+    });
+
     describe('addSaathratriEntity3ToCollectionIfMissing', () => {
       it('should add a SaathratriEntity3 to an empty array', () => {
         const saathratriEntity3: ISaathratriEntity3 = sampleWithRequiredData;
