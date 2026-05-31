@@ -128,6 +128,25 @@ fi
 
 # ---- 4-6. e2e -------------------------------------------------------------
 if [ "$DO_E2E" = 1 ]; then
+  http(){ curl -s -o /dev/null -w '%{http_code}' --max-time 6 "$1" 2>/dev/null; }
+
+  # Pre-flight: this harness does NOT start infra — it assumes the Docker stack
+  # (Cassandra/Postgres + Keycloak + JHipster Registry) is already up (see header). If the
+  # Registry isn't live the remotes can't register, the gateway gets no routes, and every
+  # entity e2e 404s after a long, confusing wait; if Keycloak isn't serving OIDC the Registry
+  # itself crashes on boot. Verify both NOW and fail fast (before ~5 min of webapp builds +
+  # backend launches) with an actionable message instead of a late, opaque failure.
+  say "Pre-flight: infra readiness (Keycloak OIDC :9080 + JHipster Registry :8761)"
+  printf "  Keycloak OIDC (:9080) "
+  kc=$(http "http://localhost:9080/realms/jhipster/.well-known/openid-configuration"); echo "$kc"
+  [ "$kc" = 200 ] || { echo "  ✖ Keycloak not serving OIDC — start the docker stack first (saathratri-deploy.sh); aborting e2e"; FAIL=1; }
+  printf "  JHipster Registry (:8761) "
+  rg=$(http "http://localhost:8761/management/health"); echo "$rg"
+  case "$rg" in 200|401) ;; *) echo "  ✖ Registry not live on :8761 (got $rg) — remotes can't register; start the stack first; aborting e2e"; FAIL=1;; esac
+  if [ "$FAIL" = 1 ]; then echo "  infra not ready — skipping e2e"; DO_E2E=0; fi
+fi
+
+if [ "$DO_E2E" = 1 ]; then
   say "Building webapps into target/classes/static (required for e2e)"
   for app in $APPS; do
     ( cd "$app" && npm run webapp:build ) > "$LOG/web-$app.log" 2>&1 || { echo "  ✖ $app webapp build FAILED"; FAIL=1; }
@@ -141,8 +160,6 @@ if [ "$DO_E2E" = 1 ]; then
   ( cd cassandragateway && ./mvnw -ntp -Dskip.npm spring-boot:run -Dspring-boot.run.profiles=dev > "$LOG/run-gateway.log" 2>&1 ) &
   ( cd cassandrablog   && ./mvnw -ntp -Dskip.npm spring-boot:run -Dspring-boot.run.profiles=dev > "$LOG/run-blog.log"    2>&1 ) &
   ( cd cassandrastore  && ./mvnw -ntp -Dskip.npm spring-boot:run -Dspring-boot.run.profiles=dev > "$LOG/run-store.log"   2>&1 ) &
-
-  http(){ curl -s -o /dev/null -w '%{http_code}' --max-time 6 "$1" 2>/dev/null; }
 
   say "Readiness gate: app health (808x) + gateway->remote routes"
   # 6a. every app server up on its real port
