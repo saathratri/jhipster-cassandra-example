@@ -136,14 +136,18 @@ if [ "$DO_E2E" = 1 ]; then
   # entity e2e 404s after a long, confusing wait; if Keycloak isn't serving OIDC the Registry
   # itself crashes on boot. Verify both NOW and fail fast (before ~5 min of webapp builds +
   # backend launches) with an actionable message instead of a late, opaque failure.
+  # Track infra readiness in its OWN flag (not the global FAIL) so we skip e2e only when infra
+  # is genuinely down — never because an earlier backend/frontend phase failed (that would mask
+  # which layers a still-runnable e2e would have covered).
   say "Pre-flight: infra readiness (Keycloak OIDC :9080 + JHipster Registry :8761)"
+  infra_ok=1
   printf "  Keycloak OIDC (:9080) "
   kc=$(http "http://localhost:9080/realms/jhipster/.well-known/openid-configuration"); echo "$kc"
-  [ "$kc" = 200 ] || { echo "  ✖ Keycloak not serving OIDC — start the docker stack first (saathratri-deploy.sh); aborting e2e"; FAIL=1; }
+  [ "$kc" = 200 ] || { echo "  ✖ Keycloak not serving OIDC — start the docker stack first (saathratri-deploy.sh); aborting e2e"; infra_ok=0; }
   printf "  JHipster Registry (:8761) "
   rg=$(http "http://localhost:8761/management/health"); echo "$rg"
-  case "$rg" in 200|401) ;; *) echo "  ✖ Registry not live on :8761 (got $rg) — remotes can't register; start the stack first; aborting e2e"; FAIL=1;; esac
-  if [ "$FAIL" = 1 ]; then echo "  infra not ready — skipping e2e"; DO_E2E=0; fi
+  case "$rg" in 200|401) ;; *) echo "  ✖ Registry not live on :8761 (got $rg) — remotes can't register; start the stack first; aborting e2e"; infra_ok=0;; esac
+  if [ "$infra_ok" = 0 ]; then echo "  infra not ready — skipping e2e"; FAIL=1; DO_E2E=0; fi
 fi
 
 if [ "$DO_E2E" = 1 ]; then
