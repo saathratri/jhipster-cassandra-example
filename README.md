@@ -174,6 +174,27 @@ The underlying `generator-jhipster-cassandra` blueprint has received significant
 - **Graceful degradation** when an API key is not configured.
 - Consistent vector display: list/detail pages show first 3 floats with 5 decimal places; update page shows full vector in a readonly textarea.
 
+**Supplying the OpenAI API key** — any of these ways (checked in this order):
+
+1. `application-dev.yml` in the service:
+
+   ```yaml
+   spring:
+     ai:
+       openai:
+         api-key: sk-your-key-here
+   ```
+
+2. Environment variable, set before starting the services: `export OPENAI_API_KEY=sk-your-key-here`
+
+3. A `.env` file in the app root (e.g. `cassandrablog/.env`). Each vector-enabled app has a checked-in
+   `.env.example` — copy it to `.env` and fill in the key. `.env` is git-ignored, so the key can never
+   be committed; only `.env.example` (with an empty value) is checked in.
+
+Without the API key the applications run normally — embedding generation and AI search are simply disabled.
+
+**Offline/e2e alternative — fake embedding model.** Set `OPENAI_EMBEDDING_FAKE=true` to replace the OpenAI model with a deterministic offline one (same text → same vector), so exact-text semantic search works with no key and no API cost. The Cypress suite includes an embedding-lifecycle e2e that requires this mode (skipped unless `CYPRESS_fakeEmbeddings=true`); `saathratri-run-all-tests.sh` enables both automatically during its e2e phase.
+
 ### AnyBlob Content Type Support (v1.0.15+)
 - Added support for **AnyBlob** fields using `@customAnnotation("any")`, enabling file uploads of any content type (PDF, DOCX, etc.).
 - Generates **PDF badge styling** on list, detail, and update pages for PDF files.
@@ -390,13 +411,13 @@ its compiled Angular bundle, which micro frontend module federation needs at run
 
 **Linux / macOS:**
 ```console
-sh compile-saathratri-dev.sh   # package all three apps (backend + Angular client)
+sh saathratri-compile-dev.sh   # package all three apps (backend + Angular client)
 sh saathratri-deploy.sh        # Keycloak + JHipster Registry, then each DB + mvnw spring-boot:run
 ```
 
 **Windows (PowerShell):**
 ```powershell
-.\compile-saathratri-dev.bat
+.\saathratri-compile-dev.bat
 .\saathratri-deploy.bat
 ```
 
@@ -450,7 +471,7 @@ All shell scripts have corresponding Windows batch file equivalents:
 | `sh saathratri-generate-code-dev-cassandra-mf.sh` | `saathratri-generate-code-dev-cassandra-mf.bat` |
 | `sh saathratri-cleanup-dev-main.sh` | `saathratri-cleanup-dev-main.bat` |
 | `sh saathratri-cleanup-dev-cassandra.sh` | `saathratri-cleanup-dev-cassandra.bat` |
-| `sh compile-saathratri-dev.sh` | `compile-saathratri-dev.bat` |
+| `sh saathratri-compile-dev.sh` | `saathratri-compile-dev.bat` |
 | `sh saathratri-deploy.sh` | `saathratri-deploy.bat` |
 | `sh docker-remove-orphans.sh` | `docker-remove-orphans.bat` |
 

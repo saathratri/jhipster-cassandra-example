@@ -94,6 +94,7 @@ class LandingPageByOrganizationResourceIT {
      */
     public static LandingPageByOrganization createEntity() {
         LandingPageByOrganization landingPageByOrganization = new LandingPageByOrganization()
+
             .organizationId(DEFAULT_ORGANIZATION_ID)
             .detailsText(DEFAULT_DETAILS_TEXT)
             .detailsDecimal(DEFAULT_DETAILS_DECIMAL)
@@ -110,6 +111,7 @@ class LandingPageByOrganizationResourceIT {
      */
     public static LandingPageByOrganization createUpdatedEntity() {
         LandingPageByOrganization landingPageByOrganization = new LandingPageByOrganization()
+
             .organizationId(UPDATED_ORGANIZATION_ID)
             .detailsText(UPDATED_DETAILS_TEXT)
             .detailsDecimal(UPDATED_DETAILS_DECIMAL)
@@ -187,9 +189,13 @@ class LandingPageByOrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].organizationId").value(hasItem(landingPageByOrganization.getOrganizationId().toString())))
+
             .andExpect(jsonPath("$.[*].detailsText").exists())
+
             .andExpect(jsonPath("$.[*].detailsDecimal").exists())
+
             .andExpect(jsonPath("$.[*].detailsBoolean").exists())
+
             .andExpect(jsonPath("$.[*].detailsBigInt").exists());
     }
 
@@ -205,9 +211,13 @@ class LandingPageByOrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.organizationId").value(landingPageByOrganization.getOrganizationId().toString()))
+
             .andExpect(jsonPath("$.detailsText").exists())
+
             .andExpect(jsonPath("$.detailsDecimal").exists())
+
             .andExpect(jsonPath("$.detailsBoolean").exists())
+
             .andExpect(jsonPath("$.detailsBigInt").exists());
     }
 
@@ -230,9 +240,13 @@ class LandingPageByOrganizationResourceIT {
             .findById(landingPageByOrganization.getOrganizationId())
             .orElseThrow();
         updatedLandingPageByOrganization
+
             .detailsText(UPDATED_DETAILS_TEXT)
+
             .detailsDecimal(UPDATED_DETAILS_DECIMAL)
+
             .detailsBoolean(UPDATED_DETAILS_BOOLEAN)
+
             .detailsBigInt(UPDATED_DETAILS_BIG_INT);
         LandingPageByOrganizationDTO landingPageByOrganizationDTO = landingPageByOrganizationMapper.toDto(updatedLandingPageByOrganization);
 
@@ -328,9 +342,13 @@ class LandingPageByOrganizationResourceIT {
         partialUpdatedLandingPageByOrganization.setOrganizationId(landingPageByOrganization.getOrganizationId());
 
         partialUpdatedLandingPageByOrganization
+
             .detailsText(UPDATED_DETAILS_TEXT)
+
             .detailsDecimal(UPDATED_DETAILS_DECIMAL)
+
             .detailsBoolean(UPDATED_DETAILS_BOOLEAN)
+
             .detailsBigInt(UPDATED_DETAILS_BIG_INT);
 
         restLandingPageByOrganizationMockMvc
@@ -364,9 +382,13 @@ class LandingPageByOrganizationResourceIT {
         partialUpdatedLandingPageByOrganization.setOrganizationId(landingPageByOrganization.getOrganizationId());
 
         partialUpdatedLandingPageByOrganization
+
             .detailsText(UPDATED_DETAILS_TEXT)
+
             .detailsDecimal(UPDATED_DETAILS_DECIMAL)
+
             .detailsBoolean(UPDATED_DETAILS_BOOLEAN)
+
             .detailsBigInt(UPDATED_DETAILS_BIG_INT);
 
         restLandingPageByOrganizationMockMvc

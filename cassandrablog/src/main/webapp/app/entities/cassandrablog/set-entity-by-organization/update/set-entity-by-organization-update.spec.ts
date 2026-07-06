@@ -63,7 +63,7 @@ describe('SetEntityByOrganization Management Update Component', () => {
       const setEntityByOrganization = { ...sampleWithRequiredData };
       vitest.spyOn(setEntityByOrganizationFormService, 'getSetEntityByOrganization').mockReturnValue(setEntityByOrganization);
       vitest.spyOn(setEntityByOrganizationService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ setEntityByOrganization });
       comp.ngOnInit();
 
@@ -86,7 +86,7 @@ describe('SetEntityByOrganization Management Update Component', () => {
       const setEntityByOrganization = { ...sampleWithRequiredData };
       vitest.spyOn(setEntityByOrganizationFormService, 'getSetEntityByOrganization').mockReturnValue(setEntityByOrganization);
       vitest.spyOn(setEntityByOrganizationService, 'create').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       // routeConfig.path === 'new' makes the component treat this as a create
       (activatedRoute as unknown as { snapshot: unknown }).snapshot = { routeConfig: { path: 'new' } };
       activatedRoute.data = of({ setEntityByOrganization: null });
@@ -110,7 +110,7 @@ describe('SetEntityByOrganization Management Update Component', () => {
       const saveSubject = new Subject<HttpResponse<ISetEntityByOrganization>>();
       const setEntityByOrganization = { ...sampleWithRequiredData };
       vitest.spyOn(setEntityByOrganizationService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ setEntityByOrganization });
       comp.ngOnInit();
 

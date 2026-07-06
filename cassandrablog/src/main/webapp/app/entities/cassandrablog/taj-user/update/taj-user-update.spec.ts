@@ -63,7 +63,7 @@ describe('TajUser Management Update Component', () => {
       const tajUser = { ...sampleWithRequiredData };
       vitest.spyOn(tajUserFormService, 'getTajUser').mockReturnValue(tajUser);
       vitest.spyOn(tajUserService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ tajUser });
       comp.ngOnInit();
 
@@ -86,7 +86,7 @@ describe('TajUser Management Update Component', () => {
       const tajUser = { ...sampleWithRequiredData };
       vitest.spyOn(tajUserFormService, 'getTajUser').mockReturnValue(tajUser);
       vitest.spyOn(tajUserService, 'create').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       // routeConfig.path === 'new' makes the component treat this as a create
       (activatedRoute as unknown as { snapshot: unknown }).snapshot = { routeConfig: { path: 'new' } };
       activatedRoute.data = of({ tajUser: null });
@@ -110,7 +110,7 @@ describe('TajUser Management Update Component', () => {
       const saveSubject = new Subject<HttpResponse<ITajUser>>();
       const tajUser = { ...sampleWithRequiredData };
       vitest.spyOn(tajUserService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ tajUser });
       comp.ngOnInit();
 

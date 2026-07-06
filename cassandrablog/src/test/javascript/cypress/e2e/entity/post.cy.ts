@@ -65,6 +65,11 @@ describe('Post e2e test', () => {
   });
 
   describe('Post page', () => {
+    it('should have translated page title', () => {
+      cy.visit(postPageUrl);
+      cy.getEntityHeading('Post').should('not.contain', 'cassandrablogApp.cassandrablogPost.home.title');
+    });
+
     describe('create button click', () => {
       beforeEach(() => {
         cy.visit(postPageUrl);

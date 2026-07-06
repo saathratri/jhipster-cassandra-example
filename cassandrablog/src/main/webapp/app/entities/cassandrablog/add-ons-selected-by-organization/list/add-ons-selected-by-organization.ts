@@ -395,7 +395,7 @@ export class AddOnsSelectedByOrganizationComponent implements OnInit {
   }
 
   private getCompositeKey(item: IAddOnsSelectedByOrganization): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.organizationId, compositeId.arrivalDate, compositeId.accountNumber, compositeId.createdTimeId].join('|');
   }
 

@@ -394,7 +394,7 @@ export class PostComponent implements OnInit {
   }
 
   private getCompositeKey(item: IPost): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.createdDate, compositeId.addedDateTime, compositeId.postId].join('|');
   }
 

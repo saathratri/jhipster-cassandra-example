@@ -65,6 +65,7 @@ public class LandingPageByOrganizationServiceImpl implements LandingPageByOrgani
 
                 return existingLandingPageByOrganization;
             })
+
             .map(landingPageByOrganizationRepository::save)
             .map(landingPageByOrganizationMapper::toDto);
     }

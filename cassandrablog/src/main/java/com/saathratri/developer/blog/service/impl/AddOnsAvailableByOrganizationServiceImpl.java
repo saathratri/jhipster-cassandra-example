@@ -77,6 +77,7 @@ public class AddOnsAvailableByOrganizationServiceImpl implements AddOnsAvailable
 
                 return existingAddOnsAvailableByOrganization;
             })
+
             .map(addOnsAvailableByOrganizationRepository::save)
             .map(addOnsAvailableByOrganizationMapper::toDto);
     }

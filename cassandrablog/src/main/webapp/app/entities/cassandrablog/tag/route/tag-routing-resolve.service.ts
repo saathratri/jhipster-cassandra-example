@@ -9,7 +9,7 @@ import { TagService } from '../service/tag.service';
 import { ITag } from '../tag.model';
 
 const tagResolve = (route: ActivatedRouteSnapshot): Observable<null | ITag> => {
-  const id = route.params.id;
+  const { id } = route.params;
 
   if (id) {
     return inject(TagService)

@@ -19,14 +19,16 @@
     "blueprints": [
       {
         "name": "generator-jhipster-cassandra",
-        "version": "1.0.16"
+        "version": "1.0.18"
       }
     ],
     "buildTool": "maven",
     "clientFramework": "angularX",
+    "creationTimestamp": 1783359927186,
+    "defaultCommand": "app",
     "devServerPort": 4200,
     "entities": [],
-    "jhipsterVersion": "9.0.0",
+    "jhipsterVersion": "9.1.0",
     "jwtSecretKey": "ZTUzZmQzYjUxMGUyZTU2YWU4MDBhYWU0MWRhNmQxMWE5OWM3ZTZjMDBkYTQxZmZiOTE1ZThlYzE5MzQ5YjJjOWM5ZTIzZDY0NWVkMzllNGQzOGQzZjE2ZTNiNTE3NGU2ZTEyODIyMzQzZjE0NWI1ZWQ3MmExNWI3M2JiYjIzMmY=",
     "languages": ["en"],
     "microfrontends": [

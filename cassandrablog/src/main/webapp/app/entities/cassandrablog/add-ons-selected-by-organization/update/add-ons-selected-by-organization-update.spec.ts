@@ -65,7 +65,7 @@ describe('AddOnsSelectedByOrganization Management Update Component', () => {
         .spyOn(addOnsSelectedByOrganizationFormService, 'getAddOnsSelectedByOrganization')
         .mockReturnValue(addOnsSelectedByOrganization);
       vitest.spyOn(addOnsSelectedByOrganizationService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ addOnsSelectedByOrganization });
       comp.ngOnInit();
 
@@ -90,7 +90,7 @@ describe('AddOnsSelectedByOrganization Management Update Component', () => {
         .spyOn(addOnsSelectedByOrganizationFormService, 'getAddOnsSelectedByOrganization')
         .mockReturnValue(addOnsSelectedByOrganization);
       vitest.spyOn(addOnsSelectedByOrganizationService, 'create').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       // routeConfig.path === 'new' makes the component treat this as a create
       (activatedRoute as unknown as { snapshot: unknown }).snapshot = { routeConfig: { path: 'new' } };
       activatedRoute.data = of({ addOnsSelectedByOrganization: null });
@@ -114,7 +114,7 @@ describe('AddOnsSelectedByOrganization Management Update Component', () => {
       const saveSubject = new Subject<HttpResponse<IAddOnsSelectedByOrganization>>();
       const addOnsSelectedByOrganization = { ...sampleWithRequiredData };
       vitest.spyOn(addOnsSelectedByOrganizationService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ addOnsSelectedByOrganization });
       comp.ngOnInit();
 

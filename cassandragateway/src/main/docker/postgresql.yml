@@ -2,7 +2,7 @@
 name: cassandragateway
 services:
   postgresql:
-    image: postgres:18.3
+    image: postgres:18.4
     # volumes:
     #   - ~/volumes/jhipster/cassandragateway/postgresql/:/var/lib/postgresql/data/
     environment:

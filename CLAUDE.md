@@ -18,7 +18,7 @@ backend (unit + IT) → frontend (vitest) → e2e (Cypress). The blueprint's own
 loop lives in `../generator-jhipster-cassandra/TESTING.md` (uses a throwaway sample); this
 doc is about the real example monorepo.
 
-> ✅ **Just want a reliable one-shot? Run `sh run-all-tests.sh`** (add `--regen` to regenerate
+> ✅ **Just want a reliable one-shot? Run `sh saathratri-run-all-tests.sh`** (add `--regen` to regenerate
 > first). It encodes every step and gotcha below — kills/frees ports, builds webapps, launches
 > backends once, gates on real readiness, runs e2e judged by exit code, tears down, prints a
 > per-app report, and exits non-zero on any failure. The manual steps below exist for when you
@@ -42,7 +42,7 @@ collision**. Three rules:
    ("No request ever occurred" / "Cypress failed to verify your server"). **Before every launch:
    kill example java procs, kill whoever holds 8080/8081/8082, then BLOCK until those ports
    report zero listeners.** Killing-by-name alone is not enough — verify the ports actually
-   cleared (a killed JVM can linger a few seconds). `run-all-tests.sh` does this via
+   cleared (a killed JVM can linger a few seconds). `saathratri-run-all-tests.sh` does this via
    `wait_ports_free`; do the same if running manually.
 3. **Judge e2e by the Cypress exit code, not by grepping the log.** Cypress exits non-zero on
    any failed spec; log-scraping for "All specs passed" can match a stale line and report a
@@ -60,7 +60,7 @@ export MAVEN_OPTS="-Djavax.net.ssl.trustStoreType=Windows-ROOT"  # maven (Window
 - **Docker must be running** — backend ITs use Cassandra 5 Testcontainers; e2e needs the
   docker-compose stack (Cassandra ×2, Postgres, JHipster Registry, Keycloak).
 - Run backends/tests on **JDK 21** (the repo is built for 21).
-- The bundled scripts (`saathratri-deploy.sh`, `compile-saathratri-dev.sh`) use `ttab` to open
+- The bundled scripts (`saathratri-deploy.sh`, `saathratri-compile-dev.sh`) use `ttab` to open
   terminal tabs — **don't use them headlessly**; drive Maven/npm directly per the steps below.
 
 ---
@@ -185,7 +185,7 @@ export MAVEN_OPTS="-Djavax.net.ssl.trustStoreType=Windows-ROOT"
   wait )
 ```
 If a backend log ends in `APPLICATION FAILED TO START` / `Port 80xx was already in use`, you
-hit the collision — kill everything, free ports, relaunch. (Just use `run-all-tests.sh`.)
+hit the collision — kill everything, free ports, relaunch. (Just use `saathratri-run-all-tests.sh`.)
 
 ### 5d. Wait until all 3 are healthy on the CORRECT ports, then let Eureka settle
 ```bash
@@ -255,7 +255,7 @@ kill both. Confirm ports 8080/8081/8082 are free afterward.
 
 **Preferred — the one-shot does all of the below, reliably:**
 ```bash
-sh run-all-tests.sh --regen      # regen + backend + frontend + e2e, ALL GREEN or non-zero exit
+sh saathratri-run-all-tests.sh --regen      # regen + backend + frontend + e2e, ALL GREEN or non-zero exit
 ```
 
 **Manual equivalent (use to run a single phase or debug):**

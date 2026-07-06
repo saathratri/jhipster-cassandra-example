@@ -154,6 +154,7 @@ public class TagServiceImpl implements TagService {
                 }
                 return existingTag;
             })
+
             .map(tagRepository::save)
             .map(tagMapper::toDto);
     }

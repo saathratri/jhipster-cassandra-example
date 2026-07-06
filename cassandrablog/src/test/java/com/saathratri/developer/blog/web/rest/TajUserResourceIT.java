@@ -150,6 +150,7 @@ class TajUserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tajUser.getId().toString())))
+
             .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)));
     }
 
@@ -165,6 +166,7 @@ class TajUserResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(tajUser.getId().toString()))
+
             .andExpect(jsonPath("$.login").value(DEFAULT_LOGIN));
     }
 

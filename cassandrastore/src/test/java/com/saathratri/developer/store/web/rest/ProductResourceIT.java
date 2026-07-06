@@ -77,6 +77,7 @@ class ProductResourceIT {
      */
     public static Product createEntity() {
         Product product = new Product()
+
             .id(DEFAULT_ID)
             .title(DEFAULT_TITLE)
             .price(DEFAULT_PRICE)
@@ -94,6 +95,7 @@ class ProductResourceIT {
      */
     public static Product createUpdatedEntity() {
         Product product = new Product()
+
             .id(UPDATED_ID)
             .title(UPDATED_TITLE)
             .price(UPDATED_PRICE)
@@ -209,10 +211,14 @@ class ProductResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().toString())))
+
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
+
             .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
+
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_IMAGE.array()))))
+
             .andExpect(jsonPath("$.[*].addedDate").value(hasItem(DEFAULT_ADDED_DATE.intValue())));
     }
 
@@ -228,10 +234,14 @@ class ProductResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(product.getId().toString()))
+
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
+
             .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
+
             .andExpect(jsonPath("$.image").value(Base64.getEncoder().encodeToString(DEFAULT_IMAGE.array())))
+
             .andExpect(jsonPath("$.addedDate").value(DEFAULT_ADDED_DATE.intValue()));
     }
 
@@ -252,10 +262,14 @@ class ProductResourceIT {
         // Update the product
         Product updatedProduct = productRepository.findById(product.getId()).orElseThrow();
         updatedProduct
+
             .title(UPDATED_TITLE)
+
             .price(UPDATED_PRICE)
+
             .image(UPDATED_IMAGE)
             .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+
             .addedDate(UPDATED_ADDED_DATE);
         ProductDTO productDTO = productMapper.toDto(updatedProduct);
 
@@ -346,10 +360,14 @@ class ProductResourceIT {
         partialUpdatedProduct.setId(product.getId());
 
         partialUpdatedProduct
+
             .title(UPDATED_TITLE)
+
             .price(UPDATED_PRICE)
+
             .image(UPDATED_IMAGE)
             .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+
             .addedDate(UPDATED_ADDED_DATE);
 
         restProductMockMvc
@@ -380,10 +398,14 @@ class ProductResourceIT {
         partialUpdatedProduct.setId(product.getId());
 
         partialUpdatedProduct
+
             .title(UPDATED_TITLE)
+
             .price(UPDATED_PRICE)
+
             .image(UPDATED_IMAGE)
             .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+
             .addedDate(UPDATED_ADDED_DATE);
 
         restProductMockMvc

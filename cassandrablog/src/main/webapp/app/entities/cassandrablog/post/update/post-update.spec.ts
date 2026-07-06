@@ -63,7 +63,7 @@ describe('Post Management Update Component', () => {
       const post = { ...sampleWithRequiredData };
       vitest.spyOn(postFormService, 'getPost').mockReturnValue(post);
       vitest.spyOn(postService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ post });
       comp.ngOnInit();
 
@@ -86,7 +86,7 @@ describe('Post Management Update Component', () => {
       const post = { ...sampleWithRequiredData };
       vitest.spyOn(postFormService, 'getPost').mockReturnValue(post);
       vitest.spyOn(postService, 'create').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       // routeConfig.path === 'new' makes the component treat this as a create
       (activatedRoute as unknown as { snapshot: unknown }).snapshot = { routeConfig: { path: 'new' } };
       activatedRoute.data = of({ post: null });
@@ -110,7 +110,7 @@ describe('Post Management Update Component', () => {
       const saveSubject = new Subject<HttpResponse<IPost>>();
       const post = { ...sampleWithRequiredData };
       vitest.spyOn(postService, 'update').mockReturnValue(saveSubject);
-      vitest.spyOn(comp, 'previousState');
+      vitest.spyOn(comp, 'previousState').mockImplementation(() => {});
       activatedRoute.data = of({ post });
       comp.ngOnInit();
 

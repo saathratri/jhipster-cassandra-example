@@ -9,7 +9,7 @@ import { IReport } from '../report.model';
 import { ReportService } from '../service/report.service';
 
 const reportResolve = (route: ActivatedRouteSnapshot): Observable<null | IReport> => {
-  const id = route.params.id;
+  const { id } = route.params;
 
   if (id) {
     return inject(ReportService)

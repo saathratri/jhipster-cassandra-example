@@ -9,7 +9,7 @@ import { TajUserService } from '../service/taj-user.service';
 import { ITajUser } from '../taj-user.model';
 
 const tajUserResolve = (route: ActivatedRouteSnapshot): Observable<null | ITajUser> => {
-  const id = route.params.id;
+  const { id } = route.params;
 
   if (id) {
     return inject(TajUserService)

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# run-all-tests.sh — reliable one-shot full test run for the cassandra example
+# saathratri-run-all-tests.sh — reliable one-shot full test run for the cassandra example
 #
 # Runs, in order, for all 3 apps (cassandragateway / cassandrablog / cassandrastore):
 #   1. (optional) regen from the blueprint        --regen
@@ -22,10 +22,11 @@
 #     this calls `npm run e2e:cypress` against the already-running stack.
 #
 # Usage:
-#   sh run-all-tests.sh                # full run, no regen
-#   sh run-all-tests.sh --regen        # regen first, then full run
-#   sh run-all-tests.sh --skip-backend --skip-frontend   # e2e only (stack rebuilt)
-#   sh run-all-tests.sh --no-e2e       # backend + frontend only
+#   sh saathratri-run-all-tests.sh                # full run, no regen
+#   sh saathratri-run-all-tests.sh --regen        # regen first, then full run
+#   sh saathratri-run-all-tests.sh --skip-backend --skip-frontend   # e2e only (stack rebuilt)
+#   sh saathratri-run-all-tests.sh --no-e2e       # backend + frontend only
+#   sh saathratri-run-all-tests.sh --headless     # run Cypress headless (default is headed/visible)
 #
 # Requires: Docker daemon running (Cassandra/Postgres/Keycloak/Registry stack +
 # Testcontainers), JDK 21, Node 22+, the blueprint npm-linked (for --regen).
@@ -46,10 +47,13 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 LOG="$ROOT/.test-logs"; mkdir -p "$LOG"
 cd "$ROOT"
 
-REGEN=0; SKIP_BE=0; SKIP_FE=0; DO_E2E=1
+REGEN=0; SKIP_BE=0; SKIP_FE=0; DO_E2E=1; HEADED=1
 for a in "$@"; do case "$a" in
   --regen) REGEN=1;; --skip-backend) SKIP_BE=1;; --skip-frontend) SKIP_FE=1;;
-  --no-e2e) DO_E2E=0;; *) echo "unknown arg: $a"; exit 2;; esac; done
+  --no-e2e) DO_E2E=0;; --headless) HEADED=0;; *) echo "unknown arg: $a"; exit 2;; esac; done
+# Headed by default so the Cypress interactions are visible (`cypress run` alone is
+# headless, and Chrome's new-headless mode just shows a blank white window on Windows).
+E2E_ARGS=""; [ "$HEADED" = 1 ] && E2E_ARGS="-- --headed"
 
 # result accumulators
 declare -A R_BE_UNIT R_BE_IT R_FE R_E2E
@@ -160,6 +164,12 @@ if [ "$DO_E2E" = 1 ]; then
   say "Ensuring ports free before launching backends"
   kill_backends; wait_ports_free || { echo "  ports busy — aborting e2e"; FAIL=1; }
 
+  # Deterministic fake embedding model: lets the embedding-lifecycle e2e prove
+  # create/update embedding generation offline (no OPENAI_API_KEY, no API cost).
+  # CYPRESS_fakeEmbeddings tells the specs the backend has it enabled.
+  export OPENAI_EMBEDDING_FAKE=true
+  export CYPRESS_fakeEmbeddings=true
+
   say "Launching 3 backends (single job)"
   ( cd cassandragateway && ./mvnw -ntp -Dskip.npm spring-boot:run -Dspring-boot.run.profiles=dev > "$LOG/run-gateway.log" 2>&1 ) &
   ( cd cassandrablog   && ./mvnw -ntp -Dskip.npm spring-boot:run -Dspring-boot.run.profiles=dev > "$LOG/run-blog.log"    2>&1 ) &
@@ -197,7 +207,7 @@ if [ "$DO_E2E" = 1 ]; then
   # would only mask a real regression.
   for app in $APPS; do
     say "E2E (Cypress): $app"
-    ( cd "$app" && npm run e2e:cypress ) > "$LOG/e2e-$app.log" 2>&1
+    ( cd "$app" && npm run e2e:cypress $E2E_ARGS ) > "$LOG/e2e-$app.log" 2>&1
     rc=$?
     summary="$(grep -aE 'All specs passed|[0-9]+ of [0-9]+ failed' "$LOG/e2e-$app.log" | tr -d '\033' | sed -E 's/\x1b\[[0-9;]*m//g; s/^[[:space:]]*//' | tail -1)"
     if [ $rc -eq 0 ]; then

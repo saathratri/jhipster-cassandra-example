@@ -9,9 +9,9 @@ import { IPost } from '../post.model';
 import { PostService } from '../service/post.service';
 
 const postResolve = (route: ActivatedRouteSnapshot): Observable<null | IPost> => {
-  const createdDate = route.params.createdDate;
-  const addedDateTime = route.params.addedDateTime;
-  const postId = route.params.postId;
+  const { createdDate } = route.params;
+  const { addedDateTime } = route.params;
+  const { postId } = route.params;
 
   if (createdDate && addedDateTime && postId) {
     return inject(PostService)

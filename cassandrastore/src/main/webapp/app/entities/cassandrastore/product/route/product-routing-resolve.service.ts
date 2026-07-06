@@ -9,7 +9,7 @@ import { IProduct } from '../product.model';
 import { ProductService } from '../service/product.service';
 
 const productResolve = (route: ActivatedRouteSnapshot): Observable<null | IProduct> => {
-  const id = route.params.id;
+  const { id } = route.params;
 
   if (id) {
     return inject(ProductService)

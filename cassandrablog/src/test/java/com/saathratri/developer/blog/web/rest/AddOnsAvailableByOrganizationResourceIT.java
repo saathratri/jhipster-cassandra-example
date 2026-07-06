@@ -226,28 +226,37 @@ class AddOnsAvailableByOrganizationResourceIT {
             .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(
                 jsonPath("$.[*].compositeId.organizationId").value(
                     hasItem(addOnsAvailableByOrganization.getCompositeId().getOrganizationId().toString())
                 )
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.entityType").value(
                     hasItem(addOnsAvailableByOrganization.getCompositeId().getEntityType().toString())
                 )
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.entityId").value(
                     hasItem(addOnsAvailableByOrganization.getCompositeId().getEntityId().toString())
                 )
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.addOnId").value(hasItem(addOnsAvailableByOrganization.getCompositeId().getAddOnId().toString()))
             )
+
             .andExpect(jsonPath("$.[*].addOnType").value(hasItem(DEFAULT_ADD_ON_TYPE)))
+
             .andExpect(jsonPath("$.[*].addOnDetailsText").exists())
+
             .andExpect(jsonPath("$.[*].addOnDetailsDecimal").exists())
+
             .andExpect(jsonPath("$.[*].addOnDetailsBoolean").exists())
+
             .andExpect(jsonPath("$.[*].addOnDetailsBigInt").exists());
     }
 
@@ -271,20 +280,29 @@ class AddOnsAvailableByOrganizationResourceIT {
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(
                 jsonPath("$.compositeId.organizationId").value(
                     addOnsAvailableByOrganization.getCompositeId().getOrganizationId().toString()
                 )
             )
+
             .andExpect(
                 jsonPath("$.compositeId.entityType").value(addOnsAvailableByOrganization.getCompositeId().getEntityType().toString())
             )
+
             .andExpect(jsonPath("$.compositeId.entityId").value(addOnsAvailableByOrganization.getCompositeId().getEntityId().toString()))
+
             .andExpect(jsonPath("$.compositeId.addOnId").value(addOnsAvailableByOrganization.getCompositeId().getAddOnId().toString()))
+
             .andExpect(jsonPath("$.addOnType").value(DEFAULT_ADD_ON_TYPE))
+
             .andExpect(jsonPath("$.addOnDetailsText").exists())
+
             .andExpect(jsonPath("$.addOnDetailsDecimal").exists())
+
             .andExpect(jsonPath("$.addOnDetailsBoolean").exists())
+
             .andExpect(jsonPath("$.addOnDetailsBigInt").exists());
     }
 
@@ -392,10 +410,15 @@ class AddOnsAvailableByOrganizationResourceIT {
             .findById(addOnsAvailableByOrganization.getCompositeId())
             .orElseThrow();
         updatedAddOnsAvailableByOrganization
+
             .addOnType(UPDATED_ADD_ON_TYPE)
+
             .addOnDetailsText(UPDATED_ADD_ON_DETAILS_TEXT)
+
             .addOnDetailsDecimal(UPDATED_ADD_ON_DETAILS_DECIMAL)
+
             .addOnDetailsBoolean(UPDATED_ADD_ON_DETAILS_BOOLEAN)
+
             .addOnDetailsBigInt(UPDATED_ADD_ON_DETAILS_BIG_INT);
         AddOnsAvailableByOrganizationDTO addOnsAvailableByOrganizationDTO = addOnsAvailableByOrganizationMapper.toDto(
             updatedAddOnsAvailableByOrganization
@@ -526,10 +549,15 @@ class AddOnsAvailableByOrganizationResourceIT {
         partialUpdatedAddOnsAvailableByOrganization.setCompositeId(addOnsAvailableByOrganization.getCompositeId());
 
         partialUpdatedAddOnsAvailableByOrganization
+
             .addOnType(UPDATED_ADD_ON_TYPE)
+
             .addOnDetailsText(UPDATED_ADD_ON_DETAILS_TEXT)
+
             .addOnDetailsDecimal(UPDATED_ADD_ON_DETAILS_DECIMAL)
+
             .addOnDetailsBoolean(UPDATED_ADD_ON_DETAILS_BOOLEAN)
+
             .addOnDetailsBigInt(UPDATED_ADD_ON_DETAILS_BIG_INT);
 
         restAddOnsAvailableByOrganizationMockMvc
@@ -572,10 +600,15 @@ class AddOnsAvailableByOrganizationResourceIT {
         partialUpdatedAddOnsAvailableByOrganization.setCompositeId(addOnsAvailableByOrganization.getCompositeId());
 
         partialUpdatedAddOnsAvailableByOrganization
+
             .addOnType(UPDATED_ADD_ON_TYPE)
+
             .addOnDetailsText(UPDATED_ADD_ON_DETAILS_TEXT)
+
             .addOnDetailsDecimal(UPDATED_ADD_ON_DETAILS_DECIMAL)
+
             .addOnDetailsBoolean(UPDATED_ADD_ON_DETAILS_BOOLEAN)
+
             .addOnDetailsBigInt(UPDATED_ADD_ON_DETAILS_BIG_INT);
 
         restAddOnsAvailableByOrganizationMockMvc

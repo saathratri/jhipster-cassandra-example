@@ -179,9 +179,13 @@ class BlogResourceIT {
             .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.[*].compositeId.category").value(hasItem(blog.getCompositeId().getCategory().toString())))
+
             .andExpect(jsonPath("$.[*].compositeId.blogId").value(hasItem(blog.getCompositeId().getBlogId().toString())))
+
             .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
+
             .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT)));
     }
 
@@ -201,9 +205,13 @@ class BlogResourceIT {
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.compositeId.category").value(blog.getCompositeId().getCategory().toString()))
+
             .andExpect(jsonPath("$.compositeId.blogId").value(blog.getCompositeId().getBlogId().toString()))
+
             .andExpect(jsonPath("$.handle").value(DEFAULT_HANDLE))
+
             .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT));
     }
 
@@ -332,7 +340,11 @@ class BlogResourceIT {
 
         // Update the blog
         Blog updatedBlog = blogRepository.findById(blog.getCompositeId()).orElseThrow();
-        updatedBlog.handle(UPDATED_HANDLE).content(UPDATED_CONTENT);
+        updatedBlog
+
+            .handle(UPDATED_HANDLE)
+
+            .content(UPDATED_CONTENT);
         BlogDTO blogDTO = blogMapper.toDto(updatedBlog);
 
         restBlogMockMvc
@@ -422,7 +434,11 @@ class BlogResourceIT {
         Blog partialUpdatedBlog = new Blog();
         partialUpdatedBlog.setCompositeId(blog.getCompositeId());
 
-        partialUpdatedBlog.handle(UPDATED_HANDLE).content(UPDATED_CONTENT);
+        partialUpdatedBlog
+
+            .handle(UPDATED_HANDLE)
+
+            .content(UPDATED_CONTENT);
 
         restBlogMockMvc
             .perform(
@@ -456,7 +472,11 @@ class BlogResourceIT {
         Blog partialUpdatedBlog = new Blog();
         partialUpdatedBlog.setCompositeId(blog.getCompositeId());
 
-        partialUpdatedBlog.handle(UPDATED_HANDLE).content(UPDATED_CONTENT);
+        partialUpdatedBlog
+
+            .handle(UPDATED_HANDLE)
+
+            .content(UPDATED_CONTENT);
 
         restBlogMockMvc
             .perform(

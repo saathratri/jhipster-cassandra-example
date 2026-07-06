@@ -9,8 +9,8 @@ import { ISaathratriEntity3 } from '../saathratri-entity-3.model';
 import { SaathratriEntity3Service } from '../service/saathratri-entity-3.service';
 
 const saathratriEntity3Resolve = (route: ActivatedRouteSnapshot): Observable<null | ISaathratriEntity3> => {
-  const entityType = route.params.entityType;
-  const createdTimeId = route.params.createdTimeId;
+  const { entityType } = route.params;
+  const { createdTimeId } = route.params;
 
   if (entityType && createdTimeId) {
     return inject(SaathratriEntity3Service)

@@ -69,6 +69,7 @@ public class PostServiceImpl implements PostService {
 
                 return existingPost;
             })
+
             .map(postRepository::save)
             .map(postMapper::toDto);
     }

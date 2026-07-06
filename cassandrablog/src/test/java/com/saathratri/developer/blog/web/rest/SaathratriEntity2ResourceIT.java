@@ -198,21 +198,29 @@ class SaathratriEntity2ResourceIT {
             .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(
                 jsonPath("$.[*].compositeId.entityTypeId").value(hasItem(saathratriEntity2.getCompositeId().getEntityTypeId().toString()))
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.yearOfDateAdded").value(
                     hasItem(saathratriEntity2.getCompositeId().getYearOfDateAdded().intValue())
                 )
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.arrivalDate").value(hasItem(saathratriEntity2.getCompositeId().getArrivalDate().intValue()))
             )
+
             .andExpect(jsonPath("$.[*].compositeId.blogId").value(hasItem(saathratriEntity2.getCompositeId().getBlogId().toString())))
+
             .andExpect(jsonPath("$.[*].entityName").value(hasItem(DEFAULT_ENTITY_NAME)))
+
             .andExpect(jsonPath("$.[*].entityDescription").value(hasItem(DEFAULT_ENTITY_DESCRIPTION)))
+
             .andExpect(jsonPath("$.[*].entityCost").value(hasItem(sameNumber(DEFAULT_ENTITY_COST))))
+
             .andExpect(jsonPath("$.[*].departureDate").value(hasItem(DEFAULT_DEPARTURE_DATE.intValue())));
     }
 
@@ -236,13 +244,21 @@ class SaathratriEntity2ResourceIT {
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.compositeId.entityTypeId").value(saathratriEntity2.getCompositeId().getEntityTypeId().toString()))
+
             .andExpect(jsonPath("$.compositeId.yearOfDateAdded").value(saathratriEntity2.getCompositeId().getYearOfDateAdded().intValue()))
+
             .andExpect(jsonPath("$.compositeId.arrivalDate").value(saathratriEntity2.getCompositeId().getArrivalDate().intValue()))
+
             .andExpect(jsonPath("$.compositeId.blogId").value(saathratriEntity2.getCompositeId().getBlogId().toString()))
+
             .andExpect(jsonPath("$.entityName").value(DEFAULT_ENTITY_NAME))
+
             .andExpect(jsonPath("$.entityDescription").value(DEFAULT_ENTITY_DESCRIPTION))
+
             .andExpect(jsonPath("$.entityCost").value(sameNumber(DEFAULT_ENTITY_COST)))
+
             .andExpect(jsonPath("$.departureDate").value(DEFAULT_DEPARTURE_DATE.intValue()));
     }
 
@@ -554,9 +570,13 @@ class SaathratriEntity2ResourceIT {
         // Update the saathratriEntity2
         SaathratriEntity2 updatedSaathratriEntity2 = saathratriEntity2Repository.findById(saathratriEntity2.getCompositeId()).orElseThrow();
         updatedSaathratriEntity2
+
             .entityName(UPDATED_ENTITY_NAME)
+
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+
             .entityCost(UPDATED_ENTITY_COST)
+
             .departureDate(UPDATED_DEPARTURE_DATE);
         SaathratriEntity2DTO saathratriEntity2DTO = saathratriEntity2Mapper.toDto(updatedSaathratriEntity2);
 
@@ -691,9 +711,13 @@ class SaathratriEntity2ResourceIT {
         partialUpdatedSaathratriEntity2.setCompositeId(saathratriEntity2.getCompositeId());
 
         partialUpdatedSaathratriEntity2
+
             .entityName(UPDATED_ENTITY_NAME)
+
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+
             .entityCost(UPDATED_ENTITY_COST)
+
             .departureDate(UPDATED_DEPARTURE_DATE);
 
         restSaathratriEntity2MockMvc
@@ -736,9 +760,13 @@ class SaathratriEntity2ResourceIT {
         partialUpdatedSaathratriEntity2.setCompositeId(saathratriEntity2.getCompositeId());
 
         partialUpdatedSaathratriEntity2
+
             .entityName(UPDATED_ENTITY_NAME)
+
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+
             .entityCost(UPDATED_ENTITY_COST)
+
             .departureDate(UPDATED_DEPARTURE_DATE);
 
         restSaathratriEntity2MockMvc

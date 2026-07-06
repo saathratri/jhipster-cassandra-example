@@ -9,8 +9,8 @@ import { IBlog } from '../blog.model';
 import { BlogService } from '../service/blog.service';
 
 const blogResolve = (route: ActivatedRouteSnapshot): Observable<null | IBlog> => {
-  const category = route.params.category;
-  const blogId = route.params.blogId;
+  const { category } = route.params;
+  const { blogId } = route.params;
 
   if (category && blogId) {
     return inject(BlogService)

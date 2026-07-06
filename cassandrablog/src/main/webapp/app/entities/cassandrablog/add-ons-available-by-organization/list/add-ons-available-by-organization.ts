@@ -392,7 +392,7 @@ export class AddOnsAvailableByOrganizationComponent implements OnInit {
   }
 
   private getCompositeKey(item: IAddOnsAvailableByOrganization): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.organizationId, compositeId.entityType, compositeId.entityId, compositeId.addOnId].join('|');
   }
 

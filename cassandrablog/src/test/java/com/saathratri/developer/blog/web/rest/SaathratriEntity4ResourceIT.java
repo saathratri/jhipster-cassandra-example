@@ -152,14 +152,17 @@ class SaathratriEntity4ResourceIT {
             .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(
                 jsonPath("$.[*].compositeId.organizationId").value(
                     hasItem(saathratriEntity4.getCompositeId().getOrganizationId().toString())
                 )
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.attributeKey").value(hasItem(saathratriEntity4.getCompositeId().getAttributeKey().toString()))
             )
+
             .andExpect(jsonPath("$.[*].attributeValue").value(hasItem(DEFAULT_ATTRIBUTE_VALUE)));
     }
 
@@ -179,8 +182,11 @@ class SaathratriEntity4ResourceIT {
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.compositeId.organizationId").value(saathratriEntity4.getCompositeId().getOrganizationId().toString()))
+
             .andExpect(jsonPath("$.compositeId.attributeKey").value(saathratriEntity4.getCompositeId().getAttributeKey().toString()))
+
             .andExpect(jsonPath("$.attributeValue").value(DEFAULT_ATTRIBUTE_VALUE));
     }
 

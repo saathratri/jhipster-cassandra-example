@@ -69,6 +69,7 @@ class SetEntityByOrganizationResourceIT {
      */
     public static SetEntityByOrganization createEntity() {
         SetEntityByOrganization setEntityByOrganization = new SetEntityByOrganization()
+
             .organizationId(DEFAULT_ORGANIZATION_ID)
             .tags(DEFAULT_TAGS);
         return setEntityByOrganization;
@@ -82,6 +83,7 @@ class SetEntityByOrganizationResourceIT {
      */
     public static SetEntityByOrganization createUpdatedEntity() {
         SetEntityByOrganization setEntityByOrganization = new SetEntityByOrganization()
+
             .organizationId(UPDATED_ORGANIZATION_ID)
             .tags(UPDATED_TAGS);
         return setEntityByOrganization;
@@ -156,6 +158,7 @@ class SetEntityByOrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].organizationId").value(hasItem(setEntityByOrganization.getOrganizationId().toString())))
+
             .andExpect(jsonPath("$.[*].tags").exists());
     }
 
@@ -171,6 +174,7 @@ class SetEntityByOrganizationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.organizationId").value(setEntityByOrganization.getOrganizationId().toString()))
+
             .andExpect(jsonPath("$.tags").exists());
     }
 

@@ -9,10 +9,10 @@ import { IAddOnsAvailableByOrganization } from '../add-ons-available-by-organiza
 import { AddOnsAvailableByOrganizationService } from '../service/add-ons-available-by-organization.service';
 
 const addOnsAvailableByOrganizationResolve = (route: ActivatedRouteSnapshot): Observable<null | IAddOnsAvailableByOrganization> => {
-  const organizationId = route.params.organizationId;
-  const entityType = route.params.entityType;
-  const entityId = route.params.entityId;
-  const addOnId = route.params.addOnId;
+  const { organizationId } = route.params;
+  const { entityType } = route.params;
+  const { entityId } = route.params;
+  const { addOnId } = route.params;
 
   if (organizationId && entityType && entityId && addOnId) {
     return inject(AddOnsAvailableByOrganizationService)

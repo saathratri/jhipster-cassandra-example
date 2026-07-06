@@ -380,7 +380,7 @@ export class SaathratriEntity3Component implements OnInit {
   }
 
   private getCompositeKey(item: ISaathratriEntity3): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.entityType, compositeId.createdTimeId].join('|');
   }
 

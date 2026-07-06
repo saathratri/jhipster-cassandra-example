@@ -62,6 +62,7 @@ public class TajUserServiceImpl implements TajUserService {
 
                 return existingTajUser;
             })
+
             .map(tajUserRepository::save)
             .map(tajUserMapper::toDto);
     }

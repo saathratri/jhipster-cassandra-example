@@ -9,10 +9,10 @@ import { ISaathratriEntity2 } from '../saathratri-entity-2.model';
 import { SaathratriEntity2Service } from '../service/saathratri-entity-2.service';
 
 const saathratriEntity2Resolve = (route: ActivatedRouteSnapshot): Observable<null | ISaathratriEntity2> => {
-  const entityTypeId = route.params.entityTypeId;
-  const yearOfDateAdded = route.params.yearOfDateAdded;
-  const arrivalDate = route.params.arrivalDate;
-  const blogId = route.params.blogId;
+  const { entityTypeId } = route.params;
+  const { yearOfDateAdded } = route.params;
+  const { arrivalDate } = route.params;
+  const { blogId } = route.params;
 
   if (entityTypeId && yearOfDateAdded && arrivalDate && blogId) {
     return inject(SaathratriEntity2Service)

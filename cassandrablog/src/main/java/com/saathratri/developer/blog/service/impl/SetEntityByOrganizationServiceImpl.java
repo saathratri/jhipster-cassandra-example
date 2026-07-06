@@ -65,6 +65,7 @@ public class SetEntityByOrganizationServiceImpl implements SetEntityByOrganizati
 
                 return existingSetEntityByOrganization;
             })
+
             .map(setEntityByOrganizationRepository::save)
             .map(setEntityByOrganizationMapper::toDto);
     }

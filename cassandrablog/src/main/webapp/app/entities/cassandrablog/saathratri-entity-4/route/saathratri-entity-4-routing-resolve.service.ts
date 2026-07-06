@@ -9,8 +9,8 @@ import { ISaathratriEntity4 } from '../saathratri-entity-4.model';
 import { SaathratriEntity4Service } from '../service/saathratri-entity-4.service';
 
 const saathratriEntity4Resolve = (route: ActivatedRouteSnapshot): Observable<null | ISaathratriEntity4> => {
-  const organizationId = route.params.organizationId;
-  const attributeKey = route.params.attributeKey;
+  const { organizationId } = route.params;
+  const { attributeKey } = route.params;
 
   if (organizationId && attributeKey) {
     return inject(SaathratriEntity4Service)

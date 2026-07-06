@@ -65,6 +65,7 @@ public class SaathratriEntityServiceImpl implements SaathratriEntityService {
 
                 return existingSaathratriEntity;
             })
+
             .map(saathratriEntityRepository::save)
             .map(saathratriEntityMapper::toDto);
     }

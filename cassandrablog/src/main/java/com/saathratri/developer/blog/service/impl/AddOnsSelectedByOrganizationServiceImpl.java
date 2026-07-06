@@ -77,6 +77,7 @@ public class AddOnsSelectedByOrganizationServiceImpl implements AddOnsSelectedBy
 
                 return existingAddOnsSelectedByOrganization;
             })
+
             .map(addOnsSelectedByOrganizationRepository::save)
             .map(addOnsSelectedByOrganizationMapper::toDto);
     }

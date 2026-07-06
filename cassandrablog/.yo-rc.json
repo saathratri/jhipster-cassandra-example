@@ -7,7 +7,7 @@
     "blueprints": [
       {
         "name": "generator-jhipster-cassandra",
-        "version": "1.0.16"
+        "version": "1.0.18"
       }
     ],
     "buildTool": "maven",
@@ -30,7 +30,7 @@
       "LandingPageByOrganization",
       "SetEntityByOrganization"
     ],
-    "jhipsterVersion": "9.0.0",
+    "jhipsterVersion": "9.1.0",
     "jwtSecretKey": "MDdkNzQ5ZjM2MGVkNDcyZGIzZmFjNDlkMzg0OWU5MTE4NzMxZTAxYTQ5Y2JjNzM0YzRkYWQxMGFkODExMzczZjU1MzkxZWZhZGNmNGNhN2E4OTBkYTUwNmE3ZDI1ODljNGY1ZjY2ZTMzOWI0YWJiNzg1NjFmYzFmZWVmNGU0OGM=",
     "languages": ["en"],
     "lastLiquibaseTimestamp": 1780080873000,

@@ -78,6 +78,7 @@ class ReportResourceIT {
      */
     public static Report createEntity() {
         Report report = new Report()
+
             .id(DEFAULT_ID)
             .fileName(DEFAULT_FILE_NAME)
             .fileExtension(DEFAULT_FILE_EXTENSION)
@@ -96,6 +97,7 @@ class ReportResourceIT {
      */
     public static Report createUpdatedEntity() {
         Report report = new Report()
+
             .id(UPDATED_ID)
             .fileName(UPDATED_FILE_NAME)
             .fileExtension(UPDATED_FILE_EXTENSION)
@@ -210,11 +212,16 @@ class ReportResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(report.getId().toString())))
+
             .andExpect(jsonPath("$.[*].fileName").value(hasItem(DEFAULT_FILE_NAME)))
+
             .andExpect(jsonPath("$.[*].fileExtension").value(hasItem(DEFAULT_FILE_EXTENSION)))
+
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.intValue())))
             .andExpect(jsonPath("$.[*].fileContentType").value(hasItem(DEFAULT_FILE_CONTENT_TYPE)))
+
             .andExpect(jsonPath("$.[*].file").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_FILE.array()))))
+
             .andExpect(jsonPath("$.[*].approved").value(hasItem(DEFAULT_APPROVED.booleanValue())));
     }
 
@@ -230,11 +237,16 @@ class ReportResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(report.getId().toString()))
+
             .andExpect(jsonPath("$.fileName").value(DEFAULT_FILE_NAME))
+
             .andExpect(jsonPath("$.fileExtension").value(DEFAULT_FILE_EXTENSION))
+
             .andExpect(jsonPath("$.createDate").value(DEFAULT_CREATE_DATE.intValue()))
             .andExpect(jsonPath("$.fileContentType").value(DEFAULT_FILE_CONTENT_TYPE))
+
             .andExpect(jsonPath("$.file").value(Base64.getEncoder().encodeToString(DEFAULT_FILE.array())))
+
             .andExpect(jsonPath("$.approved").value(DEFAULT_APPROVED.booleanValue()));
     }
 
@@ -255,11 +267,16 @@ class ReportResourceIT {
         // Update the report
         Report updatedReport = reportRepository.findById(report.getId()).orElseThrow();
         updatedReport
+
             .fileName(UPDATED_FILE_NAME)
+
             .fileExtension(UPDATED_FILE_EXTENSION)
+
             .createDate(UPDATED_CREATE_DATE)
+
             .file(UPDATED_FILE)
             .fileContentType(UPDATED_FILE_CONTENT_TYPE)
+
             .approved(UPDATED_APPROVED);
         ReportDTO reportDTO = reportMapper.toDto(updatedReport);
 
@@ -350,11 +367,16 @@ class ReportResourceIT {
         partialUpdatedReport.setId(report.getId());
 
         partialUpdatedReport
+
             .fileName(UPDATED_FILE_NAME)
+
             .fileExtension(UPDATED_FILE_EXTENSION)
+
             .createDate(UPDATED_CREATE_DATE)
+
             .file(UPDATED_FILE)
             .fileContentType(UPDATED_FILE_CONTENT_TYPE)
+
             .approved(UPDATED_APPROVED);
 
         restReportMockMvc
@@ -385,11 +407,16 @@ class ReportResourceIT {
         partialUpdatedReport.setId(report.getId());
 
         partialUpdatedReport
+
             .fileName(UPDATED_FILE_NAME)
+
             .fileExtension(UPDATED_FILE_EXTENSION)
+
             .createDate(UPDATED_CREATE_DATE)
+
             .file(UPDATED_FILE)
             .fileContentType(UPDATED_FILE_CONTENT_TYPE)
+
             .approved(UPDATED_APPROVED);
 
         restReportMockMvc

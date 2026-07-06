@@ -181,16 +181,23 @@ class SaathratriEntity3ResourceIT {
             .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(
                 jsonPath("$.[*].compositeId.entityType").value(hasItem(saathratriEntity3.getCompositeId().getEntityType().toString()))
             )
+
             .andExpect(
                 jsonPath("$.[*].compositeId.createdTimeId").value(hasItem(saathratriEntity3.getCompositeId().getCreatedTimeId().toString()))
             )
+
             .andExpect(jsonPath("$.[*].entityName").value(hasItem(DEFAULT_ENTITY_NAME)))
+
             .andExpect(jsonPath("$.[*].entityDescription").value(hasItem(DEFAULT_ENTITY_DESCRIPTION)))
+
             .andExpect(jsonPath("$.[*].entityCost").value(hasItem(sameNumber(DEFAULT_ENTITY_COST))))
+
             .andExpect(jsonPath("$.[*].departureDate").value(hasItem(DEFAULT_DEPARTURE_DATE.intValue())))
+
             .andExpect(jsonPath("$.[*].tags").exists());
     }
 
@@ -210,12 +217,19 @@ class SaathratriEntity3ResourceIT {
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
             .andExpect(jsonPath("$.compositeId.entityType").value(saathratriEntity3.getCompositeId().getEntityType().toString()))
+
             .andExpect(jsonPath("$.compositeId.createdTimeId").value(saathratriEntity3.getCompositeId().getCreatedTimeId().toString()))
+
             .andExpect(jsonPath("$.entityName").value(DEFAULT_ENTITY_NAME))
+
             .andExpect(jsonPath("$.entityDescription").value(DEFAULT_ENTITY_DESCRIPTION))
+
             .andExpect(jsonPath("$.entityCost").value(sameNumber(DEFAULT_ENTITY_COST)))
+
             .andExpect(jsonPath("$.departureDate").value(DEFAULT_DEPARTURE_DATE.intValue()))
+
             .andExpect(jsonPath("$.tags").exists());
     }
 
@@ -345,10 +359,15 @@ class SaathratriEntity3ResourceIT {
         // Update the saathratriEntity3
         SaathratriEntity3 updatedSaathratriEntity3 = saathratriEntity3Repository.findById(saathratriEntity3.getCompositeId()).orElseThrow();
         updatedSaathratriEntity3
+
             .entityName(UPDATED_ENTITY_NAME)
+
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+
             .entityCost(UPDATED_ENTITY_COST)
+
             .departureDate(UPDATED_DEPARTURE_DATE)
+
             .tags(UPDATED_TAGS);
         SaathratriEntity3DTO saathratriEntity3DTO = saathratriEntity3Mapper.toDto(updatedSaathratriEntity3);
 
@@ -450,10 +469,15 @@ class SaathratriEntity3ResourceIT {
         partialUpdatedSaathratriEntity3.setCompositeId(saathratriEntity3.getCompositeId());
 
         partialUpdatedSaathratriEntity3
+
             .entityName(UPDATED_ENTITY_NAME)
+
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+
             .entityCost(UPDATED_ENTITY_COST)
+
             .departureDate(UPDATED_DEPARTURE_DATE)
+
             .tags(UPDATED_TAGS);
 
         restSaathratriEntity3MockMvc
@@ -492,10 +516,15 @@ class SaathratriEntity3ResourceIT {
         partialUpdatedSaathratriEntity3.setCompositeId(saathratriEntity3.getCompositeId());
 
         partialUpdatedSaathratriEntity3
+
             .entityName(UPDATED_ENTITY_NAME)
+
             .entityDescription(UPDATED_ENTITY_DESCRIPTION)
+
             .entityCost(UPDATED_ENTITY_COST)
+
             .departureDate(UPDATED_DEPARTURE_DATE)
+
             .tags(UPDATED_TAGS);
 
         restSaathratriEntity3MockMvc

@@ -9,10 +9,10 @@ import { IAddOnsSelectedByOrganization } from '../add-ons-selected-by-organizati
 import { AddOnsSelectedByOrganizationService } from '../service/add-ons-selected-by-organization.service';
 
 const addOnsSelectedByOrganizationResolve = (route: ActivatedRouteSnapshot): Observable<null | IAddOnsSelectedByOrganization> => {
-  const organizationId = route.params.organizationId;
-  const arrivalDate = route.params.arrivalDate;
-  const accountNumber = route.params.accountNumber;
-  const createdTimeId = route.params.createdTimeId;
+  const { organizationId } = route.params;
+  const { arrivalDate } = route.params;
+  const { accountNumber } = route.params;
+  const { createdTimeId } = route.params;
 
   if (organizationId && arrivalDate && accountNumber && createdTimeId) {
     return inject(AddOnsSelectedByOrganizationService)

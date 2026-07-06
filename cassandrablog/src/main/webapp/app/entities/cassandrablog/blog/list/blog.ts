@@ -376,7 +376,7 @@ export class BlogComponent implements OnInit {
   }
 
   private getCompositeKey(item: IBlog): string {
-    const compositeId = item.compositeId;
+    const { compositeId } = item;
     return [compositeId.category, compositeId.blogId].join('|');
   }
 
