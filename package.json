@@ -36,7 +36,7 @@
   },
   "overrides": {
     "browser-sync": "3.0.4",
-    "webpack": "5.105.4"
+    "webpack": "5.106.2"
   },
   "devDependencies": {
     "concurrently": "9.2.1",

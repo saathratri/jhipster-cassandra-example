@@ -19,7 +19,8 @@
 #     window. This script gates e2e on the gateway->remote ROUTE being live (not
 #     just app health), and retries the whole suite once if it still flakes.
 #   - e2e:headless is broken on Windows (unexpanded $npm_package_config_backend_port);
-#     this calls `npm run e2e:cypress` against the already-running stack.
+#     this calls `npm run e2e:cypress` against the stack this script brings up itself
+#     (Keycloak -> gated Registry -> Cassandra DBs, then the 3 backends).
 #
 # Usage:
 #   sh saathratri-run-all-tests.sh                # full run, no regen
@@ -140,17 +141,32 @@ if [ "$DO_E2E" = 1 ]; then
   # entity e2e 404s after a long, confusing wait; if Keycloak isn't serving OIDC the Registry
   # itself crashes on boot. Verify both NOW and fail fast (before ~5 min of webapp builds +
   # backend launches) with an actionable message instead of a late, opaque failure.
-  # Track infra readiness in its OWN flag (not the global FAIL) so we skip e2e only when infra
-  # is genuinely down — never because an earlier backend/frontend phase failed (that would mask
-  # which layers a still-runnable e2e would have covered).
-  say "Pre-flight: infra readiness (Keycloak OIDC :9080 + JHipster Registry :8761)"
+  # Bring up the dev docker stack ourselves (self-contained, like the ai-postgresql and
+  # orchestrator harnesses) instead of just pre-flight checking it. Order matters: the
+  # JHipster Registry does eager OIDC discovery against Keycloak at boot and exits(1) if
+  # Keycloak isn't serving yet, so gate on Keycloak's OIDC endpoint BEFORE starting the
+  # Registry, then gate the Registry before launching backends.
+  # Infra readiness keeps its OWN flag (not the global FAIL) so we skip e2e only when infra
+  # is genuinely down — never because an earlier backend/frontend phase failed.
+  say "Bringing up dev docker stack (Keycloak -> Registry -> Cassandra DBs x3)"
   infra_ok=1
-  printf "  Keycloak OIDC (:9080) "
-  kc=$(http "http://localhost:9080/realms/jhipster/.well-known/openid-configuration"); echo "$kc"
-  [ "$kc" = 200 ] || { echo "  ✖ Keycloak not serving OIDC — start the docker stack first (saathratri-deploy.sh); aborting e2e"; infra_ok=0; }
-  printf "  JHipster Registry (:8761) "
-  rg=$(http "http://localhost:8761/management/health"); echo "$rg"
-  case "$rg" in 200|401) ;; *) echo "  ✖ Registry not live on :8761 (got $rg) — remotes can't register; start the stack first; aborting e2e"; infra_ok=0;; esac
+  ( cd cassandragateway && docker compose -f src/main/docker/keycloak.yml up -d ) > "$LOG/docker-keycloak.log" 2>&1 || { echo "  ✖ keycloak up failed"; infra_ok=0; }
+  printf "  waiting Keycloak OIDC (:9080) "
+  oidc="http://localhost:9080/realms/jhipster/.well-known/openid-configuration"
+  for i in $(seq 1 60); do [ "$(http "$oidc")" = 200 ] && break; sleep 3; printf '.'; done
+  kc=$(http "$oidc"); echo " $kc"
+  [ "$kc" = 200 ] || { echo "  ✖ Keycloak never served OIDC discovery — registry would crash; aborting e2e"; infra_ok=0; }
+
+  ( cd cassandragateway && docker compose -f src/main/docker/jhipster-registry.yml up -d ) > "$LOG/docker-registry.log" 2>&1 || { echo "  ✖ registry up failed"; infra_ok=0; }
+  printf "  waiting JHipster Registry (:8761) "
+  for i in $(seq 1 60); do rg=$(http http://localhost:8761/management/health); case "$rg" in 200|401) break;; esac; sleep 3; printf '.'; done
+  rg=$(http http://localhost:8761/management/health); echo " $rg"
+  case "$rg" in 200|401) ;; *) echo "  ✖ Registry not live on :8761 (got $rg) — remotes can't register; aborting e2e"; infra_ok=0;; esac
+
+  for app in $APPS; do
+    ( cd "$app" && npm run docker:db:up ) > "$LOG/docker-db-$app.log" 2>&1 && echo "  ✔ $app db up" || { echo "  ✖ $app cassandra db up failed"; infra_ok=0; }
+  done
+
   if [ "$infra_ok" = 0 ]; then echo "  infra not ready — skipping e2e"; FAIL=1; DO_E2E=0; fi
 fi
 

@@ -1,6 +1,6 @@
 {
   "annotations": {
-    "changelogDate": "20260529185233"
+    "changelogDate": "20260707161656"
   },
   "applications": ["cassandrablog"],
   "clientRootFolder": "cassandrablog",

@@ -11,10 +11,10 @@
       }
     ],
     "buildTool": "maven",
-    "clientFramework": "angularX",
+    "clientFramework": "angular",
     "databaseType": "cassandra",
     "devDatabaseType": "cassandra",
-    "devServerPort": 4201,
+    "devServerPort": null,
     "enableHibernateCache": false,
     "entities": [
       "Blog",
@@ -31,9 +31,9 @@
       "SetEntityByOrganization"
     ],
     "jhipsterVersion": "9.1.0",
-    "jwtSecretKey": "MDdkNzQ5ZjM2MGVkNDcyZGIzZmFjNDlkMzg0OWU5MTE4NzMxZTAxYTQ5Y2JjNzM0YzRkYWQxMGFkODExMzczZjU1MzkxZWZhZGNmNGNhN2E4OTBkYTUwNmE3ZDI1ODljNGY1ZjY2ZTMzOWI0YWJiNzg1NjFmYzFmZWVmNGU0OGM=",
+    "jwtSecretKey": "N2NmNmUyZWMyZDgwOGE5NGY1OWU3MDQxMDNhMWJiNmZkM2M4MDdhOTQ5YTY2NTZiYjQxZTcyZDk5MGQxYzYwZGVlYzg0NjU5YzU3M2M1OTU4NTgyNzk2ZjU2NjlmODMxZWMzNjdiMzMzOTdkNDhlMjExYmFiNTJkZjc3MmYyNzI=",
     "languages": ["en"],
-    "lastLiquibaseTimestamp": 1780080873000,
+    "lastLiquibaseTimestamp": 1783441136000,
     "monorepository": true,
     "nativeLanguage": "en",
     "packageName": "com.saathratri.developer.blog",
